@@ -847,6 +847,10 @@ section {
   color: rgba(30, 27, 75, 0.95) !important;
 }
 
+.light-mode .skill-level-badge {
+  opacity: 0.9;
+}
+
 /* Learning badge */
 .learning-badge {
   background: linear-gradient(

@@ -267,26 +267,31 @@ function StatCard({
 // ---------------------------------------------------------------------------
 // Progress bar skill row
 // ---------------------------------------------------------------------------
+const levelLabels: Record<string, { label: string; color: string }> = {
+  expert: { label: "Expert", color: "text-violet-400 bg-violet-500/15 border-violet-500/25" },
+  advanced: { label: "Avancado", color: "text-indigo-400 bg-indigo-500/15 border-indigo-500/25" },
+  intermediate: { label: "Intermediario", color: "text-blue-400 bg-blue-500/15 border-blue-500/25" },
+  beginner: { label: "Iniciante", color: "text-amber-400 bg-amber-500/15 border-amber-500/25" },
+};
+
 function SkillRow({
   name,
   icon,
-  percentage,
+  level,
   barColor,
   delay,
 }: {
   name: string;
   icon: string;
-  percentage: number;
+  level: string;
   barColor: string;
   delay: number;
 }) {
   const IconComponent = TechIcons[icon];
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-40px" });
+  const lvl = levelLabels[level] ?? levelLabels.intermediate;
 
   return (
     <motion.div
-      ref={ref}
       initial={{ opacity: 0, x: -12 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
@@ -298,31 +303,12 @@ function SkillRow({
         {IconComponent && <IconComponent className="w-4 h-4 text-white/70 group-hover:text-white/90 transition-colors duration-200" />}
       </div>
 
-      {/* Name + bar */}
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center justify-between mb-1">
-          <span className="skill-row-name text-sm font-medium truncate">{name}</span>
-          <span className="skill-row-pct text-xs font-semibold tabular-nums ml-2 opacity-60">
-            {percentage}%
-          </span>
-        </div>
-
-        {/* Progress track */}
-        <div className="relative h-1.5 rounded-full bg-white/[0.06] overflow-hidden" role="progressbar" aria-valuenow={percentage} aria-valuemin={0} aria-valuemax={100} aria-label={`${name}: ${percentage}%`}>
-          <motion.div
-            className={`absolute inset-y-0 left-0 rounded-full bg-gradient-to-r ${barColor}`}
-            initial={{ width: 0 }}
-            animate={inView ? { width: `${percentage}%` } : { width: 0 }}
-            transition={{ duration: 1, delay: delay + 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-          />
-          {/* Glow */}
-          <motion.div
-            className={`absolute inset-y-0 left-0 rounded-full bg-gradient-to-r ${barColor} blur-sm opacity-40`}
-            initial={{ width: 0 }}
-            animate={inView ? { width: `${percentage}%` } : { width: 0 }}
-            transition={{ duration: 1, delay: delay + 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-          />
-        </div>
+      {/* Name + level badge */}
+      <div className="flex-1 min-w-0 flex items-center justify-between gap-2">
+        <span className="skill-row-name text-sm font-medium truncate">{name}</span>
+        <span className={`skill-level-badge flex-shrink-0 px-2 py-0.5 rounded-md text-[10px] font-semibold border ${lvl.color}`}>
+          {lvl.label}
+        </span>
       </div>
     </motion.div>
   );
@@ -440,7 +426,7 @@ export function Skills() {
                         key={skill.name}
                         name={skill.name}
                         icon={skill.icon}
-                        percentage={skill.percentage}
+                        level={skill.level}
                         barColor={accent.barColor}
                         delay={categoryIndex * 0.1 + skillIndex * 0.06}
                       />
