@@ -813,21 +813,38 @@ section {
   color: rgba(55, 48, 107, 0.7);
 }
 
-/* Skill badges */
-.skill-badge {
-  backdrop-filter: blur(8px);
-}
-
-.skill-badge-name {
+/* Skill row items */
+.skill-row-name {
   color: rgba(255, 255, 255, 0.9);
 }
 
-.light-mode .skill-badge {
-  background: rgba(255, 255, 255, 0.8) !important;
+.skill-row-pct {
+  color: rgba(255, 255, 255, 0.5);
 }
 
-.light-mode .skill-badge-name {
+.skill-row-icon {
+  transition: all 0.2s ease;
+}
+
+.light-mode .skill-row-name {
   color: rgba(30, 27, 75, 0.9);
+}
+
+.light-mode .skill-row-pct {
+  color: rgba(55, 48, 107, 0.5);
+}
+
+.light-mode .skill-row-icon {
+  background: rgba(0, 0, 0, 0.04) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+.light-mode .skill-row-icon svg {
+  color: rgba(30, 27, 75, 0.7) !important;
+}
+
+.light-mode .group:hover .skill-row-icon svg {
+  color: rgba(30, 27, 75, 0.95) !important;
 }
 
 /* Learning badge */

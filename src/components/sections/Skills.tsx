@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import {
   Code2,
   Server,
@@ -10,11 +10,13 @@ import {
   AppWindow,
   TestTubes,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { skillCategories as importedSkills } from "@/data/skills";
 import { SkillsBackground, SkillsBackgroundLight } from "../ui/SkillsBackground";
 
-// Tech icons as SVG components
+// ---------------------------------------------------------------------------
+// SVG Tech Icons
+// ---------------------------------------------------------------------------
 const TechIcons: Record<string, React.FC<{ className?: string }>> = {
   react: ({ className }) => (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor">
@@ -92,12 +94,80 @@ const TechIcons: Record<string, React.FC<{ className?: string }>> = {
       <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
     </svg>
   ),
+  framermotion: ({ className }) => (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M4 0h16v8h-8zM4 8h8l8 8H4zM4 16h8v8z"/>
+    </svg>
+  ),
+  radixui: ({ className }) => (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2a5 5 0 0 1 0 10v10h-2V12H8a5 5 0 0 1 0-10h4Zm0 2H8a3 3 0 0 0 0 6h4V4Z"/>
+    </svg>
+  ),
+  zustand: ({ className }) => (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2Zm-2 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4Zm4 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4Zm-2-6a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z"/>
+    </svg>
+  ),
+  hono: ({ className }) => (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2c-1.4 3-5.6 5-7 10 0 0-.2 1.8.8 3.6C7.2 18.2 9.4 20 12 22c2.6-2 4.8-3.8 6.2-6.4 1-1.8.8-3.6.8-3.6-1.4-5-5.6-7-7-10Z"/>
+    </svg>
+  ),
+  zod: ({ className }) => (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M13.77 2 4 12l2.5 2.5L13.77 7v5.5L22 4.77V2h-8.23ZM10.23 22 20 12l-2.5-2.5-7.27 7.5V11.5L2 19.23V22h8.23Z"/>
+    </svg>
+  ),
+  githubactions: ({ className }) => (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M10.984 13.836a.5.5 0 0 1-.353-.146l-.745-.743a.5.5 0 1 1 .706-.708l.392.391 1.181-1.18a.5.5 0 0 1 .708.707l-1.535 1.533a.5.5 0 0 1-.354.146Zm-2.192-3.15a3 3 0 1 0 4.346 0l1.406-2.907a.5.5 0 0 0-.078-.554 5.998 5.998 0 0 0-6.88 0 .5.5 0 0 0-.079.554l1.285 2.907ZM12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2Zm0 2a8 8 0 1 1 0 16 8 8 0 0 1 0-16Z"/>
+    </svg>
+  ),
+  turborepo: ({ className }) => (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2Zm0 4a6 6 0 1 1 0 12 6 6 0 0 1 0-12Zm0 2a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm0 1.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Z"/>
+    </svg>
+  ),
 };
 
-// Category metadata (icon + description) for each category title
+// ---------------------------------------------------------------------------
+// Category accent colors
+// ---------------------------------------------------------------------------
+const categoryAccents: Record<string, {
+  gradient: string;
+  iconBg: string;
+  barColor: string;
+  lightGradient: string;
+  lightIconBg: string;
+}> = {
+  Frontend: {
+    gradient: "from-indigo-500/20 via-indigo-500/5 to-transparent",
+    iconBg: "from-indigo-500 to-violet-600",
+    barColor: "from-indigo-500 to-violet-500",
+    lightGradient: "from-indigo-500/10 via-indigo-500/5 to-transparent",
+    lightIconBg: "from-indigo-500 to-violet-600",
+  },
+  Backend: {
+    gradient: "from-emerald-500/20 via-emerald-500/5 to-transparent",
+    iconBg: "from-emerald-500 to-teal-600",
+    barColor: "from-emerald-500 to-teal-500",
+    lightGradient: "from-emerald-500/10 via-emerald-500/5 to-transparent",
+    lightIconBg: "from-emerald-500 to-teal-600",
+  },
+  "DevOps e Ferramentas": {
+    gradient: "from-amber-500/20 via-amber-500/5 to-transparent",
+    iconBg: "from-amber-500 to-orange-600",
+    barColor: "from-amber-500 to-orange-500",
+    lightGradient: "from-amber-500/10 via-amber-500/5 to-transparent",
+    lightIconBg: "from-amber-500 to-orange-600",
+  },
+};
+
+// Category metadata
 const categoryMeta: Record<string, { icon: React.FC<{ className?: string }>; description: string }> = {
-  "Frontend": { icon: Code2, description: "Interfaces modernas e responsivas" },
-  "Backend": { icon: Server, description: "APIs robustas e escalaveis" },
+  Frontend: { icon: Code2, description: "Interfaces modernas e responsivas" },
+  Backend: { icon: Server, description: "APIs robustas e escalaveis" },
   "DevOps e Ferramentas": { icon: Wrench, description: "Ferramentas e workflows modernos" },
 };
 
@@ -109,121 +179,84 @@ const skillCategories = importedSkills.map((cat) => ({
   skills: cat.skills.map((s) => ({
     name: s.name,
     icon: s.icon,
-    level: s.level as SkillLevel,
+    level: s.level,
+    percentage: s.percentage,
   })),
 }));
 
-// Stats with real Pulse Ecosystem metrics
+// Stats
 const stats = [
-  { icon: TestTubes, value: "380+", label: "Testes Automatizados" },
-  { icon: Layers, value: "100+", label: "Componentes UI" },
-  { icon: AppWindow, value: "56", label: "Paginas Construidas" },
-  { icon: FlaskConical, value: "3", label: "SaaS Apps em Producao" },
+  { icon: TestTubes, value: 380, suffix: "+", label: "Testes Automatizados" },
+  { icon: Layers, value: 100, suffix: "+", label: "Componentes UI" },
+  { icon: AppWindow, value: 56, suffix: "", label: "Paginas Construidas" },
+  { icon: FlaskConical, value: 3, suffix: "", label: "SaaS Apps em Producao" },
 ];
 
-type SkillLevel = "beginner" | "intermediate" | "advanced" | "expert";
+// ---------------------------------------------------------------------------
+// Animated counter hook
+// ---------------------------------------------------------------------------
+function useCountUp(target: number, inView: boolean) {
+  const [count, setCount] = useState(0);
 
-const levelConfig: Record<SkillLevel, { label: string; color: string; bgColor: string }> = {
-  beginner: {
-    label: "Iniciante",
-    color: "text-amber-400",
-    bgColor: "bg-amber-500/20 border-amber-500/30"
-  },
-  intermediate: {
-    label: "Intermediário",
-    color: "text-blue-400",
-    bgColor: "bg-blue-500/20 border-blue-500/30"
-  },
-  advanced: {
-    label: "Avançado",
-    color: "text-emerald-400",
-    bgColor: "bg-emerald-500/20 border-emerald-500/30"
-  },
-  expert: {
-    label: "Expert",
-    color: "text-violet-400",
-    bgColor: "bg-violet-500/20 border-violet-500/30"
-  },
-};
+  useEffect(() => {
+    if (!inView) return;
+    let start = 0;
+    const duration = 1800;
+    const step = Math.ceil(target / (duration / 16));
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= target) {
+        setCount(target);
+        clearInterval(timer);
+      } else {
+        setCount(start);
+      }
+    }, 16);
+    return () => clearInterval(timer);
+  }, [target, inView]);
 
-function SkillBadge({
-  name,
-  icon,
-  level,
-  delay
-}: {
-  name: string;
-  icon: string;
-  level: SkillLevel;
-  delay: number;
-}) {
-  const IconComponent = TechIcons[icon];
-  const config = levelConfig[level];
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4, delay }}
-      whileHover={{ scale: 1.03, y: -2 }}
-      className="group"
-    >
-      <div className={`
-        skill-badge relative flex items-center gap-2.5 px-3 py-2.5 rounded-xl
-        border transition-all duration-300 cursor-default h-full
-        ${config.bgColor}
-        hover:shadow-lg hover:shadow-indigo-500/10
-      `}>
-        {/* Icon */}
-        <div className="skill-badge-icon w-7 h-7 flex-shrink-0 flex items-center justify-center rounded-lg bg-white/10 transition-all duration-300">
-          {IconComponent && (
-            <IconComponent className={`w-4 h-4 ${config.color}`} />
-          )}
-        </div>
-
-        {/* Name */}
-        <span className="skill-badge-name font-medium text-xs leading-tight">
-          {name}
-        </span>
-
-        {/* Level indicator dot */}
-        <div className={`absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full ${config.color.replace('text-', 'bg-')} opacity-60`} />
-      </div>
-    </motion.div>
-  );
+  return count;
 }
 
+// ---------------------------------------------------------------------------
+// Stat Card
+// ---------------------------------------------------------------------------
 function StatCard({
   icon: Icon,
   value,
+  suffix,
   label,
-  delay
+  delay,
 }: {
   icon: React.FC<{ className?: string }>;
-  value: string;
+  value: number;
+  suffix: string;
   label: string;
   delay: number;
 }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true });
+  const count = useCountUp(value, inView);
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      ref={ref}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay }}
-      className="stat-card relative p-6 rounded-2xl text-center group"
+      className="stat-card group relative p-5 md:p-6 rounded-2xl text-center overflow-hidden"
     >
-      {/* Glow effect on hover */}
       <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-indigo-500/10 to-violet-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
       <div className="relative z-10">
-        <div className="stat-icon-container w-14 h-14 mx-auto mb-4 rounded-xl flex items-center justify-center">
-          <Icon className="w-7 h-7 text-indigo-400" />
+        <div className="stat-icon-container w-12 h-12 mx-auto mb-3 rounded-xl flex items-center justify-center">
+          <Icon className="w-6 h-6 text-indigo-400" />
         </div>
-        <div className="text-3xl md:text-4xl font-bold gradient-text mb-1">
-          {value}
+        <div className="text-3xl md:text-4xl font-extrabold gradient-text mb-0.5 tabular-nums tracking-tight">
+          {count}{suffix}
         </div>
-        <div className="stat-label text-sm font-medium">
+        <div className="stat-label text-xs md:text-sm font-medium">
           {label}
         </div>
       </div>
@@ -231,6 +264,73 @@ function StatCard({
   );
 }
 
+// ---------------------------------------------------------------------------
+// Progress bar skill row
+// ---------------------------------------------------------------------------
+function SkillRow({
+  name,
+  icon,
+  percentage,
+  barColor,
+  delay,
+}: {
+  name: string;
+  icon: string;
+  percentage: number;
+  barColor: string;
+  delay: number;
+}) {
+  const IconComponent = TechIcons[icon];
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-40px" });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, x: -12 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4, delay }}
+      className="group flex items-center gap-3"
+    >
+      {/* Icon */}
+      <div className="skill-row-icon w-8 h-8 flex-shrink-0 rounded-lg flex items-center justify-center bg-white/[0.06] border border-white/[0.08] group-hover:border-white/[0.15] transition-colors duration-200">
+        {IconComponent && <IconComponent className="w-4 h-4 text-white/70 group-hover:text-white/90 transition-colors duration-200" />}
+      </div>
+
+      {/* Name + bar */}
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center justify-between mb-1">
+          <span className="skill-row-name text-sm font-medium truncate">{name}</span>
+          <span className="skill-row-pct text-xs font-semibold tabular-nums ml-2 opacity-60">
+            {percentage}%
+          </span>
+        </div>
+
+        {/* Progress track */}
+        <div className="relative h-1.5 rounded-full bg-white/[0.06] overflow-hidden" role="progressbar" aria-valuenow={percentage} aria-valuemin={0} aria-valuemax={100} aria-label={`${name}: ${percentage}%`}>
+          <motion.div
+            className={`absolute inset-y-0 left-0 rounded-full bg-gradient-to-r ${barColor}`}
+            initial={{ width: 0 }}
+            animate={inView ? { width: `${percentage}%` } : { width: 0 }}
+            transition={{ duration: 1, delay: delay + 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+          />
+          {/* Glow */}
+          <motion.div
+            className={`absolute inset-y-0 left-0 rounded-full bg-gradient-to-r ${barColor} blur-sm opacity-40`}
+            initial={{ width: 0 }}
+            animate={inView ? { width: `${percentage}%` } : { width: 0 }}
+            transition={{ duration: 1, delay: delay + 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+          />
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Main Skills component
+// ---------------------------------------------------------------------------
 export function Skills() {
   const [isLightMode, setIsLightMode] = useState(false);
 
@@ -239,20 +339,19 @@ export function Skills() {
       setIsLightMode(document.documentElement.classList.contains("light-mode"));
     };
     checkTheme();
-
     const observer = new MutationObserver(checkTheme);
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-
     return () => observer.disconnect();
   }, []);
 
+  const totalSkills = skillCategories.reduce((acc, c) => acc + c.skills.length, 0);
+
   return (
     <section id="skills" className="relative py-24 md:py-32 overflow-hidden">
-      {/* Background */}
       {isLightMode ? <SkillsBackgroundLight /> : <SkillsBackground />}
 
       <div className="container-custom relative z-10">
-        {/* Section header */}
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -260,79 +359,100 @@ export function Skills() {
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 mb-6"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
+            <span className="text-xs font-medium text-indigo-300">{totalSkills} tecnologias no stack</span>
+          </motion.div>
+
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
             Minhas <span className="gradient-text">Habilidades</span>
           </h2>
           <p className="skills-subtitle max-w-2xl mx-auto">
-            Tecnologias que uso para criar produtos digitais de alta qualidade. Sempre pronto para expandir o stack conforme as necessidades do time
+            Tecnologias que uso para criar produtos digitais de alta qualidade
           </p>
         </motion.div>
 
-        {/* Stats section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-16"
-        >
+        {/* Stats */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-16">
           {stats.map((stat, index) => (
             <StatCard
               key={stat.label}
               icon={stat.icon}
               value={stat.value}
+              suffix={stat.suffix}
               label={stat.label}
               delay={0.1 + index * 0.1}
             />
           ))}
-        </motion.div>
-
-        {/* Skills categories */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {skillCategories.map((category, categoryIndex) => (
-            <motion.div
-              key={category.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: categoryIndex * 0.1 }}
-              className="skill-category-card relative p-6 md:p-8 rounded-2xl h-full"
-            >
-              {/* Top accent line */}
-              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent" />
-
-              {/* Category header */}
-              <div className="flex items-center gap-4 mb-6">
-                <div className="skill-category-icon w-12 h-12 rounded-xl flex items-center justify-center">
-                  <category.icon className="w-6 h-6 text-indigo-400" />
-                </div>
-                <div>
-                  <h3 className="skill-category-title text-xl font-semibold">
-                    {category.title}
-                  </h3>
-                  <p className="skill-category-description text-sm">
-                    {category.description}
-                  </p>
-                </div>
-              </div>
-
-              {/* Skills badges */}
-              <div className="grid grid-cols-2 gap-3">
-                {category.skills.map((skill, skillIndex) => (
-                  <SkillBadge
-                    key={skill.name}
-                    name={skill.name}
-                    icon={skill.icon}
-                    level={skill.level}
-                    delay={categoryIndex * 0.1 + skillIndex * 0.05}
-                  />
-                ))}
-              </div>
-            </motion.div>
-          ))}
         </div>
 
-        {/* Currently learning section */}
+        {/* Category cards */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          {skillCategories.map((category, categoryIndex) => {
+            const accent = categoryAccents[category.title] ?? categoryAccents.Frontend;
+            return (
+              <motion.div
+                key={category.title}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: categoryIndex * 0.15 }}
+                className="skill-category-card group relative rounded-2xl overflow-hidden h-full"
+              >
+                {/* Colored top gradient */}
+                <div className={`absolute top-0 left-0 right-0 h-32 bg-gradient-to-b ${accent.gradient} pointer-events-none`} />
+
+                {/* Top accent line */}
+                <div className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-current to-transparent opacity-50`}
+                  style={{ color: accent.barColor.includes("indigo") ? "#6366f1" : accent.barColor.includes("emerald") ? "#10b981" : "#f59e0b" }}
+                />
+
+                <div className="relative p-6 md:p-8">
+                  {/* Category header */}
+                  <div className="flex items-center gap-4 mb-8">
+                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${accent.iconBg} flex items-center justify-center shadow-lg`}
+                      style={{ boxShadow: `0 8px 24px ${accent.barColor.includes("indigo") ? "rgba(99,102,241,0.3)" : accent.barColor.includes("emerald") ? "rgba(16,185,129,0.3)" : "rgba(245,158,11,0.3)"}` }}
+                    >
+                      <category.icon className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="skill-category-title text-lg font-bold">
+                        {category.title}
+                      </h3>
+                      <p className="skill-category-description text-xs">
+                        {category.description}
+                      </p>
+                    </div>
+                    <span className="ml-auto text-xs font-bold opacity-40 tabular-nums">
+                      {category.skills.length}
+                    </span>
+                  </div>
+
+                  {/* Skills as progress rows */}
+                  <div className="space-y-4">
+                    {category.skills.map((skill, skillIndex) => (
+                      <SkillRow
+                        key={skill.name}
+                        name={skill.name}
+                        icon={skill.icon}
+                        percentage={skill.percentage}
+                        barColor={accent.barColor}
+                        delay={categoryIndex * 0.1 + skillIndex * 0.06}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* AI badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -345,7 +465,7 @@ export function Skills() {
             <span className="learning-text text-base font-medium">
               Acelerando projetos com:{" "}
               <span className="gradient-text text-lg font-semibold">
-                IA para Desenvolvimento, Code Review e Automação
+                IA para Desenvolvimento, Code Review e Automacao
               </span>
             </span>
           </div>
