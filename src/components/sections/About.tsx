@@ -1,31 +1,46 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Code2, Lightbulb, Rocket, Users } from "lucide-react";
+import { Layers, TestTubes, GitBranch, Rocket } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
 
 const highlights = [
   {
-    icon: Code2,
-    title: "Código Limpo",
-    description: "Escrevo código manutenível e bem documentado, seguindo boas práticas e padrões de design.",
+    icon: Layers,
+    title: "Arquitetura Completa",
+    description:
+      "Do design system ao deploy. Tokens, componentes, paginas, API, banco de dados e cache num unico ecossistema.",
   },
   {
-    icon: Lightbulb,
-    title: "Resolução de Problemas",
-    description: "Abordo desafios de forma analítica, dividindo problemas complexos em soluções gerenciáveis.",
+    icon: TestTubes,
+    title: "380+ Testes",
+    description:
+      "Unit, integration e e2e com Vitest e Testing Library. Cobertura real, nao so pra encher numero.",
   },
   {
-    icon: Users,
-    title: "Trabalho em Equipe",
-    description: "Prospero em ambientes colaborativos e me comunico efetivamente com stakeholders.",
+    icon: GitBranch,
+    title: "Documentacao Tecnica",
+    description:
+      "ADRs, diagramas SVG, guias de scaling. Cada decisao arquitetural esta documentada e justificada.",
   },
   {
     icon: Rocket,
-    title: "Aprendizado Rápido",
-    description: "Atualizo continuamente minhas habilidades e me adapto rapidamente a novas tecnologias.",
+    title: "Deploy Continuo",
+    description:
+      "CI/CD com GitHub Actions, deploy automatico na Vercel e Railway, conventional commits em todos os repos.",
   },
+];
+
+const techBadges = [
+  "Next.js",
+  "TypeScript",
+  "Node.js",
+  "PostgreSQL",
+  "Tailwind CSS",
+  "Prisma",
+  "Socket.io",
+  "Docker",
 ];
 
 export function About() {
@@ -38,14 +53,16 @@ export function About() {
     checkTheme();
 
     const observer = new MutationObserver(checkTheme);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
 
     return () => observer.disconnect();
   }, []);
 
   return (
     <section id="about" className="relative py-24 md:py-32 overflow-hidden">
-      {/* Abstract Background */}
       {isLightMode ? <AbstractBackgroundLight /> : <AbstractBackground />}
 
       <div className="container-custom relative z-10">
@@ -60,8 +77,9 @@ export function About() {
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
             Sobre <span className="gradient-text">Mim</span>
           </h2>
-          <p className="text-white/70 light-mode:text-gray-600 max-w-2xl mx-auto about-subtitle">
-            Conheça quem eu sou e como posso ajudar a transformar suas ideias em realidade
+          <p className="about-subtitle max-w-2xl mx-auto">
+            Quem eu sou, o que construi e como posso ajudar no seu proximo
+            projeto
           </p>
         </motion.div>
 
@@ -75,39 +93,37 @@ export function About() {
             className="space-y-6"
           >
             <h3 className="text-2xl md:text-3xl font-semibold">
-              Um desenvolvedor apaixonado focado em criar{" "}
-              <span className="gradient-text">soluções impactantes</span>
+              Construi um ecossistema inteiro{" "}
+              <span className="gradient-text">do zero</span>
             </h3>
 
             <div className="space-y-4 about-description-text">
               <p>
-                Sou um Desenvolvedor Full Stack apaixonado por construir
-                aplicações web que são não apenas funcionais, mas também
-                proporcionam experiências excepcionais aos usuários. Minha
-                jornada na tecnologia começou com a curiosidade sobre como as
-                coisas funcionam na internet, o que evoluiu para uma carreira
-                construindo essas mesmas coisas.
+                Sou Full Stack Developer focado em React, Next.js e Node.js.
+                Nao construo apenas telas ou APIs isoladas · projeto e
+                implemento aplicacoes completas, do design system ate o
+                deploy em producao.
               </p>
 
               <p>
-                Acredito em escrever código limpo e manutenível, seguindo
-                as melhores práticas. Seja um frontend responsivo com
-                React e Next.js ou uma API backend robusta com Node.js e
-                PostgreSQL, abordo cada projeto com a mesma dedicação
-                à qualidade.
+                Criei o <span className="font-semibold text-indigo-400">Pulse Ecosystem</span> do
+                zero: um design system com 100+ componentes que serve de
+                fundacao para 3 SaaS apps em producao · um dashboard
+                financeiro multi-tenant, uma plataforma de chat real-time com
+                WebSocket, e mais por vir.
               </p>
 
               <p>
-                Quando não estou codando, você pode me encontrar explorando
-                novas tecnologias, contribuindo para projetos open source ou
-                trabalhando em projetos pessoais que me desafiam a crescer
-                como desenvolvedor.
+                Cada projeto tem arquitetura documentada, testes
+                automatizados, CI/CD configurado e decisoes tecnicas
+                registradas em ADRs. Nao e so codigo que funciona · e codigo
+                que escala e que outros devs conseguem manter.
               </p>
             </div>
 
             {/* Tech stack badges */}
             <div className="flex flex-wrap gap-2 pt-4">
-              {["Next.js", "TypeScript", "Node.js", "PostgreSQL", "Tailwind CSS"].map((tech, index) => (
+              {techBadges.map((tech, index) => (
                 <motion.span
                   key={tech}
                   initial={{ opacity: 0, scale: 0.8 }}
