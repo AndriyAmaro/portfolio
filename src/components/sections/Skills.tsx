@@ -5,15 +5,16 @@ import {
   Code2,
   Server,
   Wrench,
-  Zap,
-  Briefcase,
-  Award,
-  TrendingUp
+  FlaskConical,
+  Layers,
+  AppWindow,
+  TestTubes,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { skillCategories as importedSkills } from "@/data/skills";
 import { SkillsBackground, SkillsBackgroundLight } from "../ui/SkillsBackground";
 
-// Tech icons as SVG components for better quality
+// Tech icons as SVG components
 const TechIcons: Record<string, React.FC<{ className?: string }>> = {
   react: ({ className }) => (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor">
@@ -46,19 +47,9 @@ const TechIcons: Record<string, React.FC<{ className?: string }>> = {
       <path d="m12 17.56 4.07-1.13.55-6.1H9.38L9.2 8.3h7.6l.2-2.03H6.99l.56 6.01h6.89l-.23 2.58-2.21.6-2.22-.6-.14-1.66H7.6l.29 3.19L12 17.56ZM4.07 3h15.86L18.5 19.2 12 21l-6.5-1.8L4.07 3Z"/>
     </svg>
   ),
-  nextjs: ({ className }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2Zm-1.5 14.5v-5.29l4.5 6.79c-.88.39-1.85.6-2.89.6-3.03 0-5.6-1.8-6.78-4.39l5.17-7.21v5.5h-1.5v4Zm5.5-2.28V9h1.5v5.22c-.47.78-1.01 1.51-1.5 2Z"/>
-    </svg>
-  ),
   postgresql: ({ className }) => (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor">
       <path d="M17.128 0a10.134 10.134 0 0 0-2.755.403l-.063.02a10.922 10.922 0 0 0-1.626.628c-.48-.02-.97-.03-1.468-.02C9.15 1.08 7.384 1.67 5.983 2.71c-.2-.04-.39-.08-.6-.11C3.15 2.2 1.79 3.03.97 4.2c-.48.69-.7 1.51-.65 2.39.02.3.07.6.14.89.2.87.6 1.8 1.15 2.63.17.28.37.55.58.8.72.89 1.57 1.49 2.47 1.75-.06.39-.1.79-.11 1.19-.02.8.08 1.58.28 2.32-.4.37-.76.79-1.06 1.26-.5.8-.72 1.7-.55 2.54.24 1.26 1.08 2.26 2.42 2.82.8.33 1.72.52 2.7.55.2 0 .4 0 .6-.02-.26.4-.5.82-.7 1.25l.92.4c.23-.5.5-.98.82-1.43.24-.07.49-.15.73-.24 1.2-.45 2.28-1.1 3.13-1.92.07-.07.14-.14.2-.22.22.19.44.37.66.54.8.57 1.63.98 2.47 1.2.59.15 1.19.22 1.78.2 2.03-.04 3.5-1.17 3.85-2.86.02-.1.03-.2.04-.3.08-.63-.05-1.28-.37-1.9-.12-.24-.27-.47-.44-.69.8-.8 1.37-1.64 1.66-2.46.2-.57.28-1.13.24-1.65-.04-.4-.14-.77-.3-1.12.2-.34.37-.69.52-1.05.34-.83.53-1.68.54-2.55.02-.94-.2-1.95-.78-2.88-.62-.98-1.5-1.54-2.6-1.64-.12-.01-.25-.01-.37-.01-.2 0-.4.02-.6.05-.03 0-.06 0-.09.02-.1-1.1-.52-2.07-1.23-2.77-.54-.53-1.22-.94-2.02-1.2C19.69.33 18.43 0 17.13 0h-.002Z"/>
-    </svg>
-  ),
-  mongodb: ({ className }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2Zm-.724 16.684c-.161-.358-.34-.836-.34-.836s-.041 2.131-1.227 2.131c-.162 0-.284-.066-.284-.284V18.52c-.612-.122-.924-.366-1.156-.814-.218-.42-.284-.944-.284-1.468 0-.798.204-1.486.67-2.052.466-.566 1.098-.85 1.896-.85.798 0 1.43.284 1.896.85.466.566.67 1.254.67 2.052 0 .524-.066 1.048-.284 1.468-.232.448-.544.692-1.156.814v1.175c0 .218-.122.284-.284.284-.187 0-.327-.095-.427-.295h.01Zm.026-5.206c-.57 0-1.04.466-1.04 1.04 0 .575.47 1.041 1.04 1.041.575 0 1.041-.466 1.041-1.04 0-.575-.466-1.04-1.04-1.04Z"/>
     </svg>
   ),
   git: ({ className }) => (
@@ -76,19 +67,9 @@ const TechIcons: Record<string, React.FC<{ className?: string }>> = {
       <path d="M24 22.525H0l12-21.05 12 21.05Z"/>
     </svg>
   ),
-  figma: ({ className }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M15.852 8.981h-4.588V0h4.588c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.491-4.49 4.491ZM12.735 7.51h3.117a3.007 3.007 0 0 0 0-6.014h-3.117v6.014Zm0 1.471H8.148a4.49 4.49 0 0 1-4.49-4.49A4.49 4.49 0 0 1 8.148 0h4.587v8.981Zm-4.587-7.51a3.007 3.007 0 0 0 0 6.014h3.117V1.471H8.148Zm4.587 15.019H8.148a4.49 4.49 0 0 1-4.49-4.49 4.49 4.49 0 0 1 4.49-4.49h4.587v8.98ZM8.148 8.981a3.007 3.007 0 0 0 0 6.014h3.117V8.981H8.148Zm0 7.49a4.49 4.49 0 0 0 4.49 4.49v-8.98a4.49 4.49 0 0 0-4.49 4.49Zm4.49 3.019a3.007 3.007 0 1 1 0-6.014 3.007 3.007 0 0 1 0 6.014Zm4.587-7.51h-4.588v-8.98h4.588a4.49 4.49 0 0 1 0 8.98Z"/>
-    </svg>
-  ),
   prisma: ({ className }) => (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor">
       <path d="m21.807 18.285-8.397-15.98a1.414 1.414 0 0 0-1.286-.782 1.415 1.415 0 0 0-1.199.782L2.227 18.285a1.42 1.42 0 0 0 .09 1.396 1.415 1.415 0 0 0 1.196.651h17.97c.488 0 .94-.253 1.197-.65a1.42 1.42 0 0 0 .09-1.397h.037Zm-9.684-1.76v-7.93l5.316 7.93h-5.316Z"/>
-    </svg>
-  ),
-  vscode: ({ className }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M23.15 2.587 18.21.21a1.494 1.494 0 0 0-1.705.29l-9.46 8.63-4.12-3.128a.999.999 0 0 0-1.276.057L.327 7.261A1 1 0 0 0 .326 8.74L3.899 12 .326 15.26a1 1 0 0 0 .001 1.479L1.65 17.94a.999.999 0 0 0 1.276.057l4.12-3.128 9.46 8.63a1.492 1.492 0 0 0 1.704.29l4.942-2.377A1.5 1.5 0 0 0 24 20.06V3.939a1.5 1.5 0 0 0-.85-1.352Zm-5.146 14.861L10.826 12l7.178-5.448v10.896Z"/>
     </svg>
   ),
   api: ({ className }) => (
@@ -96,74 +77,55 @@ const TechIcons: Record<string, React.FC<{ className?: string }>> = {
       <path d="M13.5 3.5a2 2 0 1 1 4 0 2 2 0 0 1-4 0ZM13 7.5V18a1.5 1.5 0 0 0 3 0V7.5a1.5 1.5 0 0 0-3 0ZM6.5 3.5a2 2 0 1 1 4 0 2 2 0 0 1-4 0ZM6 7.5V18a1.5 1.5 0 0 0 3 0V7.5a1.5 1.5 0 0 0-3 0Z"/>
     </svg>
   ),
-  windsurf: ({ className }) => (
+  redis: ({ className }) => (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+      <path d="M10.5 2.661l.54.997-1.797.644 2.409.218.748 1.246.467-1.135 2.025-.22-1.535-.66.604-1.14-1.467.704-.993-.654zm-3.76 2.268L12 7.11l5.26-2.181L12 2.748 6.74 4.929zM3 14.07V9.4l9 3.562 9-3.562v4.67l-9 3.562-3-1.188v-2.29l3 1.188 5.998-2.374V11.2L12 13.574l-5.998-2.375v2.296L3 14.683v-.613zm0 2.221l9 3.562 9-3.562v1.725l-9 3.562-9-3.562V16.29z"/>
     </svg>
   ),
-  claude: ({ className }) => (
+  testing: ({ className }) => (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+      <path d="M7 2v2h1v14a4 4 0 0 0 8 0V4h1V2H7zm4 16a2 2 0 1 1 2-2v-4.05a2.5 2.5 0 0 0 0-4.9V4h-2v3.05a2.5 2.5 0 0 0 0 4.9V16a2 2 0 0 1-2 2h2z"/>
+    </svg>
+  ),
+  socketio: ({ className }) => (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
     </svg>
   ),
 };
 
-// Skill categories with icons
-const skillCategories = [
-  {
-    title: "Frontend",
-    icon: Code2,
-    description: "Interfaces modernas e responsivas",
-    skills: [
-      { name: "React", icon: "react", level: "advanced" as const },
-      { name: "Next.js", icon: "nextjs", level: "advanced" as const },
-      { name: "TypeScript", icon: "typescript", level: "advanced" as const },
-      { name: "JavaScript", icon: "javascript", level: "advanced" as const },
-      { name: "Tailwind CSS", icon: "tailwind", level: "expert" as const },
-      { name: "HTML/CSS", icon: "html", level: "expert" as const },
-    ],
-  },
-  {
-    title: "Backend",
-    icon: Server,
-    description: "APIs robustas e escaláveis",
-    skills: [
-      { name: "Node.js", icon: "nodejs", level: "intermediate" as const },
-      { name: "APIs REST", icon: "api", level: "advanced" as const },
-      { name: "PostgreSQL", icon: "postgresql", level: "intermediate" as const },
-      { name: "MongoDB", icon: "mongodb", level: "intermediate" as const },
-      { name: "Prisma", icon: "prisma", level: "intermediate" as const },
-      { name: "Next.js API", icon: "nextjs", level: "advanced" as const },
-    ],
-  },
-  {
-    title: "DevOps & Tools",
-    icon: Wrench,
-    description: "Ferramentas e workflows modernos",
-    skills: [
-      { name: "Git/GitHub", icon: "git", level: "advanced" as const },
-      { name: "Vercel", icon: "vercel", level: "advanced" as const },
-      { name: "Docker", icon: "docker", level: "learning" as const },
-      { name: "VS Code", icon: "vscode", level: "expert" as const },
-      { name: "Windsurf", icon: "windsurf", level: "advanced" as const },
-      { name: "Figma", icon: "figma", level: "intermediate" as const },
-    ],
-  },
-];
+// Category metadata (icon + description) for each category title
+const categoryMeta: Record<string, { icon: React.FC<{ className?: string }>; description: string }> = {
+  "Frontend": { icon: Code2, description: "Interfaces modernas e responsivas" },
+  "Backend": { icon: Server, description: "APIs robustas e escalaveis" },
+  "DevOps e Ferramentas": { icon: Wrench, description: "Ferramentas e workflows modernos" },
+};
 
-// Stats data
+// Build skill categories from imported data
+const skillCategories = importedSkills.map((cat) => ({
+  title: cat.title,
+  icon: categoryMeta[cat.title]?.icon ?? Code2,
+  description: categoryMeta[cat.title]?.description ?? "",
+  skills: cat.skills.map((s) => ({
+    name: s.name,
+    icon: s.icon,
+    level: s.level as SkillLevel,
+  })),
+}));
+
+// Stats with real Pulse Ecosystem metrics
 const stats = [
-  { icon: Briefcase, value: "10+", label: "Projetos Entregues" },
-  { icon: Award, value: "15+", label: "Tecnologias Dominadas" },
-  { icon: TrendingUp, value: "2+", label: "Anos de Experiência" },
-  { icon: Zap, value: "100%", label: "Dedicação" },
+  { icon: TestTubes, value: "380+", label: "Testes Automatizados" },
+  { icon: Layers, value: "100+", label: "Componentes UI" },
+  { icon: AppWindow, value: "56", label: "Paginas Construidas" },
+  { icon: FlaskConical, value: "3", label: "SaaS Apps em Producao" },
 ];
 
-type SkillLevel = "learning" | "intermediate" | "advanced" | "expert";
+type SkillLevel = "beginner" | "intermediate" | "advanced" | "expert";
 
 const levelConfig: Record<SkillLevel, { label: string; color: string; bgColor: string }> = {
-  learning: {
-    label: "Aprendendo",
+  beginner: {
+    label: "Iniciante",
     color: "text-amber-400",
     bgColor: "bg-amber-500/20 border-amber-500/30"
   },
