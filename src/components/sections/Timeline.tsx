@@ -88,7 +88,7 @@ const timelineData: TimelineEntry[] = [
     date: "",
     title: "Pulse Design System",
     description:
-      "O momento em que os projetos de pratica se transformaram em algo maior. Construi um design system completo do zero — nao uma lib copiada, mas 100+ componentes pensados para escalar.",
+      "O momento em que os projetos de pratica se transformaram em algo maior. Construi um design system completo do zero · nao uma lib copiada, mas 100+ componentes pensados para escalar.",
     icon: Palette,
     color: "teal",
     achievements: [
@@ -139,7 +139,7 @@ const timelineData: TimelineEntry[] = [
     date: "",
     title: "Pulse Ecosystem Completo",
     description:
-      "Os projetos se conectaram num ecossistema real. Design tokens compartilhados, 380+ testes, CI/CD em todos os repos. Nao e so codigo — e uma arquitetura que escala.",
+      "Os projetos se conectaram num ecossistema real. Design tokens compartilhados, 380+ testes, CI/CD em todos os repos. Nao e so codigo · e uma arquitetura que escala.",
     icon: Sparkles,
     color: "cyan",
     achievements: [
