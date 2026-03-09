@@ -176,7 +176,7 @@ export function FuturisticBackground() {
       const isDark = !document.documentElement.classList.contains("light-mode");
 
       // Global opacity multiplier · light mode much softer to not fight text
-      const om = isDark ? 1 : 0.25;
+      const om = isDark ? 1 : 0.55;
 
       // Colors
       const blueR = isDark ? 70 : 80;
