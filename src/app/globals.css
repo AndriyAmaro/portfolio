@@ -1620,6 +1620,15 @@ section {
   color: rgba(30, 27, 75, 0.95);
 }
 
+/* Footer social link row */
+.footer-social-link:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.light-mode .footer-social-link:hover {
+  background: rgba(99, 102, 241, 0.05);
+}
+
 /* Footer social buttons */
 .footer-social-btn {
   background: rgba(255, 255, 255, 0.05);
@@ -1627,9 +1636,9 @@ section {
   color: rgba(255, 255, 255, 0.7);
 }
 
-.footer-social-btn:hover {
-  border-color: transparent;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+.footer-social-link:hover .footer-social-btn {
+  background: rgba(99, 102, 241, 0.15);
+  border-color: rgba(99, 102, 241, 0.4);
 }
 
 .light-mode .footer-social-btn {
@@ -1638,8 +1647,9 @@ section {
   color: rgba(55, 48, 107, 0.8);
 }
 
-.light-mode .footer-social-btn:hover {
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2);
+.light-mode .footer-social-link:hover .footer-social-btn {
+  background: rgba(99, 102, 241, 0.12);
+  border-color: rgba(99, 102, 241, 0.3);
 }
 
 /* Footer tech badges */
