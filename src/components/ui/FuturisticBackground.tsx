@@ -177,7 +177,7 @@ export function FuturisticBackground() {
           dist: 60 + Math.random() * maxRadius * 0.5,
           speed: 0.3 + Math.random() * 0.6,
           maxDist: maxRadius * (0.55 + Math.random() * 0.35),
-          opacity: 0.12 + Math.random() * 0.16,
+          opacity: 0.18 + Math.random() * 0.2,
           fontSize: 11 + Math.floor(Math.random() * 3),
         });
       }
@@ -394,16 +394,30 @@ export function FuturisticBackground() {
         const sx = cx + Math.cos(skill.angle) * skill.dist;
         const sy = cy + Math.sin(skill.angle) * skill.dist;
 
-        // Fade: appear after leaving center zone, peak mid-travel, fade at end
-        const travelRatio = skill.dist / skill.maxDist;
-        const fade = travelRatio < 0.15
-          ? travelRatio / 0.15  // fade in
-          : 1 - (travelRatio - 0.15) / 0.85; // fade out
+        // Fade: slow fade in (0→40%) · full brightness (40→75%) · fast fade out (75→100%)
+        const t = skill.dist / skill.maxDist;
+        let fade: number;
+        if (t < 0.4) {
+          fade = t / 0.4; // gradual appear
+        } else if (t < 0.75) {
+          fade = 1; // full visibility
+        } else {
+          fade = 1 - (t - 0.75) / 0.25; // quick vanish at edge
+        }
         const alpha = skill.opacity * Math.max(0, fade) * om;
 
         if (alpha < 0.03) return;
 
+        // Glow behind text
         ctx.font = `600 ${skill.fontSize}px "Geist Mono", "SF Mono", "Fira Code", monospace`;
+        const textW = ctx.measureText(skill.text).width;
+        const glowGrad = ctx.createRadialGradient(sx + textW / 2, sy - 4, 0, sx + textW / 2, sy - 4, textW * 0.7);
+        glowGrad.addColorStop(0, `rgba(${cyanR}, ${cyanG}, ${cyanB}, ${alpha * 0.08})`);
+        glowGrad.addColorStop(1, `rgba(${cyanR}, ${cyanG}, ${cyanB}, 0)`);
+        ctx.fillStyle = glowGrad;
+        ctx.fillRect(sx - 10, sy - skill.fontSize - 4, textW + 20, skill.fontSize + 12);
+
+        // Text
         ctx.fillStyle = `rgba(${cyanR}, ${cyanG}, ${cyanB}, ${alpha})`;
         ctx.fillText(skill.text, sx, sy);
       });
