@@ -297,8 +297,8 @@ export function CodeInAction() {
                     <div className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors" />
                     <div className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors" />
                   </div>
-                  <FileCode2 className="w-4 h-4 text-[var(--text-muted)]" />
-                  <span className="text-xs text-[var(--text-muted)] font-mono">
+                  <FileCode2 className="w-4 h-4 text-[#6b7280]" />
+                  <span className="text-xs text-[#9ca3af] font-mono">
                     {snippets[activeTab].filename}
                   </span>
                 </div>
@@ -321,7 +321,7 @@ export function CodeInAction() {
                     {copied ? (
                       <Check className="w-3.5 h-3.5 text-green-400" />
                     ) : (
-                      <Copy className="w-3.5 h-3.5 text-[var(--text-muted)]" />
+                      <Copy className="w-3.5 h-3.5 text-[#6b7280]" />
                     )}
                   </button>
                 </div>
@@ -391,13 +391,13 @@ export function CodeInAction() {
 
               {/* Bottom status bar */}
               <div className="code-status-bar flex items-center justify-between px-4 py-2 text-[10px]">
-                <div className="flex items-center gap-3 text-[var(--text-muted)]">
+                <div className="flex items-center gap-3 text-[#6b7280]">
                   <span className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
                     {snippets[activeTab].description}
                   </span>
                 </div>
-                <div className="flex items-center gap-3 text-[var(--text-muted)] font-mono">
+                <div className="flex items-center gap-3 text-[#6b7280] font-mono">
                   <span>UTF-8</span>
                   <span className="text-indigo-400/60">·</span>
                   <span>TypeScript</span>
