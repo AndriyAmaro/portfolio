@@ -1198,93 +1198,15 @@ section {
   color: rgba(5, 150, 105, 1);
 }
 
-/* Mockup styles */
-.proj-mockup {
+/* Screenshot carousel */
+.proj-carousel {
   background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.light-mode .proj-mockup {
+.light-mode .proj-carousel {
   background: rgba(241, 245, 249, 0.8);
-}
-
-.proj-mockup-chrome {
-  background: rgba(255, 255, 255, 0.06);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.light-mode .proj-mockup-chrome {
-  background: rgba(241, 245, 249, 0.9);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-.proj-mockup-url {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.light-mode .proj-mockup-url {
-  background: rgba(0, 0, 0, 0.06);
-}
-
-.proj-mockup-sidebar {
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.light-mode .proj-mockup-sidebar {
-  background: rgba(0, 0, 0, 0.04);
-}
-
-.proj-mockup-bar {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.light-mode .proj-mockup-bar {
-  background: rgba(0, 0, 0, 0.06);
-}
-
-.proj-mockup-card {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.light-mode .proj-mockup-card {
-  background: rgba(0, 0, 0, 0.04);
-}
-
-.proj-mockup-chart {
-  opacity: 0.5;
-}
-
-.light-mode .proj-mockup-chart {
-  opacity: 0.3;
-}
-
-.proj-mockup-msg-left {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.light-mode .proj-mockup-msg-left {
-  background: rgba(0, 0, 0, 0.06);
-}
-
-.proj-mockup-msg-right {
-  opacity: 0.7;
-}
-
-.proj-mockup-shimmer {
-  background: linear-gradient(
-    105deg,
-    transparent 40%,
-    rgba(255, 255, 255, 0.03) 50%,
-    transparent 60%
-  );
-}
-
-.light-mode .proj-mockup-shimmer {
-  background: linear-gradient(
-    105deg,
-    transparent 40%,
-    rgba(255, 255, 255, 0.5) 50%,
-    transparent 60%
-  );
+  border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 /* Metrics */

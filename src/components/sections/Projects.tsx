@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import {
   ExternalLink,
   Github,
@@ -9,9 +9,6 @@ import {
   Lightbulb,
   Zap,
   AlertTriangle,
-  Palette,
-  MessageCircle,
-  BarChart3,
   TestTubes,
   Layers,
   Globe,
@@ -19,19 +16,60 @@ import {
   Cpu,
   Database,
   Radio,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
-import { useRef } from "react";
+import Image from "next/image";
 import { ProjectsBackground, ProjectsBackgroundLight } from "../ui/ProjectsBackground";
 
 // ---------------------------------------------------------------------------
-// Enhanced project data (self-contained for maximum control)
+// Project Logo SVG Components
+// ---------------------------------------------------------------------------
+function PulseDSLogo({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+      <defs>
+        <linearGradient id="pulse-ds-grad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#6366F1" />
+          <stop offset="1" stopColor="#8B5CF6" />
+        </linearGradient>
+      </defs>
+      <rect width="40" height="40" rx="8" fill="url(#pulse-ds-grad)" />
+      <path d="M8 20H14L17 12L20 28L23 16L26 20H32" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function PulseChatLogo({ className }: { className?: string }) {
+  return (
+    <svg viewBox="2 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+      <defs>
+        <linearGradient id="pulse-chat-grad" x1="2" y1="2" x2="62" y2="58" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#2DD1B1" />
+          <stop offset="1" stopColor="#0D7768" />
+        </linearGradient>
+      </defs>
+      <path d="M12 2H52A10 10 0 0 1 62 12V32A10 10 0 0 1 52 42H22L10 58L14 42A10 10 0 0 1 2 32V12A10 10 0 0 1 12 2Z" fill="url(#pulse-chat-grad)" />
+      <polyline points="8,22 16,22 20,22 24,8 30,36 34,14 37,22 44,22 56,22" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function PulseFinanceLogo({ className }: { className?: string }) {
+  return (
+    <Image src="/projects/finance-icon.png" alt="Pulse Finance" width={40} height={40} className={className} />
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Enhanced project data
 // ---------------------------------------------------------------------------
 interface ProjectData {
   id: string;
   name: string;
   tagline: string;
   description: string;
-  icon: typeof Palette;
+  logoComponent: "pulse-ds" | "pulse-chat" | "pulse-finance";
   color: "indigo" | "teal" | "emerald";
   metrics: { label: string; value: string }[];
   highlights: { icon: typeof Layers; text: string }[];
@@ -41,6 +79,7 @@ interface ProjectData {
   tech: string[];
   liveUrl: string;
   githubUrl: string;
+  screenshots: string[];
 }
 
 const projectsData: ProjectData[] = [
@@ -50,7 +89,7 @@ const projectsData: ProjectData[] = [
     tagline: "A fundação do ecossistema",
     description:
       "Design system production-grade com Atomic Design, 25 variantes de dashboard, animacoes SVG customizadas e acessibilidade completa com Radix UI.",
-    icon: Palette,
+    logoComponent: "pulse-ds",
     color: "indigo",
     metrics: [
       { label: "Componentes", value: "100+" },
@@ -75,6 +114,7 @@ const projectsData: ProjectData[] = [
     tech: ["Next.js 16", "React 19", "TypeScript", "Tailwind 4", "Radix UI", "next-intl"],
     liveUrl: "https://pulse-saas-theme.vercel.app",
     githubUrl: "https://github.com/AndriyAmaro/pulse-saas-theme",
+    screenshots: ["/projects/ds-1.jpeg", "/projects/ds-2.jpeg", "/projects/ds-3.jpeg"],
   },
   {
     id: "pulse-chat",
@@ -82,7 +122,7 @@ const projectsData: ProjectData[] = [
     tagline: "Real-time communication",
     description:
       "Chat full-stack com WebSocket, 32 eventos tipados, queue offline com retry exponencial e 40+ componentes adaptados do Design System.",
-    icon: MessageCircle,
+    logoComponent: "pulse-chat",
     color: "teal",
     metrics: [
       { label: "Testes", value: "98" },
@@ -107,6 +147,7 @@ const projectsData: ProjectData[] = [
     tech: ["React 19", "Express 5", "Socket.io", "Prisma 7", "PostgreSQL", "Docker"],
     liveUrl: "https://realtime-chat-eight-beryl.vercel.app",
     githubUrl: "https://github.com/AndriyAmaro/realtime-chat",
+    screenshots: ["/projects/chat-1.jpeg", "/projects/chat-2.jpeg", "/projects/chat-3.jpeg"],
   },
   {
     id: "pulse-finance",
@@ -114,7 +155,7 @@ const projectsData: ProjectData[] = [
     tagline: "Financial dashboard",
     description:
       "SaaS financeiro multi-tenant com Clean Architecture, API Hono type-safe, cache Redis e background jobs com BullMQ.",
-    icon: BarChart3,
+    logoComponent: "pulse-finance",
     color: "emerald",
     metrics: [
       { label: "Testes", value: "143" },
@@ -139,6 +180,7 @@ const projectsData: ProjectData[] = [
     tech: ["Next.js 15", "Hono 4", "Prisma 6", "PostgreSQL", "Redis", "BullMQ"],
     liveUrl: "https://dashboard-finance-swart.vercel.app",
     githubUrl: "https://github.com/AndriyAmaro/finance-flow",
+    screenshots: ["/projects/finance-1.jpeg", "/projects/finance-2.jpeg", "/projects/finance-3.jpeg"],
   },
 ];
 
@@ -154,8 +196,8 @@ const colors = {
     dot: "bg-indigo-400",
     glow: "shadow-indigo-500/25",
     ring: "ring-indigo-500/30",
-    challengeBg: "bg-indigo-500/8",
-    challengeBorder: "border-indigo-500/15",
+    dotActive: "bg-indigo-400",
+    dotInactive: "bg-indigo-400/30",
   },
   teal: {
     gradient: "from-teal-500 to-cyan-500",
@@ -165,8 +207,8 @@ const colors = {
     dot: "bg-teal-400",
     glow: "shadow-teal-500/25",
     ring: "ring-teal-500/30",
-    challengeBg: "bg-teal-500/8",
-    challengeBorder: "border-teal-500/15",
+    dotActive: "bg-teal-400",
+    dotInactive: "bg-teal-400/30",
   },
   emerald: {
     gradient: "from-emerald-500 to-green-500",
@@ -176,106 +218,132 @@ const colors = {
     dot: "bg-emerald-400",
     glow: "shadow-emerald-500/25",
     ring: "ring-emerald-500/30",
-    challengeBg: "bg-emerald-500/8",
-    challengeBorder: "border-emerald-500/15",
+    dotActive: "bg-emerald-400",
+    dotInactive: "bg-emerald-400/30",
   },
 } as const;
 
 // ---------------------------------------------------------------------------
-// App Mockup SVG (mini preview of what the app looks like)
+// Screenshot Carousel
 // ---------------------------------------------------------------------------
-function AppMockup({ color, type }: { color: string; type: string }) {
-  const c = colors[color as keyof typeof colors];
+function ScreenshotCarousel({ screenshots, color, name }: { screenshots: string[]; color: keyof typeof colors; name: string }) {
+  const [current, setCurrent] = useState(0);
+  const [direction, setDirection] = useState(0);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const c = colors[color];
+
+  const startTimer = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      setDirection(1);
+      setCurrent((prev) => (prev + 1) % screenshots.length);
+    }, 4000);
+  }, [screenshots.length]);
+
+  useEffect(() => {
+    startTimer();
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [startTimer]);
+
+  const go = (dir: number) => {
+    setDirection(dir);
+    setCurrent((prev) => (prev + dir + screenshots.length) % screenshots.length);
+    startTimer();
+  };
+
+  const goTo = (index: number) => {
+    setDirection(index > current ? 1 : -1);
+    setCurrent(index);
+    startTimer();
+  };
+
+  const variants = {
+    enter: (d: number) => ({ x: d > 0 ? 80 : -80, opacity: 0 }),
+    center: { x: 0, opacity: 1 },
+    exit: (d: number) => ({ x: d > 0 ? -80 : 80, opacity: 0 }),
+  };
 
   return (
-    <div className={`proj-mockup relative w-full aspect-[16/9] rounded-xl overflow-hidden ${c.border} border`}>
-      {/* Browser chrome */}
-      <div className="proj-mockup-chrome flex items-center gap-1.5 px-3 py-2">
-        <div className="w-2 h-2 rounded-full bg-red-400/60" />
-        <div className="w-2 h-2 rounded-full bg-yellow-400/60" />
-        <div className="w-2 h-2 rounded-full bg-green-400/60" />
-        <div className="proj-mockup-url ml-2 flex-1 h-4 rounded-md" />
+    <div className="proj-carousel relative w-full aspect-[16/9] rounded-xl overflow-hidden group/carousel">
+      {/* Screenshots */}
+      <AnimatePresence initial={false} custom={direction} mode="popLayout">
+        <motion.div
+          key={current}
+          custom={direction}
+          variants={variants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+          className="absolute inset-0"
+        >
+          <Image
+            src={screenshots[current]}
+            alt={`${name} screenshot ${current + 1}`}
+            fill
+            className="object-cover object-top"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Gradient overlay bottom */}
+      <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
+
+      {/* Navigation arrows */}
+      <button
+        onClick={() => go(-1)}
+        className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-200 hover:bg-black/60"
+        aria-label="Anterior"
+      >
+        <ChevronLeft className="w-4 h-4 text-white" />
+      </button>
+      <button
+        onClick={() => go(1)}
+        className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-200 hover:bg-black/60"
+        aria-label="Proximo"
+      >
+        <ChevronRight className="w-4 h-4 text-white" />
+      </button>
+
+      {/* Dots */}
+      <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 flex gap-1.5">
+        {screenshots.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goTo(i)}
+            className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+              i === current ? `${c.dotActive} w-4` : `${c.dotInactive} hover:opacity-60`
+            }`}
+            aria-label={`Screenshot ${i + 1}`}
+          />
+        ))}
       </div>
-      {/* App content mockup */}
-      <div className="p-3 space-y-2">
-        {type === "design-system" && (
-          <>
-            <div className="flex gap-2">
-              <div className={`w-8 h-full min-h-[60px] rounded-lg ${c.bg} proj-mockup-sidebar`} />
-              <div className="flex-1 space-y-2">
-                <div className="proj-mockup-bar h-3 rounded-md w-3/4" />
-                <div className="grid grid-cols-3 gap-1.5">
-                  {[...Array(6)].map((_, i) => (
-                    <div key={i} className={`proj-mockup-card h-8 rounded-lg ${i === 0 ? c.bg : ''}`} />
-                  ))}
-                </div>
-              </div>
-            </div>
-          </>
-        )}
-        {type === "chat" && (
-          <>
-            <div className="flex gap-2 h-[68px]">
-              <div className="w-16 space-y-1.5 proj-mockup-sidebar rounded-lg p-1.5">
-                {[...Array(4)].map((_, i) => (
-                  <div key={i} className={`proj-mockup-bar h-2.5 rounded-md ${i === 0 ? c.bg : ''}`} />
-                ))}
-              </div>
-              <div className="flex-1 flex flex-col justify-end gap-1">
-                <div className="proj-mockup-msg-left w-2/3 h-4 rounded-lg rounded-bl-sm" />
-                <div className={`proj-mockup-msg-right self-end w-1/2 h-4 rounded-lg rounded-br-sm ${c.bg}`} />
-                <div className="proj-mockup-msg-left w-3/5 h-4 rounded-lg rounded-bl-sm" />
-              </div>
-            </div>
-          </>
-        )}
-        {type === "finance" && (
-          <>
-            <div className="space-y-2">
-              <div className="flex gap-2">
-                {[...Array(3)].map((_, i) => (
-                  <div key={i} className={`flex-1 proj-mockup-card h-7 rounded-lg ${i === 0 ? c.bg : ''}`} />
-                ))}
-              </div>
-              <div className={`proj-mockup-chart h-10 rounded-lg ${c.bg} relative overflow-hidden`}>
-                <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 40">
-                  <path
-                    d="M0 35 Q15 30, 25 25 T50 18 T75 12 T100 8"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    className={c.text}
-                    opacity="0.5"
-                  />
-                </svg>
-              </div>
-              <div className="flex gap-1.5">
-                {[...Array(4)].map((_, i) => (
-                  <div key={i} className="flex-1 proj-mockup-bar h-2 rounded-md" />
-                ))}
-              </div>
-            </div>
-          </>
-        )}
-      </div>
-      {/* Shimmer overlay */}
-      <div className="absolute inset-0 proj-mockup-shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
     </div>
   );
 }
 
-const mockupTypes: Record<string, string> = {
-  "pulse-ds": "design-system",
-  "pulse-chat": "chat",
-  "pulse-finance": "finance",
-};
+// ---------------------------------------------------------------------------
+// Project Logo renderer
+// ---------------------------------------------------------------------------
+function ProjectLogo({ type, className }: { type: ProjectData["logoComponent"]; className?: string }) {
+  switch (type) {
+    case "pulse-ds":
+      return <PulseDSLogo className={className} />;
+    case "pulse-chat":
+      return <PulseChatLogo className={className} />;
+    case "pulse-finance":
+      return <PulseFinanceLogo className={className} />;
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Project Card Component
 // ---------------------------------------------------------------------------
 function ProjectCard({ project, index }: { project: ProjectData; index: number }) {
   const c = colors[project.color];
-  const Icon = project.icon;
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -293,16 +361,16 @@ function ProjectCard({ project, index }: { project: ProjectData; index: number }
         {/* Glow blob */}
         <div className={`absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br ${c.gradient} opacity-0 group-hover:opacity-[0.06] rounded-full blur-3xl transition-opacity duration-700`} />
 
-        {/* Mockup preview */}
-        <div className="p-5 pb-0">
-          <AppMockup color={project.color} type={mockupTypes[project.id]} />
+        {/* Screenshot carousel */}
+        <div className="p-4 pb-0">
+          <ScreenshotCarousel screenshots={project.screenshots} color={project.color} name={project.name} />
         </div>
 
         <div className="p-5 pt-4">
-          {/* Header */}
+          {/* Header with real logo */}
           <div className="flex items-start gap-3 mb-3">
-            <div className={`w-10 h-10 rounded-xl ${c.bg} flex items-center justify-center ring-1 ${c.ring} shrink-0 transition-transform duration-300 group-hover:scale-110`}>
-              <Icon className={`w-5 h-5 ${c.text}`} />
+            <div className={`w-10 h-10 rounded-xl overflow-hidden ${c.bg} flex items-center justify-center ring-1 ${c.ring} shrink-0 transition-transform duration-300 group-hover:scale-110`}>
+              <ProjectLogo type={project.logoComponent} className="w-10 h-10" />
             </div>
             <div className="min-w-0">
               <h3 className="proj-card-title text-lg font-bold leading-tight">{project.name}</h3>
@@ -313,12 +381,12 @@ function ProjectCard({ project, index }: { project: ProjectData; index: number }
           {/* Description */}
           <p className="text-sm leading-relaxed mb-4 proj-card-description">{project.description}</p>
 
-          {/* Metrics grid */}
-          <div className="grid grid-cols-4 gap-2 mb-4">
+          {/* Metrics grid - responsive text */}
+          <div className="grid grid-cols-4 gap-1.5 mb-4">
             {project.metrics.map((m) => (
-              <div key={m.label} className="proj-metric text-center py-2 rounded-lg">
-                <div className={`text-sm font-bold ${c.text}`}>{m.value}</div>
-                <div className="text-[9px] font-semibold uppercase tracking-wider proj-metric-label">{m.label}</div>
+              <div key={m.label} className="proj-metric text-center py-2 px-1 rounded-lg overflow-hidden">
+                <div className={`text-sm font-bold ${c.text} truncate`}>{m.value}</div>
+                <div className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-wider proj-metric-label truncate">{m.label}</div>
               </div>
             ))}
           </div>
@@ -374,7 +442,7 @@ function ProjectCard({ project, index }: { project: ProjectData; index: number }
               {/* Challenges */}
               <div className="flex flex-wrap gap-1.5 pt-1">
                 {project.challenges.map((ch) => (
-                  <span key={ch} className={`proj-challenge-chip px-2 py-0.5 rounded-md text-[10px] font-medium`}>
+                  <span key={ch} className="proj-challenge-chip px-2 py-0.5 rounded-md text-[10px] font-medium">
                     {ch}
                   </span>
                 ))}
