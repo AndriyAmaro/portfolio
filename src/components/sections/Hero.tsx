@@ -108,11 +108,36 @@ export function Hero() {
 
       <div className="container-custom relative z-10 pt-24 pb-20">
         <div className="relative flex flex-col items-center text-center gap-6">
+          {/* Name */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <h1 className="text-4xl md:text-5xl lg:text-7xl font-black tracking-tight hero-title">
+              Andri{" "}
+              <span className="gradient-text">Amaro</span>
+            </h1>
+          </motion.div>
+
+          {/* Typing effect subtitle */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="h-9 flex items-center"
+          >
+            <span className="text-xl md:text-2xl lg:text-3xl font-bold hero-typed-text">
+              {typedText}
+            </span>
+            <span className="hero-cursor w-[3px] h-7 md:h-8 ml-0.5 animate-blink" />
+          </motion.div>
+
           {/* Avatar */}
           <motion.div
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.1, type: "spring", stiffness: 200 }}
+            transition={{ duration: 0.6, delay: 0.3, type: "spring", stiffness: 200 }}
             className="relative"
           >
             {/* Outer glow ring */}
@@ -130,36 +155,11 @@ export function Hero() {
             </div>
           </motion.div>
 
-          {/* Name */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <h1 className="text-4xl md:text-5xl lg:text-7xl font-black tracking-tight hero-title">
-              Andri{" "}
-              <span className="gradient-text">Amaro</span>
-            </h1>
-          </motion.div>
-
-          {/* Typing effect subtitle */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="h-9 flex items-center"
-          >
-            <span className="text-xl md:text-2xl lg:text-3xl font-bold hero-typed-text">
-              {typedText}
-            </span>
-            <span className="hero-cursor w-[3px] h-7 md:h-8 ml-0.5 animate-blink" />
-          </motion.div>
-
           {/* Description */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
+            transition={{ duration: 0.5, delay: 0.45 }}
             className="max-w-xl text-base md:text-lg leading-relaxed hero-description"
           >
             Criei o <span className="font-semibold hero-highlight-text">Pulse Ecosystem</span> do zero ·
@@ -171,7 +171,7 @@ export function Hero() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
+            transition={{ duration: 0.5, delay: 0.55 }}
             className="flex flex-col sm:flex-row gap-3 mt-2"
           >
             <Link href="#ecosystem" className="group">
@@ -192,7 +192,7 @@ export function Hero() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
+            transition={{ duration: 0.5, delay: 0.65 }}
             className="relative z-20 grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mt-4 w-full max-w-2xl"
           >
             {metrics.map((m, i) => (
