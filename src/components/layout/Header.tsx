@@ -112,14 +112,28 @@ export function Header() {
         {/* Logo */}
         <Link
           href="/"
-          className="hover:opacity-90 transition-opacity shrink-0"
+          className="relative hover:opacity-90 transition-opacity shrink-0"
         >
+          <Image
+            src="/logo-dark.png"
+            alt="Andri Dev"
+            width={160}
+            height={45}
+            className={cn(
+              "h-10 w-auto object-contain transition-opacity duration-300",
+              mounted && !isDark ? "opacity-0" : "opacity-100"
+            )}
+            priority
+          />
           <Image
             src="/logo-light.png"
             alt="Andri Dev"
             width={160}
             height={45}
-            className="h-10 w-auto object-contain"
+            className={cn(
+              "absolute inset-0 h-10 w-auto object-contain transition-opacity duration-300",
+              mounted && !isDark ? "opacity-100" : "opacity-0"
+            )}
             priority
           />
         </Link>
