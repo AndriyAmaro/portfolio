@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { EcosystemBackground } from "../ui/EcosystemBackground";
 
 // ---------------------------------------------------------------------------
 // Count-up hook
@@ -378,7 +379,8 @@ export function Ecosystem() {
 
   return (
     <section id="ecosystem" className="relative py-24 md:py-32 overflow-hidden">
-      {/* Background */}
+      {/* Background · animated waves */}
+      <EcosystemBackground />
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-500/[0.04] rounded-full blur-[100px]" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-teal-500/[0.04] rounded-full blur-[100px]" />
