@@ -14,6 +14,7 @@ import {
   Globe,
   TestTubes,
   ArrowRight,
+  GraduationCap,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
@@ -35,47 +36,65 @@ interface TimelineEntry {
 const timelineData: TimelineEntry[] = [
   {
     id: "start",
-    date: "2024",
-    title: "Inicio da Jornada",
+    date: "",
+    title: "O Primeiro Passo",
     description:
-      "Comecei a estudar desenvolvimento web do zero. HTML, CSS, JavaScript e os fundamentos que constroem tudo.",
+      "Decidi aprender desenvolvimento web por conta propria. Sem bootcamp, sem atalhos. Comecei pelo basico porque sabia que fundamentos solidos fazem a diferenca no longo prazo.",
     icon: BookOpen,
     color: "amber",
     achievements: [
-      "Fundamentos de HTML, CSS e JavaScript",
-      "Primeiro contato com React",
+      "HTML, CSS e JavaScript do zero",
       "Logica de programacao e algoritmos",
+      "Primeiro contato com React e o ecossistema",
     ],
     type: "learning",
   },
   {
-    id: "react-deep",
-    date: "2024",
-    title: "Deep Dive em React & TypeScript",
+    id: "courses",
+    date: "",
+    title: "Formacao Continua",
     description:
-      "Mergulhei no ecossistema React com TypeScript. Entendi componentizacao, hooks, state management e o poder do tipo forte.",
-    icon: Code2,
+      "Investi em cursos para acelerar o aprendizado e preencher gaps tecnicos. Cada curso era um degrau, mas a pratica real veio dos projetos.",
+    icon: GraduationCap,
     color: "indigo",
     achievements: [
-      "React com TypeScript strict mode",
-      "Hooks avancados e custom hooks",
-      "Tailwind CSS e design responsivo",
+      "Curso completo de Node.js",
+      "Formacao Webmaster Full-Stack",
+      "Curso de Java e orientacao a objetos",
+      "Web Developer com foco em React",
     ],
-    tech: ["React", "TypeScript", "Tailwind CSS"],
+    tech: ["Node.js", "Java", "React", "Full-Stack"],
+    type: "learning",
+  },
+  {
+    id: "practice",
+    date: "",
+    title: "Projetos de Pratica",
+    description:
+      "Teoria sem pratica e conhecimento pela metade. Construi dezenas de projetos pequenos para fixar cada conceito: APIs REST, autenticacao, CRUD, integracao com banco de dados.",
+    icon: Code2,
+    color: "violet",
+    achievements: [
+      "React com TypeScript strict mode",
+      "APIs REST com Express e Prisma",
+      "Tailwind CSS e design responsivo",
+      "Git workflow e boas praticas",
+    ],
+    tech: ["React", "TypeScript", "Tailwind CSS", "Prisma"],
     type: "learning",
   },
   {
     id: "pulse-ds",
-    date: "2025",
+    date: "",
     title: "Pulse Design System",
     description:
-      "Construi um design system completo do zero com Atomic Design. 100+ componentes, 56 paginas, 25 dashboards, i18n em 3 idiomas.",
+      "O momento em que os projetos de pratica se transformaram em algo maior. Construi um design system completo do zero — nao uma lib copiada, mas 100+ componentes pensados para escalar.",
     icon: Palette,
-    color: "violet",
+    color: "teal",
     achievements: [
       "100+ componentes reutilizaveis",
       "25 variantes de dashboard",
-      "i18n com pathname routing",
+      "i18n com pathname routing em 3 idiomas",
       "Dark/light mode com Radix UI",
     ],
     tech: ["Next.js 16", "React 19", "Radix UI", "Tailwind 4"],
@@ -83,12 +102,12 @@ const timelineData: TimelineEntry[] = [
   },
   {
     id: "pulse-chat",
-    date: "2025",
+    date: "",
     title: "Pulse Chat · Real-Time",
     description:
-      "Primeiro app full-stack do ecossistema. WebSocket com 32 eventos tipados, queue offline, voice messages e 98 testes.",
+      "Primeiro app full-stack real do ecossistema. WebSocket com 32 eventos tipados, queue offline e 98 testes. Resolver problemas de real-time ensinou mais do que qualquer curso.",
     icon: MessageCircle,
-    color: "teal",
+    color: "emerald",
     achievements: [
       "WebSocket com reconnection sync",
       "32 eventos tipados end-to-end",
@@ -100,16 +119,16 @@ const timelineData: TimelineEntry[] = [
   },
   {
     id: "pulse-finance",
-    date: "2025",
+    date: "",
     title: "Pulse Finance · Clean Architecture",
     description:
-      "Dashboard financeiro multi-tenant com Clean Architecture, API Hono type-safe, cache Redis e background jobs. 143 testes.",
+      "Dashboard financeiro multi-tenant com arquitetura limpa de verdade. Camadas bem definidas, cache Redis, background jobs. O tipo de projeto que mostra maturidade tecnica.",
     icon: BarChart3,
-    color: "emerald",
+    color: "amber",
     achievements: [
       "Clean Architecture com camadas definidas",
-      "Multi-tenancy com isolamento",
-      "Redis cache + BullMQ jobs",
+      "Multi-tenancy com isolamento por usuario",
+      "Redis cache + BullMQ background jobs",
       "143 testes automatizados",
     ],
     tech: ["Next.js 15", "Hono 4", "Redis", "BullMQ"],
@@ -117,16 +136,16 @@ const timelineData: TimelineEntry[] = [
   },
   {
     id: "ecosystem",
-    date: "2025",
+    date: "",
     title: "Pulse Ecosystem Completo",
     description:
-      "O ecossistema se conectou. Design system alimentando 3 SaaS apps com tokens compartilhados, 380+ testes e CI/CD em todos os repos.",
+      "Os projetos se conectaram num ecossistema real. Design tokens compartilhados, 380+ testes, CI/CD em todos os repos. Nao e so codigo — e uma arquitetura que escala.",
     icon: Sparkles,
     color: "cyan",
     achievements: [
-      "3 SaaS apps interligados",
-      "380+ testes no ecossistema",
-      "CI/CD com GitHub Actions",
+      "3 SaaS apps interligados por design tokens",
+      "380+ testes no ecossistema total",
+      "CI/CD com GitHub Actions em todos os repos",
       "Documentacao tecnica com ADRs",
     ],
     type: "milestone",
@@ -422,8 +441,8 @@ export function Timeline() {
             Minha <span className="gradient-text">Jornada</span>
           </h2>
           <p className="tl-subtitle max-w-2xl mx-auto">
-            De estudante autodidata a criador de um ecossistema com 3 SaaS apps ·
-            cada passo construido com intencao e documentado com rigor
+            Autodidata por escolha, engenheiro por dedicacao · cursos, projetos de pratica
+            e um ecossistema inteiro construido para provar que consistencia supera talento
           </p>
         </motion.div>
 
