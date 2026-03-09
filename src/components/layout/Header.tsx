@@ -117,10 +117,10 @@ export function Header() {
           <Image
             src="/logo-dark.png"
             alt="Andri Dev"
-            width={160}
-            height={45}
+            width={200}
+            height={60}
             className={cn(
-              "h-10 w-auto object-contain transition-opacity duration-300",
+              "h-12 w-auto object-contain transition-opacity duration-300",
               mounted && !isDark ? "opacity-0" : "opacity-100"
             )}
             priority
@@ -128,10 +128,10 @@ export function Header() {
           <Image
             src="/logo-light.png"
             alt="Andri Dev"
-            width={160}
-            height={45}
+            width={200}
+            height={60}
             className={cn(
-              "absolute inset-0 h-10 w-auto object-contain transition-opacity duration-300",
+              "absolute inset-0 h-12 w-auto object-contain transition-opacity duration-300",
               mounted && !isDark ? "opacity-100" : "opacity-0"
             )}
             priority
