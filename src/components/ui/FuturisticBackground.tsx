@@ -175,16 +175,19 @@ export function FuturisticBackground() {
 
       const isDark = !document.documentElement.classList.contains("light-mode");
 
+      // Global opacity multiplier · light mode much softer to not fight text
+      const om = isDark ? 1 : 0.25;
+
       // Colors
-      const blueR = isDark ? 70 : 50;
+      const blueR = isDark ? 70 : 80;
       const blueG = isDark ? 130 : 100;
-      const blueB = isDark ? 240 : 220;
+      const blueB = isDark ? 240 : 200;
 
-      const cyanR = isDark ? 40 : 10;
-      const cyanG = isDark ? 200 : 170;
-      const cyanB = isDark ? 255 : 230;
+      const cyanR = isDark ? 40 : 60;
+      const cyanG = isDark ? 200 : 140;
+      const cyanB = isDark ? 255 : 200;
 
-      const whiteGlow = isDark ? "200, 220, 255" : "150, 170, 230";
+      const whiteGlow = isDark ? "200, 220, 255" : "120, 130, 180";
 
       // =============================================================
       // Layer 1 · Center horizontal lens flare
@@ -194,9 +197,9 @@ export function FuturisticBackground() {
       const flareGrad = ctx.createLinearGradient(cx - flareW / 2, cy, cx + flareW / 2, cy);
       const flarePulse = 0.6 + Math.sin(time * 0.7) * 0.4;
       flareGrad.addColorStop(0, "rgba(40, 200, 255, 0)");
-      flareGrad.addColorStop(0.15, `rgba(40, 200, 255, ${0.1 * flarePulse})`);
-      flareGrad.addColorStop(0.5, `rgba(${whiteGlow}, ${0.5 * flarePulse})`);
-      flareGrad.addColorStop(0.85, `rgba(40, 200, 255, ${0.1 * flarePulse})`);
+      flareGrad.addColorStop(0.15, `rgba(40, 200, 255, ${0.1 * flarePulse * om})`);
+      flareGrad.addColorStop(0.5, `rgba(${whiteGlow}, ${0.5 * flarePulse * om})`);
+      flareGrad.addColorStop(0.85, `rgba(40, 200, 255, ${0.1 * flarePulse * om})`);
       flareGrad.addColorStop(1, "rgba(40, 200, 255, 0)");
 
       ctx.fillStyle = flareGrad;
@@ -206,9 +209,9 @@ export function FuturisticBackground() {
       const softFlareH = 40;
       const softGrad = ctx.createLinearGradient(cx - flareW / 2, cy, cx + flareW / 2, cy);
       softGrad.addColorStop(0, "rgba(40, 200, 255, 0)");
-      softGrad.addColorStop(0.3, `rgba(40, 200, 255, ${0.03 * flarePulse})`);
-      softGrad.addColorStop(0.5, `rgba(${whiteGlow}, ${0.08 * flarePulse})`);
-      softGrad.addColorStop(0.7, `rgba(40, 200, 255, ${0.03 * flarePulse})`);
+      softGrad.addColorStop(0.3, `rgba(40, 200, 255, ${0.03 * flarePulse * om})`);
+      softGrad.addColorStop(0.5, `rgba(${whiteGlow}, ${0.08 * flarePulse * om})`);
+      softGrad.addColorStop(0.7, `rgba(40, 200, 255, ${0.03 * flarePulse * om})`);
       softGrad.addColorStop(1, "rgba(40, 200, 255, 0)");
       ctx.fillStyle = softGrad;
       ctx.fillRect(cx - flareW / 2, cy - softFlareH, flareW, softFlareH * 2);
@@ -217,9 +220,9 @@ export function FuturisticBackground() {
       // Layer 2 · Center radial glow
       // =============================================================
       const centerGlow = ctx.createRadialGradient(cx, cy, 0, cx, cy, 300);
-      centerGlow.addColorStop(0, `rgba(${whiteGlow}, ${0.25 * flarePulse})`);
-      centerGlow.addColorStop(0.15, `rgba(${cyanR}, ${cyanG}, ${cyanB}, ${0.12 * flarePulse})`);
-      centerGlow.addColorStop(0.4, `rgba(${blueR}, ${blueG}, ${blueB}, 0.04)`);
+      centerGlow.addColorStop(0, `rgba(${whiteGlow}, ${0.25 * flarePulse * om})`);
+      centerGlow.addColorStop(0.15, `rgba(${cyanR}, ${cyanG}, ${cyanB}, ${0.12 * flarePulse * om})`);
+      centerGlow.addColorStop(0.4, `rgba(${blueR}, ${blueG}, ${blueB}, ${0.04 * om})`);
       centerGlow.addColorStop(1, "rgba(0, 0, 0, 0)");
       ctx.fillStyle = centerGlow;
       ctx.fillRect(0, 0, w, h);
@@ -229,7 +232,7 @@ export function FuturisticBackground() {
       // =============================================================
       rays.forEach((ray) => {
         const pulse = 0.5 + Math.sin(time * ray.speed + ray.offset) * 0.5;
-        const alpha = ray.opacity * (0.4 + pulse * 0.6);
+        const alpha = ray.opacity * (0.4 + pulse * 0.6) * om;
 
         const endX = cx + Math.cos(ray.angle) * ray.length;
         const endY = cy + Math.sin(ray.angle) * ray.length;
@@ -268,7 +271,7 @@ export function FuturisticBackground() {
         // Fade: bright in middle of travel, dim at start and end
         const travelRatio = p.dist / p.maxDist;
         const fade = Math.sin(travelRatio * Math.PI) * (1 - travelRatio * 0.5);
-        const alpha = p.opacity * fade;
+        const alpha = p.opacity * fade * om;
 
         if (alpha < 0.02) return;
 
@@ -296,7 +299,7 @@ export function FuturisticBackground() {
         // Distance-based fade (closer to center = brighter)
         const maxR = Math.sqrt(cx * cx + cy * cy);
         const distFade = 1 - (node.dist / maxR) * 0.6;
-        const alpha = node.brightness * pulse * distFade;
+        const alpha = node.brightness * pulse * distFade * om;
 
         // Outer glow
         ctx.beginPath();
@@ -322,7 +325,7 @@ export function FuturisticBackground() {
       // =============================================================
       stars.forEach((star) => {
         const twinkle = 0.3 + Math.sin(time * star.twinkleSpeed + star.twinklePhase) * 0.7;
-        const alpha = star.opacity * Math.max(0, twinkle);
+        const alpha = star.opacity * Math.max(0, twinkle) * om;
 
         if (alpha < 0.05) return;
 
@@ -347,7 +350,7 @@ export function FuturisticBackground() {
       const scanY = (time * 40) % (h + 200) - 100;
       const scanGrad = ctx.createLinearGradient(0, scanY - 60, 0, scanY + 60);
       scanGrad.addColorStop(0, "rgba(40, 200, 255, 0)");
-      scanGrad.addColorStop(0.5, "rgba(40, 200, 255, 0.025)");
+      scanGrad.addColorStop(0.5, `rgba(40, 200, 255, ${0.025 * om})`);
       scanGrad.addColorStop(1, "rgba(40, 200, 255, 0)");
       ctx.fillStyle = scanGrad;
       ctx.fillRect(0, scanY - 60, w, 120);
@@ -383,24 +386,24 @@ export function FuturisticBackground() {
         }}
       />
 
-      {/* Atmospheric depth orbs */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/8 rounded-full blur-[180px]" />
-      <div className="absolute top-0 left-1/4 w-[700px] h-[700px] bg-indigo-500/6 rounded-full blur-[150px] animate-pulse-slow" />
-      <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[130px] animate-pulse-slow animation-delay-2000" />
+      {/* Atmospheric depth orbs · hidden in light mode */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/8 rounded-full blur-[180px] light-mode-hide" />
+      <div className="absolute top-0 left-1/4 w-[700px] h-[700px] bg-indigo-500/6 rounded-full blur-[150px] animate-pulse-slow light-mode-hide" />
+      <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[130px] animate-pulse-slow animation-delay-2000 light-mode-hide" />
 
-      {/* Lateral glows · reinforce the starburst sides */}
-      <div className="absolute top-1/3 -left-20 w-[400px] h-[600px] bg-blue-500/10 rounded-full blur-[140px] animate-pulse-slow" />
-      <div className="absolute bottom-1/3 -right-20 w-[400px] h-[600px] bg-blue-500/10 rounded-full blur-[140px] animate-pulse-slow animation-delay-2000" />
+      {/* Lateral glows · hidden in light mode */}
+      <div className="absolute top-1/3 -left-20 w-[400px] h-[600px] bg-blue-500/10 rounded-full blur-[140px] animate-pulse-slow light-mode-hide" />
+      <div className="absolute bottom-1/3 -right-20 w-[400px] h-[600px] bg-blue-500/10 rounded-full blur-[140px] animate-pulse-slow animation-delay-2000 light-mode-hide" />
 
-      {/* Corner accents */}
-      <div className="absolute top-0 left-0 w-48 h-48 border-l-2 border-t-2 border-blue-500/20 rounded-tl-3xl" />
-      <div className="absolute top-0 right-0 w-48 h-48 border-r-2 border-t-2 border-blue-500/20 rounded-tr-3xl" />
-      <div className="absolute bottom-0 left-0 w-48 h-48 border-l-2 border-b-2 border-blue-500/20 rounded-bl-3xl" />
-      <div className="absolute bottom-0 right-0 w-48 h-48 border-r-2 border-b-2 border-blue-500/20 rounded-br-3xl" />
+      {/* Corner accents · softer in light mode */}
+      <div className="absolute top-0 left-0 w-48 h-48 border-l-2 border-t-2 border-blue-500/20 rounded-tl-3xl light-mode-soft-border" />
+      <div className="absolute top-0 right-0 w-48 h-48 border-r-2 border-t-2 border-blue-500/20 rounded-tr-3xl light-mode-soft-border" />
+      <div className="absolute bottom-0 left-0 w-48 h-48 border-l-2 border-b-2 border-blue-500/20 rounded-bl-3xl light-mode-soft-border" />
+      <div className="absolute bottom-0 right-0 w-48 h-48 border-r-2 border-b-2 border-blue-500/20 rounded-br-3xl light-mode-soft-border" />
 
-      {/* Deep vignette · dark edges for depth */}
+      {/* Deep vignette · only in dark mode */}
       <div
-        className="absolute inset-0 z-0 pointer-events-none"
+        className="absolute inset-0 z-0 pointer-events-none light-mode-hide"
         style={{
           background:
             "radial-gradient(ellipse 70% 60% at 50% 48%, transparent 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0.6) 100%)",

@@ -761,6 +761,15 @@ section {
   box-shadow: 0 0 8px rgba(79, 70, 229, 0.6) !important;
 }
 
+/* Light mode background helpers */
+.light-mode .light-mode-hide {
+  display: none !important;
+}
+
+.light-mode .light-mode-soft-border {
+  border-color: rgba(99, 102, 241, 0.08) !important;
+}
+
 /* ===== ABOUT SECTION CARDS ===== */
 .about-highlight-card {
   background: linear-gradient(
