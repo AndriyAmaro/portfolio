@@ -57,7 +57,7 @@ function PulseChatLogo({ className }: { className?: string }) {
 
 function PulseFinanceLogo({ className }: { className?: string }) {
   return (
-    <Image src="/projects/finance-icon.png" alt="Pulse Finance" width={40} height={40} className={className} />
+    <Image src="/projects/finance-icon.png" alt="Pulse Finance" width={56} height={40} className={className + " !w-14 h-10 object-contain"} />
   );
 }
 
