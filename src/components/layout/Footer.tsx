@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Github, Linkedin, Mail, ArrowUp } from "lucide-react";
+import { Github, Linkedin, Mail } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -38,10 +38,6 @@ export function Footer() {
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
     return () => observer.disconnect();
   }, []);
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
   return (
     <footer className="relative border-t border-[var(--border)] footer-bg overflow-hidden">
@@ -107,47 +103,28 @@ export function Footer() {
             ))}
           </div>
 
-          {/* Status */}
-          <div className="footer-status flex items-center gap-2 px-4 py-2 rounded-full">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-            </span>
-            <span className="text-xs font-medium text-emerald-400">Disponivel para projetos</span>
-          </div>
         </div>
 
         {/* Divider */}
         <div className="footer-divider h-px" />
 
         {/* Bottom bar */}
-        <div className="py-6 flex flex-col sm:flex-row justify-between items-center gap-3">
+        <div className="py-5 flex flex-col sm:flex-row justify-between items-center gap-3">
           <p className="footer-copyright text-xs">
             &copy; {currentYear} <span className="gradient-text font-semibold">Andri Amaro</span> · Todos os direitos reservados
           </p>
 
-          <div className="flex items-center gap-4">
-            <div className="hidden sm:flex items-center gap-3">
-              {[
-                { name: "Next.js 16", color: "bg-indigo-500" },
-                { name: "TypeScript", color: "bg-cyan-500" },
-                { name: "Tailwind 4", color: "bg-violet-500" },
-              ].map((tech) => (
-                <span key={tech.name} className="footer-tech-stack text-[11px] flex items-center gap-1.5 opacity-60 hover:opacity-100 transition-opacity">
-                  <span className={`w-1 h-1 rounded-full ${tech.color}`} />
-                  {tech.name}
-                </span>
-              ))}
-            </div>
-            <motion.button
-              onClick={scrollToTop}
-              whileHover={{ scale: 1.1, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              className="footer-back-to-top p-2 rounded-lg transition-all duration-300"
-              aria-label="Voltar ao topo"
-            >
-              <ArrowUp className="w-3.5 h-3.5" />
-            </motion.button>
+          <div className="flex items-center gap-3">
+            {[
+              { name: "Next.js 16", color: "bg-indigo-500" },
+              { name: "TypeScript", color: "bg-cyan-500" },
+              { name: "Tailwind 4", color: "bg-violet-500" },
+            ].map((tech) => (
+              <span key={tech.name} className="footer-tech-stack text-[11px] flex items-center gap-1.5 opacity-60 hover:opacity-100 transition-opacity">
+                <span className={`w-1 h-1 rounded-full ${tech.color}`} />
+                {tech.name}
+              </span>
+            ))}
           </div>
         </div>
       </div>
