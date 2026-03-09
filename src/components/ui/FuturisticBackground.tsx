@@ -213,36 +213,71 @@ export function FuturisticBackground() {
       const accentColor = isDark ? "139, 92, 246" : "124, 58, 237";
       const cyanColor = isDark ? "34, 211, 238" : "6, 182, 212";
 
-      // --- Circuit connections with pulse ---
+      // --- PCB Circuit Traces · right-angle connections ---
       circuitNodes.forEach((node) => {
         node.connections.forEach((connIndex) => {
           const other = circuitNodes[connIndex];
-          const gradient = ctx.createLinearGradient(node.x, node.y, other.x, other.y);
 
+          // Right-angle midpoint (PCB trace style)
+          const midX = other.x;
+          const midY = node.y;
+
+          // Trace line
           const pulsePos = (time * 0.5 + node.pulseProgress) % 1;
-          gradient.addColorStop(0, `rgba(${primaryColor}, 0.05)`);
-          gradient.addColorStop(Math.max(0, pulsePos - 0.1), `rgba(${primaryColor}, 0.05)`);
-          gradient.addColorStop(pulsePos, `rgba(${cyanColor}, 0.4)`);
-          gradient.addColorStop(Math.min(1, pulsePos + 0.1), `rgba(${primaryColor}, 0.05)`);
-          gradient.addColorStop(1, `rgba(${primaryColor}, 0.05)`);
+          const traceAlpha = 0.08 + Math.sin(time * 2 + node.pulseProgress * 10) * 0.04;
 
           ctx.beginPath();
           ctx.moveTo(node.x, node.y);
+          ctx.lineTo(midX, midY);
           ctx.lineTo(other.x, other.y);
-          ctx.strokeStyle = gradient;
-          ctx.lineWidth = 1.5;
+          ctx.strokeStyle = `rgba(${primaryColor}, ${traceAlpha})`;
+          ctx.lineWidth = 1;
           ctx.stroke();
 
+          // Pulse traveling along the trace
+          const totalLen = Math.abs(midX - node.x) + Math.abs(other.y - midY);
+          const pulseDistRaw = (pulsePos * totalLen);
+          const seg1Len = Math.abs(midX - node.x);
+
+          let pulseX: number, pulseY: number;
+          if (pulseDistRaw <= seg1Len) {
+            const t = seg1Len > 0 ? pulseDistRaw / seg1Len : 0;
+            pulseX = node.x + (midX - node.x) * t;
+            pulseY = node.y;
+          } else {
+            const seg2Len = Math.abs(other.y - midY);
+            const t = seg2Len > 0 ? (pulseDistRaw - seg1Len) / seg2Len : 0;
+            pulseX = midX;
+            pulseY = midY + (other.y - midY) * Math.min(t, 1);
+          }
+
+          // Pulse dot
           ctx.beginPath();
-          ctx.arc(node.x, node.y, 5, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${cyanColor}, 0.8)`;
+          ctx.arc(pulseX, pulseY, 2.5, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${cyanColor}, 0.9)`;
           ctx.fill();
 
+          // Pulse glow
           ctx.beginPath();
-          ctx.arc(node.x, node.y, 8, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${cyanColor}, 0.2)`;
+          ctx.arc(pulseX, pulseY, 6, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${cyanColor}, 0.15)`;
+          ctx.fill();
+
+          // Right-angle corner dot
+          ctx.beginPath();
+          ctx.arc(midX, midY, 2, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${primaryColor}, 0.2)`;
           ctx.fill();
         });
+
+        // Node point (square for PCB style)
+        ctx.fillStyle = `rgba(${cyanColor}, 0.7)`;
+        ctx.fillRect(node.x - 3, node.y - 3, 6, 6);
+
+        // Node glow ring
+        ctx.strokeStyle = `rgba(${cyanColor}, 0.15)`;
+        ctx.lineWidth = 1;
+        ctx.strokeRect(node.x - 6, node.y - 6, 12, 12);
       });
 
       // --- Floating Code Tokens (replaces hexagons) ---
@@ -318,26 +353,6 @@ export function FuturisticBackground() {
         if (particle.x > canvas.width + 50) particle.x = -50;
         if (particle.y < -20) particle.y = canvas.height + 20;
         if (particle.y > canvas.height + 20) particle.y = -20;
-      });
-
-      // --- Particle connections (dots only) ---
-      particles.forEach((particle, i) => {
-        if (particle.type !== "dot") return;
-        particles.slice(i + 1).forEach((other) => {
-          if (other.type !== "dot") return;
-          const dx = particle.x - other.x;
-          const dy = particle.y - other.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < 180) {
-            ctx.beginPath();
-            ctx.moveTo(particle.x, particle.y);
-            ctx.lineTo(other.x, other.y);
-            ctx.strokeStyle = `rgba(${primaryColor}, ${0.25 * (1 - distance / 180)})`;
-            ctx.lineWidth = 1;
-            ctx.stroke();
-          }
-        });
       });
 
       // --- Scan line effect ---
