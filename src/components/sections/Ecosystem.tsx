@@ -219,27 +219,38 @@ function EcoNodeCard({ node, index, isCenter }: { node: EcoNode; index: number; 
       className={`group relative ${isCenter ? "" : ""}`}
     >
       <div
-        className={`eco-node relative rounded-2xl border ${node.borderClass} p-5 transition-all duration-400 ${
-          isComing ? "opacity-60" : "hover:-translate-y-1 hover:shadow-xl"
+        className={`eco-node relative rounded-2xl border ${node.borderClass} overflow-hidden transition-all duration-400 ${
+          isComing ? "opacity-60" : "hover:-translate-y-2 hover:shadow-xl"
         }`}
         style={{ boxShadow: isComing ? undefined : `0 0 0 0 ${node.glowColor}` }}
         onMouseEnter={(e) => {
-          if (!isComing) e.currentTarget.style.boxShadow = `0 8px 32px ${node.glowColor}`;
+          if (!isComing) e.currentTarget.style.boxShadow = `0 12px 40px ${node.glowColor}`;
         }}
         onMouseLeave={(e) => {
           if (!isComing) e.currentTarget.style.boxShadow = `0 0 0 0 ${node.glowColor}`;
         }}
       >
-        {/* Top gradient */}
-        {!isComing && <div className={`absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r ${
-          node.color === "indigo" ? "from-indigo-500 to-violet-500" :
-          node.color === "teal" ? "from-teal-500 to-cyan-500" :
-          "from-emerald-500 to-green-500"
-        } rounded-t-2xl`} />}
+        {/* Top gradient bar - premium */}
+        {!isComing && <div className={`h-1.5 bg-gradient-to-r ${
+          node.color === "indigo" ? "from-indigo-500 via-violet-500 to-purple-500" :
+          node.color === "teal" ? "from-teal-500 via-cyan-400 to-teal-500" :
+          "from-emerald-500 via-green-400 to-emerald-500"
+        }`} />}
+        {isComing && <div className="h-1 bg-gradient-to-r from-white/5 via-white/10 to-white/5" />}
 
+        {/* Glow blob on hover */}
+        {!isComing && (
+          <div className={`absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br ${
+            node.color === "indigo" ? "from-indigo-500 to-violet-500" :
+            node.color === "teal" ? "from-teal-500 to-cyan-500" :
+            "from-emerald-500 to-green-500"
+          } opacity-0 group-hover:opacity-[0.08] rounded-full blur-3xl transition-opacity duration-700`} />
+        )}
+
+        <div className="p-5">
         {/* Header */}
         <div className="flex items-center gap-3 mb-3">
-          <div className={`shrink-0 ${isComing ? "opacity-50" : ""}`}>
+          <div className={`shrink-0 ${isComing ? "opacity-50" : ""} ${!isComing ? "ring-2 ring-white/10 rounded-xl p-0.5 group-hover:ring-white/20 transition-all duration-300" : ""}`}>
             {node.icon}
           </div>
           <div className="min-w-0 flex-1">
@@ -287,6 +298,7 @@ function EcoNodeCard({ node, index, isCenter }: { node: EcoNode; index: number; 
             </a>
           </div>
         )}
+        </div>
       </div>
     </motion.div>
   );
