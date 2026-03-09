@@ -175,12 +175,53 @@ export function FuturisticBackground() {
     }
 
     // -----------------------------------------------------------------------
-    // Circuit Nodes · kept from original
+    // Circuit Board Traces · dense PCB radiating from center
     // -----------------------------------------------------------------------
     const circuitNodes: CircuitNode[] = [];
-    const nodeCount = 35;
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
 
-    for (let i = 0; i < nodeCount; i++) {
+    // Center cluster · denser near middle
+    for (let i = 0; i < 15; i++) {
+      const angle = (Math.PI * 2 / 15) * i + Math.random() * 0.3;
+      const dist = Math.random() * 150 + 60;
+      circuitNodes.push({
+        x: centerX + Math.cos(angle) * dist,
+        y: centerY + Math.sin(angle) * dist,
+        connections: [],
+        pulseProgress: Math.random(),
+        active: true,
+      });
+    }
+
+    // Mid-ring nodes
+    for (let i = 0; i < 20; i++) {
+      const angle = (Math.PI * 2 / 20) * i + Math.random() * 0.2;
+      const dist = Math.random() * 200 + 200;
+      circuitNodes.push({
+        x: centerX + Math.cos(angle) * dist,
+        y: centerY + Math.sin(angle) * dist,
+        connections: [],
+        pulseProgress: Math.random(),
+        active: Math.random() > 0.3,
+      });
+    }
+
+    // Outer ring · spread across screen
+    for (let i = 0; i < 30; i++) {
+      const angle = (Math.PI * 2 / 30) * i + Math.random() * 0.15;
+      const dist = Math.random() * 300 + 400;
+      circuitNodes.push({
+        x: centerX + Math.cos(angle) * dist,
+        y: centerY + Math.sin(angle) * dist,
+        connections: [],
+        pulseProgress: Math.random(),
+        active: Math.random() > 0.4,
+      });
+    }
+
+    // Edge nodes
+    for (let i = 0; i < 20; i++) {
       circuitNodes.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
@@ -190,11 +231,12 @@ export function FuturisticBackground() {
       });
     }
 
+    // Connect nearby nodes (more connections for denser look)
     circuitNodes.forEach((node, i) => {
       circuitNodes.forEach((other, j) => {
         if (i !== j) {
           const dist = Math.sqrt((node.x - other.x) ** 2 + (node.y - other.y) ** 2);
-          if (dist < 280 && node.connections.length < 4) {
+          if (dist < 250 && node.connections.length < 3) {
             node.connections.push(j);
           }
         }
@@ -213,7 +255,18 @@ export function FuturisticBackground() {
       const accentColor = isDark ? "139, 92, 246" : "124, 58, 237";
       const cyanColor = isDark ? "34, 211, 238" : "6, 182, 212";
 
-      // --- PCB Circuit Traces · right-angle connections ---
+      // --- PCB Circuit Traces · dense radiating from center ---
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+
+      // Center glow burst
+      const centerGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 200);
+      centerGrad.addColorStop(0, `rgba(${cyanColor}, 0.12)`);
+      centerGrad.addColorStop(0.5, `rgba(${primaryColor}, 0.04)`);
+      centerGrad.addColorStop(1, `rgba(${primaryColor}, 0)`);
+      ctx.fillStyle = centerGrad;
+      ctx.fillRect(cx - 200, cy - 200, 400, 400);
+
       circuitNodes.forEach((node) => {
         node.connections.forEach((connIndex) => {
           const other = circuitNodes[connIndex];
@@ -222,9 +275,13 @@ export function FuturisticBackground() {
           const midX = other.x;
           const midY = node.y;
 
-          // Trace line
-          const pulsePos = (time * 0.5 + node.pulseProgress) % 1;
-          const traceAlpha = 0.08 + Math.sin(time * 2 + node.pulseProgress * 10) * 0.04;
+          // Distance from center affects brightness
+          const distFromCenter = Math.sqrt((node.x - cx) ** 2 + (node.y - cy) ** 2);
+          const maxDist = Math.sqrt(cx * cx + cy * cy);
+          const centerFade = 1 - (distFromCenter / maxDist) * 0.6;
+
+          // Trace line with breathing
+          const traceAlpha = (0.1 + Math.sin(time * 1.5 + node.pulseProgress * 10) * 0.05) * centerFade;
 
           ctx.beginPath();
           ctx.moveTo(node.x, node.y);
@@ -235,9 +292,11 @@ export function FuturisticBackground() {
           ctx.stroke();
 
           // Pulse traveling along the trace
-          const totalLen = Math.abs(midX - node.x) + Math.abs(other.y - midY);
-          const pulseDistRaw = (pulsePos * totalLen);
+          const pulsePos = (time * 0.4 + node.pulseProgress) % 1;
           const seg1Len = Math.abs(midX - node.x);
+          const seg2Len = Math.abs(other.y - midY);
+          const totalLen = seg1Len + seg2Len;
+          const pulseDistRaw = pulsePos * totalLen;
 
           let pulseX: number, pulseY: number;
           if (pulseDistRaw <= seg1Len) {
@@ -245,39 +304,52 @@ export function FuturisticBackground() {
             pulseX = node.x + (midX - node.x) * t;
             pulseY = node.y;
           } else {
-            const seg2Len = Math.abs(other.y - midY);
             const t = seg2Len > 0 ? (pulseDistRaw - seg1Len) / seg2Len : 0;
             pulseX = midX;
             pulseY = midY + (other.y - midY) * Math.min(t, 1);
           }
 
-          // Pulse dot
+          // Pulse dot (bright)
           ctx.beginPath();
-          ctx.arc(pulseX, pulseY, 2.5, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${cyanColor}, 0.9)`;
+          ctx.arc(pulseX, pulseY, 2, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${cyanColor}, 0.95)`;
           ctx.fill();
 
-          // Pulse glow
+          // Pulse outer glow
           ctx.beginPath();
-          ctx.arc(pulseX, pulseY, 6, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${cyanColor}, 0.15)`;
+          ctx.arc(pulseX, pulseY, 8, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${cyanColor}, 0.08)`;
           ctx.fill();
 
           // Right-angle corner dot
           ctx.beginPath();
-          ctx.arc(midX, midY, 2, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${primaryColor}, 0.2)`;
+          ctx.arc(midX, midY, 1.5, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${primaryColor}, 0.25)`;
           ctx.fill();
         });
 
-        // Node point (square for PCB style)
-        ctx.fillStyle = `rgba(${cyanColor}, 0.7)`;
-        ctx.fillRect(node.x - 3, node.y - 3, 6, 6);
+        // Node intersection point · bright dot
+        const nodeDist = Math.sqrt((node.x - cx) ** 2 + (node.y - cy) ** 2);
+        const nodeGlow = Math.max(0.3, 1 - nodeDist / 600);
+        const nodePulse = 0.5 + Math.sin(time * 3 + node.pulseProgress * 20) * 0.5;
 
-        // Node glow ring
-        ctx.strokeStyle = `rgba(${cyanColor}, 0.15)`;
-        ctx.lineWidth = 1;
-        ctx.strokeRect(node.x - 6, node.y - 6, 12, 12);
+        // Outer glow
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, 10, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${cyanColor}, ${0.06 * nodeGlow * nodePulse})`;
+        ctx.fill();
+
+        // Mid glow
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, 5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${cyanColor}, ${0.15 * nodeGlow})`;
+        ctx.fill();
+
+        // Core dot
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${cyanColor}, ${0.8 * nodeGlow})`;
+        ctx.fill();
       });
 
       // --- Floating Code Tokens (replaces hexagons) ---
