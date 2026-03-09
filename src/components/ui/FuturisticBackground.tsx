@@ -167,15 +167,23 @@ export function FuturisticBackground() {
         });
       }
 
-      // --- Skill labels flowing outward ---
+      // --- Skill labels flowing outward · heavier on left & right ---
       skillLabels = [];
-      for (let i = 0; i < 10; i++) {
-        const angle = Math.random() * Math.PI * 2;
+      for (let i = 0; i < 18; i++) {
+        // 70% go left or right, 30% any direction
+        let angle: number;
+        if (i < 13) {
+          // Lateral · left or right with slight vertical spread
+          const side = i % 2 === 0 ? 0 : Math.PI; // right or left
+          angle = side + (Math.random() - 0.5) * 1.2; // ±~35° spread
+        } else {
+          angle = Math.random() * Math.PI * 2;
+        }
         skillLabels.push({
           text: SKILLS[i % SKILLS.length],
           angle,
           dist: 60 + Math.random() * maxRadius * 0.5,
-          speed: 0.3 + Math.random() * 0.6,
+          speed: 0.25 + Math.random() * 0.5,
           maxDist: maxRadius * (0.55 + Math.random() * 0.35),
           opacity: 0.18 + Math.random() * 0.2,
           fontSize: 11 + Math.floor(Math.random() * 3),
@@ -210,7 +218,7 @@ export function FuturisticBackground() {
       const isDark = !document.documentElement.classList.contains("light-mode");
 
       // Global opacity multiplier · light mode much softer to not fight text
-      const om = isDark ? 1 : 0.55;
+      const om = isDark ? 1 : 0.7;
 
       // Colors
       const blueR = isDark ? 70 : 80;
