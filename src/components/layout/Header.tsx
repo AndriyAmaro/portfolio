@@ -2,7 +2,8 @@
 
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { Code2, Moon, Sun } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "../ui/Button";
@@ -111,17 +112,30 @@ export function Header() {
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center gap-2 hover:opacity-80 transition-opacity group"
+          className="relative hover:opacity-90 transition-opacity shrink-0"
         >
-          <div className="p-1 rounded-md bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] group-hover:shadow-lg group-hover:shadow-[var(--primary)]/30 transition-all">
-            <Code2 className="w-3.5 h-3.5 text-white" />
-          </div>
-          <div className="flex flex-col">
-            <span className="text-lg font-bold gradient-text leading-tight">Andri</span>
-            <span className="text-[10px] tracking-[0.12em] text-[var(--text-muted)] uppercase font-medium">
-              Full Stack Dev
-            </span>
-          </div>
+          <Image
+            src="/logo-dark.png"
+            alt="Andri Dev"
+            width={140}
+            height={40}
+            className={cn(
+              "h-8 w-auto object-contain transition-opacity duration-300",
+              mounted && !isDark ? "opacity-0" : "opacity-100"
+            )}
+            priority
+          />
+          <Image
+            src="/logo-light.png"
+            alt="Andri Dev"
+            width={140}
+            height={40}
+            className={cn(
+              "absolute inset-0 h-8 w-auto object-contain transition-opacity duration-300",
+              mounted && !isDark ? "opacity-100" : "opacity-0"
+            )}
+            priority
+          />
         </Link>
 
         {/* Desktop Navigation with active indicator */}
