@@ -12,6 +12,7 @@ const navLinks = [
   { label: "Habilidades", href: "#skills" },
   { label: "Ecosystem", href: "#ecosystem" },
   { label: "Projetos", href: "#projects" },
+  { label: "Servicos", href: "#services" },
   { label: "Contato", href: "#contact" },
 ];
 

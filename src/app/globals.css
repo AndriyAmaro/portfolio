@@ -2124,6 +2124,244 @@ section {
   box-shadow: 0 4px 20px rgba(99, 102, 241, 0.15);
 }
 
+/* ===== SERVICES SECTION ===== */
+
+/* Service card */
+.svc-card {
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  backdrop-filter: blur(8px);
+}
+
+.light-mode .svc-card {
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(248, 250, 252, 0.98) 100%
+  );
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.svc-card-title {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.light-mode .svc-card-title {
+  color: rgba(15, 23, 42, 0.95);
+}
+
+.svc-card-description {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.light-mode .svc-card-description {
+  color: rgba(51, 65, 85, 0.8);
+}
+
+/* Light mode icon overrides */
+.light-mode .svc-card .text-indigo-400 {
+  color: rgba(79, 70, 229, 0.85);
+}
+
+.light-mode .svc-card .text-violet-400 {
+  color: rgba(124, 58, 237, 0.85);
+}
+
+.light-mode .svc-card .text-cyan-400 {
+  color: rgba(6, 182, 212, 0.85);
+}
+
+.light-mode .svc-card .text-emerald-400 {
+  color: rgba(5, 150, 105, 0.85);
+}
+
+/* Deliverables */
+.svc-deliverables-label {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.light-mode .svc-deliverables-label {
+  color: rgba(100, 116, 139, 0.7);
+}
+
+.svc-deliverable-text {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.light-mode .svc-deliverable-text {
+  color: rgba(51, 65, 85, 0.8);
+}
+
+/* Section badge */
+.svc-section-badge {
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.light-mode .svc-section-badge {
+  background: rgba(139, 92, 246, 0.08);
+  border: 1px solid rgba(139, 92, 246, 0.15);
+}
+
+.svc-badge-text {
+  color: rgba(196, 181, 253, 0.9);
+}
+
+.light-mode .svc-badge-text {
+  color: rgba(124, 58, 237, 0.8);
+}
+
+.svc-badge-icon {
+  color: rgba(196, 181, 253, 0.8);
+}
+
+.light-mode .svc-badge-icon {
+  color: rgba(124, 58, 237, 0.7);
+}
+
+/* Subtitle */
+.svc-subtitle {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.light-mode .svc-subtitle {
+  color: rgba(100, 116, 139, 0.9);
+}
+
+/* Process section */
+.svc-process-heading {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.light-mode .svc-process-heading {
+  color: rgba(30, 41, 59, 0.85);
+}
+
+.svc-process-icon {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.light-mode .svc-process-icon {
+  background: rgba(248, 250, 252, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.svc-process-icon-color {
+  color: rgba(165, 180, 252, 0.8);
+}
+
+.light-mode .svc-process-icon-color {
+  color: rgba(79, 70, 229, 0.7);
+}
+
+.svc-process-title {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.light-mode .svc-process-title {
+  color: rgba(15, 23, 42, 0.9);
+}
+
+.svc-process-description {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.light-mode .svc-process-description {
+  color: rgba(100, 116, 139, 0.8);
+}
+
+/* Connector line between steps */
+.svc-connector {
+  background: linear-gradient(
+    90deg,
+    rgba(99, 102, 241, 0.3) 0%,
+    rgba(139, 92, 246, 0.15) 50%,
+    rgba(99, 102, 241, 0.3) 100%
+  );
+}
+
+.light-mode .svc-connector {
+  background: linear-gradient(
+    90deg,
+    rgba(99, 102, 241, 0.15) 0%,
+    rgba(139, 92, 246, 0.1) 50%,
+    rgba(99, 102, 241, 0.15) 100%
+  );
+}
+
+/* CTA card */
+.svc-cta-card {
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(99, 102, 241, 0.04) 100%
+  );
+  border: 1px solid rgba(99, 102, 241, 0.15);
+}
+
+.light-mode .svc-cta-card {
+  background: linear-gradient(
+    145deg,
+    rgba(248, 250, 252, 0.9) 0%,
+    rgba(238, 242, 255, 0.9) 100%
+  );
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.svc-cta-icon {
+  color: rgba(165, 180, 252, 0.6);
+}
+
+.light-mode .svc-cta-icon {
+  color: rgba(79, 70, 229, 0.4);
+}
+
+.svc-cta-title {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.light-mode .svc-cta-title {
+  color: rgba(15, 23, 42, 0.95);
+}
+
+.svc-cta-description {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.light-mode .svc-cta-description {
+  color: rgba(100, 116, 139, 0.8);
+}
+
+/* CTA button */
+.svc-cta-btn {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 1), rgba(139, 92, 246, 1));
+  color: white;
+  box-shadow:
+    0 4px 16px rgba(99, 102, 241, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+}
+
+.svc-cta-btn:hover {
+  box-shadow:
+    0 8px 28px rgba(99, 102, 241, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+}
+
+.light-mode .svc-cta-btn {
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+}
+
+.light-mode .svc-cta-btn:hover {
+  box-shadow: 0 8px 28px rgba(99, 102, 241, 0.4);
+}
+
 /* ===== RESPONSIVE UTILITIES ===== */
 .container-custom {
   width: 100%;
