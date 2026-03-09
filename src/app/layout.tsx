@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
 import { ClientShell } from "@/components/ui/ClientShell";
 import "./globals.css";
 
@@ -145,7 +146,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${GeistSans.variable} font-sans antialiased`}>
         <ClientShell>{children}</ClientShell>
       </body>
     </html>

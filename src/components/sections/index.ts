@@ -3,6 +3,7 @@ export { About } from "./About";
 export { Skills } from "./Skills";
 export { Ecosystem } from "./Ecosystem";
 export { Projects } from "./Projects";
+export { CodeInAction } from "./CodeInAction";
 export { Services } from "./Services";
 export { Timeline } from "./Timeline";
 export { Contact } from "./Contact";
