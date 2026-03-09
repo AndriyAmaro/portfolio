@@ -111,13 +111,13 @@ export function Hero() {
   const countRefs = [m0, m1, m2, m3];
 
   return (
-    <section className="relative min-h-[110vh] flex items-center justify-center gradient-bg overflow-visible mb-[-48px]">
+    <section className="relative min-h-[110vh] flex items-center justify-center gradient-bg overflow-visible mb-[-60px]">
       {/* Background */}
       <div className="absolute inset-0 overflow-hidden">
         <FuturisticBackground />
       </div>
 
-      <div className="container-custom relative z-10 pt-72 pb-20">
+      <div className="container-custom relative z-10 pt-72 pb-0">
         <div className="relative flex flex-col items-center text-center gap-6">
           {/* Name */}
           <motion.div
