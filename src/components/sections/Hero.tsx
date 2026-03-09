@@ -174,8 +174,8 @@ export function Hero() {
             className="max-w-xl text-base md:text-lg leading-relaxed hero-description"
           >
             Criei o <span className="font-semibold hero-highlight-text">Pulse Ecosystem</span> do zero ·
-            um design system com 100+ componentes que alimenta 3 SaaS apps em producao,
-            com 380+ testes e deploy automatizado.
+            um design system com 100+ componentes que alimenta multiplos SaaS apps em producao,
+            com testes automatizados e deploy continuo.
           </motion.p>
 
           {/* CTA Buttons */}
