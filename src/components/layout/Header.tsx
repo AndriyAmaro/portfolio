@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { Code2, Moon, Sun } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "../ui/Button";
 
 const navLinks = [
@@ -17,12 +17,48 @@ const navLinks = [
   { label: "Contato", href: "#contact" },
 ];
 
+// Section IDs for scroll tracking
+const sectionIds = navLinks.map((l) => l.href.replace("#", ""));
+
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDark, setIsDark] = useState(true);
   const [mounted, setMounted] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
 
+  // ---------------------------------------------------------------------------
+  // Active section tracking via Intersection Observer
+  // ---------------------------------------------------------------------------
+  useEffect(() => {
+    const observers: IntersectionObserver[] = [];
+
+    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) {
+        const observer = new IntersectionObserver(handleIntersect, {
+          rootMargin: "-40% 0px -55% 0px",
+          threshold: 0,
+        });
+        observer.observe(el);
+        observers.push(observer);
+      }
+    });
+
+    return () => observers.forEach((o) => o.disconnect());
+  }, []);
+
+  // ---------------------------------------------------------------------------
+  // Scroll & theme
+  // ---------------------------------------------------------------------------
   useEffect(() => {
     setMounted(true);
 
@@ -30,7 +66,6 @@ export function Header() {
       setIsScrolled(window.scrollY > 50);
     };
 
-    // Check saved theme preference
     const savedTheme = localStorage.getItem("theme");
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
@@ -44,7 +79,7 @@ export function Header() {
       document.documentElement.classList.add("light-mode");
     }
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -65,10 +100,10 @@ export function Header() {
     <motion.header
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled ? "glass py-4" : "py-6 bg-transparent"
+        isScrolled ? "glass py-3" : "py-5 bg-transparent"
       )}
     >
       <nav className="container-custom flex items-center justify-between">
@@ -82,38 +117,59 @@ export function Header() {
           </div>
           <div className="flex flex-col">
             <span className="text-lg font-bold gradient-text leading-tight">Andri</span>
-            <span className="text-[10px] tracking-[0.12em] text-[var(--text-muted)] uppercase font-medium">Full Stack Dev</span>
+            <span className="text-[10px] tracking-[0.12em] text-[var(--text-muted)] uppercase font-medium">
+              Full Stack Dev
+            </span>
           </div>
         </Link>
 
-        {/* Desktop Navigation */}
-        <ul className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                className="text-[var(--text-muted)] hover:text-[var(--foreground)] transition-colors duration-300 relative group"
-              >
-                {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[var(--primary)] transition-all duration-300 group-hover:w-full" />
-              </Link>
-            </li>
-          ))}
+        {/* Desktop Navigation with active indicator */}
+        <ul className="hidden md:flex items-center gap-1">
+          {navLinks.map((link) => {
+            const isActive = activeSection === link.href.replace("#", "");
+            return (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className={cn(
+                    "relative px-3 py-1.5 text-sm font-medium rounded-lg transition-all duration-300",
+                    isActive
+                      ? "text-[var(--foreground)] nav-link-active"
+                      : "text-[var(--text-muted)] hover:text-[var(--foreground)]"
+                  )}
+                >
+                  {/* Active background pill */}
+                  {isActive && (
+                    <motion.span
+                      layoutId="activeNavPill"
+                      className="absolute inset-0 rounded-lg nav-active-pill"
+                      transition={{
+                        type: "spring",
+                        stiffness: 380,
+                        damping: 30,
+                      }}
+                    />
+                  )}
+                  <span className="relative z-10">{link.label}</span>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
 
         {/* Theme Toggle & CTA Button */}
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-3">
           {mounted && (
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-lg bg-[var(--card-bg)] border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--foreground)] hover:border-[var(--border-hover)] transition-all duration-300"
+              className="p-2 rounded-lg bg-[var(--card-bg)] border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--foreground)] hover:border-[var(--border-hover)] transition-all duration-200 active:scale-95"
               aria-label={isDark ? "Ativar modo claro" : "Ativar modo escuro"}
             >
-              {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
           )}
           <Link href="#contact">
-            <Button variant="primary" size="sm">
+            <Button variant="primary" size="sm" className="active:scale-[0.97] transition-transform">
               Fale Comigo
             </Button>
           </Link>
@@ -124,7 +180,7 @@ export function Header() {
           {mounted && (
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-lg bg-[var(--card-bg)] border border-[var(--border)] text-[var(--text-muted)]"
+              className="p-2 rounded-lg bg-[var(--card-bg)] border border-[var(--border)] text-[var(--text-muted)] active:scale-95 transition-transform"
               aria-label={isDark ? "Ativar modo claro" : "Ativar modo escuro"}
             >
               {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
@@ -132,7 +188,7 @@ export function Header() {
           )}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="flex flex-col gap-1.5 p-2"
+            className="flex flex-col gap-1.5 p-2 active:scale-95 transition-transform"
             aria-label="Alternar menu"
             aria-expanded={isMobileMenuOpen}
           >
@@ -165,24 +221,32 @@ export function Header() {
           height: isMobileMenuOpen ? "auto" : 0,
           opacity: isMobileMenuOpen ? 1 : 0,
         }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
         className="md:hidden overflow-hidden glass"
       >
-        <ul className="container-custom py-4 flex flex-col gap-4">
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="block py-2 text-[var(--text-muted)] hover:text-[var(--foreground)] transition-colors"
-              >
-                {link.label}
-              </Link>
-            </li>
-          ))}
-          <li>
-            <Link href="#contact" className="block">
-              <Button variant="primary" size="sm" className="w-full">
+        <ul className="container-custom py-4 flex flex-col gap-1">
+          {navLinks.map((link) => {
+            const isActive = activeSection === link.href.replace("#", "");
+            return (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={cn(
+                    "block py-2.5 px-3 rounded-lg text-sm font-medium transition-all duration-200",
+                    isActive
+                      ? "text-[var(--foreground)] nav-link-active nav-active-pill"
+                      : "text-[var(--text-muted)] hover:text-[var(--foreground)]"
+                  )}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            );
+          })}
+          <li className="pt-2">
+            <Link href="#contact" onClick={() => setIsMobileMenuOpen(false)} className="block">
+              <Button variant="primary" size="sm" className="w-full active:scale-[0.97]">
                 Fale Comigo
               </Button>
             </Link>

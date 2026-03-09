@@ -79,6 +79,69 @@ html.light-mode {
   --font-mono: var(--font-geist-mono);
 }
 
+/* ===== MICRO-INTERACTIONS ===== */
+
+/* Scroll progress bar */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 9999;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6, #6366f1);
+  will-change: transform;
+}
+
+.light-mode .scroll-progress-bar {
+  background: linear-gradient(90deg, #4f46e5, #7c3aed, #4f46e5);
+}
+
+/* Page load curtain */
+.page-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: var(--background);
+  pointer-events: none;
+}
+
+/* Active nav pill */
+.nav-active-pill {
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+}
+
+.light-mode .nav-active-pill {
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.12);
+}
+
+/* Active nav link text */
+.nav-link-active {
+  color: var(--foreground);
+}
+
+/* Reduced motion: respect user preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .scroll-progress-bar {
+    display: none;
+  }
+
+  .page-curtain {
+    display: none;
+  }
+}
+
 /* ===== BASE STYLES ===== */
 * {
   box-sizing: border-box;

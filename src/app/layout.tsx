@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { ClientShell } from "@/components/ui/ClientShell";
 import "./globals.css";
 
 const inter = Inter({
@@ -145,7 +146,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
       <body className={`${inter.variable} font-sans antialiased`}>
-        {children}
+        <ClientShell>{children}</ClientShell>
       </body>
     </html>
   );
