@@ -369,7 +369,7 @@ function ProjectCard({ project, index }: { project: ProjectData; index: number }
         <div className="p-5 pt-4">
           {/* Header with real logo */}
           <div className="flex items-start gap-3 mb-3">
-            <div className={`w-10 h-10 rounded-xl overflow-hidden ${c.bg} flex items-center justify-center ring-1 ${c.ring} shrink-0 transition-transform duration-300 group-hover:scale-110`}>
+            <div className="w-10 h-10 shrink-0 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
               <ProjectLogo type={project.logoComponent} className="w-10 h-10" />
             </div>
             <div className="min-w-0">
