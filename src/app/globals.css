@@ -127,6 +127,11 @@ h1 { letter-spacing: -0.035em; }
   border: 1px solid rgba(99, 102, 241, 0.12);
 }
 
+/* Header logo */
+.light-mode .header-logo {
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.15)) brightness(0.85) saturate(1.4);
+}
+
 /* Active nav link text */
 .nav-link-active {
   color: var(--foreground);
