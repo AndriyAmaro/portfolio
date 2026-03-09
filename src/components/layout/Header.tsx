@@ -120,7 +120,7 @@ export function Header() {
             width={140}
             height={40}
             className={cn(
-              "h-8 w-auto object-contain transition-opacity duration-300",
+              "h-10 w-auto object-contain transition-opacity duration-300",
               mounted && !isDark ? "opacity-0" : "opacity-100"
             )}
             priority
@@ -131,7 +131,7 @@ export function Header() {
             width={140}
             height={40}
             className={cn(
-              "absolute inset-0 h-8 w-auto object-contain transition-opacity duration-300",
+              "absolute inset-0 h-10 w-auto object-contain transition-opacity duration-300",
               mounted && !isDark ? "opacity-100" : "opacity-0"
             )}
             priority
