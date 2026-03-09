@@ -175,14 +175,61 @@ export function EcosystemBackground() {
 
   return (
     <div ref={containerRef} className="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
+      {/* Base gradient · dark mode: deep indigo, light mode: soft slate */}
+      <div
+        className="absolute inset-0 eco-bg-base"
+        style={{
+          background: "linear-gradient(180deg, #16132d 0%, #191545 30%, #1c1850 60%, #1e1b4b 100%)",
+        }}
+      />
+
+      {/* Canvas for animated waves */}
       <canvas
         ref={canvasRef}
+        className="absolute inset-0 w-full h-full"
+        style={{ opacity: 0.85 }}
+      />
+
+      {/* Gradient orbs for depth */}
+      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[150px] animate-pulse-slow" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-violet-500/6 rounded-full blur-[180px]" />
+      <div className="absolute bottom-1/4 right-1/4 w-[450px] h-[450px] bg-cyan-500/5 rounded-full blur-[130px] animate-pulse-slow animation-delay-2000" />
+
+      {/* Corner glows */}
+      <div className="absolute top-0 left-0 w-[350px] h-[400px] bg-violet-500/10 rounded-full blur-[120px] animate-pulse-slow" />
+      <div className="absolute top-0 right-0 w-[350px] h-[400px] bg-indigo-500/8 rounded-full blur-[120px] animate-pulse-slow animation-delay-2000" />
+      <div className="absolute bottom-0 left-0 w-[300px] h-[350px] bg-indigo-400/6 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
+      <div className="absolute bottom-0 right-0 w-[300px] h-[350px] bg-violet-400/6 rounded-full blur-[100px] animate-pulse-slow" />
+
+      {/* Lateral glows */}
+      <div className="absolute top-1/3 left-0 w-[250px] h-[500px] bg-cyan-500/5 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
+      <div className="absolute bottom-1/3 right-0 w-[250px] h-[500px] bg-cyan-500/5 rounded-full blur-[100px] animate-pulse-slow animation-delay-2000" />
+
+      {/* Center readability overlay */}
+      <div
         className="absolute inset-0"
-        style={{ width: "100%", height: "100%" }}
+        style={{
+          background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(12, 10, 29, 0.25) 0%, transparent 70%)",
+        }}
       />
     </div>
   );
 }
 
-// Light mode version · same component, CSS handles the styling
-export { EcosystemBackground as EcosystemBackgroundLight };
+// Light mode version
+export function EcosystemBackgroundLight() {
+  return (
+    <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
+      <div
+        className="absolute inset-0"
+        style={{
+          background: "linear-gradient(180deg, #f8fafc 0%, #eef2f7 30%, #e8edf5 60%, #f1f5f9 100%)",
+        }}
+      />
+      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-indigo-200/20 rounded-full blur-[150px] animate-pulse-slow" />
+      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-violet-200/15 rounded-full blur-[130px] animate-pulse-slow animation-delay-2000" />
+      <div className="absolute top-0 left-0 w-[300px] h-[350px] bg-indigo-200/12 rounded-full blur-[100px] animate-pulse-slow" />
+      <div className="absolute bottom-0 right-0 w-[300px] h-[350px] bg-violet-200/12 rounded-full blur-[100px] animate-pulse-slow animation-delay-2000" />
+    </div>
+  );
+}

@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { EcosystemBackground } from "../ui/EcosystemBackground";
+import { EcosystemBackground, EcosystemBackgroundLight } from "../ui/EcosystemBackground";
 
 // ---------------------------------------------------------------------------
 // Count-up hook
@@ -378,18 +378,9 @@ export function Ecosystem() {
   }, []);
 
   return (
-    <section id="ecosystem" className="eco-section-bg relative py-24 md:py-32 overflow-hidden">
-      {/* Background · animated waves */}
-      <EcosystemBackground />
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        {/* Gradient orbs for depth */}
-        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-indigo-500/[0.06] rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-violet-500/[0.05] rounded-full blur-[100px]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-cyan-500/[0.03] rounded-full blur-[140px]" />
-        {/* Corner accent glows */}
-        <div className="absolute -top-10 -left-10 w-[300px] h-[300px] bg-indigo-500/[0.05] rounded-full blur-[100px]" />
-        <div className="absolute -bottom-10 -right-10 w-[300px] h-[300px] bg-violet-500/[0.05] rounded-full blur-[100px]" />
-      </div>
+    <section id="ecosystem" className="relative py-24 md:py-32 overflow-hidden">
+      {/* Background · animated waves + gradient base + orbs */}
+      {isLightMode ? <EcosystemBackgroundLight /> : <EcosystemBackground />}
 
       <div className="container-custom relative z-10">
         {/* Header */}
