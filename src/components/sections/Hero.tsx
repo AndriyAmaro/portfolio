@@ -108,21 +108,6 @@ export function Hero() {
 
       <div className="container-custom relative z-10 pt-24 pb-20">
         <div className="relative flex flex-col items-center text-center gap-6">
-          {/* Status badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <span className="hero-status-badge inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full text-sm font-medium">
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="hero-status-ping absolute inline-flex h-full w-full rounded-full opacity-75 animate-ping" />
-                <span className="hero-status-dot relative inline-flex rounded-full h-2.5 w-2.5" />
-              </span>
-              Disponivel para oportunidades
-            </span>
-          </motion.div>
-
           {/* Avatar */}
           <motion.div
             initial={{ opacity: 0, scale: 0.5 }}
