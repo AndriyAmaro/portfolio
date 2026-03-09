@@ -2710,13 +2710,13 @@ section {
   color: var(--text-muted);
 }
 
-/* Code editor */
+/* Code editor — always dark (like real IDEs) */
 .code-editor {
-  background: #0d0b1a;
+  background: #0a0918;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
     0 4px 6px rgba(0, 0, 0, 0.1),
-    0 16px 32px rgba(0, 0, 0, 0.2),
+    0 16px 32px rgba(0, 0, 0, 0.25),
     inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
@@ -2735,8 +2735,14 @@ section {
 }
 
 .code-content {
-  background: #0d0b1a;
+  background: #0a0918;
   color: #e2e8f0;
+}
+
+.code-line-numbers {
+  color: #3b3952;
+  font-size: 12px;
+  min-width: 40px;
 }
 
 .code-status-bar {
@@ -2770,6 +2776,16 @@ section {
   flex-direction: column;
 }
 
+.code-panel-title {
+  color: #e2e8f0;
+}
+
+.code-commit-count {
+  background: rgba(99, 102, 241, 0.15);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
 .code-commit-item {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid transparent;
@@ -2781,9 +2797,30 @@ section {
   border-color: rgba(255, 255, 255, 0.08);
 }
 
+.code-commit-dot-ring {
+  ring-offset-color: transparent;
+}
+
+.code-commit-msg {
+  color: #e2e8f0;
+}
+
+.code-commit-hash {
+  color: #818cf8;
+  background: rgba(99, 102, 241, 0.1);
+}
+
+.code-commit-time {
+  color: #6b7280;
+}
+
 .code-test-bar {
   background: rgba(16, 185, 129, 0.06);
   border: 1px solid rgba(16, 185, 129, 0.12);
+}
+
+.code-test-stats {
+  color: #9ca3af;
 }
 
 /* ===== CODE IN ACTION - LIGHT MODE ===== */
@@ -2794,25 +2831,53 @@ section {
 }
 
 .light-mode .code-subtitle {
-  color: var(--text-muted);
+  color: #64748b;
 }
 
+/* Editor stays dark in light mode — like VS Code embeds */
 .light-mode .code-editor {
-  background: #1e1b2e;
-  border-color: rgba(0, 0, 0, 0.12);
+  background: #0f0d1f;
+  border-color: rgba(0, 0, 0, 0.15);
   box-shadow:
-    0 4px 6px rgba(0, 0, 0, 0.06),
-    0 16px 32px rgba(0, 0, 0, 0.1);
+    0 4px 6px rgba(0, 0, 0, 0.08),
+    0 16px 32px rgba(0, 0, 0, 0.12);
 }
 
 .light-mode .code-content {
-  background: #1e1b2e;
+  background: #0f0d1f;
   color: #e2e8f0;
 }
 
+.light-mode .code-line-numbers {
+  color: #3b3952;
+}
+
+/* Commit panel — proper light mode contrast */
 .light-mode .code-commit-panel {
-  background: rgba(0, 0, 0, 0.02);
+  background: #fafafa;
   border-color: rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.04),
+    0 16px 32px rgba(0, 0, 0, 0.06);
+}
+
+.light-mode .code-editor-header {
+  border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+
+.light-mode .code-commit-panel .code-editor-header {
+  background: rgba(0, 0, 0, 0.02);
+  border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+
+.light-mode .code-panel-title {
+  color: #1e293b;
+}
+
+.light-mode .code-commit-count {
+  background: rgba(79, 70, 229, 0.1);
+  color: #4f46e5;
+  border-color: rgba(79, 70, 229, 0.15);
 }
 
 .light-mode .code-commit-item {
@@ -2824,7 +2889,24 @@ section {
   border-color: rgba(0, 0, 0, 0.06);
 }
 
+.light-mode .code-commit-msg {
+  color: #1e293b;
+}
+
+.light-mode .code-commit-hash {
+  color: #4f46e5;
+  background: rgba(79, 70, 229, 0.08);
+}
+
+.light-mode .code-commit-time {
+  color: #94a3b8;
+}
+
 .light-mode .code-test-bar {
   background: rgba(16, 185, 129, 0.06);
-  border-color: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.12);
+}
+
+.light-mode .code-test-stats {
+  color: #64748b;
 }

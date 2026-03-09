@@ -268,11 +268,11 @@ export function CodeInAction() {
           </motion.div>
 
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            Codigo em <span className="gradient-text">Acao</span>
+            Código em <span className="gradient-text">Ação</span>
           </h2>
           <p className="code-subtitle max-w-2xl mx-auto">
             Snippets reais dos 3 projetos do Pulse Ecosystem.
-            TypeScript rigoroso, arquitetura limpa, patterns de producao.
+            TypeScript rigoroso, arquitetura limpa, patterns de produção.
           </p>
         </motion.div>
 
@@ -284,15 +284,18 @@ export function CodeInAction() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="lg:col-span-3"
           >
-            <div className="code-editor rounded-xl overflow-hidden">
+            <div className="code-editor rounded-2xl overflow-hidden group/editor">
+              {/* Top gradient accent bar */}
+              <div className="h-[2px] bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500" />
+
               {/* Editor top bar */}
               <div className="code-editor-header flex items-center justify-between px-4 py-3">
                 <div className="flex items-center gap-3">
                   {/* Traffic lights */}
                   <div className="flex items-center gap-1.5">
-                    <div className="w-3 h-3 rounded-full bg-red-500/80" />
-                    <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-                    <div className="w-3 h-3 rounded-full bg-green-500/80" />
+                    <div className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors" />
+                    <div className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors" />
+                    <div className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors" />
                   </div>
                   <FileCode2 className="w-4 h-4 text-[var(--text-muted)]" />
                   <span className="text-xs text-[var(--text-muted)] font-mono">
@@ -300,7 +303,14 @@ export function CodeInAction() {
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] px-2 py-0.5 rounded-md code-lang-badge font-mono">
+                  <span
+                    className="text-[10px] px-2 py-0.5 rounded-md font-mono font-semibold"
+                    style={{
+                      background: `${snippets[activeTab].projectColor}15`,
+                      color: snippets[activeTab].projectColor,
+                      border: `1px solid ${snippets[activeTab].projectColor}30`,
+                    }}
+                  >
                     {snippets[activeTab].language}
                   </span>
                   <button
@@ -325,8 +335,8 @@ export function CodeInAction() {
                     onClick={() => setActiveTab(i)}
                     className={`relative px-4 py-2.5 text-xs font-medium transition-colors ${
                       activeTab === i
-                        ? "text-[var(--foreground)]"
-                        : "text-[var(--text-muted)] hover:text-[var(--foreground)]"
+                        ? "text-white"
+                        : "text-[#6b7280] hover:text-[#9ca3af]"
                     }`}
                   >
                     <span className="flex items-center gap-2">
@@ -348,34 +358,50 @@ export function CodeInAction() {
                 ))}
               </div>
 
-              {/* Code area */}
-              <div className="code-content p-5 min-h-[400px] max-h-[480px] overflow-auto font-mono text-[13px] leading-relaxed">
+              {/* Code area with line numbers */}
+              <div className="code-content min-h-[400px] max-h-[480px] overflow-auto font-mono text-[13px] leading-relaxed">
                 <AnimatePresence mode="wait">
-                  <motion.pre
+                  <motion.div
                     key={activeTab}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="whitespace-pre"
+                    className="flex"
                   >
-                    <code
-                      dangerouslySetInnerHTML={{
-                        __html: highlightCode(displayed) + (isDone ? "" : '<span class="code-cursor">|</span>'),
-                      }}
-                    />
-                  </motion.pre>
+                    {/* Line numbers gutter */}
+                    <div className="code-line-numbers select-none text-right pr-4 pl-4 py-5 border-r border-white/[0.04]" aria-hidden="true">
+                      {displayed.split("\n").map((_, i) => (
+                        <div key={i} className="leading-relaxed">
+                          {i + 1}
+                        </div>
+                      ))}
+                    </div>
+                    {/* Code */}
+                    <pre className="whitespace-pre p-5 flex-1">
+                      <code
+                        dangerouslySetInnerHTML={{
+                          __html: highlightCode(displayed) + (isDone ? "" : '<span class="code-cursor">|</span>'),
+                        }}
+                      />
+                    </pre>
+                  </motion.div>
                 </AnimatePresence>
               </div>
 
               {/* Bottom status bar */}
               <div className="code-status-bar flex items-center justify-between px-4 py-2 text-[10px]">
                 <div className="flex items-center gap-3 text-[var(--text-muted)]">
-                  <span>{snippets[activeTab].description}</span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                    {snippets[activeTab].description}
+                  </span>
                 </div>
-                <div className="flex items-center gap-3 text-[var(--text-muted)]">
+                <div className="flex items-center gap-3 text-[var(--text-muted)] font-mono">
                   <span>UTF-8</span>
+                  <span className="text-indigo-400/60">·</span>
                   <span>TypeScript</span>
+                  <span className="text-indigo-400/60">·</span>
                   <span>Prettier</span>
                 </div>
               </div>
@@ -389,15 +415,18 @@ export function CodeInAction() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="lg:col-span-2"
           >
-            <div className="code-commit-panel rounded-xl overflow-hidden h-full">
+            <div className="code-commit-panel rounded-2xl overflow-hidden h-full">
+              {/* Top accent */}
+              <div className="h-[2px] bg-gradient-to-r from-violet-500/50 via-indigo-500/50 to-violet-500/50" />
+
               {/* Panel header */}
               <div className="code-editor-header flex items-center gap-2 px-4 py-3">
-                <GitCommit className="w-4 h-4 text-[var(--text-muted)]" />
-                <span className="text-xs font-medium text-[var(--text-muted)]">
+                <GitCommit className="w-4 h-4 text-indigo-400" />
+                <span className="text-xs font-semibold code-panel-title">
                   Commits Recentes
                 </span>
-                <span className="ml-auto text-[10px] px-2 py-0.5 rounded-full code-lang-badge font-mono">
-                  {commits.length} commits
+                <span className="ml-auto text-[10px] px-2 py-0.5 rounded-full code-commit-count font-mono font-semibold">
+                  {commits.length}
                 </span>
               </div>
 
@@ -412,19 +441,25 @@ export function CodeInAction() {
                     className="code-commit-item p-3 rounded-lg group"
                   >
                     <div className="flex items-start gap-3">
-                      <div
-                        className="mt-1 w-2 h-2 rounded-full shrink-0"
-                        style={{ background: projectColors[commit.project] }}
-                      />
+                      {/* Timeline dot + line */}
+                      <div className="flex flex-col items-center gap-0.5 pt-0.5">
+                        <div
+                          className="w-2.5 h-2.5 rounded-full shrink-0"
+                          style={{
+                            background: projectColors[commit.project],
+                            boxShadow: `0 0 0 2px ${projectColors[commit.project]}25`,
+                          }}
+                        />
+                      </div>
                       <div className="min-w-0 flex-1">
-                        <p className="text-xs font-medium text-[var(--foreground)] truncate leading-snug">
+                        <p className="text-xs font-medium code-commit-msg truncate leading-snug">
                           {commit.msg}
                         </p>
                         <div className="flex items-center gap-2 mt-1.5">
-                          <code className="text-[10px] font-mono text-indigo-400/80">
+                          <code className="text-[10px] font-mono code-commit-hash px-1.5 py-0.5 rounded">
                             {commit.hash}
                           </code>
-                          <span className="text-[10px] text-[var(--text-subtle)]">
+                          <span className="text-[10px] code-commit-time">
                             {commit.time}
                           </span>
                         </div>
@@ -436,26 +471,29 @@ export function CodeInAction() {
 
               {/* Run tests bar */}
               <div className="p-3 mt-auto">
-                <div className="code-test-bar p-3 rounded-lg">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Play className="w-3.5 h-3.5 text-green-400" />
-                    <span className="text-xs font-medium text-green-400">
-                      All tests passing
-                    </span>
+                <div className="code-test-bar p-3.5 rounded-xl">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <Play className="w-3.5 h-3.5 text-green-400" />
+                      <span className="text-xs font-semibold text-green-400">
+                        All tests passing
+                      </span>
+                    </div>
+                    <span className="text-[10px] font-mono text-green-400/60">✓ CI/CD</span>
                   </div>
-                  <div className="flex items-center gap-4 text-[10px] text-[var(--text-muted)]">
+                  <div className="flex items-center gap-4 text-[10px] code-test-stats">
                     <span>
-                      <span className="text-green-400 font-semibold">381</span> passed
+                      <span className="text-green-400 font-bold">381</span> passed
                     </span>
                     <span>
-                      <span className="text-red-400 font-semibold">0</span> failed
+                      <span className="text-red-400 font-bold">0</span> failed
                     </span>
                     <span>
-                      <span className="text-yellow-400 font-semibold">0</span> skipped
+                      <span className="text-yellow-400 font-bold">0</span> skipped
                     </span>
                   </div>
                   {/* Progress bar */}
-                  <div className="mt-2 h-1.5 rounded-full bg-green-500/10 overflow-hidden">
+                  <div className="mt-2.5 h-1.5 rounded-full bg-green-500/10 overflow-hidden">
                     <motion.div
                       initial={{ width: 0 }}
                       animate={isInView ? { width: "100%" } : {}}
