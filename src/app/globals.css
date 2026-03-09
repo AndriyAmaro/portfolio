@@ -2362,6 +2362,252 @@ section {
   box-shadow: 0 8px 28px rgba(99, 102, 241, 0.4);
 }
 
+/* ===== TIMELINE SECTION ===== */
+
+/* Timeline card */
+.tl-card {
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  backdrop-filter: blur(8px);
+}
+
+.light-mode .tl-card {
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(248, 250, 252, 0.98) 100%
+  );
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.tl-card-title {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.light-mode .tl-card-title {
+  color: rgba(15, 23, 42, 0.95);
+}
+
+.tl-card-description {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.light-mode .tl-card-description {
+  color: rgba(51, 65, 85, 0.75);
+}
+
+/* Achievement text */
+.tl-achievement-text {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.light-mode .tl-achievement-text {
+  color: rgba(51, 65, 85, 0.8);
+}
+
+/* Icon overrides for light mode */
+.light-mode .tl-card .text-amber-400 {
+  color: rgba(217, 119, 6, 0.85);
+}
+
+.light-mode .tl-card .text-indigo-400 {
+  color: rgba(79, 70, 229, 0.85);
+}
+
+.light-mode .tl-card .text-violet-400 {
+  color: rgba(124, 58, 237, 0.85);
+}
+
+.light-mode .tl-card .text-teal-400 {
+  color: rgba(13, 148, 136, 0.85);
+}
+
+.light-mode .tl-card .text-emerald-400 {
+  color: rgba(5, 150, 105, 0.85);
+}
+
+.light-mode .tl-card .text-cyan-400 {
+  color: rgba(6, 182, 212, 0.85);
+}
+
+/* Tech chips */
+.tl-tech-chip {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.light-mode .tl-tech-chip {
+  background: rgba(241, 245, 249, 0.9);
+  color: rgba(51, 65, 85, 0.75);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.tl-tech-border {
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+.light-mode .tl-tech-border {
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+/* Type badges */
+.tl-type-learning {
+  background: rgba(251, 191, 36, 0.1);
+  color: rgba(251, 191, 36, 0.8);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+}
+
+.tl-type-project {
+  background: rgba(99, 102, 241, 0.1);
+  color: rgba(165, 180, 252, 0.8);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.tl-type-milestone {
+  background: rgba(6, 182, 212, 0.1);
+  color: rgba(103, 232, 249, 0.8);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+}
+
+.light-mode .tl-type-learning {
+  background: rgba(251, 191, 36, 0.08);
+  color: rgba(180, 83, 9, 0.85);
+  border: 1px solid rgba(251, 191, 36, 0.15);
+}
+
+.light-mode .tl-type-project {
+  background: rgba(99, 102, 241, 0.08);
+  color: rgba(79, 70, 229, 0.85);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+}
+
+.light-mode .tl-type-milestone {
+  background: rgba(6, 182, 212, 0.08);
+  color: rgba(8, 145, 178, 0.85);
+  border: 1px solid rgba(6, 182, 212, 0.15);
+}
+
+/* Timeline icon container */
+.tl-icon-container {
+  transition: transform 0.3s ease;
+}
+
+.light-mode .tl-icon-container {
+  background: rgba(248, 250, 252, 0.95);
+}
+
+.light-mode .tl-icon-container .text-amber-400 {
+  color: rgba(217, 119, 6, 0.8);
+}
+
+.light-mode .tl-icon-container .text-indigo-400 {
+  color: rgba(79, 70, 229, 0.8);
+}
+
+.light-mode .tl-icon-container .text-violet-400 {
+  color: rgba(124, 58, 237, 0.8);
+}
+
+.light-mode .tl-icon-container .text-teal-400 {
+  color: rgba(13, 148, 136, 0.8);
+}
+
+.light-mode .tl-icon-container .text-emerald-400 {
+  color: rgba(5, 150, 105, 0.8);
+}
+
+.light-mode .tl-icon-container .text-cyan-400 {
+  color: rgba(6, 182, 212, 0.8);
+}
+
+/* Connector line */
+.tl-connector-line {
+  background: linear-gradient(
+    180deg,
+    rgba(99, 102, 241, 0.3) 0%,
+    rgba(139, 92, 246, 0.15) 50%,
+    rgba(99, 102, 241, 0.05) 100%
+  );
+}
+
+.light-mode .tl-connector-line {
+  background: linear-gradient(
+    180deg,
+    rgba(99, 102, 241, 0.2) 0%,
+    rgba(139, 92, 246, 0.1) 50%,
+    rgba(99, 102, 241, 0.05) 100%
+  );
+}
+
+/* Section badge */
+.tl-section-badge {
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.light-mode .tl-section-badge {
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+}
+
+.tl-badge-text {
+  color: rgba(165, 180, 252, 0.9);
+}
+
+.light-mode .tl-badge-text {
+  color: rgba(79, 70, 229, 0.8);
+}
+
+.tl-badge-icon {
+  color: rgba(165, 180, 252, 0.8);
+}
+
+.light-mode .tl-badge-icon {
+  color: rgba(79, 70, 229, 0.7);
+}
+
+/* Subtitle */
+.tl-subtitle {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.light-mode .tl-subtitle {
+  color: rgba(100, 116, 139, 0.9);
+}
+
+/* "What's Next" card */
+.tl-next-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+}
+
+.light-mode .tl-next-card {
+  background: rgba(248, 250, 252, 0.9);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+.tl-next-icon {
+  color: rgba(165, 180, 252, 0.7);
+}
+
+.light-mode .tl-next-icon {
+  color: rgba(79, 70, 229, 0.6);
+}
+
+.tl-next-text {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.light-mode .tl-next-text {
+  color: rgba(30, 41, 59, 0.8);
+}
+
 /* ===== RESPONSIVE UTILITIES ===== */
 .container-custom {
   width: 100%;
