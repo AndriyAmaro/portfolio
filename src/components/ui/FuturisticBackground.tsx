@@ -2,6 +2,9 @@
 
 import { useEffect, useRef } from "react";
 
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
 interface Particle {
   x: number;
   y: number;
@@ -9,28 +12,31 @@ interface Particle {
   speedX: number;
   speedY: number;
   opacity: number;
-  type: "dot" | "binary" | "hex";
+  type: "dot" | "token" | "bracket";
   value?: string;
   rotation?: number;
   rotationSpeed?: number;
 }
 
-interface DataStream {
+interface CodeStream {
   x: number;
   y: number;
-  length: number;
+  words: string[];
   speed: number;
   opacity: number;
-  chars: string[];
+  fontSize: number;
 }
 
-interface Hexagon {
+interface FloatingToken {
   x: number;
   y: number;
-  size: number;
+  text: string;
   opacity: number;
   pulsePhase: number;
   pulseSpeed: number;
+  size: number;
+  speedX: number;
+  speedY: number;
 }
 
 interface CircuitNode {
@@ -40,6 +46,30 @@ interface CircuitNode {
   pulseProgress: number;
   active: boolean;
 }
+
+// ---------------------------------------------------------------------------
+// Data
+// ---------------------------------------------------------------------------
+const CODE_KEYWORDS = [
+  "const", "async", "await", "return", "import", "export", "interface",
+  "type", "function", "class", "extends", "implements", "readonly",
+  "Promise", "void", "string", "number", "boolean", "null", "undefined",
+  "if", "else", "for", "map", "filter", "reduce", "useState", "useEffect",
+  "useRef", "useMemo", "fetch", "try", "catch", "throw", "new", "this",
+  "super", "yield", "from", "default", "switch", "case", "break",
+];
+
+const TECH_LABELS = [
+  "React", "Next.js", "TypeScript", "Node.js", "Prisma", "Tailwind",
+  "Vitest", "Git", "CI/CD", "REST", "API", "SSR", "RSC", "CSS",
+  "HTML", "Docker", "Redis", "PostgreSQL", "Zod", "tRPC",
+  "Framer", "Vercel", "ESLint", "pnpm", "Turbo",
+];
+
+const CODE_SYMBOLS = [
+  "</>", "{ }", "=>", "( )", "[ ]", "&&", "||", "??", "...",
+  "?.","::","#", "/**/"," ;", "!=", "===", "++", "--",
+];
 
 export function FuturisticBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -61,71 +91,92 @@ export function FuturisticBackground() {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Particles with different types
+    // -----------------------------------------------------------------------
+    // Particles · dots + floating tech labels + code brackets
+    // -----------------------------------------------------------------------
     const particles: Particle[] = [];
-    const particleCount = 100;
-    const binaryChars = ["0", "1"];
+    const particleCount = 80;
 
     for (let i = 0; i < particleCount; i++) {
-      const type = Math.random() > 0.7 ? "binary" : Math.random() > 0.5 ? "hex" : "dot";
+      const rand = Math.random();
+      let type: Particle["type"];
+      let value: string | undefined;
+
+      if (rand > 0.75) {
+        type = "token";
+        value = TECH_LABELS[Math.floor(Math.random() * TECH_LABELS.length)];
+      } else if (rand > 0.55) {
+        type = "bracket";
+        value = CODE_SYMBOLS[Math.floor(Math.random() * CODE_SYMBOLS.length)];
+      } else {
+        type = "dot";
+      }
+
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        size: type === "binary" ? 16 : Math.random() * 4 + 1,
-        speedX: (Math.random() - 0.5) * 0.5,
-        speedY: (Math.random() - 0.5) * 0.5,
-        opacity: Math.random() * 0.7 + 0.3,
+        size: type === "dot" ? Math.random() * 3 + 1 : 12,
+        speedX: (Math.random() - 0.5) * 0.4,
+        speedY: (Math.random() - 0.5) * 0.4,
+        opacity: Math.random() * 0.5 + 0.2,
         type,
-        value: type === "binary" ? binaryChars[Math.floor(Math.random() * 2)] : undefined,
+        value,
         rotation: Math.random() * Math.PI * 2,
-        rotationSpeed: (Math.random() - 0.5) * 0.02,
+        rotationSpeed: (Math.random() - 0.5) * 0.01,
       });
     }
 
-    // Data streams (Matrix-like falling code)
-    const dataStreams: DataStream[] = [];
-    const streamCount = 25;
-    const codeChars = "01アイウエオカキクケコサシスセソタチツテト</>{}[];".split("");
+    // -----------------------------------------------------------------------
+    // Code Streams · real keywords falling like gentle rain
+    // -----------------------------------------------------------------------
+    const codeStreams: CodeStream[] = [];
+    const streamCount = 20;
 
     for (let i = 0; i < streamCount; i++) {
-      const chars: string[] = [];
-      const length = Math.floor(Math.random() * 20) + 8;
+      const words: string[] = [];
+      const length = Math.floor(Math.random() * 8) + 4;
       for (let j = 0; j < length; j++) {
-        chars.push(codeChars[Math.floor(Math.random() * codeChars.length)]);
+        words.push(CODE_KEYWORDS[Math.floor(Math.random() * CODE_KEYWORDS.length)]);
       }
-      dataStreams.push({
+      codeStreams.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height - canvas.height,
-        length,
-        speed: Math.random() * 2 + 0.8,
-        opacity: Math.random() * 0.5 + 0.2,
-        chars,
+        words,
+        speed: Math.random() * 1.2 + 0.4,
+        opacity: Math.random() * 0.35 + 0.1,
+        fontSize: Math.random() > 0.7 ? 14 : 12,
       });
     }
 
-    // Hexagon grid
-    const hexagons: Hexagon[] = [];
-    const hexSize = 60;
-    const hexSpacingX = hexSize * 2;
-    const hexSpacingY = hexSize * 1.8;
+    // -----------------------------------------------------------------------
+    // Floating Code Tokens · replacing hexagons
+    // -----------------------------------------------------------------------
+    const floatingTokens: FloatingToken[] = [];
+    const tokenTexts = [
+      "<Component />", "{ props }", "=> {}", "fn()", "type T",
+      "export default", "async/await", "use client", "interface",
+      "import { }", "return ()", "useState<T>", ".map()", ".filter()",
+      "Promise<void>", "Record<K,V>", "Partial<T>", "keyof",
+      "extends", "implements", "readonly", "?.optional",
+    ];
 
-    for (let row = -1; row < Math.ceil(canvas.height / hexSpacingY) + 1; row++) {
-      for (let col = -1; col < Math.ceil(canvas.width / hexSpacingX) + 1; col++) {
-        if (Math.random() > 0.75) {
-          const offsetX = row % 2 === 0 ? 0 : hexSpacingX / 2;
-          hexagons.push({
-            x: col * hexSpacingX + offsetX,
-            y: row * hexSpacingY,
-            size: hexSize * (Math.random() * 0.4 + 0.6),
-            opacity: Math.random() * 0.25 + 0.1,
-            pulsePhase: Math.random() * Math.PI * 2,
-            pulseSpeed: Math.random() * 0.025 + 0.015,
-          });
-        }
-      }
+    for (let i = 0; i < 18; i++) {
+      floatingTokens.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        text: tokenTexts[i % tokenTexts.length],
+        opacity: Math.random() * 0.2 + 0.08,
+        pulsePhase: Math.random() * Math.PI * 2,
+        pulseSpeed: Math.random() * 0.02 + 0.01,
+        size: Math.random() > 0.5 ? 15 : 13,
+        speedX: (Math.random() - 0.5) * 0.15,
+        speedY: (Math.random() - 0.5) * 0.15,
+      });
     }
 
-    // Circuit nodes
+    // -----------------------------------------------------------------------
+    // Circuit Nodes · kept from original
+    // -----------------------------------------------------------------------
     const circuitNodes: CircuitNode[] = [];
     const nodeCount = 35;
 
@@ -139,7 +190,6 @@ export function FuturisticBackground() {
       });
     }
 
-    // Connect nearby nodes
     circuitNodes.forEach((node, i) => {
       circuitNodes.forEach((other, j) => {
         if (i !== j) {
@@ -151,23 +201,9 @@ export function FuturisticBackground() {
       });
     });
 
-    // Draw hexagon
-    const drawHexagon = (x: number, y: number, size: number, opacity: number) => {
-      ctx.beginPath();
-      for (let i = 0; i < 6; i++) {
-        const angle = (Math.PI / 3) * i - Math.PI / 6;
-        const hx = x + size * Math.cos(angle);
-        const hy = y + size * Math.sin(angle);
-        if (i === 0) ctx.moveTo(hx, hy);
-        else ctx.lineTo(hx, hy);
-      }
-      ctx.closePath();
-      ctx.strokeStyle = `rgba(99, 102, 241, ${opacity})`;
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-    };
-
-    // Animation loop
+    // -----------------------------------------------------------------------
+    // Animation Loop
+    // -----------------------------------------------------------------------
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       time += 0.016;
@@ -177,7 +213,7 @@ export function FuturisticBackground() {
       const accentColor = isDark ? "139, 92, 246" : "124, 58, 237";
       const cyanColor = isDark ? "34, 211, 238" : "6, 182, 212";
 
-      // Draw circuit connections with pulse effect
+      // --- Circuit connections with pulse ---
       circuitNodes.forEach((node) => {
         node.connections.forEach((connIndex) => {
           const other = circuitNodes[connIndex];
@@ -197,13 +233,11 @@ export function FuturisticBackground() {
           ctx.lineWidth = 1.5;
           ctx.stroke();
 
-          // Draw node points
           ctx.beginPath();
           ctx.arc(node.x, node.y, 5, 0, Math.PI * 2);
           ctx.fillStyle = `rgba(${cyanColor}, 0.8)`;
           ctx.fill();
 
-          // Glow effect on nodes
           ctx.beginPath();
           ctx.arc(node.x, node.y, 8, 0, Math.PI * 2);
           ctx.fillStyle = `rgba(${cyanColor}, 0.2)`;
@@ -211,64 +245,65 @@ export function FuturisticBackground() {
         });
       });
 
-      // Draw hexagons
-      hexagons.forEach((hex) => {
-        const pulse = Math.sin(time * hex.pulseSpeed * 60 + hex.pulsePhase) * 0.5 + 0.5;
-        drawHexagon(hex.x, hex.y, hex.size, hex.opacity * (0.5 + pulse * 0.5));
+      // --- Floating Code Tokens (replaces hexagons) ---
+      floatingTokens.forEach((token) => {
+        const pulse = Math.sin(time * token.pulseSpeed * 60 + token.pulsePhase) * 0.5 + 0.5;
+        const alpha = token.opacity * (0.5 + pulse * 0.5);
+
+        ctx.font = `600 ${token.size}px "Geist Mono", "SF Mono", "Fira Code", monospace`;
+        ctx.fillStyle = `rgba(${primaryColor}, ${alpha})`;
+        ctx.fillText(token.text, token.x, token.y);
+
+        // Slow drift
+        token.x += token.speedX;
+        token.y += token.speedY;
+
+        if (token.x < -100) token.x = canvas.width + 50;
+        if (token.x > canvas.width + 100) token.x = -50;
+        if (token.y < -30) token.y = canvas.height + 30;
+        if (token.y > canvas.height + 30) token.y = -30;
       });
 
-      // Draw data streams
-      dataStreams.forEach((stream) => {
-        stream.chars.forEach((char, i) => {
-          const y = stream.y + i * 20;
+      // --- Code Streams (replaces Matrix katakana) ---
+      codeStreams.forEach((stream) => {
+        stream.words.forEach((word, i) => {
+          const y = stream.y + i * 24;
           if (y > 0 && y < canvas.height) {
-            const charOpacity = stream.opacity * (1 - i / stream.chars.length);
-            ctx.font = "bold 16px monospace";
-            ctx.fillStyle = i === 0
-              ? `rgba(${cyanColor}, ${charOpacity * 2.5})`
-              : `rgba(${primaryColor}, ${charOpacity})`;
-            ctx.fillText(char, stream.x, y);
+            const wordOpacity = stream.opacity * (1 - i / stream.words.length);
+            ctx.font = `500 ${stream.fontSize}px "Geist Mono", "SF Mono", "Fira Code", monospace`;
+
+            if (i === 0) {
+              ctx.fillStyle = `rgba(${cyanColor}, ${wordOpacity * 2})`;
+            } else if (i === 1) {
+              ctx.fillStyle = `rgba(${accentColor}, ${wordOpacity * 1.5})`;
+            } else {
+              ctx.fillStyle = `rgba(${primaryColor}, ${wordOpacity})`;
+            }
+            ctx.fillText(word, stream.x, y);
           }
         });
 
         stream.y += stream.speed;
-        if (stream.y > canvas.height + stream.length * 20) {
-          stream.y = -stream.length * 20;
+        if (stream.y > canvas.height + stream.words.length * 24) {
+          stream.y = -stream.words.length * 24;
           stream.x = Math.random() * canvas.width;
+          // Refresh words
+          for (let j = 0; j < stream.words.length; j++) {
+            stream.words[j] = CODE_KEYWORDS[Math.floor(Math.random() * CODE_KEYWORDS.length)];
+          }
         }
       });
 
-      // Draw particles
+      // --- Particles · dots + tech labels + code brackets ---
       particles.forEach((particle) => {
-        if (particle.type === "binary" && particle.value) {
-          ctx.font = "bold 14px monospace";
-          ctx.fillStyle = `rgba(${accentColor}, ${particle.opacity * 0.8})`;
+        if (particle.type === "token" && particle.value) {
+          ctx.font = `700 11px "Geist Mono", "SF Mono", monospace`;
+          ctx.fillStyle = `rgba(${accentColor}, ${particle.opacity * 0.6})`;
           ctx.fillText(particle.value, particle.x, particle.y);
-
-          // Randomly change binary value
-          if (Math.random() > 0.99) {
-            particle.value = binaryChars[Math.floor(Math.random() * 2)];
-          }
-        } else if (particle.type === "hex") {
-          ctx.save();
-          ctx.translate(particle.x, particle.y);
-          ctx.rotate(particle.rotation || 0);
-
-          ctx.beginPath();
-          for (let i = 0; i < 6; i++) {
-            const angle = (Math.PI / 3) * i;
-            const hx = particle.size * 3 * Math.cos(angle);
-            const hy = particle.size * 3 * Math.sin(angle);
-            if (i === 0) ctx.moveTo(hx, hy);
-            else ctx.lineTo(hx, hy);
-          }
-          ctx.closePath();
-          ctx.strokeStyle = `rgba(${accentColor}, ${particle.opacity * 0.6})`;
-          ctx.lineWidth = 1;
-          ctx.stroke();
-
-          ctx.restore();
-          particle.rotation = (particle.rotation || 0) + (particle.rotationSpeed || 0);
+        } else if (particle.type === "bracket" && particle.value) {
+          ctx.font = `600 14px "Geist Mono", "SF Mono", monospace`;
+          ctx.fillStyle = `rgba(${cyanColor}, ${particle.opacity * 0.5})`;
+          ctx.fillText(particle.value, particle.x, particle.y);
         } else {
           ctx.beginPath();
           ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
@@ -279,13 +314,13 @@ export function FuturisticBackground() {
         particle.x += particle.speedX;
         particle.y += particle.speedY;
 
-        if (particle.x < 0) particle.x = canvas.width;
-        if (particle.x > canvas.width) particle.x = 0;
-        if (particle.y < 0) particle.y = canvas.height;
-        if (particle.y > canvas.height) particle.y = 0;
+        if (particle.x < -50) particle.x = canvas.width + 50;
+        if (particle.x > canvas.width + 50) particle.x = -50;
+        if (particle.y < -20) particle.y = canvas.height + 20;
+        if (particle.y > canvas.height + 20) particle.y = -20;
       });
 
-      // Draw particle connections
+      // --- Particle connections (dots only) ---
       particles.forEach((particle, i) => {
         if (particle.type !== "dot") return;
         particles.slice(i + 1).forEach((other) => {
@@ -305,7 +340,7 @@ export function FuturisticBackground() {
         });
       });
 
-      // Scan line effect
+      // --- Scan line effect ---
       const scanY = (time * 80) % (canvas.height + 150) - 75;
       const scanGradient = ctx.createLinearGradient(0, scanY - 75, 0, scanY + 75);
       scanGradient.addColorStop(0, "rgba(34, 211, 238, 0)");
