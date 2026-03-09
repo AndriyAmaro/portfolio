@@ -51,7 +51,7 @@ export function Footer() {
 
       <div className="container-custom relative z-10">
         {/* Main content - centered */}
-        <div className="py-16 flex flex-col items-center text-center gap-8">
+        <div className="py-12 flex flex-col items-center text-center gap-6">
           {/* Logo */}
           <Link href="/" className="relative shrink-0 hover:opacity-90 transition-opacity">
             <Image
