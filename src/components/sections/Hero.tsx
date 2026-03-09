@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence, useInView } from "framer-motion";
-import { ArrowDown, Github, Linkedin, ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -225,55 +225,7 @@ export function Hero() {
             ))}
           </motion.div>
 
-          {/* Social links */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.7 }}
-            className="flex items-center gap-3 mt-4"
-          >
-            <a
-              href="https://github.com/AndriyAmaro"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hero-social-btn p-3 rounded-xl transition-all duration-300 hover:-translate-y-0.5"
-              aria-label="GitHub"
-            >
-              <Github className="w-5 h-5" />
-            </a>
-            <a
-              href="https://linkedin.com/in/andri-amaro"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hero-social-btn p-3 rounded-xl transition-all duration-300 hover:-translate-y-0.5"
-              aria-label="LinkedIn"
-            >
-              <Linkedin className="w-5 h-5" />
-            </a>
-          </motion.div>
         </div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 1 }}
-          className="absolute bottom-2 left-1/2 -translate-x-1/2"
-        >
-          <Link
-            href="#about"
-            className="flex flex-col items-center gap-1.5 hero-scroll-hint transition-colors"
-            aria-label="Rolar para seção sobre"
-          >
-            <span className="text-xs font-medium">Scroll</span>
-            <motion.div
-              animate={{ y: [0, 6, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            >
-              <ArrowDown className="w-4 h-4" />
-            </motion.div>
-          </Link>
-        </motion.div>
       </div>
     </section>
   );
