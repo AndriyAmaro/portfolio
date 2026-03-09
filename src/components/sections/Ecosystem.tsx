@@ -378,12 +378,17 @@ export function Ecosystem() {
   }, []);
 
   return (
-    <section id="ecosystem" className="relative py-24 md:py-32 overflow-hidden">
+    <section id="ecosystem" className="eco-section-bg relative py-24 md:py-32 overflow-hidden">
       {/* Background · animated waves */}
       <EcosystemBackground />
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-500/[0.04] rounded-full blur-[100px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-teal-500/[0.04] rounded-full blur-[100px]" />
+        {/* Gradient orbs for depth */}
+        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-indigo-500/[0.06] rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-violet-500/[0.05] rounded-full blur-[100px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-cyan-500/[0.03] rounded-full blur-[140px]" />
+        {/* Corner accent glows */}
+        <div className="absolute -top-10 -left-10 w-[300px] h-[300px] bg-indigo-500/[0.05] rounded-full blur-[100px]" />
+        <div className="absolute -bottom-10 -right-10 w-[300px] h-[300px] bg-violet-500/[0.05] rounded-full blur-[100px]" />
       </div>
 
       <div className="container-custom relative z-10">
