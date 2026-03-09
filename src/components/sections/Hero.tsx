@@ -106,7 +106,7 @@ export function Hero() {
         <FuturisticBackground />
       </div>
 
-      <div className="container-custom relative z-10 pt-56 pb-20">
+      <div className="container-custom relative z-10 pt-64 pb-20">
         <div className="relative flex flex-col items-center text-center gap-6">
           {/* Name */}
           <motion.div
@@ -143,7 +143,7 @@ export function Hero() {
             {/* Outer glow ring */}
             <div className="absolute -inset-2 rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-indigo-500 opacity-60 blur-md animate-pulse" />
             {/* Avatar container */}
-            <div className="relative w-32 h-32 md:w-36 md:h-36 rounded-full overflow-hidden ring-2 ring-indigo-400/80 ring-offset-4 hero-avatar-ring-offset">
+            <div className="relative w-36 h-36 md:w-40 md:h-40 rounded-full overflow-hidden ring-2 ring-indigo-400/80 ring-offset-4 hero-avatar-ring-offset">
               <Image
                 src="/avatar.jpg"
                 alt="Andri Amaro"
