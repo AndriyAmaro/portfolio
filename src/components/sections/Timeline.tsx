@@ -217,69 +217,94 @@ function TimelineItem({
   const typeInfo = typeLabels[entry.type];
 
   return (
-    <div className="relative flex items-start gap-6 md:gap-0">
-      {/* Desktop: alternating layout */}
-      {/* Left content (even items) */}
-      <div className={`hidden md:block w-[calc(50%-28px)] ${isLeft ? "" : "order-3"}`}>
-        {isLeft && (
+    <div className="relative">
+      {/* Desktop layout */}
+      <div className="hidden md:grid md:grid-cols-[1fr_56px_1fr] md:gap-0 items-start">
+        {/* Left column */}
+        <div className="flex justify-end pr-6">
+          {isLeft && (
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="w-full max-w-md"
+            >
+              <TimelineCard entry={entry} colors={c} typeInfo={typeInfo} />
+            </motion.div>
+          )}
+        </div>
+
+        {/* Center: icon + line */}
+        <div className="flex flex-col items-center">
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ scale: 0 }}
+            whileInView={{ scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.2, type: "spring", stiffness: 300 }}
+            className={`w-12 h-12 rounded-2xl ${c.bg} flex items-center justify-center ring-2 ${c.ring} tl-icon-container`}
+          >
+            <Icon className={`w-5 h-5 ${c.text}`} />
+          </motion.div>
+          {!isLast && (
+            <motion.div
+              initial={{ scaleY: 0 }}
+              whileInView={{ scaleY: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="w-[2px] flex-1 min-h-[40px] origin-top tl-connector-line"
+            />
+          )}
+        </div>
+
+        {/* Right column */}
+        <div className="flex justify-start pl-6">
+          {!isLeft && (
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="w-full max-w-md"
+            >
+              <TimelineCard entry={entry} colors={c} typeInfo={typeInfo} />
+            </motion.div>
+          )}
+        </div>
+      </div>
+
+      {/* Mobile layout: icon left, card right */}
+      <div className="flex items-start gap-4 md:hidden">
+        <div className="flex flex-col items-center shrink-0">
+          <motion.div
+            initial={{ scale: 0 }}
+            whileInView={{ scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.2, type: "spring", stiffness: 300 }}
+            className={`w-10 h-10 rounded-xl ${c.bg} flex items-center justify-center ring-2 ${c.ring} tl-icon-container`}
+          >
+            <Icon className={`w-4 h-4 ${c.text}`} />
+          </motion.div>
+          {!isLast && (
+            <motion.div
+              initial={{ scaleY: 0 }}
+              whileInView={{ scaleY: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="w-[2px] flex-1 min-h-[40px] origin-top tl-connector-line"
+            />
+          )}
+        </div>
+        <div className="flex-1 pb-2">
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             <TimelineCard entry={entry} colors={c} typeInfo={typeInfo} />
           </motion.div>
-        )}
-      </div>
-
-      {/* Center line + icon */}
-      <div className="relative flex flex-col items-center z-10 md:mx-4 shrink-0">
-        <motion.div
-          initial={{ scale: 0 }}
-          whileInView={{ scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.2, type: "spring", stiffness: 300 }}
-          className={`w-12 h-12 rounded-2xl ${c.bg} flex items-center justify-center ring-2 ${c.ring} tl-icon-container`}
-        >
-          <Icon className={`w-5 h-5 ${c.text}`} />
-        </motion.div>
-        {/* Vertical line */}
-        {!isLast && (
-          <motion.div
-            initial={{ scaleY: 0 }}
-            whileInView={{ scaleY: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="w-[2px] flex-1 min-h-[40px] origin-top tl-connector-line"
-          />
-        )}
-      </div>
-
-      {/* Right content (odd items) */}
-      <div className={`hidden md:block w-[calc(50%-28px)] ${isLeft ? "order-3" : ""}`}>
-        {!isLeft && (
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            <TimelineCard entry={entry} colors={c} typeInfo={typeInfo} />
-          </motion.div>
-        )}
-      </div>
-
-      {/* Mobile: always right */}
-      <div className="md:hidden flex-1">
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          <TimelineCard entry={entry} colors={c} typeInfo={typeInfo} />
-        </motion.div>
+        </div>
       </div>
     </div>
   );
@@ -403,7 +428,7 @@ export function Timeline() {
         </motion.div>
 
         {/* Timeline */}
-        <div className="max-w-3xl mx-auto mt-16 space-y-2">
+        <div className="max-w-4xl mx-auto mt-16 space-y-2">
           {timelineData.map((entry, index) => (
             <TimelineItem
               key={entry.id}
