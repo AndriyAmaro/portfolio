@@ -468,36 +468,216 @@ section {
   }
 }
 
-/* ===== HERO TITLE & DESCRIPTION ===== */
+/* ===== HERO SECTION V2 ===== */
+
+/* Title */
+.hero-title {
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 0 40px rgba(99, 102, 241, 0.15);
+}
+
 .light-mode .hero-title {
   color: #1f2937;
+  text-shadow: none;
+}
+
+/* Description */
+.hero-description {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .light-mode .hero-description {
-  color: #1f2937;
+  color: rgba(31, 41, 55, 0.8);
 }
 
-/* ===== SOCIAL ICON BUTTONS ===== */
-.light-mode .social-icon-btn {
-  background: rgba(79, 70, 229, 0.7) !important;
-  border-color: rgba(79, 70, 229, 0.5) !important;
-  color: white !important;
-  backdrop-filter: none;
+/* Highlight text in description */
+.hero-highlight-text {
+  color: rgba(165, 180, 252, 1);
 }
 
-.light-mode .social-icon-btn:hover {
-  background: rgba(79, 70, 229, 0.85) !important;
-  border-color: rgba(79, 70, 229, 0.7) !important;
-  color: white !important;
-  box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.3);
+.light-mode .hero-highlight-text {
+  color: rgba(79, 70, 229, 1);
 }
 
-/* ===== STATUS BADGE ===== */
-.light-mode .status-badge {
-  background: rgba(79, 70, 229, 0.15) !important;
-  border-color: rgba(79, 70, 229, 0.3) !important;
-  color: #4f46e5 !important;
+/* Typing effect text */
+.hero-typed-text {
+  color: rgba(129, 140, 248, 0.95);
+}
+
+.light-mode .hero-typed-text {
+  color: rgba(79, 70, 229, 0.9);
+}
+
+/* Blinking cursor */
+.hero-cursor {
+  background: rgba(129, 140, 248, 0.9);
+}
+
+.light-mode .hero-cursor {
+  background: rgba(79, 70, 229, 0.8);
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* Status badge */
+.hero-status-badge {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  color: rgba(165, 180, 252, 0.9);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.light-mode .hero-status-badge {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  color: rgba(79, 70, 229, 0.85);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.hero-status-ping {
+  background-color: rgba(129, 140, 248, 0.75);
+}
+
+.hero-status-dot {
+  background-color: rgba(129, 140, 248, 1);
+}
+
+.light-mode .hero-status-ping {
+  background-color: rgba(79, 70, 229, 0.6);
+}
+
+.light-mode .hero-status-dot {
+  background-color: rgba(79, 70, 229, 0.9);
+}
+
+/* Avatar ring offset */
+.hero-avatar-ring-offset {
+  --tw-ring-offset-color: rgba(22, 19, 45, 1);
+}
+
+.light-mode .hero-avatar-ring-offset {
+  --tw-ring-offset-color: rgba(255, 255, 255, 1);
+}
+
+/* Primary CTA button */
+.hero-btn-primary {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 1), rgba(139, 92, 246, 1));
+  color: white;
+  box-shadow:
+    0 4px 16px rgba(99, 102, 241, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+}
+
+.hero-btn-primary:hover {
+  box-shadow:
+    0 8px 28px rgba(99, 102, 241, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+}
+
+.light-mode .hero-btn-primary {
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+}
+
+.light-mode .hero-btn-primary:hover {
+  box-shadow: 0 8px 28px rgba(99, 102, 241, 0.4);
+}
+
+/* Secondary CTA button */
+.hero-btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(8px);
+}
+
+.hero-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.light-mode .hero-btn-secondary {
+  background: rgba(255, 255, 255, 0.8);
+  color: rgba(30, 41, 59, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.light-mode .hero-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Metrics */
+.hero-metric {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(8px);
+}
+
+.light-mode .hero-metric {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.hero-metric-label {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.light-mode .hero-metric-label {
+  color: rgba(100, 116, 139, 0.8);
+}
+
+/* Social buttons */
+.hero-social-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+}
+
+.hero-social-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(99, 102, 241, 0.4);
+  color: rgba(165, 180, 252, 1);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.2);
+}
+
+.light-mode .hero-social-btn {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: rgba(51, 65, 85, 0.7);
+}
+
+.light-mode .hero-social-btn:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(79, 70, 229, 0.3);
+  color: rgba(79, 70, 229, 1);
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.1);
+}
+
+/* Scroll indicator */
+.hero-scroll-hint {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.hero-scroll-hint:hover {
+  color: rgba(165, 180, 252, 0.8);
+}
+
+.light-mode .hero-scroll-hint {
+  color: rgba(100, 116, 139, 0.5);
+}
+
+.light-mode .hero-scroll-hint:hover {
+  color: rgba(79, 70, 229, 0.8);
 }
 
 .light-mode .status-dot {
