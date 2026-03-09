@@ -255,100 +255,78 @@ export function FuturisticBackground() {
       const accentColor = isDark ? "139, 92, 246" : "124, 58, 237";
       const cyanColor = isDark ? "34, 211, 238" : "6, 182, 212";
 
-      // --- PCB Circuit Traces · dense radiating from center ---
+      // --- Radiating Circuit Lines · straight rays from center ---
       const cx = canvas.width / 2;
       const cy = canvas.height / 2;
 
-      // Center glow burst
-      const centerGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 200);
-      centerGrad.addColorStop(0, `rgba(${cyanColor}, 0.12)`);
-      centerGrad.addColorStop(0.5, `rgba(${primaryColor}, 0.04)`);
+      // Center glow burst (larger, brighter)
+      const centerGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 350);
+      centerGrad.addColorStop(0, `rgba(${cyanColor}, 0.18)`);
+      centerGrad.addColorStop(0.2, `rgba(${primaryColor}, 0.08)`);
+      centerGrad.addColorStop(0.5, `rgba(${primaryColor}, 0.03)`);
       centerGrad.addColorStop(1, `rgba(${primaryColor}, 0)`);
       ctx.fillStyle = centerGrad;
-      ctx.fillRect(cx - 200, cy - 200, 400, 400);
+      ctx.fillRect(cx - 350, cy - 350, 700, 700);
 
+      // Draw straight connections between nodes
       circuitNodes.forEach((node) => {
         node.connections.forEach((connIndex) => {
           const other = circuitNodes[connIndex];
 
-          // Right-angle midpoint (PCB trace style)
-          const midX = other.x;
-          const midY = node.y;
-
           // Distance from center affects brightness
           const distFromCenter = Math.sqrt((node.x - cx) ** 2 + (node.y - cy) ** 2);
           const maxDist = Math.sqrt(cx * cx + cy * cy);
-          const centerFade = 1 - (distFromCenter / maxDist) * 0.6;
+          const centerFade = 1 - (distFromCenter / maxDist) * 0.5;
 
-          // Trace line with breathing
-          const traceAlpha = (0.1 + Math.sin(time * 1.5 + node.pulseProgress * 10) * 0.05) * centerFade;
+          // Line with breathing
+          const traceAlpha = (0.12 + Math.sin(time * 1.5 + node.pulseProgress * 10) * 0.06) * centerFade;
 
           ctx.beginPath();
           ctx.moveTo(node.x, node.y);
-          ctx.lineTo(midX, midY);
           ctx.lineTo(other.x, other.y);
           ctx.strokeStyle = `rgba(${primaryColor}, ${traceAlpha})`;
-          ctx.lineWidth = 1;
+          ctx.lineWidth = 0.8;
           ctx.stroke();
 
-          // Pulse traveling along the trace
-          const pulsePos = (time * 0.4 + node.pulseProgress) % 1;
-          const seg1Len = Math.abs(midX - node.x);
-          const seg2Len = Math.abs(other.y - midY);
-          const totalLen = seg1Len + seg2Len;
-          const pulseDistRaw = pulsePos * totalLen;
+          // Pulse traveling along the line
+          const pulsePos = (time * 0.35 + node.pulseProgress) % 1;
+          const pulseX = node.x + (other.x - node.x) * pulsePos;
+          const pulseY = node.y + (other.y - node.y) * pulsePos;
 
-          let pulseX: number, pulseY: number;
-          if (pulseDistRaw <= seg1Len) {
-            const t = seg1Len > 0 ? pulseDistRaw / seg1Len : 0;
-            pulseX = node.x + (midX - node.x) * t;
-            pulseY = node.y;
-          } else {
-            const t = seg2Len > 0 ? (pulseDistRaw - seg1Len) / seg2Len : 0;
-            pulseX = midX;
-            pulseY = midY + (other.y - midY) * Math.min(t, 1);
-          }
-
-          // Pulse dot (bright)
+          // Pulse dot
           ctx.beginPath();
-          ctx.arc(pulseX, pulseY, 2, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${cyanColor}, 0.95)`;
+          ctx.arc(pulseX, pulseY, 1.5, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${cyanColor}, 0.8)`;
           ctx.fill();
 
-          // Pulse outer glow
+          // Pulse glow
           ctx.beginPath();
-          ctx.arc(pulseX, pulseY, 8, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${cyanColor}, 0.08)`;
-          ctx.fill();
-
-          // Right-angle corner dot
-          ctx.beginPath();
-          ctx.arc(midX, midY, 1.5, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${primaryColor}, 0.25)`;
+          ctx.arc(pulseX, pulseY, 5, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${cyanColor}, 0.06)`;
           ctx.fill();
         });
 
-        // Node intersection point · bright dot
+        // Node intersection point · glowing dot
         const nodeDist = Math.sqrt((node.x - cx) ** 2 + (node.y - cy) ** 2);
-        const nodeGlow = Math.max(0.3, 1 - nodeDist / 600);
-        const nodePulse = 0.5 + Math.sin(time * 3 + node.pulseProgress * 20) * 0.5;
+        const nodeGlow = Math.max(0.2, 1 - nodeDist / 700);
+        const nodePulse = 0.5 + Math.sin(time * 2.5 + node.pulseProgress * 15) * 0.5;
 
         // Outer glow
         ctx.beginPath();
-        ctx.arc(node.x, node.y, 10, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${cyanColor}, ${0.06 * nodeGlow * nodePulse})`;
+        ctx.arc(node.x, node.y, 12, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${cyanColor}, ${0.04 * nodeGlow * nodePulse})`;
         ctx.fill();
 
         // Mid glow
         ctx.beginPath();
         ctx.arc(node.x, node.y, 5, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${cyanColor}, ${0.15 * nodeGlow})`;
+        ctx.fillStyle = `rgba(${cyanColor}, ${0.12 * nodeGlow})`;
         ctx.fill();
 
         // Core dot
         ctx.beginPath();
-        ctx.arc(node.x, node.y, 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${cyanColor}, ${0.8 * nodeGlow})`;
+        ctx.arc(node.x, node.y, 2, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${cyanColor}, ${0.85 * nodeGlow})`;
         ctx.fill();
       });
 
