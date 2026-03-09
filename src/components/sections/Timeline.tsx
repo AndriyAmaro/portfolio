@@ -306,9 +306,8 @@ function TimelineCard({
       <div className={`absolute -top-16 -right-16 w-32 h-32 bg-gradient-to-br ${c.gradient} opacity-0 group-hover:opacity-[0.05] rounded-full blur-3xl transition-opacity duration-500`} />
 
       <div className="p-5">
-        {/* Date + Type */}
-        <div className="flex items-center justify-between mb-3">
-          <span className={`text-xs font-bold ${c.text}`}>{entry.date}</span>
+        {/* Type badge */}
+        <div className="flex items-center mb-3">
           <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider ${typeInfo.className}`}>
             {typeInfo.label}
           </span>
