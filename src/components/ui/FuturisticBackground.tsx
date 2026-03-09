@@ -43,6 +43,24 @@ interface GlowNode {
   brightness: number;
 }
 
+interface SkillLabel {
+  text: string;
+  angle: number;
+  dist: number;
+  speed: number;
+  maxDist: number;
+  opacity: number;
+  fontSize: number;
+}
+
+// Skills from portfolio · synced with data/skills.ts
+const SKILLS = [
+  "React", "Next.js", "TypeScript", "Tailwind", "Framer Motion",
+  "Node.js", "Prisma", "PostgreSQL", "Zod", "Hono",
+  "Docker", "Git", "Vercel", "Vitest", "Redis",
+  "Socket.io", "Zustand", "Radix UI", "REST API", "Turborepo",
+];
+
 export function FuturisticBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -65,6 +83,7 @@ export function FuturisticBackground() {
     let stars: StarParticle[] = [];
     let flowParticles: FlowParticle[] = [];
     let glowNodes: GlowNode[] = [];
+    let skillLabels: SkillLabel[] = [];
 
     // -----------------------------------------------------------------
     // Build geometry on resize
@@ -145,6 +164,21 @@ export function FuturisticBackground() {
           size: 1 + Math.random() * 2.5,
           opacity: 0.3 + Math.random() * 0.5,
           maxDist: maxRadius * (0.5 + Math.random() * 0.5),
+        });
+      }
+
+      // --- Skill labels flowing outward ---
+      skillLabels = [];
+      for (let i = 0; i < 10; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        skillLabels.push({
+          text: SKILLS[i % SKILLS.length],
+          angle,
+          dist: 60 + Math.random() * maxRadius * 0.5,
+          speed: 0.3 + Math.random() * 0.6,
+          maxDist: maxRadius * (0.55 + Math.random() * 0.35),
+          opacity: 0.12 + Math.random() * 0.16,
+          fontSize: 11 + Math.floor(Math.random() * 3),
         });
       }
 
@@ -345,7 +379,37 @@ export function FuturisticBackground() {
       });
 
       // =============================================================
-      // Layer 7 · Subtle scan line
+      // Layer 7 · Skill labels flowing outward
+      // =============================================================
+      ctx.font = `600 12px "Geist Mono", "SF Mono", "Fira Code", monospace`;
+      skillLabels.forEach((skill) => {
+        skill.dist += skill.speed;
+        if (skill.dist > skill.maxDist) {
+          skill.dist = 50 + Math.random() * 30;
+          skill.angle = Math.random() * Math.PI * 2;
+          skill.speed = 0.3 + Math.random() * 0.6;
+          skill.text = SKILLS[Math.floor(Math.random() * SKILLS.length)];
+        }
+
+        const sx = cx + Math.cos(skill.angle) * skill.dist;
+        const sy = cy + Math.sin(skill.angle) * skill.dist;
+
+        // Fade: appear after leaving center zone, peak mid-travel, fade at end
+        const travelRatio = skill.dist / skill.maxDist;
+        const fade = travelRatio < 0.15
+          ? travelRatio / 0.15  // fade in
+          : 1 - (travelRatio - 0.15) / 0.85; // fade out
+        const alpha = skill.opacity * Math.max(0, fade) * om;
+
+        if (alpha < 0.03) return;
+
+        ctx.font = `600 ${skill.fontSize}px "Geist Mono", "SF Mono", "Fira Code", monospace`;
+        ctx.fillStyle = `rgba(${cyanR}, ${cyanG}, ${cyanB}, ${alpha})`;
+        ctx.fillText(skill.text, sx, sy);
+      });
+
+      // =============================================================
+      // Layer 8 · Subtle scan line
       // =============================================================
       const scanY = (time * 40) % (h + 200) - 100;
       const scanGrad = ctx.createLinearGradient(0, scanY - 60, 0, scanY + 60);
