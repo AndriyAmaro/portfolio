@@ -1504,6 +1504,294 @@ section {
   color: rgba(55, 48, 107, 0.6);
 }
 
+/* ===== ECOSYSTEM SECTION ===== */
+
+/* Ecosystem card */
+.eco-card {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  backdrop-filter: blur(8px);
+}
+
+.light-mode .eco-card {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(248, 250, 252, 0.95) 100%
+  );
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* Ecosystem card text */
+.eco-card-title {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.light-mode .eco-card-title {
+  color: rgba(15, 23, 42, 0.95);
+}
+
+.eco-card-tagline {
+  opacity: 0.9;
+}
+
+.light-mode .eco-card-tagline {
+  opacity: 1;
+}
+
+.light-mode .eco-card-tagline.text-indigo-400 {
+  color: rgba(79, 70, 229, 1);
+}
+
+.light-mode .eco-card-tagline.text-teal-400 {
+  color: rgba(13, 148, 136, 1);
+}
+
+.light-mode .eco-card-tagline.text-emerald-400 {
+  color: rgba(5, 150, 105, 1);
+}
+
+.eco-card-description {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.light-mode .eco-card-description {
+  color: rgba(51, 65, 85, 0.8);
+}
+
+/* Ecosystem stat boxes */
+.eco-stat-box {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.light-mode .eco-stat-box {
+  background: rgba(241, 245, 249, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.eco-stat-value {
+  opacity: 0.95;
+}
+
+.light-mode .eco-stat-value.text-indigo-400 {
+  color: rgba(79, 70, 229, 1);
+}
+
+.light-mode .eco-stat-value.text-teal-400 {
+  color: rgba(13, 148, 136, 1);
+}
+
+.light-mode .eco-stat-value.text-emerald-400 {
+  color: rgba(5, 150, 105, 1);
+}
+
+.eco-stat-label {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.light-mode .eco-stat-label {
+  color: rgba(100, 116, 139, 0.8);
+}
+
+/* Ecosystem tech chips */
+.eco-tech-chip {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.light-mode .eco-tech-chip {
+  background: rgba(241, 245, 249, 0.9);
+  color: rgba(51, 65, 85, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Status badge */
+.eco-status-badge {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.light-mode .eco-status-badge {
+  background: rgba(241, 245, 249, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.eco-status-text {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.light-mode .eco-status-text {
+  color: rgba(51, 65, 85, 0.7);
+}
+
+/* Ecosystem buttons */
+.eco-btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.eco-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.light-mode .eco-btn-secondary {
+  background: rgba(241, 245, 249, 0.9);
+  color: rgba(51, 65, 85, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.light-mode .eco-btn-secondary:hover {
+  background: rgba(226, 232, 240, 0.9);
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+/* Section badge */
+.eco-section-badge {
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.light-mode .eco-section-badge {
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+}
+
+.eco-badge-text {
+  color: rgba(165, 180, 252, 0.9);
+}
+
+.light-mode .eco-badge-text {
+  color: rgba(79, 70, 229, 0.8);
+}
+
+/* Subtitle */
+.eco-subtitle {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.light-mode .eco-subtitle {
+  color: rgba(100, 116, 139, 0.9);
+}
+
+/* Aggregate stats label */
+.eco-stat-aggregate-label {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.light-mode .eco-stat-aggregate-label {
+  color: rgba(100, 116, 139, 0.8);
+}
+
+/* Principles section */
+.eco-principles-title {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.light-mode .eco-principles-title {
+  color: rgba(30, 41, 59, 0.85);
+}
+
+.eco-principle-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.3s ease;
+}
+
+.eco-principle-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(99, 102, 241, 0.2);
+  transform: translateY(-2px);
+}
+
+.light-mode .eco-principle-card {
+  background: rgba(248, 250, 252, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.light-mode .eco-principle-card:hover {
+  background: rgba(241, 245, 249, 0.9);
+  border-color: rgba(99, 102, 241, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.eco-principle-title {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.light-mode .eco-principle-title {
+  color: rgba(15, 23, 42, 0.9);
+}
+
+.eco-principle-description {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.light-mode .eco-principle-description {
+  color: rgba(100, 116, 139, 0.8);
+}
+
+.light-mode .eco-principle-icon {
+  color: rgba(79, 70, 229, 0.8);
+}
+
+.light-mode .eco-principle-card .ring-indigo-500\/20 {
+  --tw-ring-color: rgba(79, 70, 229, 0.15);
+}
+
+.light-mode .eco-principle-card .bg-indigo-500\/10 {
+  background-color: rgba(79, 70, 229, 0.08);
+}
+
+/* CTA button */
+.eco-cta-btn {
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.15) 0%,
+    rgba(139, 92, 246, 0.1) 100%
+  );
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  color: rgba(165, 180, 252, 1);
+}
+
+.eco-cta-btn:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.25) 0%,
+    rgba(139, 92, 246, 0.2) 100%
+  );
+  border-color: rgba(99, 102, 241, 0.5);
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.2);
+}
+
+.light-mode .eco-cta-btn {
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.1) 0%,
+    rgba(139, 92, 246, 0.08) 100%
+  );
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  color: rgba(79, 70, 229, 1);
+}
+
+.light-mode .eco-cta-btn:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.18) 0%,
+    rgba(139, 92, 246, 0.15) 100%
+  );
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.15);
+}
+
 /* ===== RESPONSIVE UTILITIES ===== */
 .container-custom {
   width: 100%;

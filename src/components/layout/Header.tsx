@@ -10,6 +10,7 @@ import { Button } from "../ui/Button";
 const navLinks = [
   { label: "Sobre", href: "#about" },
   { label: "Habilidades", href: "#skills" },
+  { label: "Ecosystem", href: "#ecosystem" },
   { label: "Projetos", href: "#projects" },
   { label: "Contato", href: "#contact" },
 ];
