@@ -64,7 +64,7 @@ export function Footer() {
       <div className="absolute top-0 left-0 w-[350px] h-[400px] bg-violet-500/8 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-[350px] h-[400px] bg-indigo-500/8 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="container-custom relative z-10 py-16 md:py-20">
+      <div className="container-custom relative z-10 py-20 md:py-28">
         {/* Top: Logo + Nav + Social */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8">
           {/* Logo & Description */}
