@@ -100,7 +100,7 @@ export function Hero() {
   const countRefs = [m0, m1, m2, m3];
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center gradient-bg overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center gradient-bg overflow-visible">
       {/* Background */}
       <div className="absolute inset-0 overflow-hidden">
         <FuturisticBackground />
@@ -203,30 +203,32 @@ export function Hero() {
             </Link>
           </motion.div>
 
-          {/* Metrics row */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mt-3 w-full max-w-xl"
-          >
-            {metrics.map((m, i) => (
-              <div key={m.label} className="hero-metric text-center py-3 px-2 rounded-xl">
-                <span
-                  ref={countRefs[i].ref}
-                  className="block text-2xl md:text-3xl font-bold gradient-text tabular-nums"
-                >
-                  {countRefs[i].count}{m.suffix}
-                </span>
-                <span className="text-[11px] font-semibold uppercase tracking-wider hero-metric-label">
-                  {m.label}
-                </span>
-              </div>
-            ))}
-          </motion.div>
-
         </div>
       </div>
+
+      {/* Metrics bridge · floats between Hero and next section */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.7 }}
+        className="relative z-20 flex justify-center px-4"
+      >
+        <div className="hero-metrics-bridge grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 w-full max-w-2xl translate-y-1/2 rounded-2xl p-5 sm:p-6">
+          {metrics.map((m, i) => (
+            <div key={m.label} className="text-center py-2">
+              <span
+                ref={countRefs[i].ref}
+                className="block text-2xl md:text-3xl font-bold gradient-text tabular-nums"
+              >
+                {countRefs[i].count}{m.suffix}
+              </span>
+              <span className="text-[11px] font-semibold uppercase tracking-wider hero-metric-label">
+                {m.label}
+              </span>
+            </div>
+          ))}
+        </div>
+      </motion.div>
     </section>
   );
 }

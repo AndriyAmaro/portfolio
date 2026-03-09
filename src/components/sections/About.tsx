@@ -62,7 +62,7 @@ export function About() {
   }, []);
 
   return (
-    <section id="about" className="relative py-24 md:py-32 overflow-hidden">
+    <section id="about" className="relative pt-36 md:pt-44 pb-24 md:pb-32 overflow-hidden">
       {isLightMode ? <AbstractBackgroundLight /> : <AbstractBackground />}
 
       <div className="container-custom relative z-10">
