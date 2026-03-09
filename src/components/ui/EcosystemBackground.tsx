@@ -24,11 +24,19 @@ export function EcosystemBackground() {
 
     const resizeCanvas = () => {
       const rect = container.getBoundingClientRect();
-      canvas.width = rect.width;
-      canvas.height = rect.height;
+      // Fallback to parent section dimensions if container has no size yet
+      const w = rect.width || container.parentElement?.offsetWidth || window.innerWidth;
+      const h = rect.height || container.parentElement?.offsetHeight || window.innerHeight;
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w;
+        canvas.height = h;
+      }
     };
+
+    // Use ResizeObserver for reliable sizing
+    const ro = new ResizeObserver(resizeCanvas);
+    ro.observe(container);
     resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
 
     // -----------------------------------------------------------------
     // Wave configuration · multiple layers for depth
@@ -160,16 +168,17 @@ export function EcosystemBackground() {
     animate();
 
     return () => {
-      window.removeEventListener("resize", resizeCanvas);
+      ro.disconnect();
       cancelAnimationFrame(animationId);
     };
   }, []);
 
   return (
-    <div ref={containerRef} className="absolute inset-0 pointer-events-none" aria-hidden="true">
+    <div ref={containerRef} className="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 w-full h-full"
+        className="absolute inset-0"
+        style={{ width: "100%", height: "100%" }}
       />
     </div>
   );
