@@ -102,9 +102,9 @@ export function About() {
             <Image
               src="/frontend-icon.png"
               alt="Frontend"
-              width={140}
-              height={140}
-              className="relative drop-shadow-[0_0_20px_rgba(99,102,241,0.3)] opacity-70"
+              width={260}
+              height={260}
+              className="relative drop-shadow-[0_0_25px_rgba(99,102,241,0.2)] opacity-40"
             />
           </div>
         </motion.div>
@@ -134,9 +134,9 @@ export function About() {
             <Image
               src="/backend-icon.png"
               alt="Backend"
-              width={140}
-              height={140}
-              className="relative drop-shadow-[0_0_20px_rgba(139,92,246,0.3)] opacity-70"
+              width={260}
+              height={260}
+              className="relative drop-shadow-[0_0_25px_rgba(139,92,246,0.2)] opacity-40"
             />
           </div>
         </motion.div>
