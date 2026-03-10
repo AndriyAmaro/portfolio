@@ -241,14 +241,10 @@ export function EcosystemBackgroundLight() {
       <div className="absolute top-1/3 left-0 w-[300px] h-[400px] bg-indigo-300/6 rounded-full blur-[100px] animate-pulse-slow" />
       <div className="absolute top-1/4 right-0 w-[280px] h-[350px] bg-slate-400/5 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
 
-      {/* Mid lateral glows */}
-      <div className="absolute top-1/2 left-0 w-[250px] h-[500px] bg-indigo-200/8 rounded-full blur-[100px] animate-pulse-slow animation-delay-2000" />
-      <div className="absolute top-1/2 right-0 w-[250px] h-[500px] bg-slate-300/6 rounded-full blur-[100px] animate-pulse-slow" />
-
-      {/* Bottom orbs · soft, harmonized */}
+      {/* Bottom orbs */}
       <div className="absolute bottom-0 left-1/4 w-[380px] h-[280px] bg-indigo-200/10 rounded-full blur-[100px] animate-pulse-slow animation-delay-2000" />
       <div className="absolute bottom-0 right-1/4 w-[350px] h-[250px] bg-slate-300/12 rounded-full blur-[90px] animate-pulse-slow animation-delay-4000" />
-      <div className="absolute bottom-[5%] left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-indigo-200/6 rounded-full blur-[110px] animate-pulse-slow" />
+      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-indigo-200/6 rounded-full blur-[110px] animate-pulse-slow" />
 
       {/* Bottom corners */}
       <div className="absolute bottom-0 left-0 w-[250px] h-[300px] bg-indigo-300/5 rounded-full blur-[90px] animate-pulse-slow animation-delay-2000" />
