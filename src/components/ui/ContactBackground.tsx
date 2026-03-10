@@ -56,14 +56,20 @@ export function ContactBackground() {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Create connection nodes - biased toward upper half
+    // Create connection nodes - header zone + bottom zone
     const nodes: ConnectionNode[] = [];
     const nodeCount = 25;
 
     for (let i = 0; i < nodeCount; i++) {
+      // Split: ~60% in header (0-30%), ~40% in bottom (70-100%)
+      const inHeader = Math.random() < 0.6;
+      const yPos = inHeader
+        ? Math.random() * canvas.height * 0.3
+        : canvas.height * 0.7 + Math.random() * canvas.height * 0.3;
+
       nodes.push({
         x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height * 0.7,
+        y: yPos,
         vx: (Math.random() - 0.5) * 0.3,
         vy: (Math.random() - 0.5) * 0.3,
         size: 3 + Math.random() * 4,
@@ -73,13 +79,16 @@ export function ContactBackground() {
       });
     }
 
-    // Create wave rings - biased toward upper area
+    // Create wave rings - header + bottom zones
     const waves: WaveRing[] = [];
     const createWave = () => {
       if (waves.length < 6) {
+        const inHeader = Math.random() < 0.5;
         waves.push({
           x: canvas.width * (0.1 + Math.random() * 0.8),
-          y: canvas.height * (0.1 + Math.random() * 0.5),
+          y: inHeader
+            ? canvas.height * (0.05 + Math.random() * 0.25)
+            : canvas.height * (0.7 + Math.random() * 0.25),
           radius: 0,
           maxRadius: 220 + Math.random() * 180,
           opacity: 0.55,
@@ -88,14 +97,19 @@ export function ContactBackground() {
       }
     };
 
-    // Create floating envelope icons - concentrated in upper area
+    // Create floating envelopes - header + bottom zones
     const envelopes: FloatingEnvelope[] = [];
     const envelopeCount = 8;
 
     for (let i = 0; i < envelopeCount; i++) {
+      const inHeader = i < 5; // 5 in header, 3 in bottom
+      const yPos = inHeader
+        ? canvas.height * (0.03 + Math.random() * 0.22)
+        : canvas.height * (0.72 + Math.random() * 0.22);
+
       envelopes.push({
         x: canvas.width * (0.05 + Math.random() * 0.9),
-        y: canvas.height * (0.05 + Math.random() * 0.5),
+        y: yPos,
         size: 28 + Math.random() * 22,
         opacity: 0.2 + Math.random() * 0.15,
         floatPhase: Math.random() * Math.PI * 2,
@@ -372,14 +386,19 @@ export function ContactBackgroundLight() {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Create connection nodes - biased toward upper half
+    // Create connection nodes - header + bottom zones
     const nodes: ConnectionNode[] = [];
     const nodeCount = 20;
 
     for (let i = 0; i < nodeCount; i++) {
+      const inHeader = Math.random() < 0.6;
+      const yPos = inHeader
+        ? Math.random() * canvas.height * 0.3
+        : canvas.height * 0.7 + Math.random() * canvas.height * 0.3;
+
       nodes.push({
         x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height * 0.7,
+        y: yPos,
         vx: (Math.random() - 0.5) * 0.25,
         vy: (Math.random() - 0.5) * 0.25,
         size: 2.5 + Math.random() * 3,
@@ -389,13 +408,16 @@ export function ContactBackgroundLight() {
       });
     }
 
-    // Create wave rings - biased toward upper area
+    // Create wave rings - header + bottom zones
     const waves: WaveRing[] = [];
     const createWave = () => {
       if (waves.length < 5) {
+        const inHeader = Math.random() < 0.5;
         waves.push({
           x: canvas.width * (0.1 + Math.random() * 0.8),
-          y: canvas.height * (0.1 + Math.random() * 0.5),
+          y: inHeader
+            ? canvas.height * (0.05 + Math.random() * 0.25)
+            : canvas.height * (0.7 + Math.random() * 0.25),
           radius: 0,
           maxRadius: 200 + Math.random() * 150,
           opacity: 0.5,
@@ -404,14 +426,19 @@ export function ContactBackgroundLight() {
       }
     };
 
-    // Create floating envelopes - concentrated in upper area
+    // Create floating envelopes - header + bottom zones
     const envelopes: FloatingEnvelope[] = [];
     const envelopeCount = 7;
 
     for (let i = 0; i < envelopeCount; i++) {
+      const inHeader = i < 4;
+      const yPos = inHeader
+        ? canvas.height * (0.03 + Math.random() * 0.22)
+        : canvas.height * (0.72 + Math.random() * 0.22);
+
       envelopes.push({
         x: canvas.width * (0.05 + Math.random() * 0.9),
-        y: canvas.height * (0.05 + Math.random() * 0.5),
+        y: yPos,
         size: 25 + Math.random() * 20,
         opacity: 0.28 + Math.random() * 0.18,
         floatPhase: Math.random() * Math.PI * 2,
