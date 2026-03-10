@@ -408,7 +408,7 @@ export function EcosystemBackgroundLight() {
         const baseY = h * wave.yOffset;
         const color = colors[wave.colorType];
         const breath = 0.7 + Math.sin(time * 0.5 + wave.phase) * 0.3;
-        const alpha = wave.opacityBase * breath * 0.6;
+        const alpha = wave.opacityBase * breath;
 
         ctx.beginPath();
         for (let x = 0; x <= w; x += 3) {
@@ -444,7 +444,7 @@ export function EcosystemBackgroundLight() {
         const nx = (w * 0.1) + (i / 7) * (w * 0.8) + Math.sin(nodeTime + i * 1.7) * 30;
         const ny = (h * 0.15) + Math.sin(nodeTime * 0.7 + i * 2.3) * (h * 0.2);
         const pulse = 0.4 + Math.sin(time * 1.5 + i * 1.1) * 0.6;
-        const nodeAlpha = 0.12 * pulse * 0.6;
+        const nodeAlpha = 0.12 * pulse;
 
         ctx.beginPath();
         ctx.arc(nx, ny, 20, 0, Math.PI * 2);
