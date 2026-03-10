@@ -244,34 +244,79 @@ function ProcessStep({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 30, scale: 0.9 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
-      className="relative flex flex-col items-center text-center"
+      transition={{ duration: 0.6, delay: 0.2 + index * 0.15, ease: [0.22, 1, 0.36, 1] }}
+      className="relative flex flex-col items-center text-center group"
     >
-      {/* Step number + icon */}
-      <div className="relative mb-3">
-        <div className="svc-process-icon w-14 h-14 rounded-2xl flex items-center justify-center transition-transform duration-300 hover:scale-105">
-          <Icon className="w-6 h-6 svc-process-icon-color" />
+      {/* Connector line (not on last) */}
+      {!isLast && (
+        <div className="hidden sm:block absolute top-7 -right-[calc(50%-8px)] w-[calc(100%-16px)] z-0">
+          <motion.div
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.5 + index * 0.15, ease: "easeOut" }}
+            className="svc-connector h-[2px] w-full origin-left"
+          />
+          {/* Animated dot traveling along connector */}
+          <motion.div
+            initial={{ left: "0%", opacity: 0 }}
+            whileInView={{ left: "100%", opacity: [0, 1, 1, 0] }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.2, delay: 0.8 + index * 0.15, ease: "easeInOut" }}
+            className="absolute top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-indigo-400 shadow-[0_0_6px_rgba(99,102,241,0.6)]"
+          />
         </div>
-        <span className="absolute -top-1.5 -right-1.5 w-6 h-6 rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 text-white text-[10px] font-bold flex items-center justify-center">
+      )}
+
+      {/* Step number + icon with glow */}
+      <div className="relative mb-3 z-10">
+        {/* Background glow on hover */}
+        <div className="absolute inset-0 -m-3 rounded-3xl bg-indigo-500/0 group-hover:bg-indigo-500/10 blur-xl transition-all duration-500" />
+
+        <motion.div
+          whileHover={{ scale: 1.1, rotate: [0, -3, 3, 0] }}
+          transition={{ duration: 0.4 }}
+          className="svc-process-icon w-14 h-14 rounded-2xl flex items-center justify-center relative overflow-hidden"
+        >
+          {/* Shimmer effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+          <Icon className="w-6 h-6 svc-process-icon-color relative z-10" />
+        </motion.div>
+
+        {/* Step number badge with pulse */}
+        <motion.span
+          initial={{ scale: 0 }}
+          whileInView={{ scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ type: "spring", stiffness: 400, damping: 15, delay: 0.4 + index * 0.15 }}
+          className="absolute -top-1.5 -right-1.5 w-6 h-6 rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 text-white text-[10px] font-bold flex items-center justify-center shadow-lg shadow-indigo-500/30"
+        >
           {index + 1}
-        </span>
+        </motion.span>
       </div>
 
       {/* Title */}
-      <h4 className="text-sm font-bold mb-1 svc-process-title">{step.title}</h4>
-      <p className="text-xs leading-relaxed svc-process-description max-w-[140px]">
+      <motion.h4
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4, delay: 0.5 + index * 0.15 }}
+        className="text-sm font-bold mb-1 svc-process-title"
+      >
+        {step.title}
+      </motion.h4>
+      <motion.p
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4, delay: 0.6 + index * 0.15 }}
+        className="text-xs leading-relaxed svc-process-description max-w-[140px]"
+      >
         {step.description}
-      </p>
-
-      {/* Connector arrow (not on last) */}
-      {!isLast && (
-        <div className="hidden sm:block absolute top-7 -right-[calc(50%-8px)] w-[calc(100%-16px)]">
-          <div className="svc-connector h-[2px] w-full" />
-        </div>
-      )}
+      </motion.p>
     </motion.div>
   );
 }

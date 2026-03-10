@@ -38,17 +38,6 @@ export function ServicesBackground() {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Wave layers
-    const waveCount = 10;
-    const waves = Array.from({ length: waveCount }, (_, i) => ({
-      amplitude: 15 + Math.random() * 25,
-      frequency: 0.002 + Math.random() * 0.003,
-      speed: 0.3 + Math.random() * 0.4,
-      yOffset: (i / waveCount) * canvas.height,
-      phase: Math.random() * Math.PI * 2,
-      opacity: 0.03 + Math.random() * 0.05,
-    }));
-
     // Floating spheres - bottom corners + laterals
     const spheres: FloatingSphere[] = [
       {
@@ -126,30 +115,6 @@ export function ServicesBackground() {
         ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
         ctx.fillStyle = gradient;
         ctx.fill();
-      });
-
-      // Draw sine waves
-      waves.forEach((wave) => {
-        ctx.beginPath();
-        for (let x = 0; x <= canvas.width; x += 3) {
-          const y = wave.yOffset +
-            Math.sin(x * wave.frequency + time * wave.speed + wave.phase) * wave.amplitude * breath +
-            Math.sin(x * wave.frequency * 0.5 + time * wave.speed * 0.7) * wave.amplitude * 0.4;
-
-          if (x === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-
-        const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-        gradient.addColorStop(0, `rgba(99, 102, 241, 0)`);
-        gradient.addColorStop(0.2, `rgba(99, 102, 241, ${wave.opacity * breath})`);
-        gradient.addColorStop(0.5, `rgba(139, 92, 246, ${wave.opacity * 1.2 * breath})`);
-        gradient.addColorStop(0.8, `rgba(167, 139, 250, ${wave.opacity * breath})`);
-        gradient.addColorStop(1, `rgba(99, 102, 241, 0)`);
-
-        ctx.strokeStyle = gradient;
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
       });
 
       // Draw floating spheres
@@ -267,17 +232,6 @@ export function ServicesBackgroundLight() {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Wave layers
-    const waveCount = 10;
-    const waves = Array.from({ length: waveCount }, (_, i) => ({
-      amplitude: 15 + Math.random() * 25,
-      frequency: 0.002 + Math.random() * 0.003,
-      speed: 0.3 + Math.random() * 0.4,
-      yOffset: (i / waveCount) * canvas.height,
-      phase: Math.random() * Math.PI * 2,
-      opacity: 0.04 + Math.random() * 0.06,
-    }));
-
     // Floating spheres - bottom corners + laterals
     const spheres: FloatingSphere[] = [
       {
@@ -355,30 +309,6 @@ export function ServicesBackgroundLight() {
         ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
         ctx.fillStyle = gradient;
         ctx.fill();
-      });
-
-      // Draw sine waves
-      waves.forEach((wave) => {
-        ctx.beginPath();
-        for (let x = 0; x <= canvas.width; x += 3) {
-          const y = wave.yOffset +
-            Math.sin(x * wave.frequency + time * wave.speed + wave.phase) * wave.amplitude * breath +
-            Math.sin(x * wave.frequency * 0.5 + time * wave.speed * 0.7) * wave.amplitude * 0.4;
-
-          if (x === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-
-        const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-        gradient.addColorStop(0, `rgba(79, 70, 229, 0)`);
-        gradient.addColorStop(0.2, `rgba(79, 70, 229, ${wave.opacity * breath})`);
-        gradient.addColorStop(0.5, `rgba(99, 102, 241, ${wave.opacity * 1.2 * breath})`);
-        gradient.addColorStop(0.8, `rgba(124, 58, 237, ${wave.opacity * breath})`);
-        gradient.addColorStop(1, `rgba(79, 70, 229, 0)`);
-
-        ctx.strokeStyle = gradient;
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
       });
 
       // Draw floating spheres
