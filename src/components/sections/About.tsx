@@ -103,8 +103,8 @@ export function About() {
             <Image
               src="/frontend-icon.png"
               alt="Frontend"
-              width={320}
-              height={320}
+              width={420}
+              height={420}
               className="relative drop-shadow-[0_0_25px_rgba(99,102,241,0.2)] opacity-40"
             />
           </div>
@@ -136,8 +136,8 @@ export function About() {
             <Image
               src="/backend-icon.png"
               alt="Backend"
-              width={320}
-              height={320}
+              width={420}
+              height={420}
               className="relative drop-shadow-[0_0_25px_rgba(139,92,246,0.2)] opacity-40"
             />
           </div>
