@@ -96,6 +96,7 @@ interface EcoNode {
   techStack: string[];
   metrics: { value: string; label: string }[];
   architecture: string;
+  shared?: string[];
   liveUrl?: string;
   githubUrl?: string;
   status: "live" | "coming";
@@ -106,7 +107,7 @@ const liveApps: EcoNode[] = [
     id: "pulse-ds",
     name: "Pulse Design System",
     shortName: "Design System",
-    tagline: "Fundacao visual do ecossistema · todos os apps herdam tokens, componentes e patterns deste sistema",
+    tagline: "Base do ecossistema · exporta tokens, componentes e layouts para todos os apps",
     icon: <PulseDSIcon />,
     color: "indigo",
     colorClass: "text-indigo-400",
@@ -114,13 +115,10 @@ const liveApps: EcoNode[] = [
     bgClass: "bg-indigo-500/10",
     glowColor: "rgba(99, 102, 241, 0.15)",
     role: "A fundacao",
-    techStack: ["Next.js", "TypeScript", "Tailwind", "Radix UI"],
-    metrics: [
-      { value: "100+", label: "Components" },
-      { value: "56", label: "Pages" },
-      { value: "25", label: "Dashboards" },
-    ],
-    architecture: "Atomic Design · CSS Variables · Shared Tokens",
+    techStack: [],
+    metrics: [],
+    architecture: "",
+    shared: ["Design Tokens", "100+ Components", "Layout System", "Theme Engine"],
     liveUrl: "https://pulse-saas-theme.vercel.app",
     githubUrl: "https://github.com/AndriyAmaro/pulse-saas-theme",
     status: "live",
@@ -129,7 +127,7 @@ const liveApps: EcoNode[] = [
     id: "pulse-chat",
     name: "Pulse Chat",
     shortName: "Chat",
-    tagline: "Comunicacao real-time com WebSockets · salas, typing indicators, presenca online e notificacoes push",
+    tagline: "Consome tokens e 40+ componentes do DS · adiciona real-time layer",
     icon: <PulseChatIcon />,
     color: "teal",
     colorClass: "text-teal-400",
@@ -137,13 +135,10 @@ const liveApps: EcoNode[] = [
     bgClass: "bg-teal-500/10",
     glowColor: "rgba(20, 184, 166, 0.15)",
     role: "Comunicacao",
-    techStack: ["NestJS", "Socket.IO", "Prisma", "PostgreSQL"],
-    metrics: [
-      { value: "32", label: "WS Events" },
-      { value: "98", label: "Tests" },
-      { value: "12", label: "Rooms" },
-    ],
-    architecture: "Event-Driven · Gateway Pattern · Real-time",
+    techStack: [],
+    metrics: [],
+    architecture: "",
+    shared: ["40+ Components", "Color Tokens", "Typography", "Spacing Scale"],
     liveUrl: "https://realtime-chat-eight-beryl.vercel.app",
     githubUrl: "https://github.com/AndriyAmaro/realtime-chat",
     status: "live",
@@ -152,7 +147,7 @@ const liveApps: EcoNode[] = [
     id: "pulse-finance",
     name: "Pulse Finance",
     shortName: "Finance",
-    tagline: "Dashboard financeiro com Clean Architecture · transacoes, cache inteligente e filas assincronas",
+    tagline: "Herda dashboard variants e data components do DS · adiciona cache layer",
     icon: <PulseFinanceIcon />,
     color: "emerald",
     colorClass: "text-emerald-400",
@@ -160,13 +155,10 @@ const liveApps: EcoNode[] = [
     bgClass: "bg-emerald-500/10",
     glowColor: "rgba(16, 185, 129, 0.15)",
     role: "Dashboard",
-    techStack: ["Next.js", "NestJS", "Redis", "BullMQ"],
-    metrics: [
-      { value: "143", label: "Tests" },
-      { value: "8", label: "Modules" },
-      { value: "15", label: "Endpoints" },
-    ],
-    architecture: "Clean Architecture · Repository Pattern · CQRS",
+    techStack: [],
+    metrics: [],
+    architecture: "",
+    shared: ["Dashboard Layouts", "Chart Components", "Data Tables", "Form System"],
     liveUrl: "https://dashboard-finance-swart.vercel.app",
     githubUrl: "https://github.com/AndriyAmaro/finance-flow",
     status: "live",
@@ -322,37 +314,26 @@ function EcoNodeCard({ node, index, isCenter }: { node: EcoNode; index: number; 
             </div>
           </div>
 
-          {/* Description */}
+          {/* Description - ecosystem relationship */}
           <p className="text-xs leading-relaxed eco-card-description mb-4">{node.tagline}</p>
 
-          {/* Tech Stack pills - only for live */}
-          {!isComing && node.techStack.length > 0 && (
-            <div className="flex flex-wrap gap-1.5 mb-4">
-              {node.techStack.map((tech) => (
-                <span key={tech} className="eco-tech-pill px-2 py-0.5 rounded-md text-[10px] font-medium">
-                  {tech}
+          {/* Shared resources - what connects to the ecosystem */}
+          {!isComing && node.shared && node.shared.length > 0 && (
+            <div className="space-y-2">
+              <div className="flex items-center gap-1.5">
+                <Layers className={`w-3 h-3 ${node.colorClass}`} />
+                <span className="text-[10px] font-semibold uppercase tracking-wider eco-card-description">
+                  {node.id === "pulse-ds" ? "Exporta" : "Herda do DS"}
                 </span>
-              ))}
-            </div>
-          )}
-
-          {/* Key Metrics mini-grid - only for live */}
-          {!isComing && node.metrics.length > 0 && (
-            <div className="grid grid-cols-3 gap-2 mb-3">
-              {node.metrics.map((m) => (
-                <div key={m.label} className="eco-metric-cell text-center py-2 rounded-lg">
-                  <p className={`text-lg font-bold ${node.colorClass}`}>{m.value}</p>
-                  <p className="text-[9px] eco-card-description uppercase tracking-wider font-medium">{m.label}</p>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Architecture one-liner - only for live */}
-          {!isComing && node.architecture && (
-            <div className="eco-architecture-bar flex items-center gap-2 px-3 py-2 rounded-lg">
-              <Layers className={`w-3 h-3 ${node.colorClass} shrink-0`} />
-              <span className="text-[10px] font-medium eco-card-description">{node.architecture}</span>
+              </div>
+              <div className="grid grid-cols-2 gap-1.5">
+                {node.shared.map((item) => (
+                  <div key={item} className="eco-shared-item flex items-center gap-1.5 px-2 py-1.5 rounded-lg">
+                    <span className={`w-1 h-1 rounded-full ${dotColor}`} />
+                    <span className="text-[10px] font-medium eco-card-description">{item}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
