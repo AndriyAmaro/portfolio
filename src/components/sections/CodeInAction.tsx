@@ -3,6 +3,7 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { Terminal, FileCode2, GitCommit, Play, Copy, Check } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { CodeInActionBackground, CodeInActionBackgroundLight } from "../ui/CodeInActionBackground";
 
 // ---------------------------------------------------------------------------
 // Code snippets from the real Pulse Ecosystem
@@ -244,11 +245,8 @@ export function CodeInAction() {
 
   return (
     <section ref={sectionRef} id="code" className="relative py-24 md:py-32 overflow-hidden">
-      {/* Background glows */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-500/5 rounded-full blur-[120px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-violet-500/5 rounded-full blur-[120px]" />
-      </div>
+      {/* Animated Background */}
+      {isLightMode ? <CodeInActionBackgroundLight /> : <CodeInActionBackground />}
 
       <div className="container-custom relative z-10">
         {/* Section header */}
@@ -276,15 +274,15 @@ export function CodeInAction() {
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-5 gap-8">
+        <div className="grid lg:grid-cols-5 gap-8 items-stretch">
           {/* Code editor - 3 cols */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="lg:col-span-3"
+            className="lg:col-span-3 flex"
           >
-            <div className="code-editor rounded-2xl overflow-hidden group/editor">
+            <div className="code-editor rounded-2xl overflow-hidden group/editor flex flex-col w-full">
               {/* Top gradient accent bar */}
               <div className="h-[2px] bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500" />
 
@@ -359,7 +357,7 @@ export function CodeInAction() {
               </div>
 
               {/* Code area with line numbers */}
-              <div className="code-content min-h-[400px] max-h-[480px] overflow-auto font-mono text-[13px] leading-relaxed">
+              <div className="code-content flex-1 min-h-[400px] overflow-auto font-mono text-[13px] leading-relaxed">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activeTab}
@@ -413,9 +411,9 @@ export function CodeInAction() {
             initial={{ opacity: 0, x: 20 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="lg:col-span-2"
+            className="lg:col-span-2 flex"
           >
-            <div className="code-commit-panel rounded-2xl overflow-hidden h-full">
+            <div className="code-commit-panel rounded-2xl overflow-hidden h-full flex flex-col w-full">
               {/* Top accent */}
               <div className="h-[2px] bg-gradient-to-r from-violet-500/50 via-indigo-500/50 to-violet-500/50" />
 
@@ -431,7 +429,7 @@ export function CodeInAction() {
               </div>
 
               {/* Commit list */}
-              <div className="p-3 space-y-1.5">
+              <div className="p-3 space-y-1.5 flex-1">
                 {commits.map((commit, i) => (
                   <motion.div
                     key={commit.hash}
