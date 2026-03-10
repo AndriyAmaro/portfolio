@@ -120,7 +120,7 @@ export function SectionDivider() {
       <canvas
         ref={canvasRef}
         className="w-full relative"
-        style={{ height: "3px", marginTop: "-2px" }}
+        style={{ height: "3px", marginTop: "-1.5px" }}
       />
     </div>
   );
