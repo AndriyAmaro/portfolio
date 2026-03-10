@@ -2,16 +2,6 @@
 
 import { useEffect, useRef } from "react";
 
-interface FlowingLine {
-  points: { x: number; y: number }[];
-  speed: number;
-  amplitude: number;
-  frequency: number;
-  phase: number;
-  opacity: number;
-  strokeWidth: number;
-}
-
 interface FloatingSphere {
   x: number;
   y: number;
@@ -54,29 +44,6 @@ export function AbstractBackground() {
     };
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
-
-    // Create flowing lines
-    const flowingLines: FlowingLine[] = [];
-    const lineCount = 12;
-
-    for (let i = 0; i < lineCount; i++) {
-      const points: { x: number; y: number }[] = [];
-      const yBase = (canvas.height / lineCount) * i + canvas.height * 0.2;
-
-      for (let x = -100; x <= canvas.width + 100; x += 20) {
-        points.push({ x, y: yBase });
-      }
-
-      flowingLines.push({
-        points,
-        speed: 0.3 + Math.random() * 0.4,
-        amplitude: 30 + Math.random() * 50,
-        frequency: 0.002 + Math.random() * 0.003,
-        phase: Math.random() * Math.PI * 2,
-        opacity: 0.08 + Math.random() * 0.12,
-        strokeWidth: 1 + Math.random() * 1.5,
-      });
-    }
 
     // Create spiral rings
     const spiralRings: SpiralRing[] = [];
@@ -145,42 +112,6 @@ export function AbstractBackground() {
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       time += 0.016;
-
-      // Draw flowing curved lines
-      flowingLines.forEach((line) => {
-        ctx.beginPath();
-
-        line.points.forEach((point, i) => {
-          const waveY = point.y +
-            Math.sin(point.x * line.frequency + time * line.speed + line.phase) * line.amplitude +
-            Math.sin(point.x * line.frequency * 0.5 + time * line.speed * 0.7) * line.amplitude * 0.5;
-
-          if (i === 0) {
-            ctx.moveTo(point.x, waveY);
-          } else {
-            const prevPoint = line.points[i - 1];
-            const prevWaveY = prevPoint.y +
-              Math.sin(prevPoint.x * line.frequency + time * line.speed + line.phase) * line.amplitude +
-              Math.sin(prevPoint.x * line.frequency * 0.5 + time * line.speed * 0.7) * line.amplitude * 0.5;
-
-            const cpX = (prevPoint.x + point.x) / 2;
-            const cpY = (prevWaveY + waveY) / 2;
-            ctx.quadraticCurveTo(prevPoint.x, prevWaveY, cpX, cpY);
-          }
-        });
-
-        const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-        gradient.addColorStop(0, `rgba(139, 92, 246, 0)`);
-        gradient.addColorStop(0.2, `rgba(139, 92, 246, ${line.opacity})`);
-        gradient.addColorStop(0.5, `rgba(167, 139, 250, ${line.opacity * 1.2})`);
-        gradient.addColorStop(0.8, `rgba(99, 102, 241, ${line.opacity})`);
-        gradient.addColorStop(1, `rgba(99, 102, 241, 0)`);
-
-        ctx.strokeStyle = gradient;
-        ctx.lineWidth = line.strokeWidth;
-        ctx.lineCap = "round";
-        ctx.stroke();
-      });
 
       // Draw spiral rings
       spiralRings.forEach((ring) => {
@@ -319,29 +250,6 @@ export function AbstractBackgroundLight() {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Create flowing lines
-    const flowingLines: FlowingLine[] = [];
-    const lineCount = 10;
-
-    for (let i = 0; i < lineCount; i++) {
-      const points: { x: number; y: number }[] = [];
-      const yBase = (canvas.height / lineCount) * i + canvas.height * 0.2;
-
-      for (let x = -100; x <= canvas.width + 100; x += 20) {
-        points.push({ x, y: yBase });
-      }
-
-      flowingLines.push({
-        points,
-        speed: 0.2 + Math.random() * 0.3,
-        amplitude: 25 + Math.random() * 40,
-        frequency: 0.002 + Math.random() * 0.002,
-        phase: Math.random() * Math.PI * 2,
-        opacity: 0.12 + Math.random() * 0.1,
-        strokeWidth: 1 + Math.random() * 1,
-      });
-    }
-
     // Create spiral rings
     const spiralRings: SpiralRing[] = [];
     const ringCount = 12;
@@ -409,42 +317,6 @@ export function AbstractBackgroundLight() {
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       time += 0.016;
-
-      // Draw flowing curved lines
-      flowingLines.forEach((line) => {
-        ctx.beginPath();
-
-        line.points.forEach((point, i) => {
-          const waveY = point.y +
-            Math.sin(point.x * line.frequency + time * line.speed + line.phase) * line.amplitude +
-            Math.sin(point.x * line.frequency * 0.5 + time * line.speed * 0.7) * line.amplitude * 0.5;
-
-          if (i === 0) {
-            ctx.moveTo(point.x, waveY);
-          } else {
-            const prevPoint = line.points[i - 1];
-            const prevWaveY = prevPoint.y +
-              Math.sin(prevPoint.x * line.frequency + time * line.speed + line.phase) * line.amplitude +
-              Math.sin(prevPoint.x * line.frequency * 0.5 + time * line.speed * 0.7) * line.amplitude * 0.5;
-
-            const cpX = (prevPoint.x + point.x) / 2;
-            const cpY = (prevWaveY + waveY) / 2;
-            ctx.quadraticCurveTo(prevPoint.x, prevWaveY, cpX, cpY);
-          }
-        });
-
-        const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-        gradient.addColorStop(0, `rgba(99, 102, 241, 0)`);
-        gradient.addColorStop(0.2, `rgba(99, 102, 241, ${line.opacity})`);
-        gradient.addColorStop(0.5, `rgba(124, 58, 237, ${line.opacity * 1.1})`);
-        gradient.addColorStop(0.8, `rgba(79, 70, 229, ${line.opacity})`);
-        gradient.addColorStop(1, `rgba(79, 70, 229, 0)`);
-
-        ctx.strokeStyle = gradient;
-        ctx.lineWidth = line.strokeWidth;
-        ctx.lineCap = "round";
-        ctx.stroke();
-      });
 
       // Draw spiral rings
       spiralRings.forEach((ring) => {
@@ -516,7 +388,7 @@ export function AbstractBackgroundLight() {
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {/* Base gradient - light (cleaner, more neutral) */}
+      {/* Base gradient - light */}
       <div
         className="absolute inset-0"
         style={{

@@ -10,37 +10,49 @@ const highlights = [
     icon: Layers,
     title: "Arquitetura Completa",
     description:
-      "Do design system ao deploy. Tokens, componentes, paginas, API, banco de dados e cache num unico ecossistema.",
+      "Do design system ao deploy. Tokens, componentes, páginas, API, banco de dados e cache num único ecossistema.",
   },
   {
     icon: TestTubes,
     title: "380+ Testes",
     description:
-      "Unit, integration e e2e com Vitest e Testing Library. Cobertura real, nao so pra encher numero.",
+      "Unit, integration e e2e com Vitest e Testing Library. Cobertura real, não só pra encher número.",
   },
   {
     icon: GitBranch,
-    title: "Documentacao Tecnica",
+    title: "Documentação Técnica",
     description:
-      "ADRs, diagramas SVG, guias de scaling. Cada decisao arquitetural esta documentada e justificada.",
+      "ADRs, diagramas SVG, guias de scaling. Cada decisão arquitetural está documentada e justificada.",
   },
   {
     icon: Rocket,
-    title: "Deploy Continuo",
+    title: "Deploy Contínuo",
     description:
-      "CI/CD com GitHub Actions, deploy automatico na Vercel e Railway, conventional commits em todos os repos.",
+      "CI/CD com GitHub Actions, deploy automático na Vercel e Railway, conventional commits em todos os repos.",
   },
 ];
 
-const techBadges = [
+const techStack = [
   "Next.js",
   "TypeScript",
+  "React",
   "Node.js",
   "PostgreSQL",
   "Tailwind CSS",
   "Prisma",
   "Socket.io",
   "Docker",
+  "Redis",
+  "Vitest",
+  "GitHub Actions",
+  "Vercel",
+  "Railway",
+  "Framer Motion",
+  "Zod",
+  "JWT",
+  "REST API",
+  "WebSocket",
+  "Clean Architecture",
 ];
 
 export function About() {
@@ -78,7 +90,7 @@ export function About() {
             Sobre <span className="gradient-text">Mim</span>
           </h2>
           <p className="about-subtitle max-w-2xl mx-auto">
-            Quem eu sou, o que construi e como posso ajudar no seu proximo
+            Quem eu sou, o que construí e como posso ajudar no seu próximo
             projeto
           </p>
         </motion.div>
@@ -93,48 +105,31 @@ export function About() {
             className="space-y-6"
           >
             <h3 className="text-2xl md:text-3xl font-semibold">
-              Construi um ecossistema inteiro{" "}
-              <span className="gradient-text">do zero</span>
+              Full Stack Developer{" "}
+              <span className="gradient-text">orientado a produto</span>
             </h3>
 
             <div className="space-y-4 about-description-text">
               <p>
                 Sou Full Stack Developer focado em React, Next.js e Node.js.
-                Nao construo apenas telas ou APIs isoladas · projeto e
-                implemento aplicacoes completas, do design system ate o
-                deploy em producao.
+                Não construo apenas telas ou APIs isoladas · projeto e
+                implemento aplicações completas, do design system até o
+                deploy em produção.
               </p>
 
               <p>
                 Criei o <span className="font-semibold text-indigo-400">Pulse Ecosystem</span> do
                 zero: um design system com 100+ componentes que serve de
-                fundacao para 3 SaaS apps em producao · um dashboard
-                financeiro multi-tenant, uma plataforma de chat real-time com
-                WebSocket, e mais por vir.
+                fundação para múltiplas aplicações em produção · dashboards,
+                plataformas real-time, marketplaces e mais por vir.
               </p>
 
               <p>
                 Cada projeto tem arquitetura documentada, testes
-                automatizados, CI/CD configurado e decisoes tecnicas
-                registradas em ADRs. Nao e so codigo que funciona · e codigo
+                automatizados, CI/CD configurado e decisões técnicas
+                registradas em ADRs. Não é só código que funciona · é código
                 que escala e que outros devs conseguem manter.
               </p>
-            </div>
-
-            {/* Tech stack badges */}
-            <div className="flex flex-wrap gap-2 pt-4">
-              {techBadges.map((tech, index) => (
-                <motion.span
-                  key={tech}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.3, delay: 0.5 + index * 0.05 }}
-                  className="about-tech-badge px-4 py-1.5 text-sm font-medium rounded-full transition-all duration-300 cursor-default"
-                >
-                  {tech}
-                </motion.span>
-              ))}
             </div>
           </motion.div>
 
@@ -149,7 +144,7 @@ export function About() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="group h-full"
               >
-                <div className="about-highlight-card relative p-6 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 h-full">
+                <div className="about-highlight-card about-shimmer-border relative p-6 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 h-full">
                   {/* Top accent line */}
                   <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
@@ -172,6 +167,28 @@ export function About() {
             ))}
           </div>
         </div>
+
+        {/* Tech stack marquee */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="mt-16"
+        >
+          <div className="about-marquee-container relative overflow-hidden rounded-2xl py-5">
+            <div className="about-marquee-track flex gap-8">
+              {[...techStack, ...techStack].map((tech, index) => (
+                <span
+                  key={`${tech}-${index}`}
+                  className="about-marquee-item flex-shrink-0 text-sm font-medium whitespace-nowrap"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

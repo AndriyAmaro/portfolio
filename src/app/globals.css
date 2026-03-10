@@ -925,6 +925,112 @@ section {
   color: rgba(79, 70, 229, 1);
 }
 
+/* About · Shimmer border on highlight cards */
+.about-shimmer-border {
+  position: relative;
+}
+
+.about-shimmer-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 1rem;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--shimmer-angle, 0deg),
+    transparent 0%,
+    rgba(99, 102, 241, 0.4) 10%,
+    rgba(139, 92, 246, 0.5) 15%,
+    transparent 25%,
+    transparent 100%
+  );
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  animation: shimmer-rotate 4s linear infinite;
+  pointer-events: none;
+}
+
+.light-mode .about-shimmer-border::before {
+  background: conic-gradient(
+    from var(--shimmer-angle, 0deg),
+    transparent 0%,
+    rgba(79, 70, 229, 0.35) 10%,
+    rgba(124, 58, 237, 0.45) 15%,
+    transparent 25%,
+    transparent 100%
+  );
+}
+
+@property --shimmer-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes shimmer-rotate {
+  to {
+    --shimmer-angle: 360deg;
+  }
+}
+
+/* About · Tech stack marquee */
+.about-marquee-container {
+  background: linear-gradient(
+    135deg,
+    rgba(30, 27, 75, 0.6) 0%,
+    rgba(49, 46, 129, 0.4) 50%,
+    rgba(30, 27, 75, 0.6) 100%
+  );
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+
+.light-mode .about-marquee-container {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(238, 242, 255, 0.8) 50%,
+    rgba(255, 255, 255, 0.9) 100%
+  );
+  border: 1px solid rgba(99, 102, 241, 0.12);
+}
+
+.about-marquee-track {
+  animation: marquee-scroll 30s linear infinite;
+  width: max-content;
+}
+
+.about-marquee-item {
+  color: rgba(167, 139, 250, 0.7);
+  transition: color 0.3s ease;
+}
+
+.about-marquee-item::before {
+  content: "·";
+  margin-right: 0.5rem;
+  color: rgba(99, 102, 241, 0.4);
+}
+
+.light-mode .about-marquee-item {
+  color: rgba(79, 70, 229, 0.65);
+}
+
+.light-mode .about-marquee-item::before {
+  color: rgba(99, 102, 241, 0.3);
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 /* ===== SKILLS SECTION ===== */
 
 /* Skills subtitle */
