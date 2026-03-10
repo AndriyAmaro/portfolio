@@ -27,70 +27,56 @@ interface FallingColumn {
   trailLength: number;
 }
 
-function createColumns(width: number, height: number, side: "left" | "right"): FallingColumn[] {
-  const columns: FallingColumn[] = [];
-  const zoneWidth = Math.min(width * 0.18, 220);
-  const count = Math.floor(zoneWidth / 22);
-
-  for (let i = 0; i < count; i++) {
-    const baseX = side === "left"
-      ? (i / count) * zoneWidth
-      : width - zoneWidth + (i / count) * zoneWidth;
-
-    const chars: string[] = [];
-    const trailLength = 8 + Math.floor(Math.random() * 12);
-    for (let j = 0; j < trailLength; j++) {
-      chars.push(CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)]);
-    }
-
-    columns.push({
-      x: baseX + Math.random() * 16,
-      chars,
-      y: -Math.random() * height * 1.5,
-      speed: 0.5,
-      opacity: 0.25 + Math.random() * 0.2,
-      fontSize: 10 + Math.floor(Math.random() * 3),
-      charIndex: 0,
-      charTimer: 0,
-      charInterval: 3 + Math.random() * 5,
-      trailLength,
-    });
+function createColumn(x: number, height: number, opacity: number, fontSize: number): FallingColumn {
+  const chars: string[] = [];
+  const trailLength = 8 + Math.floor(Math.random() * 14);
+  for (let j = 0; j < trailLength; j++) {
+    chars.push(CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)]);
   }
-
-  return columns;
+  // Stagger start positions across full 2x height so columns loop seamlessly
+  return {
+    x,
+    chars,
+    y: Math.random() * height * 2 - height,
+    speed: 0.5,
+    opacity,
+    fontSize,
+    charIndex: 0,
+    charTimer: 0,
+    charInterval: 3 + Math.random() * 5,
+    trailLength,
+  };
 }
 
-// Center columns — subtle, above each card area
-function createCenterColumns(width: number, height: number): FallingColumn[] {
+function createAllColumns(width: number, height: number): FallingColumn[] {
   const columns: FallingColumn[] = [];
-  // 5-col grid: code editor spans cols 0-2 (60%), commit log spans cols 3-4 (40%)
-  // Place ~2 columns above each card center area, more subtle
-  const positions = [
-    width * 0.25,  // above code editor (left-center)
-    width * 0.42,  // above code editor (right-center)
-    width * 0.68,  // above commit log (left-center)
-    width * 0.82,  // above commit log (right-center)
+
+  // --- Lateral columns (left + right zones, ~22% each side) ---
+  const zoneWidth = Math.min(width * 0.22, 280);
+  const lateralSpacing = 18;
+  const lateralCount = Math.floor(zoneWidth / lateralSpacing);
+
+  for (let i = 0; i < lateralCount; i++) {
+    const leftX = (i / lateralCount) * zoneWidth + Math.random() * 10;
+    const rightX = width - zoneWidth + (i / lateralCount) * zoneWidth + Math.random() * 10;
+    const opacity = 0.3 + Math.random() * 0.25;
+    const fontSize = 10 + Math.floor(Math.random() * 3);
+    columns.push(createColumn(leftX, height, opacity, fontSize));
+    columns.push(createColumn(rightX, height, opacity, fontSize));
+  }
+
+  // --- Center columns (above each card, more subtle) ---
+  const centerPositions = [
+    width * 0.22, width * 0.30, width * 0.38, width * 0.46,  // above code editor
+    width * 0.56, width * 0.64, width * 0.72, width * 0.80,  // above commit log
   ];
-
-  for (const x of positions) {
-    const chars: string[] = [];
-    const trailLength = 6 + Math.floor(Math.random() * 8);
-    for (let j = 0; j < trailLength; j++) {
-      chars.push(CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)]);
-    }
-
-    columns.push({
-      x: x + (Math.random() - 0.5) * 30,
-      chars,
-      y: -Math.random() * height * 1.2,
-      speed: 0.5,
-      opacity: 0.15 + Math.random() * 0.1,
-      fontSize: 9 + Math.floor(Math.random() * 2),
-      charIndex: 0,
-      charTimer: 0,
-      charInterval: 4 + Math.random() * 6,
-      trailLength,
-    });
+  for (const x of centerPositions) {
+    columns.push(createColumn(
+      x + (Math.random() - 0.5) * 20,
+      height,
+      0.15 + Math.random() * 0.12,
+      9 + Math.floor(Math.random() * 2),
+    ));
   }
 
   return columns;
@@ -118,11 +104,7 @@ function CodeRainCanvas({ isDark }: { isDark: boolean }) {
       canvas.style.height = `${rect.height}px`;
       ctx.scale(dpr, dpr);
 
-      columnsRef.current = [
-        ...createColumns(rect.width, rect.height, "left"),
-        ...createColumns(rect.width, rect.height, "right"),
-        ...createCenterColumns(rect.width, rect.height),
-      ];
+      columnsRef.current = createAllColumns(rect.width, rect.height);
     };
 
     resize();
@@ -139,8 +121,8 @@ function CodeRainCanvas({ isDark }: { isDark: boolean }) {
 
       ctx.clearRect(0, 0, w, h);
 
-      const baseColor = isDark ? [139, 92, 246] : [79, 70, 229];   // violet-500 / indigo-600
-      const headColor = isDark ? [167, 139, 250] : [67, 56, 202]; // violet-400 / indigo-700
+      const baseColor = isDark ? [139, 92, 246] : [55, 48, 163];   // violet-500 / indigo-800
+      const headColor = isDark ? [167, 139, 250] : [49, 46, 129]; // violet-400 / indigo-900
 
       for (const col of columnsRef.current) {
         col.y += col.speed;
@@ -178,10 +160,10 @@ function CodeRainCanvas({ isDark }: { isDark: boolean }) {
           const [r, g, b] = j === 0 ? headColor : baseColor;
           ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
 
-          // Subtle glow on head character
+          // Glow on head character
           if (j === 0) {
-            ctx.shadowColor = `rgba(${headColor[0]}, ${headColor[1]}, ${headColor[2]}, ${alpha * (isDark ? 0.5 : 0.3)})`;
-            ctx.shadowBlur = isDark ? 6 : 4;
+            ctx.shadowColor = `rgba(${headColor[0]}, ${headColor[1]}, ${headColor[2]}, ${alpha * 0.6})`;
+            ctx.shadowBlur = isDark ? 8 : 6;
           } else {
             ctx.shadowBlur = 0;
           }
@@ -206,7 +188,7 @@ function CodeRainCanvas({ isDark }: { isDark: boolean }) {
     <canvas
       ref={canvasRef}
       className="absolute inset-0 pointer-events-none"
-      style={{ opacity: isDark ? 0.9 : 0.85 }}
+      style={{ opacity: 1 }}
     />
   );
 }
