@@ -2,10 +2,6 @@
 
 import { motion, useInView } from "framer-motion";
 import {
-  Palette,
-  MessageCircle,
-  BarChart3,
-  ArrowRight,
   ExternalLink,
   Github,
   Layers,
@@ -483,22 +479,6 @@ export function Ecosystem() {
           </div>
         </div>
 
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="mt-14 text-center"
-        >
-          <a href="https://github.com/AndriyAmaro" target="_blank" rel="noopener noreferrer" className="inline-block">
-            <div className="eco-cta-btn group inline-flex items-center gap-3 px-6 py-3 rounded-full font-medium transition-all duration-300 hover:-translate-y-1">
-              <Github className="w-5 h-5" />
-              <span>Explorar no GitHub</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-            </div>
-          </a>
-        </motion.div>
       </div>
     </section>
   );
