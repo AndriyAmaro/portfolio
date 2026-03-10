@@ -75,6 +75,30 @@ export function EcosystemBackground() {
     ];
 
     // -----------------------------------------------------------------
+    // Floating spheres · lateral depth elements
+    // -----------------------------------------------------------------
+    interface Sphere {
+      baseX: number;
+      baseY: number;
+      radius: number;
+      opacity: number;
+      floatSpeed: number;
+      floatAmplitude: number;
+      phase: number;
+      color: string;
+    }
+
+    const w0 = canvas.width;
+    const h0 = canvas.height;
+
+    const spheres: Sphere[] = [
+      { baseX: w0 * 0.08, baseY: h0 * 0.25, radius: 70, opacity: 0.14, floatSpeed: 0.5, floatAmplitude: 28, phase: 0, color: "139, 92, 246" },
+      { baseX: w0 * 0.92, baseY: h0 * 0.35, radius: 55, opacity: 0.11, floatSpeed: 0.7, floatAmplitude: 22, phase: Math.PI / 2, color: "99, 102, 241" },
+      { baseX: w0 * 0.05, baseY: h0 * 0.65, radius: 50, opacity: 0.09, floatSpeed: 0.6, floatAmplitude: 30, phase: Math.PI, color: "167, 139, 250" },
+      { baseX: w0 * 0.95, baseY: h0 * 0.7, radius: 45, opacity: 0.10, floatSpeed: 0.4, floatAmplitude: 25, phase: Math.PI * 1.5, color: "129, 140, 248" },
+    ];
+
+    // -----------------------------------------------------------------
     // Animation
     // -----------------------------------------------------------------
     const animate = () => {
@@ -93,6 +117,38 @@ export function EcosystemBackground() {
       };
 
       const om = isDark ? 1 : 0.6;
+
+      // Draw floating spheres (behind waves)
+      spheres.forEach((sphere) => {
+        const sx = sphere.baseX + Math.sin(time * sphere.floatSpeed + sphere.phase) * sphere.floatAmplitude;
+        const sy = sphere.baseY + Math.cos(time * sphere.floatSpeed * 0.7 + sphere.phase) * sphere.floatAmplitude * 0.6;
+        const sOpacity = sphere.opacity * om;
+
+        // Outer glow
+        const glowGradient = ctx.createRadialGradient(sx, sy, 0, sx, sy, sphere.radius * 2);
+        glowGradient.addColorStop(0, `rgba(${sphere.color}, ${sOpacity * 0.5})`);
+        glowGradient.addColorStop(0.5, `rgba(${sphere.color}, ${sOpacity * 0.2})`);
+        glowGradient.addColorStop(1, `rgba(${sphere.color}, 0)`);
+
+        ctx.beginPath();
+        ctx.arc(sx, sy, sphere.radius * 2, 0, Math.PI * 2);
+        ctx.fillStyle = glowGradient;
+        ctx.fill();
+
+        // Inner sphere
+        const sphereGradient = ctx.createRadialGradient(
+          sx - sphere.radius * 0.3, sy - sphere.radius * 0.3, 0,
+          sx, sy, sphere.radius
+        );
+        sphereGradient.addColorStop(0, `rgba(${sphere.color}, ${sOpacity * 0.8})`);
+        sphereGradient.addColorStop(0.7, `rgba(${sphere.color}, ${sOpacity * 0.4})`);
+        sphereGradient.addColorStop(1, `rgba(${sphere.color}, ${sOpacity * 0.1})`);
+
+        ctx.beginPath();
+        ctx.arc(sx, sy, sphere.radius, 0, Math.PI * 2);
+        ctx.fillStyle = sphereGradient;
+        ctx.fill();
+      });
 
       // Draw each wave
       waves.forEach((wave) => {
@@ -290,12 +346,63 @@ export function EcosystemBackgroundLight() {
       cyan: "6, 182, 212",
     };
 
+    // Floating spheres · lateral depth
+    interface Sphere {
+      baseX: number;
+      baseY: number;
+      radius: number;
+      opacity: number;
+      floatSpeed: number;
+      floatAmplitude: number;
+      phase: number;
+      color: string;
+    }
+
+    const w0 = canvas.width;
+    const h0 = canvas.height;
+
+    const spheres: Sphere[] = [
+      { baseX: w0 * 0.08, baseY: h0 * 0.25, radius: 60, opacity: 0.18, floatSpeed: 0.4, floatAmplitude: 25, phase: 0, color: "99, 102, 241" },
+      { baseX: w0 * 0.92, baseY: h0 * 0.35, radius: 50, opacity: 0.14, floatSpeed: 0.5, floatAmplitude: 20, phase: Math.PI / 2, color: "124, 58, 237" },
+      { baseX: w0 * 0.05, baseY: h0 * 0.65, radius: 45, opacity: 0.12, floatSpeed: 0.45, floatAmplitude: 28, phase: Math.PI, color: "139, 92, 246" },
+      { baseX: w0 * 0.95, baseY: h0 * 0.7, radius: 40, opacity: 0.10, floatSpeed: 0.35, floatAmplitude: 22, phase: Math.PI * 1.5, color: "79, 70, 229" },
+    ];
+
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       time += 0.016;
 
       const w = canvas.width;
       const h = canvas.height;
+
+      // Draw floating spheres (behind waves)
+      spheres.forEach((sphere) => {
+        const sx = sphere.baseX + Math.sin(time * sphere.floatSpeed + sphere.phase) * sphere.floatAmplitude;
+        const sy = sphere.baseY + Math.cos(time * sphere.floatSpeed * 0.7 + sphere.phase) * sphere.floatAmplitude * 0.6;
+
+        const glowGradient = ctx.createRadialGradient(sx, sy, 0, sx, sy, sphere.radius * 2.5);
+        glowGradient.addColorStop(0, `rgba(${sphere.color}, ${sphere.opacity * 0.6})`);
+        glowGradient.addColorStop(0.4, `rgba(${sphere.color}, ${sphere.opacity * 0.25})`);
+        glowGradient.addColorStop(1, `rgba(${sphere.color}, 0)`);
+
+        ctx.beginPath();
+        ctx.arc(sx, sy, sphere.radius * 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = glowGradient;
+        ctx.fill();
+
+        const sphereGradient = ctx.createRadialGradient(
+          sx - sphere.radius * 0.25, sy - sphere.radius * 0.25, 0,
+          sx, sy, sphere.radius
+        );
+        sphereGradient.addColorStop(0, `rgba(${sphere.color}, ${sphere.opacity * 0.9})`);
+        sphereGradient.addColorStop(0.6, `rgba(${sphere.color}, ${sphere.opacity * 0.5})`);
+        sphereGradient.addColorStop(1, `rgba(${sphere.color}, ${sphere.opacity * 0.15})`);
+
+        ctx.beginPath();
+        ctx.arc(sx, sy, sphere.radius, 0, Math.PI * 2);
+        ctx.fillStyle = sphereGradient;
+        ctx.fill();
+      });
 
       waves.forEach((wave) => {
         const baseY = h * wave.yOffset;
