@@ -52,11 +52,11 @@ export function AbstractBackground() {
     for (let i = 0; i < ringCount; i++) {
       spiralRings.push({
         centerX: canvas.width * 0.75,
-        centerY: canvas.height * 0.5,
+        centerY: canvas.height * 0.65,
         baseRadius: 80 + i * 35,
         rotation: (i * Math.PI) / 8,
         rotationSpeed: 0.0003 + Math.random() * 0.0005,
-        opacity: 0.35 - i * 0.015,
+        opacity: 0.22 - i * 0.01,
         eccentricity: 0.6 + Math.random() * 0.3,
       });
     }
@@ -66,9 +66,9 @@ export function AbstractBackground() {
       {
         x: 0, y: 0,
         baseX: canvas.width * 0.2,
-        baseY: canvas.height * 0.3,
+        baseY: canvas.height * 0.5,
         radius: 90,
-        opacity: 0.35,
+        opacity: 0.22,
         floatSpeed: 0.5,
         floatAmplitude: 30,
         phase: 0,
@@ -77,9 +77,9 @@ export function AbstractBackground() {
       {
         x: 0, y: 0,
         baseX: canvas.width * 0.7,
-        baseY: canvas.height * 0.6,
+        baseY: canvas.height * 0.72,
         radius: 70,
-        opacity: 0.28,
+        opacity: 0.18,
         floatSpeed: 0.7,
         floatAmplitude: 25,
         phase: Math.PI / 2,
@@ -88,9 +88,9 @@ export function AbstractBackground() {
       {
         x: 0, y: 0,
         baseX: canvas.width * 0.85,
-        baseY: canvas.height * 0.25,
+        baseY: canvas.height * 0.45,
         radius: 55,
-        opacity: 0.22,
+        opacity: 0.15,
         floatSpeed: 0.4,
         floatAmplitude: 20,
         phase: Math.PI,
@@ -99,9 +99,9 @@ export function AbstractBackground() {
       {
         x: 0, y: 0,
         baseX: canvas.width * 0.15,
-        baseY: canvas.height * 0.75,
+        baseY: canvas.height * 0.82,
         radius: 65,
-        opacity: 0.2,
+        opacity: 0.14,
         floatSpeed: 0.6,
         floatAmplitude: 35,
         phase: Math.PI * 1.5,
@@ -203,25 +203,25 @@ export function AbstractBackground() {
         style={{ opacity: 1 }}
       />
 
-      {/* Gradient orbs - top */}
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[150px] animate-pulse-slow" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-[180px]" />
+      {/* Gradient orbs */}
+      <div className="absolute top-1/2 left-1/4 w-[500px] h-[500px] bg-indigo-600/12 rounded-full blur-[150px] animate-pulse-slow" />
+      <div className="absolute top-[60%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/6 rounded-full blur-[180px]" />
 
-      {/* Corner glows - top */}
-      <div className="absolute top-0 left-0 w-[400px] h-[450px] bg-violet-500/20 rounded-full blur-[130px] animate-pulse-slow" />
-      <div className="absolute top-0 right-0 w-[400px] h-[450px] bg-indigo-500/18 rounded-full blur-[130px] animate-pulse-slow animation-delay-2000" />
+      {/* Corner glows */}
+      <div className="absolute top-1/3 left-0 w-[400px] h-[450px] bg-violet-500/12 rounded-full blur-[130px] animate-pulse-slow" />
+      <div className="absolute top-1/3 right-0 w-[400px] h-[450px] bg-indigo-500/10 rounded-full blur-[130px] animate-pulse-slow animation-delay-2000" />
 
       {/* Lateral glows - sides */}
-      <div className="absolute top-1/3 left-0 w-[300px] h-[500px] bg-cyan-500/12 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
-      <div className="absolute top-1/3 right-0 w-[300px] h-[500px] bg-cyan-500/12 rounded-full blur-[100px] animate-pulse-slow animation-delay-2000" />
+      <div className="absolute top-1/2 left-0 w-[300px] h-[500px] bg-cyan-500/8 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
+      <div className="absolute top-1/2 right-0 w-[300px] h-[500px] bg-cyan-500/8 rounded-full blur-[100px] animate-pulse-slow animation-delay-2000" />
 
       {/* Bottom orbs */}
-      <div className="absolute bottom-0 left-1/4 w-[450px] h-[350px] bg-violet-500/15 rounded-full blur-[120px] animate-pulse-slow animation-delay-2000" />
-      <div className="absolute bottom-0 right-1/4 w-[400px] h-[300px] bg-indigo-500/12 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
+      <div className="absolute bottom-0 left-1/4 w-[450px] h-[350px] bg-violet-500/10 rounded-full blur-[120px] animate-pulse-slow animation-delay-2000" />
+      <div className="absolute bottom-0 right-1/4 w-[400px] h-[300px] bg-indigo-500/8 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
 
       {/* Bottom corners */}
-      <div className="absolute bottom-0 left-0 w-[300px] h-[400px] bg-indigo-400/12 rounded-full blur-[100px] animate-pulse-slow animation-delay-2000" />
-      <div className="absolute bottom-0 right-0 w-[300px] h-[400px] bg-violet-400/12 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
+      <div className="absolute bottom-0 left-0 w-[300px] h-[400px] bg-indigo-400/8 rounded-full blur-[100px] animate-pulse-slow animation-delay-2000" />
+      <div className="absolute bottom-0 right-0 w-[300px] h-[400px] bg-violet-400/8 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
 
       {/* Center overlay for text readability */}
       <div
