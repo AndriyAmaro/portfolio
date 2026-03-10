@@ -2,27 +2,184 @@
 
 import { useEffect, useRef } from "react";
 
-interface FloatingSphere {
+interface Node {
   x: number;
   y: number;
   baseX: number;
   baseY: number;
   radius: number;
   opacity: number;
-  floatSpeed: number;
-  floatAmplitude: number;
+  speed: number;
+  amplitude: number;
   phase: number;
   color: string;
 }
 
-interface SpiralRing {
-  centerX: number;
-  centerY: number;
-  baseRadius: number;
+interface HexRing {
+  cx: number;
+  cy: number;
+  radius: number;
   rotation: number;
   rotationSpeed: number;
   opacity: number;
-  eccentricity: number;
+  sides: number;
+}
+
+function createNodes(w: number, h: number, isDark: boolean): Node[] {
+  const colors = isDark
+    ? ["139,92,246", "99,102,241", "167,139,250", "129,140,248", "124,58,237"]
+    : ["99,102,241", "124,58,237", "139,92,246", "79,70,229", "109,40,217"];
+
+  const positions = [
+    { x: 0.08, y: 0.52 }, { x: 0.18, y: 0.68 }, { x: 0.12, y: 0.82 },
+    { x: 0.25, y: 0.55 }, { x: 0.32, y: 0.72 }, { x: 0.22, y: 0.88 },
+    { x: 0.75, y: 0.48 }, { x: 0.82, y: 0.62 }, { x: 0.88, y: 0.78 },
+    { x: 0.7, y: 0.7 }, { x: 0.92, y: 0.55 }, { x: 0.78, y: 0.85 },
+    { x: 0.5, y: 0.58 }, { x: 0.42, y: 0.78 }, { x: 0.58, y: 0.82 },
+    { x: 0.35, y: 0.48 }, { x: 0.65, y: 0.52 }, { x: 0.48, y: 0.92 },
+    { x: 0.15, y: 0.45 }, { x: 0.85, y: 0.42 },
+  ];
+
+  return positions.map((p, i) => ({
+    x: 0, y: 0,
+    baseX: w * p.x,
+    baseY: h * p.y,
+    radius: 2 + Math.random() * 2.5,
+    opacity: isDark ? 0.3 + Math.random() * 0.4 : 0.25 + Math.random() * 0.35,
+    speed: 0.3 + Math.random() * 0.4,
+    amplitude: 8 + Math.random() * 15,
+    phase: Math.random() * Math.PI * 2,
+    color: colors[i % colors.length],
+  }));
+}
+
+function createHexRings(w: number, h: number, isDark: boolean): HexRing[] {
+  return [
+    { cx: w * 0.2, cy: h * 0.6, radius: 60, rotation: 0, rotationSpeed: 0.002, opacity: isDark ? 0.12 : 0.15, sides: 6 },
+    { cx: w * 0.8, cy: h * 0.55, radius: 80, rotation: Math.PI / 6, rotationSpeed: -0.0015, opacity: isDark ? 0.1 : 0.12, sides: 6 },
+    { cx: w * 0.5, cy: h * 0.7, radius: 100, rotation: 0, rotationSpeed: 0.001, opacity: isDark ? 0.08 : 0.1, sides: 6 },
+    { cx: w * 0.15, cy: h * 0.8, radius: 45, rotation: Math.PI / 4, rotationSpeed: 0.003, opacity: isDark ? 0.1 : 0.12, sides: 4 },
+    { cx: w * 0.85, cy: h * 0.75, radius: 50, rotation: 0, rotationSpeed: -0.002, opacity: isDark ? 0.09 : 0.11, sides: 3 },
+    { cx: w * 0.35, cy: h * 0.5, radius: 35, rotation: Math.PI / 3, rotationSpeed: 0.0025, opacity: isDark ? 0.11 : 0.13, sides: 6 },
+    { cx: w * 0.65, cy: h * 0.85, radius: 55, rotation: 0, rotationSpeed: -0.0018, opacity: isDark ? 0.07 : 0.09, sides: 4 },
+  ];
+}
+
+function drawPolygon(ctx: CanvasRenderingContext2D, cx: number, cy: number, radius: number, sides: number, rotation: number) {
+  ctx.beginPath();
+  for (let i = 0; i <= sides; i++) {
+    const angle = (i * Math.PI * 2) / sides + rotation;
+    const x = cx + radius * Math.cos(angle);
+    const y = cy + radius * Math.sin(angle);
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.closePath();
+}
+
+function animateCanvas(
+  canvas: HTMLCanvasElement,
+  ctx: CanvasRenderingContext2D,
+  isDark: boolean
+) {
+  let time = 0;
+  let animationId: number;
+
+  const nodes = createNodes(canvas.width, canvas.height, isDark);
+  const hexRings = createHexRings(canvas.width, canvas.height, isDark);
+  const connectionDist = 220;
+
+  const baseColor = isDark ? "167,139,250" : "99,102,241";
+  const lineColor = isDark ? "139,92,246" : "79,70,229";
+
+  const animate = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    time += 0.016;
+
+    // Update node positions
+    nodes.forEach((n) => {
+      n.x = n.baseX + Math.sin(time * n.speed + n.phase) * n.amplitude;
+      n.y = n.baseY + Math.cos(time * n.speed * 0.7 + n.phase) * n.amplitude * 0.6;
+    });
+
+    // Draw hex/polygon rings
+    hexRings.forEach((h) => {
+      h.rotation += h.rotationSpeed;
+
+      // Outer glow ring
+      drawPolygon(ctx, h.cx, h.cy, h.radius * 1.05, h.sides, h.rotation);
+      ctx.shadowColor = `rgba(${baseColor}, ${h.opacity * 0.6})`;
+      ctx.shadowBlur = 15;
+      ctx.strokeStyle = `rgba(${baseColor}, ${h.opacity * 0.3})`;
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // Main ring
+      drawPolygon(ctx, h.cx, h.cy, h.radius, h.sides, h.rotation);
+      ctx.strokeStyle = `rgba(${baseColor}, ${h.opacity})`;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      // Inner ring
+      drawPolygon(ctx, h.cx, h.cy, h.radius * 0.6, h.sides, h.rotation + Math.PI / h.sides);
+      ctx.strokeStyle = `rgba(${baseColor}, ${h.opacity * 0.5})`;
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+
+      // Center dot
+      ctx.beginPath();
+      ctx.arc(h.cx, h.cy, 2, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${baseColor}, ${h.opacity * 0.8})`;
+      ctx.fill();
+    });
+
+    // Draw connections between nearby nodes
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[i].x - nodes[j].x;
+        const dy = nodes[i].y - nodes[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < connectionDist) {
+          const alpha = (1 - dist / connectionDist) * 0.2;
+          ctx.beginPath();
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.strokeStyle = `rgba(${lineColor}, ${alpha})`;
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Draw nodes
+    nodes.forEach((n) => {
+      // Outer glow
+      const glow = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.radius * 8);
+      glow.addColorStop(0, `rgba(${n.color}, ${n.opacity * 0.4})`);
+      glow.addColorStop(0.5, `rgba(${n.color}, ${n.opacity * 0.1})`);
+      glow.addColorStop(1, `rgba(${n.color}, 0)`);
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.radius * 8, 0, Math.PI * 2);
+      ctx.fillStyle = glow;
+      ctx.fill();
+
+      // Core dot
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
+      ctx.shadowColor = `rgba(${n.color}, ${n.opacity})`;
+      ctx.shadowBlur = 8;
+      ctx.fillStyle = `rgba(${n.color}, ${n.opacity * 0.9})`;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    });
+
+    animationId = requestAnimationFrame(animate);
+  };
+
+  animate();
+  return () => cancelAnimationFrame(animationId);
 }
 
 export function AbstractBackground() {
@@ -31,12 +188,8 @@ export function AbstractBackground() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-
-    let animationId: number;
-    let time = 0;
 
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
@@ -45,144 +198,11 @@ export function AbstractBackground() {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Create spiral rings
-    const spiralRings: SpiralRing[] = [];
-    const ringCount = 15;
-
-    for (let i = 0; i < ringCount; i++) {
-      spiralRings.push({
-        centerX: canvas.width * 0.75,
-        centerY: canvas.height * 0.65,
-        baseRadius: 80 + i * 35,
-        rotation: (i * Math.PI) / 8,
-        rotationSpeed: 0.0003 + Math.random() * 0.0005,
-        opacity: 0.22 - i * 0.01,
-        eccentricity: 0.6 + Math.random() * 0.3,
-      });
-    }
-
-    // Create floating spheres
-    const spheres: FloatingSphere[] = [
-      {
-        x: 0, y: 0,
-        baseX: canvas.width * 0.2,
-        baseY: canvas.height * 0.5,
-        radius: 90,
-        opacity: 0.22,
-        floatSpeed: 0.5,
-        floatAmplitude: 30,
-        phase: 0,
-        color: "139, 92, 246",
-      },
-      {
-        x: 0, y: 0,
-        baseX: canvas.width * 0.7,
-        baseY: canvas.height * 0.72,
-        radius: 70,
-        opacity: 0.18,
-        floatSpeed: 0.7,
-        floatAmplitude: 25,
-        phase: Math.PI / 2,
-        color: "99, 102, 241",
-      },
-      {
-        x: 0, y: 0,
-        baseX: canvas.width * 0.85,
-        baseY: canvas.height * 0.45,
-        radius: 55,
-        opacity: 0.15,
-        floatSpeed: 0.4,
-        floatAmplitude: 20,
-        phase: Math.PI,
-        color: "167, 139, 250",
-      },
-      {
-        x: 0, y: 0,
-        baseX: canvas.width * 0.15,
-        baseY: canvas.height * 0.82,
-        radius: 65,
-        opacity: 0.14,
-        floatSpeed: 0.6,
-        floatAmplitude: 35,
-        phase: Math.PI * 1.5,
-        color: "129, 140, 248",
-      },
-    ];
-
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      time += 0.016;
-
-      // Draw spiral rings
-      spiralRings.forEach((ring) => {
-        ring.rotation += ring.rotationSpeed;
-
-        ctx.beginPath();
-        for (let angle = 0; angle <= Math.PI * 2; angle += 0.05) {
-          const r = ring.baseRadius * (1 + ring.eccentricity * Math.cos(angle * 2));
-          const x = ring.centerX + r * Math.cos(angle + ring.rotation);
-          const y = ring.centerY + r * Math.sin(angle + ring.rotation) * 0.7;
-
-          if (angle === 0) {
-            ctx.moveTo(x, y);
-          } else {
-            ctx.lineTo(x, y);
-          }
-        }
-        ctx.closePath();
-
-        // Glow layer
-        ctx.shadowColor = `rgba(167, 139, 250, ${ring.opacity * 0.8})`;
-        ctx.shadowBlur = 12;
-        ctx.strokeStyle = `rgba(167, 139, 250, ${ring.opacity})`;
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-        ctx.shadowBlur = 0;
-      });
-
-      // Draw floating spheres with glow
-      spheres.forEach((sphere) => {
-        sphere.x = sphere.baseX + Math.sin(time * sphere.floatSpeed + sphere.phase) * sphere.floatAmplitude;
-        sphere.y = sphere.baseY + Math.cos(time * sphere.floatSpeed * 0.7 + sphere.phase) * sphere.floatAmplitude * 0.6;
-
-        // Outer glow
-        const glowGradient = ctx.createRadialGradient(
-          sphere.x, sphere.y, 0,
-          sphere.x, sphere.y, sphere.radius * 2.5
-        );
-        glowGradient.addColorStop(0, `rgba(${sphere.color}, ${sphere.opacity * 0.7})`);
-        glowGradient.addColorStop(0.3, `rgba(${sphere.color}, ${sphere.opacity * 0.4})`);
-        glowGradient.addColorStop(0.7, `rgba(${sphere.color}, ${sphere.opacity * 0.15})`);
-        glowGradient.addColorStop(1, `rgba(${sphere.color}, 0)`);
-
-        ctx.beginPath();
-        ctx.arc(sphere.x, sphere.y, sphere.radius * 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = glowGradient;
-        ctx.fill();
-
-        // Inner sphere
-        const sphereGradient = ctx.createRadialGradient(
-          sphere.x - sphere.radius * 0.3, sphere.y - sphere.radius * 0.3, 0,
-          sphere.x, sphere.y, sphere.radius
-        );
-        sphereGradient.addColorStop(0, `rgba(${sphere.color}, ${sphere.opacity * 1.0})`);
-        sphereGradient.addColorStop(0.5, `rgba(${sphere.color}, ${sphere.opacity * 0.6})`);
-        sphereGradient.addColorStop(1, `rgba(${sphere.color}, ${sphere.opacity * 0.2})`);
-
-        ctx.beginPath();
-        ctx.arc(sphere.x, sphere.y, sphere.radius, 0, Math.PI * 2);
-        ctx.fillStyle = sphereGradient;
-        ctx.fill();
-      });
-
-      animationId = requestAnimationFrame(animate);
-    };
-
-    animate();
+    const cleanup = animateCanvas(canvas, ctx, true);
 
     return () => {
       window.removeEventListener("resize", resizeCanvas);
-      cancelAnimationFrame(animationId);
+      cleanup();
     };
   }, []);
 
@@ -241,12 +261,8 @@ export function AbstractBackgroundLight() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-
-    let animationId: number;
-    let time = 0;
 
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
@@ -255,143 +271,11 @@ export function AbstractBackgroundLight() {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Create spiral rings
-    const spiralRings: SpiralRing[] = [];
-    const ringCount = 15;
-
-    for (let i = 0; i < ringCount; i++) {
-      spiralRings.push({
-        centerX: canvas.width * 0.7,
-        centerY: canvas.height * 0.5,
-        baseRadius: 70 + i * 32,
-        rotation: (i * Math.PI) / 7,
-        rotationSpeed: 0.0002 + Math.random() * 0.0004,
-        opacity: 0.3 - i * 0.014,
-        eccentricity: 0.5 + Math.random() * 0.3,
-      });
-    }
-
-    // Create floating spheres
-    const spheres: FloatingSphere[] = [
-      {
-        x: 0, y: 0,
-        baseX: canvas.width * 0.25,
-        baseY: canvas.height * 0.35,
-        radius: 85,
-        opacity: 0.35,
-        floatSpeed: 0.4,
-        floatAmplitude: 25,
-        phase: 0,
-        color: "99, 102, 241",
-      },
-      {
-        x: 0, y: 0,
-        baseX: canvas.width * 0.75,
-        baseY: canvas.height * 0.55,
-        radius: 65,
-        opacity: 0.28,
-        floatSpeed: 0.5,
-        floatAmplitude: 20,
-        phase: Math.PI / 2,
-        color: "124, 58, 237",
-      },
-      {
-        x: 0, y: 0,
-        baseX: canvas.width * 0.85,
-        baseY: canvas.height * 0.3,
-        radius: 50,
-        opacity: 0.22,
-        floatSpeed: 0.35,
-        floatAmplitude: 18,
-        phase: Math.PI,
-        color: "139, 92, 246",
-      },
-      {
-        x: 0, y: 0,
-        baseX: canvas.width * 0.1,
-        baseY: canvas.height * 0.7,
-        radius: 60,
-        opacity: 0.2,
-        floatSpeed: 0.45,
-        floatAmplitude: 30,
-        phase: Math.PI * 1.5,
-        color: "79, 70, 229",
-      },
-    ];
-
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      time += 0.016;
-
-      // Draw spiral rings
-      spiralRings.forEach((ring) => {
-        ring.rotation += ring.rotationSpeed;
-
-        ctx.beginPath();
-        for (let angle = 0; angle <= Math.PI * 2; angle += 0.05) {
-          const r = ring.baseRadius * (1 + ring.eccentricity * Math.cos(angle * 2));
-          const x = ring.centerX + r * Math.cos(angle + ring.rotation);
-          const y = ring.centerY + r * Math.sin(angle + ring.rotation) * 0.7;
-
-          if (angle === 0) {
-            ctx.moveTo(x, y);
-          } else {
-            ctx.lineTo(x, y);
-          }
-        }
-        ctx.closePath();
-
-        ctx.shadowColor = `rgba(99, 102, 241, ${ring.opacity * 0.6})`;
-        ctx.shadowBlur = 10;
-        ctx.strokeStyle = `rgba(99, 102, 241, ${ring.opacity})`;
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-        ctx.shadowBlur = 0;
-      });
-
-      // Draw floating spheres with glow
-      spheres.forEach((sphere) => {
-        sphere.x = sphere.baseX + Math.sin(time * sphere.floatSpeed + sphere.phase) * sphere.floatAmplitude;
-        sphere.y = sphere.baseY + Math.cos(time * sphere.floatSpeed * 0.7 + sphere.phase) * sphere.floatAmplitude * 0.6;
-
-        // Outer glow
-        const glowGradient = ctx.createRadialGradient(
-          sphere.x, sphere.y, 0,
-          sphere.x, sphere.y, sphere.radius * 2.5
-        );
-        glowGradient.addColorStop(0, `rgba(${sphere.color}, ${sphere.opacity * 0.7})`);
-        glowGradient.addColorStop(0.3, `rgba(${sphere.color}, ${sphere.opacity * 0.4})`);
-        glowGradient.addColorStop(0.7, `rgba(${sphere.color}, ${sphere.opacity * 0.15})`);
-        glowGradient.addColorStop(1, `rgba(${sphere.color}, 0)`);
-
-        ctx.beginPath();
-        ctx.arc(sphere.x, sphere.y, sphere.radius * 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = glowGradient;
-        ctx.fill();
-
-        // Inner sphere
-        const sphereGradient = ctx.createRadialGradient(
-          sphere.x - sphere.radius * 0.25, sphere.y - sphere.radius * 0.25, 0,
-          sphere.x, sphere.y, sphere.radius
-        );
-        sphereGradient.addColorStop(0, `rgba(${sphere.color}, ${sphere.opacity * 1.0})`);
-        sphereGradient.addColorStop(0.5, `rgba(${sphere.color}, ${sphere.opacity * 0.6})`);
-        sphereGradient.addColorStop(1, `rgba(${sphere.color}, ${sphere.opacity * 0.2})`);
-
-        ctx.beginPath();
-        ctx.arc(sphere.x, sphere.y, sphere.radius, 0, Math.PI * 2);
-        ctx.fillStyle = sphereGradient;
-        ctx.fill();
-      });
-
-      animationId = requestAnimationFrame(animate);
-    };
-
-    animate();
+    const cleanup = animateCanvas(canvas, ctx, false);
 
     return () => {
       window.removeEventListener("resize", resizeCanvas);
-      cancelAnimationFrame(animationId);
+      cleanup();
     };
   }, []);
 
