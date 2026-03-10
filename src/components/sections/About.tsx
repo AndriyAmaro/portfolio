@@ -84,7 +84,7 @@ export function About() {
         whileInView={{ opacity: 1, x: 0, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8, delay: 0.2 }}
-        className="absolute top-24 left-6 md:left-12 lg:left-20 z-10 pointer-events-none"
+        className="absolute top-4 left-6 md:left-12 lg:left-16 z-10 pointer-events-none"
       >
         <motion.div
           animate={{
@@ -103,8 +103,8 @@ export function About() {
             <Image
               src="/frontend-icon.png"
               alt="Frontend"
-              width={420}
-              height={420}
+              width={520}
+              height={520}
               className="relative drop-shadow-[0_0_25px_rgba(99,102,241,0.2)] opacity-40"
             />
           </div>
@@ -117,7 +117,7 @@ export function About() {
         whileInView={{ opacity: 1, x: 0, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8, delay: 0.3 }}
-        className="absolute top-24 right-6 md:right-12 lg:right-20 z-10 pointer-events-none"
+        className="absolute top-4 right-6 md:right-12 lg:right-16 z-10 pointer-events-none"
       >
         <motion.div
           animate={{
@@ -136,8 +136,8 @@ export function About() {
             <Image
               src="/backend-icon.png"
               alt="Backend"
-              width={420}
-              height={420}
+              width={520}
+              height={520}
               className="relative drop-shadow-[0_0_25px_rgba(139,92,246,0.2)] opacity-40"
             />
           </div>
