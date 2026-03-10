@@ -221,16 +221,161 @@ export function EcosystemBackground() {
   );
 }
 
-// Light mode version · harmonized with SkillsBackgroundLight
+// Light mode version · with wave animations
 export function EcosystemBackgroundLight() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const container = containerRef.current;
+    if (!canvas || !container) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let animationId: number;
+    let time = 0;
+
+    const resizeCanvas = () => {
+      const rect = container.getBoundingClientRect();
+      const w = rect.width || container.parentElement?.offsetWidth || window.innerWidth;
+      const h = rect.height || container.parentElement?.offsetHeight || window.innerHeight;
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w;
+        canvas.height = h;
+      }
+    };
+
+    const ro = new ResizeObserver(resizeCanvas);
+    ro.observe(container);
+    resizeCanvas();
+
+    interface Wave {
+      amplitude: number;
+      frequency: number;
+      speed: number;
+      phase: number;
+      yOffset: number;
+      thickness: number;
+      opacityBase: number;
+      colorType: "indigo" | "violet" | "cyan";
+    }
+
+    const waves: Wave[] = [
+      // Back layer
+      { amplitude: 45, frequency: 0.003, speed: 0.3, phase: 0, yOffset: 0.12, thickness: 1.0, opacityBase: 0.12, colorType: "violet" },
+      { amplitude: 40, frequency: 0.004, speed: 0.25, phase: 1.2, yOffset: 0.18, thickness: 0.9, opacityBase: 0.10, colorType: "indigo" },
+      { amplitude: 55, frequency: 0.002, speed: 0.35, phase: 2.5, yOffset: 0.24, thickness: 1.1, opacityBase: 0.13, colorType: "cyan" },
+
+      // Mid layer
+      { amplitude: 35, frequency: 0.005, speed: 0.4, phase: 0.8, yOffset: 0.30, thickness: 1.3, opacityBase: 0.16, colorType: "indigo" },
+      { amplitude: 28, frequency: 0.006, speed: 0.45, phase: 2.0, yOffset: 0.36, thickness: 1.2, opacityBase: 0.14, colorType: "violet" },
+      { amplitude: 38, frequency: 0.004, speed: 0.38, phase: 3.5, yOffset: 0.42, thickness: 1.4, opacityBase: 0.17, colorType: "cyan" },
+
+      // Front layer
+      { amplitude: 22, frequency: 0.007, speed: 0.55, phase: 1.5, yOffset: 0.48, thickness: 1.5, opacityBase: 0.2, colorType: "indigo" },
+      { amplitude: 20, frequency: 0.008, speed: 0.5, phase: 3.0, yOffset: 0.52, thickness: 1.3, opacityBase: 0.18, colorType: "violet" },
+      { amplitude: 28, frequency: 0.006, speed: 0.6, phase: 4.2, yOffset: 0.56, thickness: 1.6, opacityBase: 0.22, colorType: "cyan" },
+
+      // Extra detail waves
+      { amplitude: 18, frequency: 0.009, speed: 0.65, phase: 0.5, yOffset: 0.08, thickness: 0.8, opacityBase: 0.09, colorType: "indigo" },
+      { amplitude: 50, frequency: 0.0025, speed: 0.2, phase: 1.8, yOffset: 0.34, thickness: 0.9, opacityBase: 0.11, colorType: "violet" },
+      { amplitude: 25, frequency: 0.007, speed: 0.5, phase: 2.8, yOffset: 0.46, thickness: 1.0, opacityBase: 0.13, colorType: "cyan" },
+    ];
+
+    const colors = {
+      indigo: "79, 70, 229",
+      violet: "124, 58, 237",
+      cyan: "6, 182, 212",
+    };
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      time += 0.016;
+
+      const w = canvas.width;
+      const h = canvas.height;
+
+      waves.forEach((wave) => {
+        const baseY = h * wave.yOffset;
+        const color = colors[wave.colorType];
+        const breath = 0.7 + Math.sin(time * 0.5 + wave.phase) * 0.3;
+        const alpha = wave.opacityBase * breath * 0.6;
+
+        ctx.beginPath();
+        for (let x = 0; x <= w; x += 3) {
+          const y = baseY
+            + Math.sin(x * wave.frequency + time * wave.speed + wave.phase) * wave.amplitude
+            + Math.sin(x * wave.frequency * 0.5 + time * wave.speed * 0.7 + wave.phase * 1.3) * wave.amplitude * 0.4;
+
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = `rgba(${color}, ${alpha})`;
+        ctx.lineWidth = wave.thickness;
+        ctx.stroke();
+
+        // Second pass · bundle effect
+        ctx.beginPath();
+        for (let x = 0; x <= w; x += 3) {
+          const y = baseY
+            + Math.sin(x * wave.frequency + time * wave.speed + wave.phase + 0.3) * wave.amplitude * 0.85
+            + Math.sin(x * wave.frequency * 0.5 + time * wave.speed * 0.7 + wave.phase * 1.3 + 0.5) * wave.amplitude * 0.35;
+
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = `rgba(${color}, ${alpha * 0.5})`;
+        ctx.lineWidth = wave.thickness * 0.6;
+        ctx.stroke();
+      });
+
+      // Glow nodes
+      const nodeTime = time * 0.3;
+      for (let i = 0; i < 8; i++) {
+        const nx = (w * 0.1) + (i / 7) * (w * 0.8) + Math.sin(nodeTime + i * 1.7) * 30;
+        const ny = (h * 0.15) + Math.sin(nodeTime * 0.7 + i * 2.3) * (h * 0.2);
+        const pulse = 0.4 + Math.sin(time * 1.5 + i * 1.1) * 0.6;
+        const nodeAlpha = 0.12 * pulse * 0.6;
+
+        ctx.beginPath();
+        ctx.arc(nx, ny, 20, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${colors.cyan}, ${nodeAlpha})`;
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(nx, ny, 3, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${colors.cyan}, ${nodeAlpha * 4})`;
+        ctx.fill();
+      }
+
+      animationId = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      ro.disconnect();
+      cancelAnimationFrame(animationId);
+    };
+  }, []);
+
   return (
-    <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
-      {/* Base gradient · harmonized with Skills/About light mode */}
+    <div ref={containerRef} className="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
+      {/* Base gradient */}
       <div
         className="absolute inset-0"
         style={{
           background: "linear-gradient(180deg, #ffffff 0%, #f8fafc 30%, #f1f5f9 60%, #e2e8f0 100%)",
         }}
+      />
+
+      {/* Canvas for animated waves */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full"
+        style={{ opacity: 0.6 }}
       />
 
       {/* Gradient orbs · top */}
@@ -250,12 +395,12 @@ export function EcosystemBackgroundLight() {
       <div className="absolute bottom-0 left-0 w-[250px] h-[300px] bg-indigo-300/5 rounded-full blur-[90px] animate-pulse-slow animation-delay-2000" />
       <div className="absolute bottom-0 right-0 w-[250px] h-[300px] bg-slate-400/5 rounded-full blur-[90px] animate-pulse-slow animation-delay-4000" />
 
-      {/* Extra bottom glows · where cards sit */}
+      {/* Extra bottom glows */}
       <div className="absolute -bottom-20 left-[15%] w-[300px] h-[250px] bg-indigo-200/8 rounded-full blur-[100px] animate-pulse-slow" />
       <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-[350px] h-[230px] bg-slate-300/8 rounded-full blur-[110px] animate-pulse-slow animation-delay-2000" />
       <div className="absolute -bottom-20 right-[15%] w-[300px] h-[250px] bg-indigo-200/8 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
 
-      {/* Top fade · harmonized with Skills/About */}
+      {/* Top fade */}
       <div
         className="absolute inset-0"
         style={{
