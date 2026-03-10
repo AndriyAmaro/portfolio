@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
-import { CheckCircle, Mail, MapPin, Send } from "lucide-react";
+import { CheckCircle, Mail, MapPin, Send, Github, Linkedin, Clock, Sparkles } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -91,12 +91,28 @@ export function Contact() {
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full contact-response-badge mb-6"
+          >
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+            </span>
+            <span className="text-xs font-semibold tracking-wider uppercase contact-description">
+              Disponivel para projetos
+            </span>
+          </motion.div>
+
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            Entre em <span className="gradient-text">Contato</span>
+            Vamos construir algo <span className="gradient-text">incrivel</span>
           </h2>
           <p className="contact-subtitle max-w-2xl mx-auto">
-            Tem um projeto em mente ou quer discutir oportunidades?
-            Adoraria ouvir você.
+            Do conceito ao deploy · transformo ideias em produtos digitais
+            com codigo limpo e arquitetura escalavel
           </p>
         </motion.div>
 
@@ -107,61 +123,104 @@ export function Contact() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="space-y-8"
+            className="space-y-6"
           >
             <div>
-              <h3 className="contact-title text-2xl font-semibold mb-4">
-                Vamos trabalhar juntos
+              <h3 className="contact-title text-2xl font-semibold mb-3">
+                Proximo passo?
               </h3>
-              <p className="contact-description">
-                Estou disponível para trabalhos freelance e oportunidades
-                em tempo integral. Se você tem um projeto que precisa de um
-                desenvolvedor dedicado, fique à vontade para entrar em contato.
+              <p className="contact-description text-sm leading-relaxed">
+                Seja um MVP, uma plataforma SaaS ou uma refatoracao completa ·
+                trabalho com dedicacao total em cada projeto, aplicando as mesmas
+                praticas que uso no Pulse Ecosystem.
               </p>
             </div>
 
-            <div className="space-y-4">
-              <motion.div
-                className="contact-info-card flex items-center gap-4 p-4 rounded-xl transition-all duration-300"
-                whileHover={{ scale: 1.02 }}
+            {/* What I deliver */}
+            <div className="contact-response-badge p-5 rounded-xl space-y-3">
+              <div className="flex items-center gap-2 mb-3">
+                <Sparkles className="w-4 h-4 text-indigo-400" />
+                <span className="text-xs font-bold tracking-wider uppercase contact-title">
+                  O que entrego
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                {["Aplicacoes Full-Stack", "APIs RESTful", "Dashboards interativos", "Design Systems", "Deploy & CI/CD", "Codigo documentado"].map((item) => (
+                  <div key={item} className="flex items-center gap-2">
+                    <CheckCircle className="w-3.5 h-3.5 text-emerald-400/70 shrink-0" />
+                    <span className="text-xs contact-description">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <motion.a
+                href="mailto:andrifullstackdev@gmail.com"
+                className="contact-info-card flex items-center gap-4 p-4 rounded-xl transition-all duration-300 block"
+                whileHover={{ scale: 1.02, x: 4 }}
+                transition={{ duration: 0.2 }}
               >
-                <div className="contact-icon-container w-12 h-12 rounded-lg flex items-center justify-center">
+                <div className="contact-icon-container w-11 h-11 rounded-lg flex items-center justify-center">
                   <Mail className="w-5 h-5 text-indigo-400" />
                 </div>
-                <div>
-                  <p className="text-sm text-[var(--text-muted)]">Email</p>
-                  <a
-                    href="mailto:andrifullstackdev@gmail.com"
-                    className="font-medium hover:text-[var(--primary)] transition-colors"
-                  >
-                    andrifullstackdev@gmail.com
-                  </a>
+                <div className="flex-1">
+                  <p className="text-xs text-[var(--text-muted)]">Email</p>
+                  <p className="text-sm font-medium">andrifullstackdev@gmail.com</p>
+                </div>
+              </motion.a>
+
+              <motion.div
+                className="contact-info-card flex items-center gap-4 p-4 rounded-xl transition-all duration-300"
+                whileHover={{ scale: 1.02, x: 4 }}
+                transition={{ duration: 0.2 }}
+              >
+                <div className="contact-icon-container w-11 h-11 rounded-lg flex items-center justify-center">
+                  <MapPin className="w-5 h-5 text-violet-400" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-xs text-[var(--text-muted)]">Localizacao</p>
+                  <p className="text-sm font-medium">Brasil · Remoto worldwide</p>
                 </div>
               </motion.div>
 
               <motion.div
                 className="contact-info-card flex items-center gap-4 p-4 rounded-xl transition-all duration-300"
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.02, x: 4 }}
+                transition={{ duration: 0.2 }}
               >
-                <div className="contact-icon-container w-12 h-12 rounded-lg flex items-center justify-center">
-                  <MapPin className="w-5 h-5 text-violet-400" />
+                <div className="contact-icon-container w-11 h-11 rounded-lg flex items-center justify-center">
+                  <Clock className="w-5 h-5 text-cyan-400" />
                 </div>
-                <div>
-                  <p className="text-sm text-[var(--text-muted)]">Localização</p>
-                  <p className="font-medium">Brasil (Trabalho remoto)</p>
+                <div className="flex-1">
+                  <p className="text-xs text-[var(--text-muted)]">Tempo de resposta</p>
+                  <p className="text-sm font-medium">Normalmente em ate 24h</p>
                 </div>
               </motion.div>
             </div>
 
-            {/* Response time note */}
-            <div className="contact-response-badge p-4 rounded-xl">
-              <p className="text-sm contact-description">
-                <span className="contact-title font-medium">
-                  Resposta rápida:
-                </span>{" "}
-                Normalmente respondo em 24-48 horas. Para assuntos urgentes,
-                mencione isso na sua mensagem.
-              </p>
+            {/* Social links */}
+            <div className="flex items-center gap-3">
+              <motion.a
+                href="https://github.com/AndriyAmaro"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="contact-info-card w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300"
+                whileHover={{ scale: 1.1, y: -2 }}
+                transition={{ duration: 0.2 }}
+              >
+                <Github className="w-5 h-5 contact-title" />
+              </motion.a>
+              <motion.a
+                href="https://linkedin.com/in/andri-amaro"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="contact-info-card w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300"
+                whileHover={{ scale: 1.1, y: -2 }}
+                transition={{ duration: 0.2 }}
+              >
+                <Linkedin className="w-5 h-5 contact-title" />
+              </motion.a>
             </div>
           </motion.div>
 
