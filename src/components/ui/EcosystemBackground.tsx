@@ -187,7 +187,7 @@ export function EcosystemBackground() {
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full"
-        style={{ opacity: 0.85 }}
+        style={{ opacity: 0.8 }}
       />
 
       {/* Gradient orbs · top area */}
@@ -199,9 +199,13 @@ export function EcosystemBackground() {
       <div className="absolute top-0 left-0 w-[400px] h-[450px] bg-violet-500/12 rounded-full blur-[130px] animate-pulse-slow" />
       <div className="absolute top-0 right-0 w-[400px] h-[450px] bg-indigo-500/10 rounded-full blur-[130px] animate-pulse-slow animation-delay-2000" />
 
-      {/* Lateral glows */}
+      {/* Lateral glows · top */}
       <div className="absolute top-1/4 left-0 w-[300px] h-[500px] bg-cyan-500/6 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
       <div className="absolute top-1/4 right-0 w-[300px] h-[500px] bg-cyan-500/6 rounded-full blur-[100px] animate-pulse-slow animation-delay-2000" />
+
+      {/* Lateral glows · mid */}
+      <div className="absolute top-1/2 left-0 w-[250px] h-[500px] bg-indigo-500/5 rounded-full blur-[100px] animate-pulse-slow animation-delay-2000" />
+      <div className="absolute top-1/2 right-0 w-[250px] h-[500px] bg-violet-500/5 rounded-full blur-[100px] animate-pulse-slow" />
 
       {/* Bottom orbs · soft glow behind cards */}
       <div className="absolute bottom-0 left-1/4 w-[450px] h-[350px] bg-violet-500/8 rounded-full blur-[120px] animate-pulse-slow animation-delay-2000" />
@@ -223,29 +227,31 @@ export function EcosystemBackground() {
   );
 }
 
-// Light mode version
+// Light mode version · harmonized with SkillsBackgroundLight
 export function EcosystemBackgroundLight() {
   return (
     <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
+      {/* Base gradient · harmonized with Skills/About light mode */}
       <div
         className="absolute inset-0"
         style={{
-          background: "linear-gradient(180deg, #f8fafc 0%, #eef2f7 30%, #e8edf5 60%, #f1f5f9 100%)",
+          background: "linear-gradient(180deg, #ffffff 0%, #f8fafc 30%, #f1f5f9 60%, #e2e8f0 100%)",
         }}
       />
+
       {/* Gradient orbs · top */}
-      <div className="absolute top-[10%] left-1/4 w-[400px] h-[400px] bg-indigo-200/12 rounded-full blur-[120px] animate-pulse-slow" />
-      <div className="absolute top-[20%] right-1/3 w-[350px] h-[350px] bg-slate-300/15 rounded-full blur-[100px] animate-pulse-slow animation-delay-2000" />
+      <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-indigo-200/12 rounded-full blur-[120px] animate-pulse-slow" />
+      <div className="absolute top-1/3 right-1/3 w-[350px] h-[350px] bg-slate-300/15 rounded-full blur-[100px] animate-pulse-slow animation-delay-2000" />
 
-      {/* Corner glows · top */}
-      <div className="absolute top-0 left-0 w-[300px] h-[350px] bg-indigo-200/10 rounded-full blur-[100px] animate-pulse-slow" />
-      <div className="absolute top-0 right-0 w-[280px] h-[320px] bg-slate-300/8 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
+      {/* Lateral glows · top */}
+      <div className="absolute top-1/3 left-0 w-[300px] h-[400px] bg-indigo-300/6 rounded-full blur-[100px] animate-pulse-slow" />
+      <div className="absolute top-1/4 right-0 w-[280px] h-[350px] bg-slate-400/5 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
 
-      {/* Lateral glows */}
-      <div className="absolute top-1/3 left-0 w-[250px] h-[400px] bg-indigo-200/6 rounded-full blur-[90px] animate-pulse-slow" />
-      <div className="absolute top-1/4 right-0 w-[250px] h-[350px] bg-slate-300/5 rounded-full blur-[90px] animate-pulse-slow animation-delay-4000" />
+      {/* Mid lateral glows */}
+      <div className="absolute top-1/2 left-0 w-[250px] h-[500px] bg-indigo-200/8 rounded-full blur-[100px] animate-pulse-slow animation-delay-2000" />
+      <div className="absolute top-1/2 right-0 w-[250px] h-[500px] bg-slate-300/6 rounded-full blur-[100px] animate-pulse-slow" />
 
-      {/* Bottom orbs */}
+      {/* Bottom orbs · soft, harmonized */}
       <div className="absolute bottom-0 left-1/4 w-[380px] h-[280px] bg-indigo-200/10 rounded-full blur-[100px] animate-pulse-slow animation-delay-2000" />
       <div className="absolute bottom-0 right-1/4 w-[350px] h-[250px] bg-slate-300/12 rounded-full blur-[90px] animate-pulse-slow animation-delay-4000" />
       <div className="absolute bottom-[5%] left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-indigo-200/6 rounded-full blur-[110px] animate-pulse-slow" />
@@ -253,6 +259,19 @@ export function EcosystemBackgroundLight() {
       {/* Bottom corners */}
       <div className="absolute bottom-0 left-0 w-[250px] h-[300px] bg-indigo-300/5 rounded-full blur-[90px] animate-pulse-slow animation-delay-2000" />
       <div className="absolute bottom-0 right-0 w-[250px] h-[300px] bg-slate-400/5 rounded-full blur-[90px] animate-pulse-slow animation-delay-4000" />
+
+      {/* Extra bottom glows · where cards sit */}
+      <div className="absolute -bottom-20 left-[15%] w-[300px] h-[250px] bg-indigo-200/8 rounded-full blur-[100px] animate-pulse-slow" />
+      <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-[350px] h-[230px] bg-slate-300/8 rounded-full blur-[110px] animate-pulse-slow animation-delay-2000" />
+      <div className="absolute -bottom-20 right-[15%] w-[300px] h-[250px] bg-indigo-200/8 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
+
+      {/* Top fade · harmonized with Skills/About */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: "linear-gradient(180deg, rgba(255,255,255,0.85) 0%, transparent 18%)",
+        }}
+      />
     </div>
   );
 }
