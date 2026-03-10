@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { ServicesBackground, ServicesBackgroundLight } from "@/components/ui/ServicesBackground";
 
 // ---------------------------------------------------------------------------
 // Services Data
@@ -296,11 +297,8 @@ export function Services() {
 
   return (
     <section id="services" className="relative py-24 md:py-32 overflow-hidden">
-      {/* Background glows */}
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-violet-500/[0.03] rounded-full blur-[100px]" />
-        <div className="absolute bottom-1/3 left-1/4 w-80 h-80 bg-indigo-500/[0.03] rounded-full blur-[100px]" />
-      </div>
+      {/* Background */}
+      {isLightMode ? <ServicesBackgroundLight /> : <ServicesBackground />}
 
       <div className="container-custom relative z-10">
         {/* Section Header */}
