@@ -177,7 +177,7 @@ export function EcosystemBackground() {
     <div ref={containerRef} className="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
       {/* Base gradient · dark mode: deep indigo, light mode: soft slate */}
       <div
-        className="absolute inset-0 eco-bg-base"
+        className="absolute inset-0"
         style={{
           background: "linear-gradient(180deg, #16132d 0%, #191545 30%, #1c1850 60%, #1e1b4b 100%)",
         }}
