@@ -17,14 +17,14 @@ export function SectionDivider() {
 
     const resizeCanvas = () => {
       canvas.width = canvas.parentElement?.offsetWidth || window.innerWidth;
-      canvas.height = 5;
+      canvas.height = 3;
     };
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
     const animate = () => {
       const w = canvas.width;
-      ctx.clearRect(0, 0, w, 5);
+      ctx.clearRect(0, 0, w, 3);
       time += 0.008;
 
       const isDark = !document.documentElement.classList.contains("light-mode");
@@ -54,10 +54,10 @@ export function SectionDivider() {
 
       // Main bright line (center)
       ctx.fillStyle = gradient;
-      ctx.fillRect(0, 2, w, 1);
+      ctx.fillRect(0, 1, w, 1);
 
       // Bright core highlight at sweep position
-      const coreGlow = ctx.createRadialGradient(sweepX, 2.5, 0, sweepX, 2.5, w * 0.12);
+      const coreGlow = ctx.createRadialGradient(sweepX, 1, 0, sweepX, 1, w * 0.12);
       if (isDark) {
         coreGlow.addColorStop(0, "rgba(165, 180, 252, 0.9)");
         coreGlow.addColorStop(0.3, "rgba(139, 92, 246, 0.5)");
@@ -70,7 +70,7 @@ export function SectionDivider() {
         coreGlow.addColorStop(1, "rgba(79, 70, 229, 0)");
       }
       ctx.fillStyle = coreGlow;
-      ctx.fillRect(0, 0, w, 5);
+      ctx.fillRect(0, 0, w, 3);
 
       // Soft glow above and below
       const glowGradient = ctx.createLinearGradient(0, 0, w, 0);
@@ -93,8 +93,8 @@ export function SectionDivider() {
       }
 
       ctx.fillStyle = glowGradient;
-      ctx.fillRect(0, 0, w, 2);
-      ctx.fillRect(0, 3, w, 2);
+      ctx.fillRect(0, 0, w, 1);
+      ctx.fillRect(0, 2, w, 1);
 
       animationId = requestAnimationFrame(animate);
     };
@@ -120,7 +120,7 @@ export function SectionDivider() {
       <canvas
         ref={canvasRef}
         className="w-full relative"
-        style={{ height: "5px", marginTop: "-2.5px" }}
+        style={{ height: "3px", marginTop: "-3px" }}
       />
     </div>
   );
