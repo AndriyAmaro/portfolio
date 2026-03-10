@@ -88,22 +88,23 @@ export function About() {
       >
         <motion.div
           animate={{
-            y: [0, -12, 0],
-            rotate: [0, -3, 0, 3, 0],
+            y: [0, -18, 0, -8, 0],
+            x: [0, 6, 0, -6, 0],
+            rotate: [0, -2, 1, -1, 0],
           }}
           transition={{
-            duration: 6,
+            duration: 10,
             repeat: Infinity,
             ease: "easeInOut",
           }}
         >
           <div className="relative">
-            <div className="absolute -inset-4 bg-indigo-500/15 rounded-full blur-2xl animate-pulse" />
+            <div className="absolute -inset-6 bg-indigo-500/15 rounded-full blur-3xl animate-pulse" />
             <Image
               src="/frontend-icon.png"
               alt="Frontend"
-              width={260}
-              height={260}
+              width={320}
+              height={320}
               className="relative drop-shadow-[0_0_25px_rgba(99,102,241,0.2)] opacity-40"
             />
           </div>
@@ -120,22 +121,23 @@ export function About() {
       >
         <motion.div
           animate={{
-            y: [0, -10, 0],
-            rotate: [0, 3, 0, -3, 0],
+            y: [0, -15, 0, -10, 0],
+            x: [0, -5, 0, 5, 0],
+            rotate: [0, 2, -1, 1, 0],
           }}
           transition={{
-            duration: 7,
+            duration: 11,
             repeat: Infinity,
             ease: "easeInOut",
           }}
         >
           <div className="relative">
-            <div className="absolute -inset-4 bg-violet-500/15 rounded-full blur-2xl animate-pulse" />
+            <div className="absolute -inset-6 bg-violet-500/15 rounded-full blur-3xl animate-pulse" />
             <Image
               src="/backend-icon.png"
               alt="Backend"
-              width={260}
-              height={260}
+              width={320}
+              height={320}
               className="relative drop-shadow-[0_0_25px_rgba(139,92,246,0.2)] opacity-40"
             />
           </div>
