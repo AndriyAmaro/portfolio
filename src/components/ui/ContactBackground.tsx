@@ -402,7 +402,7 @@ export function ContactBackgroundLight() {
         vx: (Math.random() - 0.5) * 0.25,
         vy: (Math.random() - 0.5) * 0.25,
         size: 2.5 + Math.random() * 3,
-        opacity: 0.4 + Math.random() * 0.3,
+        opacity: 0.15 + Math.random() * 0.15,
         pulsePhase: Math.random() * Math.PI * 2,
         connections: [],
       });
@@ -420,7 +420,7 @@ export function ContactBackgroundLight() {
             : canvas.height * (0.7 + Math.random() * 0.25),
           radius: 0,
           maxRadius: 200 + Math.random() * 150,
-          opacity: 0.5,
+          opacity: 0.25,
           speed: 0.5 + Math.random() * 0.4,
         });
       }
@@ -440,7 +440,7 @@ export function ContactBackgroundLight() {
         x: canvas.width * (0.05 + Math.random() * 0.9),
         y: yPos,
         size: 25 + Math.random() * 20,
-        opacity: 0.28 + Math.random() * 0.18,
+        opacity: 0.12 + Math.random() * 0.1,
         floatPhase: Math.random() * Math.PI * 2,
         floatSpeed: 0.25 + Math.random() * 0.25,
         rotation: Math.random() * 0.3 - 0.15,
@@ -517,7 +517,7 @@ export function ContactBackgroundLight() {
       for (let i = waves.length - 1; i >= 0; i--) {
         const wave = waves[i];
         wave.radius += wave.speed;
-        wave.opacity = 0.45 * (1 - wave.radius / wave.maxRadius);
+        wave.opacity = 0.2 * (1 - wave.radius / wave.maxRadius);
 
         if (wave.radius >= wave.maxRadius) {
           waves.splice(i, 1);
@@ -587,7 +587,7 @@ export function ContactBackgroundLight() {
               Math.pow(node.x - other.x, 2) + Math.pow(node.y - other.y, 2)
             );
             if (dist < 160) {
-              const opacity = (1 - dist / 160) * 0.25;
+              const opacity = (1 - dist / 160) * 0.12;
               drawConnection(node.x, node.y, other.x, other.y, opacity);
             }
           }
@@ -604,7 +604,7 @@ export function ContactBackgroundLight() {
           node.x, node.y, 0,
           node.x, node.y, currentSize * 3
         );
-        glowGradient.addColorStop(0, `rgba(79, 70, 229, ${currentOpacity * 0.4})`);
+        glowGradient.addColorStop(0, `rgba(79, 70, 229, ${currentOpacity * 0.2})`);
         glowGradient.addColorStop(1, `rgba(79, 70, 229, 0)`);
 
         ctx.beginPath();
@@ -614,7 +614,7 @@ export function ContactBackgroundLight() {
 
         ctx.beginPath();
         ctx.arc(node.x, node.y, currentSize, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(79, 70, 229, ${currentOpacity})`;
+        ctx.fillStyle = `rgba(79, 70, 229, ${currentOpacity * 0.5})`;
         ctx.fill();
       });
 
