@@ -38,8 +38,33 @@ export function ServicesBackground() {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Floating spheres - bottom corners + laterals
+    // Floating spheres - all corners + laterals
     const spheres: FloatingSphere[] = [
+      // Top-left
+      {
+        x: 0, y: 0,
+        baseX: canvas.width * 0.08,
+        baseY: canvas.height * 0.18,
+        radius: 55,
+        opacity: 0.1,
+        floatSpeed: 0.35,
+        floatAmplitude: 22,
+        phase: 0,
+        color: "139, 92, 246",
+      },
+      // Top-right
+      {
+        x: 0, y: 0,
+        baseX: canvas.width * 0.92,
+        baseY: canvas.height * 0.22,
+        radius: 50,
+        opacity: 0.08,
+        floatSpeed: 0.45,
+        floatAmplitude: 18,
+        phase: Math.PI * 0.7,
+        color: "99, 102, 241",
+      },
+      // Bottom-left
       {
         x: 0, y: 0,
         baseX: canvas.width * 0.08,
@@ -48,9 +73,10 @@ export function ServicesBackground() {
         opacity: 0.12,
         floatSpeed: 0.4,
         floatAmplitude: 25,
-        phase: 0,
+        phase: Math.PI / 3,
         color: "139, 92, 246",
       },
+      // Bottom-right
       {
         x: 0, y: 0,
         baseX: canvas.width * 0.92,
@@ -62,6 +88,7 @@ export function ServicesBackground() {
         phase: Math.PI / 2,
         color: "99, 102, 241",
       },
+      // Bottom-left corner
       {
         x: 0, y: 0,
         baseX: canvas.width * 0.05,
@@ -73,6 +100,7 @@ export function ServicesBackground() {
         phase: Math.PI,
         color: "167, 139, 250",
       },
+      // Bottom-right corner
       {
         x: 0, y: 0,
         baseX: canvas.width * 0.95,
@@ -232,8 +260,33 @@ export function ServicesBackgroundLight() {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Floating spheres - bottom corners + laterals
+    // Floating spheres - all corners + laterals
     const spheres: FloatingSphere[] = [
+      // Top-left
+      {
+        x: 0, y: 0,
+        baseX: canvas.width * 0.08,
+        baseY: canvas.height * 0.18,
+        radius: 50,
+        opacity: 0.08,
+        floatSpeed: 0.35,
+        floatAmplitude: 20,
+        phase: 0,
+        color: "99, 102, 241",
+      },
+      // Top-right
+      {
+        x: 0, y: 0,
+        baseX: canvas.width * 0.92,
+        baseY: canvas.height * 0.22,
+        radius: 45,
+        opacity: 0.07,
+        floatSpeed: 0.45,
+        floatAmplitude: 16,
+        phase: Math.PI * 0.7,
+        color: "124, 58, 237",
+      },
+      // Bottom-left
       {
         x: 0, y: 0,
         baseX: canvas.width * 0.08,
@@ -242,9 +295,10 @@ export function ServicesBackgroundLight() {
         opacity: 0.1,
         floatSpeed: 0.4,
         floatAmplitude: 22,
-        phase: 0,
+        phase: Math.PI / 3,
         color: "99, 102, 241",
       },
+      // Bottom-right
       {
         x: 0, y: 0,
         baseX: canvas.width * 0.92,
@@ -256,6 +310,7 @@ export function ServicesBackgroundLight() {
         phase: Math.PI / 2,
         color: "124, 58, 237",
       },
+      // Bottom-left corner
       {
         x: 0, y: 0,
         baseX: canvas.width * 0.05,
@@ -267,6 +322,7 @@ export function ServicesBackgroundLight() {
         phase: Math.PI,
         color: "124, 58, 237",
       },
+      // Bottom-right corner
       {
         x: 0, y: 0,
         baseX: canvas.width * 0.95,
