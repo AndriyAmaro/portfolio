@@ -8,7 +8,6 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
-        <SectionDivider />
         <About />
         <SectionDivider />
         <Skills />
