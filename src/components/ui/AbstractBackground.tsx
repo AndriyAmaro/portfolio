@@ -195,7 +195,7 @@ export function AbstractBackground() {
       <canvas
         ref={canvasRef}
         className="absolute inset-0"
-        style={{ opacity: 0.85 }}
+        style={{ opacity: 1 }}
       />
 
       {/* Gradient orbs - top */}
@@ -400,7 +400,7 @@ export function AbstractBackgroundLight() {
       <canvas
         ref={canvasRef}
         className="absolute inset-0"
-        style={{ opacity: 0.6 }}
+        style={{ opacity: 0.7 }}
       />
 
       {/* Gradient orbs - top */}
