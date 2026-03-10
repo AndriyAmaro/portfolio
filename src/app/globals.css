@@ -925,45 +925,45 @@ section {
   color: rgba(79, 70, 229, 1);
 }
 
-/* About · Glow sweep border on highlight cards */
-.about-glow-border {
+/* About · Glow sweep border on highlight cards
+   Uses an outer wrapper with ::before behind the card.
+   The gradient pseudo-element is 1px larger than the card on all sides,
+   so only 1px of glow border peeks out around the edges. */
+.about-glow-wrap {
   position: relative;
+  border-radius: 1rem;
 }
 
-.about-glow-border::before {
+.about-glow-wrap::before {
   content: "";
   position: absolute;
-  inset: 0;
-  border-radius: 1rem;
-  padding: 1px;
+  inset: -1px;
+  border-radius: 1.05rem;
   background: linear-gradient(
     90deg,
-    rgba(99, 102, 241, 0) 0%,
-    rgba(99, 102, 241, 0.1) calc(var(--sweep-pos, 50%) - 18%),
-    rgba(139, 92, 246, 0.4) calc(var(--sweep-pos, 50%) - 5%),
-    rgba(165, 180, 252, 0.65) var(--sweep-pos, 50%),
-    rgba(34, 211, 238, 0.45) calc(var(--sweep-pos, 50%) + 5%),
-    rgba(99, 102, 241, 0.1) calc(var(--sweep-pos, 50%) + 18%),
-    rgba(99, 102, 241, 0) 100%
+    rgba(99, 102, 241, 0.1) 0%,
+    rgba(99, 102, 241, 0.12) calc(var(--sweep-pos, 50%) - 18%),
+    rgba(139, 92, 246, 0.5) calc(var(--sweep-pos, 50%) - 4%),
+    rgba(165, 180, 252, 0.8) var(--sweep-pos, 50%),
+    rgba(34, 211, 238, 0.55) calc(var(--sweep-pos, 50%) + 4%),
+    rgba(99, 102, 241, 0.12) calc(var(--sweep-pos, 50%) + 18%),
+    rgba(99, 102, 241, 0.1) 100%
   );
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
+  z-index: 0;
   animation: glow-sweep 3s ease-in-out infinite alternate;
   pointer-events: none;
 }
 
-.light-mode .about-glow-border::before {
+.light-mode .about-glow-wrap::before {
   background: linear-gradient(
     90deg,
-    rgba(79, 70, 229, 0) 0%,
-    rgba(79, 70, 229, 0.08) calc(var(--sweep-pos, 50%) - 18%),
-    rgba(124, 58, 237, 0.3) calc(var(--sweep-pos, 50%) - 5%),
-    rgba(129, 140, 248, 0.5) var(--sweep-pos, 50%),
-    rgba(6, 182, 212, 0.35) calc(var(--sweep-pos, 50%) + 5%),
-    rgba(79, 70, 229, 0.08) calc(var(--sweep-pos, 50%) + 18%),
-    rgba(79, 70, 229, 0) 100%
+    rgba(79, 70, 229, 0.08) 0%,
+    rgba(79, 70, 229, 0.1) calc(var(--sweep-pos, 50%) - 18%),
+    rgba(124, 58, 237, 0.4) calc(var(--sweep-pos, 50%) - 4%),
+    rgba(129, 140, 248, 0.6) var(--sweep-pos, 50%),
+    rgba(6, 182, 212, 0.4) calc(var(--sweep-pos, 50%) + 4%),
+    rgba(79, 70, 229, 0.1) calc(var(--sweep-pos, 50%) + 18%),
+    rgba(79, 70, 229, 0.08) 100%
   );
 }
 

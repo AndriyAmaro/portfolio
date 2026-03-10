@@ -142,9 +142,9 @@ export function About() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group h-full"
+                className="group h-full about-glow-wrap"
               >
-                <div className="about-highlight-card about-glow-border relative p-6 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 h-full">
+                <div className="about-highlight-card relative p-6 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 h-full z-[1]">
                   {/* Top accent line */}
                   <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
