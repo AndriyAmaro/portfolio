@@ -143,6 +143,8 @@ const commits = [
   { hash: "b4e7c8d", msg: "refactor(ds): migrate tokens to CSS variables", time: "2d ago", project: "design-system" },
   { hash: "1f3a9e2", msg: "fix(chat): race condition in room join", time: "3d ago", project: "chat" },
   { hash: "d8c2f5b", msg: "test(finance): 143 tests · Clean Architecture", time: "3d ago", project: "finance" },
+  { hash: "f4a6e1c", msg: "feat(ds): responsive sidebar + mobile nav", time: "4d ago", project: "design-system" },
+  { hash: "2b9d7f3", msg: "perf(chat): lazy load message history", time: "5d ago", project: "chat" },
 ];
 
 const projectColors: Record<string, string> = {
@@ -429,17 +431,17 @@ export function CodeInAction() {
               </div>
 
               {/* Commit list */}
-              <div className="p-3 space-y-1.5 flex-1">
+              <div className="p-3 space-y-2 flex-1">
                 {commits.map((commit, i) => (
                   <motion.div
                     key={commit.hash}
                     initial={{ opacity: 0, x: 10 }}
                     animate={isInView ? { opacity: 1, x: 0 } : {}}
                     transition={{ duration: 0.3, delay: 0.5 + i * 0.1 }}
-                    className="code-commit-item p-3 rounded-lg group"
+                    className="code-commit-item p-2.5 rounded-lg group"
                   >
                     <div className="flex items-start gap-3">
-                      {/* Timeline dot + line */}
+                      {/* Timeline dot */}
                       <div className="flex flex-col items-center gap-0.5 pt-0.5">
                         <div
                           className="w-2.5 h-2.5 rounded-full shrink-0"
@@ -453,7 +455,7 @@ export function CodeInAction() {
                         <p className="text-xs font-medium code-commit-msg truncate leading-snug">
                           {commit.msg}
                         </p>
-                        <div className="flex items-center gap-2 mt-1.5">
+                        <div className="flex items-center gap-2 mt-1">
                           <code className="text-[10px] font-mono code-commit-hash px-1.5 py-0.5 rounded">
                             {commit.hash}
                           </code>
@@ -467,9 +469,25 @@ export function CodeInAction() {
                 ))}
               </div>
 
+              {/* Ecosystem stats */}
+              <div className="px-3 pb-2">
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    { label: "Repos", value: "3", color: "#6366f1" },
+                    { label: "Commits", value: "847", color: "#14b8a6" },
+                    { label: "Lines", value: "52k", color: "#10b981" },
+                  ].map((stat) => (
+                    <div key={stat.label} className="code-commit-item rounded-lg p-2 text-center">
+                      <p className="text-sm font-bold" style={{ color: stat.color }}>{stat.value}</p>
+                      <p className="text-[9px] code-commit-time uppercase tracking-wider">{stat.label}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               {/* Run tests bar */}
-              <div className="p-3 mt-auto">
-                <div className="code-test-bar p-3.5 rounded-xl">
+              <div className="p-3">
+                <div className="code-test-bar p-3 rounded-xl">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <Play className="w-3.5 h-3.5 text-green-400" />
@@ -491,7 +509,7 @@ export function CodeInAction() {
                     </span>
                   </div>
                   {/* Progress bar */}
-                  <div className="mt-2.5 h-1.5 rounded-full bg-green-500/10 overflow-hidden">
+                  <div className="mt-2 h-1.5 rounded-full bg-green-500/10 overflow-hidden">
                     <motion.div
                       initial={{ width: 0 }}
                       animate={isInView ? { width: "100%" } : {}}
