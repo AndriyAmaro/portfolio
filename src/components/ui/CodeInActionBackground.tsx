@@ -47,8 +47,8 @@ function createColumns(width: number, height: number, side: "left" | "right"): F
       x: baseX + Math.random() * 16,
       chars,
       y: -Math.random() * height * 1.5,
-      speed: 0.3 + Math.random() * 0.7,
-      opacity: 0.12 + Math.random() * 0.18,
+      speed: 0.5,
+      opacity: 0.25 + Math.random() * 0.2,
       fontSize: 10 + Math.floor(Math.random() * 3),
       charIndex: 0,
       charTimer: 0,
@@ -83,8 +83,8 @@ function createCenterColumns(width: number, height: number): FallingColumn[] {
       x: x + (Math.random() - 0.5) * 30,
       chars,
       y: -Math.random() * height * 1.2,
-      speed: 0.2 + Math.random() * 0.4,
-      opacity: 0.06 + Math.random() * 0.08,
+      speed: 0.5,
+      opacity: 0.15 + Math.random() * 0.1,
       fontSize: 9 + Math.floor(Math.random() * 2),
       charIndex: 0,
       charTimer: 0,
@@ -139,8 +139,8 @@ function CodeRainCanvas({ isDark }: { isDark: boolean }) {
 
       ctx.clearRect(0, 0, w, h);
 
-      const baseColor = isDark ? [139, 92, 246] : [99, 102, 241]; // violet-500 / indigo-500
-      const headColor = isDark ? [167, 139, 250] : [129, 140, 248]; // violet-400 / indigo-400
+      const baseColor = isDark ? [139, 92, 246] : [79, 70, 229];   // violet-500 / indigo-600
+      const headColor = isDark ? [167, 139, 250] : [67, 56, 202]; // violet-400 / indigo-700
 
       for (const col of columnsRef.current) {
         col.y += col.speed;
@@ -159,8 +159,6 @@ function CodeRainCanvas({ isDark }: { isDark: boolean }) {
         // Reset when fully past bottom
         if (col.y - col.trailLength * (col.fontSize + 4) > h) {
           col.y = -Math.random() * h * 0.5 - 100;
-          col.speed = 0.3 + Math.random() * 0.7;
-          col.opacity = 0.12 + Math.random() * 0.18;
         }
 
         ctx.font = `${col.fontSize}px "JetBrains Mono", "Fira Code", monospace`;
@@ -181,9 +179,9 @@ function CodeRainCanvas({ isDark }: { isDark: boolean }) {
           ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
 
           // Subtle glow on head character
-          if (j === 0 && isDark) {
-            ctx.shadowColor = `rgba(${headColor[0]}, ${headColor[1]}, ${headColor[2]}, ${alpha * 0.5})`;
-            ctx.shadowBlur = 6;
+          if (j === 0) {
+            ctx.shadowColor = `rgba(${headColor[0]}, ${headColor[1]}, ${headColor[2]}, ${alpha * (isDark ? 0.5 : 0.3)})`;
+            ctx.shadowBlur = isDark ? 6 : 4;
           } else {
             ctx.shadowBlur = 0;
           }
@@ -208,7 +206,7 @@ function CodeRainCanvas({ isDark }: { isDark: boolean }) {
     <canvas
       ref={canvasRef}
       className="absolute inset-0 pointer-events-none"
-      style={{ opacity: isDark ? 0.85 : 0.6 }}
+      style={{ opacity: isDark ? 0.9 : 0.85 }}
     />
   );
 }
