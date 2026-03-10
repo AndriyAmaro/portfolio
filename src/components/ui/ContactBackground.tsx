@@ -56,14 +56,14 @@ export function ContactBackground() {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Create connection nodes (representing network/communication)
+    // Create connection nodes - biased toward upper half
     const nodes: ConnectionNode[] = [];
     const nodeCount = 25;
 
     for (let i = 0; i < nodeCount; i++) {
       nodes.push({
         x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
+        y: Math.random() * canvas.height * 0.7,
         vx: (Math.random() - 0.5) * 0.3,
         vy: (Math.random() - 0.5) * 0.3,
         size: 3 + Math.random() * 4,
@@ -73,13 +73,13 @@ export function ContactBackground() {
       });
     }
 
-    // Create wave rings (representing signals/communication waves)
+    // Create wave rings - biased toward upper area
     const waves: WaveRing[] = [];
     const createWave = () => {
       if (waves.length < 6) {
         waves.push({
-          x: canvas.width * (0.15 + Math.random() * 0.7),
-          y: canvas.height * (0.15 + Math.random() * 0.7),
+          x: canvas.width * (0.1 + Math.random() * 0.8),
+          y: canvas.height * (0.1 + Math.random() * 0.5),
           radius: 0,
           maxRadius: 220 + Math.random() * 180,
           opacity: 0.55,
@@ -88,14 +88,14 @@ export function ContactBackground() {
       }
     };
 
-    // Create floating envelope icons
+    // Create floating envelope icons - concentrated in upper area
     const envelopes: FloatingEnvelope[] = [];
     const envelopeCount = 8;
 
     for (let i = 0; i < envelopeCount; i++) {
       envelopes.push({
-        x: canvas.width * (0.08 + Math.random() * 0.84),
-        y: canvas.height * (0.08 + Math.random() * 0.84),
+        x: canvas.width * (0.05 + Math.random() * 0.9),
+        y: canvas.height * (0.05 + Math.random() * 0.5),
         size: 28 + Math.random() * 22,
         opacity: 0.2 + Math.random() * 0.15,
         floatPhase: Math.random() * Math.PI * 2,
@@ -372,14 +372,14 @@ export function ContactBackgroundLight() {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Create connection nodes
+    // Create connection nodes - biased toward upper half
     const nodes: ConnectionNode[] = [];
     const nodeCount = 20;
 
     for (let i = 0; i < nodeCount; i++) {
       nodes.push({
         x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
+        y: Math.random() * canvas.height * 0.7,
         vx: (Math.random() - 0.5) * 0.25,
         vy: (Math.random() - 0.5) * 0.25,
         size: 2.5 + Math.random() * 3,
@@ -389,13 +389,13 @@ export function ContactBackgroundLight() {
       });
     }
 
-    // Create wave rings
+    // Create wave rings - biased toward upper area
     const waves: WaveRing[] = [];
     const createWave = () => {
       if (waves.length < 5) {
         waves.push({
-          x: canvas.width * (0.15 + Math.random() * 0.7),
-          y: canvas.height * (0.15 + Math.random() * 0.7),
+          x: canvas.width * (0.1 + Math.random() * 0.8),
+          y: canvas.height * (0.1 + Math.random() * 0.5),
           radius: 0,
           maxRadius: 200 + Math.random() * 150,
           opacity: 0.5,
@@ -404,14 +404,14 @@ export function ContactBackgroundLight() {
       }
     };
 
-    // Create floating envelopes
+    // Create floating envelopes - concentrated in upper area
     const envelopes: FloatingEnvelope[] = [];
     const envelopeCount = 7;
 
     for (let i = 0; i < envelopeCount; i++) {
       envelopes.push({
-        x: canvas.width * (0.08 + Math.random() * 0.84),
-        y: canvas.height * (0.08 + Math.random() * 0.84),
+        x: canvas.width * (0.05 + Math.random() * 0.9),
+        y: canvas.height * (0.05 + Math.random() * 0.5),
         size: 25 + Math.random() * 20,
         opacity: 0.28 + Math.random() * 0.18,
         floatPhase: Math.random() * Math.PI * 2,
