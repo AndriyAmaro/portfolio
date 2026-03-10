@@ -268,7 +268,7 @@ export function ProjectsBackground() {
       <div
         className="absolute inset-0"
         style={{
-          background: "linear-gradient(135deg, #0f0d1f 0%, #13112b 25%, #1a1640 50%, #1e1b4b 75%, #13112b 100%)",
+          background: "linear-gradient(180deg, #0f0d1f 0%, #161331 30%, #1a1640 60%, #1e1b4b 100%)",
         }}
       />
 
@@ -276,41 +276,34 @@ export function ProjectsBackground() {
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full"
-        style={{ opacity: 0.95 }}
+        style={{ opacity: 0.85 }}
       />
 
-      {/* Gradient orbs for depth */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-violet-600/12 rounded-full blur-[180px] animate-pulse-slow" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[150px] animate-pulse-slow animation-delay-2000" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-purple-500/6 rounded-full blur-[200px]" />
+      {/* Gradient orbs - top */}
+      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[150px] animate-pulse-slow" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[180px]" />
 
       {/* Corner glows - top */}
-      <div className="absolute -top-10 -left-10 w-[450px] h-[450px] bg-violet-500/15 rounded-full blur-[140px] animate-pulse-slow" />
-      <div className="absolute -top-10 -right-10 w-[450px] h-[450px] bg-indigo-500/12 rounded-full blur-[140px] animate-pulse-slow animation-delay-2000" />
-
-      {/* Corner glows - bottom */}
-      <div className="absolute -bottom-10 -left-10 w-[400px] h-[400px] bg-indigo-500/12 rounded-full blur-[130px] animate-pulse-slow animation-delay-4000" />
-      <div className="absolute -bottom-10 -right-10 w-[400px] h-[400px] bg-violet-500/15 rounded-full blur-[130px] animate-pulse-slow" />
+      <div className="absolute top-0 left-0 w-[400px] h-[450px] bg-violet-500/12 rounded-full blur-[130px] animate-pulse-slow" />
+      <div className="absolute top-0 right-0 w-[400px] h-[450px] bg-indigo-500/10 rounded-full blur-[130px] animate-pulse-slow animation-delay-2000" />
 
       {/* Lateral glows - sides */}
-      <div className="absolute top-1/3 left-0 w-[350px] h-[550px] bg-violet-500/10 rounded-full blur-[120px] animate-pulse-slow" />
-      <div className="absolute top-1/4 right-0 w-[400px] h-[600px] bg-violet-500/10 rounded-full blur-[120px] animate-pulse-slow animation-delay-2000" />
-      <div className="absolute bottom-1/3 left-0 w-[300px] h-[500px] bg-cyan-500/6 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
-      <div className="absolute bottom-1/3 right-0 w-[300px] h-[500px] bg-cyan-500/6 rounded-full blur-[100px] animate-pulse-slow" />
+      <div className="absolute top-1/3 left-0 w-[300px] h-[500px] bg-cyan-500/6 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
+      <div className="absolute top-1/3 right-0 w-[300px] h-[500px] bg-cyan-500/6 rounded-full blur-[100px] animate-pulse-slow animation-delay-2000" />
 
-      {/* Top fade for smooth transition */}
+      {/* Bottom orbs */}
+      <div className="absolute bottom-0 left-1/4 w-[450px] h-[350px] bg-violet-500/8 rounded-full blur-[120px] animate-pulse-slow animation-delay-2000" />
+      <div className="absolute bottom-0 right-1/4 w-[400px] h-[300px] bg-indigo-500/6 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
+
+      {/* Bottom corners */}
+      <div className="absolute bottom-0 left-0 w-[300px] h-[400px] bg-indigo-400/6 rounded-full blur-[100px] animate-pulse-slow animation-delay-2000" />
+      <div className="absolute bottom-0 right-0 w-[300px] h-[400px] bg-violet-400/6 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
+
+      {/* Center overlay for text readability */}
       <div
         className="absolute inset-0"
         style={{
-          background: "linear-gradient(180deg, rgba(15,13,31,0.95) 0%, transparent 20%)",
-        }}
-      />
-
-      {/* Bottom fade */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background: "linear-gradient(0deg, rgba(15,13,31,0.9) 0%, transparent 20%)",
+          background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(12, 10, 29, 0.3) 0%, transparent 70%)",
         }}
       />
     </div>
@@ -574,7 +567,7 @@ export function ProjectsBackgroundLight() {
       <div
         className="absolute inset-0"
         style={{
-          background: "linear-gradient(135deg, #ffffff 0%, #f8fafc 25%, #f1f5f9 50%, #e2e8f0 75%, #f8fafc 100%)",
+          background: "linear-gradient(180deg, #ffffff 0%, #f8fafc 30%, #f1f5f9 60%, #e2e8f0 100%)",
         }}
       />
 
@@ -582,23 +575,30 @@ export function ProjectsBackgroundLight() {
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full"
-        style={{ opacity: 0.75 }}
+        style={{ opacity: 0.65 }}
       />
 
-      {/* Gradient orbs - more visible like About section */}
-      <div className="absolute top-0 right-0 w-[550px] h-[550px] bg-indigo-300/20 rounded-full blur-[150px] animate-pulse-slow" />
-      <div className="absolute bottom-0 left-0 w-[450px] h-[450px] bg-indigo-200/18 rounded-full blur-[120px] animate-pulse-slow animation-delay-2000" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[400px] bg-slate-300/15 rounded-full blur-[140px]" />
+      {/* Gradient orbs - top */}
+      <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-indigo-200/12 rounded-full blur-[120px] animate-pulse-slow" />
+      <div className="absolute top-1/3 right-1/3 w-[350px] h-[350px] bg-slate-300/15 rounded-full blur-[100px] animate-pulse-slow animation-delay-2000" />
 
-      {/* Lateral glows */}
-      <div className="absolute top-1/4 right-0 w-[400px] h-[550px] bg-indigo-300/15 rounded-full blur-[100px] animate-pulse-slow" />
-      <div className="absolute bottom-1/4 left-0 w-[350px] h-[500px] bg-indigo-200/12 rounded-full blur-[90px] animate-pulse-slow animation-delay-4000" />
+      {/* Lateral glows - top */}
+      <div className="absolute top-1/3 left-0 w-[300px] h-[400px] bg-indigo-300/6 rounded-full blur-[100px] animate-pulse-slow" />
+      <div className="absolute top-1/4 right-0 w-[280px] h-[350px] bg-slate-400/5 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
+
+      {/* Bottom orbs */}
+      <div className="absolute bottom-0 left-1/4 w-[380px] h-[280px] bg-indigo-200/10 rounded-full blur-[100px] animate-pulse-slow animation-delay-2000" />
+      <div className="absolute bottom-0 right-1/4 w-[350px] h-[250px] bg-slate-300/12 rounded-full blur-[90px] animate-pulse-slow animation-delay-4000" />
+
+      {/* Bottom corners */}
+      <div className="absolute bottom-0 left-0 w-[250px] h-[300px] bg-indigo-300/5 rounded-full blur-[90px] animate-pulse-slow animation-delay-2000" />
+      <div className="absolute bottom-0 right-0 w-[250px] h-[300px] bg-slate-400/5 rounded-full blur-[90px] animate-pulse-slow animation-delay-4000" />
 
       {/* Top fade */}
       <div
         className="absolute inset-0"
         style={{
-          background: "linear-gradient(180deg, rgba(255,255,255,0.9) 0%, transparent 18%)",
+          background: "linear-gradient(180deg, rgba(255,255,255,0.85) 0%, transparent 18%)",
         }}
       />
     </div>

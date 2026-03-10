@@ -251,7 +251,7 @@ export function SkillsBackground() {
       <div
         className="absolute inset-0"
         style={{
-          background: "linear-gradient(180deg, #16132d 0%, #1a1640 30%, #1e1b4b 60%, #252259 100%)",
+          background: "linear-gradient(180deg, #0f0d1f 0%, #161331 30%, #1a1640 60%, #1e1b4b 100%)",
         }}
       />
 
@@ -259,7 +259,7 @@ export function SkillsBackground() {
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full"
-        style={{ opacity: 0.8 }}
+        style={{ opacity: 0.85 }}
       />
 
       {/* Gradient orbs - top */}
@@ -274,25 +274,19 @@ export function SkillsBackground() {
       <div className="absolute top-1/3 left-0 w-[300px] h-[500px] bg-cyan-500/6 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
       <div className="absolute top-1/3 right-0 w-[300px] h-[500px] bg-cyan-500/6 rounded-full blur-[100px] animate-pulse-slow animation-delay-2000" />
 
-      {/* Gradient orbs - bottom (soft, non-intrusive) */}
+      {/* Bottom orbs */}
       <div className="absolute bottom-0 left-1/4 w-[450px] h-[350px] bg-violet-500/8 rounded-full blur-[120px] animate-pulse-slow animation-delay-2000" />
       <div className="absolute bottom-0 right-1/4 w-[400px] h-[300px] bg-indigo-500/6 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-purple-500/5 rounded-full blur-[130px] animate-pulse-slow" />
 
-      {/* Lateral glows - bottom corners */}
+      {/* Bottom corners */}
       <div className="absolute bottom-0 left-0 w-[300px] h-[400px] bg-indigo-400/6 rounded-full blur-[100px] animate-pulse-slow animation-delay-2000" />
       <div className="absolute bottom-0 right-0 w-[300px] h-[400px] bg-violet-400/6 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
-
-      {/* Extra bottom glows - where category cards are */}
-      <div className="absolute -bottom-20 left-[15%] w-[350px] h-[300px] bg-indigo-500/7 rounded-full blur-[110px] animate-pulse-slow" />
-      <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-[400px] h-[280px] bg-violet-500/6 rounded-full blur-[120px] animate-pulse-slow animation-delay-2000" />
-      <div className="absolute -bottom-20 right-[15%] w-[350px] h-[300px] bg-purple-500/7 rounded-full blur-[110px] animate-pulse-slow animation-delay-4000" />
 
       {/* Center overlay for text readability */}
       <div
         className="absolute inset-0"
         style={{
-          background: "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(12, 10, 29, 0.3) 0%, transparent 70%)",
+          background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(12, 10, 29, 0.3) 0%, transparent 70%)",
         }}
       />
     </div>
