@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Layers, TestTubes, GitBranch, Rocket } from "lucide-react";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
 
 const highlights = [
@@ -76,6 +77,70 @@ export function About() {
   return (
     <section id="about" className="relative pt-36 md:pt-44 pb-24 md:pb-32 overflow-hidden">
       {isLightMode ? <AbstractBackgroundLight /> : <AbstractBackground />}
+
+      {/* Frontend icon - top left */}
+      <motion.div
+        initial={{ opacity: 0, x: -40, y: -20 }}
+        whileInView={{ opacity: 1, x: 0, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        className="absolute top-24 left-6 md:left-12 lg:left-20 z-10 pointer-events-none"
+      >
+        <motion.div
+          animate={{
+            y: [0, -12, 0],
+            rotate: [0, -3, 0, 3, 0],
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        >
+          <div className="relative">
+            <div className="absolute -inset-4 bg-indigo-500/15 rounded-full blur-2xl animate-pulse" />
+            <Image
+              src="/frontend-icon.png"
+              alt="Frontend"
+              width={140}
+              height={140}
+              className="relative drop-shadow-[0_0_20px_rgba(99,102,241,0.3)] opacity-70"
+            />
+          </div>
+        </motion.div>
+      </motion.div>
+
+      {/* Backend icon - top right */}
+      <motion.div
+        initial={{ opacity: 0, x: 40, y: -20 }}
+        whileInView={{ opacity: 1, x: 0, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, delay: 0.3 }}
+        className="absolute top-24 right-6 md:right-12 lg:right-20 z-10 pointer-events-none"
+      >
+        <motion.div
+          animate={{
+            y: [0, -10, 0],
+            rotate: [0, 3, 0, -3, 0],
+          }}
+          transition={{
+            duration: 7,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        >
+          <div className="relative">
+            <div className="absolute -inset-4 bg-violet-500/15 rounded-full blur-2xl animate-pulse" />
+            <Image
+              src="/backend-icon.png"
+              alt="Backend"
+              width={140}
+              height={140}
+              className="relative drop-shadow-[0_0_20px_rgba(139,92,246,0.3)] opacity-70"
+            />
+          </div>
+        </motion.div>
+      </motion.div>
 
       <div className="container-custom relative z-10">
         {/* Section header */}
