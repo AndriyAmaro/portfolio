@@ -60,6 +60,42 @@ function createColumns(width: number, height: number, side: "left" | "right"): F
   return columns;
 }
 
+// Center columns — subtle, above each card area
+function createCenterColumns(width: number, height: number): FallingColumn[] {
+  const columns: FallingColumn[] = [];
+  // 5-col grid: code editor spans cols 0-2 (60%), commit log spans cols 3-4 (40%)
+  // Place ~2 columns above each card center area, more subtle
+  const positions = [
+    width * 0.25,  // above code editor (left-center)
+    width * 0.42,  // above code editor (right-center)
+    width * 0.68,  // above commit log (left-center)
+    width * 0.82,  // above commit log (right-center)
+  ];
+
+  for (const x of positions) {
+    const chars: string[] = [];
+    const trailLength = 6 + Math.floor(Math.random() * 8);
+    for (let j = 0; j < trailLength; j++) {
+      chars.push(CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)]);
+    }
+
+    columns.push({
+      x: x + (Math.random() - 0.5) * 30,
+      chars,
+      y: -Math.random() * height * 1.2,
+      speed: 0.2 + Math.random() * 0.4,
+      opacity: 0.06 + Math.random() * 0.08,
+      fontSize: 9 + Math.floor(Math.random() * 2),
+      charIndex: 0,
+      charTimer: 0,
+      charInterval: 4 + Math.random() * 6,
+      trailLength,
+    });
+  }
+
+  return columns;
+}
+
 function CodeRainCanvas({ isDark }: { isDark: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const columnsRef = useRef<FallingColumn[]>([]);
@@ -85,6 +121,7 @@ function CodeRainCanvas({ isDark }: { isDark: boolean }) {
       columnsRef.current = [
         ...createColumns(rect.width, rect.height, "left"),
         ...createColumns(rect.width, rect.height, "right"),
+        ...createCenterColumns(rect.width, rect.height),
       ];
     };
 
