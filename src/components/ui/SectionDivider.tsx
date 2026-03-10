@@ -24,8 +24,7 @@ export function SectionDivider() {
 
     const animate = () => {
       const w = canvas.width;
-      const h = canvas.height;
-      ctx.clearRect(0, 0, w, h);
+      ctx.clearRect(0, 0, w, 3);
       time += 0.008;
 
       const isDark = !document.documentElement.classList.contains("light-mode");
@@ -92,15 +91,15 @@ export function SectionDivider() {
   }, []);
 
   return (
-    <div className="relative w-full h-8 flex items-center z-10" aria-hidden="true">
+    <div className="relative w-full h-0 z-10 -my-px" aria-hidden="true">
       {/* Ambient glow behind the line */}
-      <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-16 pointer-events-none">
-        <div className="absolute inset-x-[10%] top-0 h-full bg-gradient-to-r from-transparent via-indigo-500/8 to-transparent blur-xl dark:via-indigo-400/10" />
+      <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-12 pointer-events-none">
+        <div className="absolute inset-x-[10%] top-0 h-full bg-gradient-to-r from-transparent via-indigo-500/8 to-transparent blur-xl" />
       </div>
       <canvas
         ref={canvasRef}
-        className="w-full"
-        style={{ height: "3px" }}
+        className="w-full relative"
+        style={{ height: "3px", marginTop: "-1px" }}
       />
     </div>
   );
