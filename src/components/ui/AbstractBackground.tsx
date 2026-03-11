@@ -67,7 +67,7 @@ function createNodes(w: number, h: number, isDark: boolean): Node[] {
     baseX: w * p.x,
     baseY: h * p.y,
     radius: 2 + Math.random() * 2.5,
-    opacity: isDark ? 0.4 + Math.random() * 0.45 : 0.35 + Math.random() * 0.4,
+    opacity: isDark ? 0.34 + Math.random() * 0.38 : 0.30 + Math.random() * 0.34,
     speed: 0.3 + Math.random() * 0.4,
     amplitude: 8 + Math.random() * 15,
     phase: Math.random() * Math.PI * 2,
