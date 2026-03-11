@@ -56,163 +56,294 @@ const techStack = [
 ];
 
 // ---------------------------------------------------------------------------
-// Architecture SVG diagram (Design System flow)
+// Architecture SVG — Horizontal layered flow with sequential build animation
 // ---------------------------------------------------------------------------
 function ArchitectureSVG() {
-  const layers = [
-    { label: "Tokens", y: 40, color: "#818cf8" },
-    { label: "Primitives", y: 100, color: "#a78bfa" },
-    { label: "Patterns", y: 160, color: "#7c3aed" },
-    { label: "Components", y: 220, color: "#6366f1" },
-    { label: "Pages", y: 280, color: "#4f46e5" },
+  const nodes = [
+    { label: "Tokens", x: 80, color: "#818cf8" },
+    { label: "Primitives", x: 170, color: "#a78bfa" },
+    { label: "Patterns", x: 270, color: "#7c3aed" },
+    { label: "Components", x: 370, color: "#6366f1" },
+    { label: "Pages", x: 470, color: "#4f46e5" },
   ];
+  const cy = 170;
 
   return (
-    <svg width="500" height="340" viewBox="0 0 500 340" fill="none" className="opacity-[0.25]">
-      {/* Connection lines between layers */}
-      {layers.slice(0, -1).map((layer, i) => {
-        const next = layers[i + 1];
+    <svg width="560" height="340" viewBox="0 0 560 340" fill="none" className="opacity-[0.20]">
+      <defs>
+        <filter id="arch-glow">
+          <feGaussianBlur stdDeviation="4" result="blur" />
+          <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+      </defs>
+
+      {/* Connection lines drawing left → right */}
+      {nodes.slice(0, -1).map((node, i) => {
+        const next = nodes[i + 1];
         return (
-          <g key={`conn-${i}`}>
-            <motion.line
-              x1="250" y1={layer.y + 18} x2="180" y2={next.y - 8}
-              stroke={layer.color} strokeWidth="1.5"
-              initial={{ pathLength: 0, opacity: 0 }}
-              whileInView={{ pathLength: 1, opacity: 0.6 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, delay: 0.5 + i * 0.2 }}
-            />
-            <motion.line
-              x1="250" y1={layer.y + 18} x2="320" y2={next.y - 8}
-              stroke={layer.color} strokeWidth="1.5"
-              initial={{ pathLength: 0, opacity: 0 }}
-              whileInView={{ pathLength: 1, opacity: 0.6 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, delay: 0.6 + i * 0.2 }}
-            />
-          </g>
+          <motion.line
+            key={`line-${i}`}
+            x1={node.x + 28} y1={cy}
+            x2={next.x - 28} y2={cy}
+            stroke={node.color} strokeWidth="1.5" strokeOpacity="0.6"
+            initial={{ pathLength: 0, opacity: 0 }}
+            whileInView={{ pathLength: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.8 + i * 0.35, ease: [0.16, 1, 0.3, 1] }}
+          />
         );
       })}
 
-      {/* Layer nodes */}
-      {layers.map((layer, i) => (
-        <motion.g
-          key={layer.label}
-          initial={{ opacity: 0, y: -10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 + i * 0.15 }}
-        >
-          <rect
-            x="155" y={layer.y - 12} width="190" height="32" rx="8"
-            fill={layer.color} fillOpacity="0.15"
-            stroke={layer.color} strokeWidth="1" strokeOpacity="0.4"
+      {/* Traveling light pulse along connections (loops forever) */}
+      {nodes.slice(0, -1).map((node, i) => {
+        const next = nodes[i + 1];
+        return (
+          <motion.circle
+            key={`pulse-${i}`}
+            r="3" fill={next.color} filter="url(#arch-glow)"
+            initial={{ cx: node.x + 28, cy, opacity: 0 }}
+            animate={{
+              cx: [node.x + 28, next.x - 28],
+              opacity: [0, 0.9, 0.9, 0],
+            }}
+            transition={{
+              duration: 1.2,
+              delay: 2 + i * 1.4,
+              repeat: Infinity,
+              repeatDelay: nodes.length * 1.4 - 1.2,
+              ease: "easeInOut",
+            }}
           />
-          <text
-            x="250" y={layer.y + 8}
-            textAnchor="middle" fill={layer.color}
-            fontFamily="JetBrains Mono, monospace" fontSize="13" fontWeight="600"
+        );
+      })}
+
+      {/* Hexagonal nodes forming one by one */}
+      {nodes.map((node, i) => {
+        const r = 26;
+        const hex = Array.from({ length: 6 }, (_, k) => {
+          const angle = (Math.PI / 3) * k - Math.PI / 2;
+          return `${node.x + r * Math.cos(angle)},${cy + r * Math.sin(angle)}`;
+        }).join(" ");
+
+        return (
+          <motion.g
+            key={node.label}
+            initial={{ opacity: 0, scale: 0.3 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 + i * 0.3, ease: [0.16, 1, 0.3, 1] }}
+            style={{ transformOrigin: `${node.x}px ${cy}px` }}
           >
-            {layer.label}
-          </text>
-          {/* Pulsing dot */}
-          <motion.circle
-            cx="140" cy={layer.y + 4} r="3"
-            fill={layer.color}
-            animate={{ opacity: [0.3, 0.8, 0.3], scale: [1, 1.3, 1] }}
-            transition={{ duration: 2 + i * 0.3, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.circle
-            cx="360" cy={layer.y + 4} r="3"
-            fill={layer.color}
-            animate={{ opacity: [0.3, 0.8, 0.3], scale: [1, 1.3, 1] }}
-            transition={{ duration: 2.5 + i * 0.3, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </motion.g>
-      ))}
+            {/* Hex glow */}
+            <motion.polygon
+              points={hex}
+              fill={node.color} fillOpacity="0.08"
+              stroke={node.color} strokeWidth="1.5" strokeOpacity="0.5"
+              animate={{ strokeOpacity: [0.3, 0.7, 0.3] }}
+              transition={{ duration: 3 + i * 0.5, repeat: Infinity, ease: "easeInOut" }}
+            />
+
+            {/* Label */}
+            <text
+              x={node.x} y={cy + 4}
+              textAnchor="middle" fill={node.color}
+              fontFamily="JetBrains Mono, monospace" fontSize="9" fontWeight="600"
+            >
+              {node.label}
+            </text>
+
+            {/* Top branch lines */}
+            <motion.line
+              x1={node.x} y1={cy - r - 2} x2={node.x - 20} y2={cy - r - 30}
+              stroke={node.color} strokeWidth="0.8" strokeOpacity="0.3"
+              initial={{ pathLength: 0 }}
+              whileInView={{ pathLength: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.6 + i * 0.3 }}
+            />
+            <motion.line
+              x1={node.x} y1={cy - r - 2} x2={node.x + 20} y2={cy - r - 30}
+              stroke={node.color} strokeWidth="0.8" strokeOpacity="0.3"
+              initial={{ pathLength: 0 }}
+              whileInView={{ pathLength: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.7 + i * 0.3 }}
+            />
+
+            {/* Bottom branch lines */}
+            <motion.line
+              x1={node.x} y1={cy + r + 2} x2={node.x - 15} y2={cy + r + 25}
+              stroke={node.color} strokeWidth="0.8" strokeOpacity="0.3"
+              initial={{ pathLength: 0 }}
+              whileInView={{ pathLength: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.65 + i * 0.3 }}
+            />
+            <motion.line
+              x1={node.x} y1={cy + r + 2} x2={node.x + 15} y2={cy + r + 25}
+              stroke={node.color} strokeWidth="0.8" strokeOpacity="0.3"
+              initial={{ pathLength: 0 }}
+              whileInView={{ pathLength: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.75 + i * 0.3 }}
+            />
+
+            {/* Branch tip dots */}
+            <motion.circle
+              cx={node.x - 20} cy={cy - r - 30} r="2"
+              fill={node.color} fillOpacity="0.5"
+              animate={{ opacity: [0.3, 0.7, 0.3] }}
+              transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }}
+            />
+            <motion.circle
+              cx={node.x + 20} cy={cy - r - 30} r="2"
+              fill={node.color} fillOpacity="0.5"
+              animate={{ opacity: [0.3, 0.7, 0.3] }}
+              transition={{ duration: 2.3, repeat: Infinity, delay: i * 0.4 }}
+            />
+          </motion.g>
+        );
+      })}
+
+      {/* Arrow indicator at the end */}
+      <motion.path
+        d="M498 170 L510 170 L505 165 M510 170 L505 175"
+        stroke="#4f46e5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 0.6 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 2.2 }}
+      />
     </svg>
   );
 }
 
 // ---------------------------------------------------------------------------
-// Pipeline SVG diagram (Code → Test → Deploy)
+// Pipeline SVG — Vertical path with traveling light
 // ---------------------------------------------------------------------------
 function PipelineSVG() {
   const steps = [
-    { label: "Code", icon: "</>", y: 40, color: "#818cf8" },
-    { label: "Test", icon: "✓", y: 100, color: "#34d399" },
-    { label: "Build", icon: "⚡", y: 160, color: "#fbbf24" },
-    { label: "Review", icon: "⊙", y: 220, color: "#a78bfa" },
-    { label: "Deploy", icon: "▲", y: 280, color: "#6366f1" },
+    { label: "Code", x: 140, y: 50, color: "#818cf8" },
+    { label: "Test", x: 360, y: 110, color: "#34d399" },
+    { label: "Build", x: 140, y: 170, color: "#fbbf24" },
+    { label: "Review", x: 360, y: 230, color: "#a78bfa" },
+    { label: "Deploy", x: 250, y: 300, color: "#6366f1" },
   ];
 
+  // Build the zigzag path string
+  const pathParts = steps.map((s, i) => (i === 0 ? `M${s.x},${s.y}` : `L${s.x},${s.y}`));
+  const pathD = pathParts.join(" ");
+
   return (
-    <svg width="500" height="340" viewBox="0 0 500 340" fill="none" className="opacity-[0.25]">
-      {/* Vertical pipeline line */}
-      <motion.line
-        x1="250" y1="56" x2="250" y2="272"
-        stroke="#6366f1" strokeWidth="2" strokeDasharray="6 4"
+    <svg width="500" height="340" viewBox="0 0 500 340" fill="none" className="opacity-[0.20]">
+      <defs>
+        <filter id="pipe-glow">
+          <feGaussianBlur stdDeviation="6" result="blur" />
+          <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+        <linearGradient id="pipe-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#818cf8" />
+          <stop offset="50%" stopColor="#a78bfa" />
+          <stop offset="100%" stopColor="#6366f1" />
+        </linearGradient>
+      </defs>
+
+      {/* Base path (draws in) */}
+      <motion.path
+        d={pathD}
+        stroke="url(#pipe-gradient)" strokeWidth="1.5" strokeOpacity="0.25"
+        fill="none" strokeLinecap="round" strokeLinejoin="round"
         initial={{ pathLength: 0, opacity: 0 }}
-        whileInView={{ pathLength: 1, opacity: 0.4 }}
+        whileInView={{ pathLength: 1, opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 1.5, delay: 0.3 }}
+        transition={{ duration: 2.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+      />
+
+      {/* Traveling light along the path */}
+      <motion.circle
+        r="5" fill="#a78bfa" filter="url(#pipe-glow)"
+        initial={{ offsetDistance: "0%", opacity: 0 }}
+        animate={{ offsetDistance: ["0%", "100%"], opacity: [0, 1, 1, 0] }}
+        transition={{
+          duration: 4,
+          delay: 3,
+          repeat: Infinity,
+          repeatDelay: 1,
+          ease: "easeInOut",
+          opacity: { times: [0, 0.05, 0.9, 1] },
+        }}
+        style={{ offsetPath: `path('${pathD}')` }}
+      />
+
+      {/* Secondary trailing light */}
+      <motion.circle
+        r="3" fill="#818cf8" filter="url(#pipe-glow)" opacity="0.6"
+        initial={{ offsetDistance: "0%", opacity: 0 }}
+        animate={{ offsetDistance: ["0%", "100%"], opacity: [0, 0.6, 0.6, 0] }}
+        transition={{
+          duration: 4,
+          delay: 3.3,
+          repeat: Infinity,
+          repeatDelay: 1,
+          ease: "easeInOut",
+          opacity: { times: [0, 0.05, 0.9, 1] },
+        }}
+        style={{ offsetPath: `path('${pathD}')` }}
       />
 
       {/* Step nodes */}
       {steps.map((step, i) => (
         <motion.g
           key={step.label}
-          initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, scale: 0 }}
+          whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 + i * 0.18 }}
+          transition={{ duration: 0.5, delay: 0.5 + i * 0.4, ease: [0.16, 1, 0.3, 1] }}
+          style={{ transformOrigin: `${step.x}px ${step.y}px` }}
         >
-          {/* Horizontal connector */}
-          <motion.line
-            x1={i % 2 === 0 ? 160 : 250}
-            y1={step.y + 4}
-            x2={i % 2 === 0 ? 250 : 340}
-            y2={step.y + 4}
-            stroke={step.color} strokeWidth="1.5" strokeOpacity="0.5"
-            initial={{ pathLength: 0 }}
-            whileInView={{ pathLength: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.6 + i * 0.18 }}
+          {/* Outer ring glow */}
+          <motion.circle
+            cx={step.x} cy={step.y} r="24"
+            fill="none" stroke={step.color} strokeWidth="0.8" strokeOpacity="0.2"
+            animate={{ r: [24, 28, 24], strokeOpacity: [0.15, 0.35, 0.15] }}
+            transition={{ duration: 3 + i * 0.5, repeat: Infinity, ease: "easeInOut" }}
           />
 
-          {/* Node box */}
-          <rect
-            x={i % 2 === 0 ? 80 : 340}
-            y={step.y - 14} width="80" height="34" rx="8"
-            fill={step.color} fillOpacity="0.12"
-            stroke={step.color} strokeWidth="1" strokeOpacity="0.35"
+          {/* Inner filled circle */}
+          <circle
+            cx={step.x} cy={step.y} r="18"
+            fill={step.color} fillOpacity="0.08"
+            stroke={step.color} strokeWidth="1.2" strokeOpacity="0.4"
           />
+
+          {/* Center dot */}
+          <motion.circle
+            cx={step.x} cy={step.y} r="3"
+            fill={step.color}
+            animate={{ opacity: [0.4, 1, 0.4], scale: [1, 1.3, 1] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: i * 0.3 }}
+          />
+
+          {/* Label */}
           <text
-            x={i % 2 === 0 ? 120 : 380}
-            y={step.y + 6}
-            textAnchor="middle" fill={step.color}
-            fontFamily="JetBrains Mono, monospace" fontSize="12" fontWeight="600"
+            x={step.x} y={step.y + 1}
+            textAnchor="middle" dominantBaseline="middle"
+            fill={step.color} fillOpacity="0.9"
+            fontFamily="JetBrains Mono, monospace" fontSize="8" fontWeight="700"
           >
             {step.label}
           </text>
 
-          {/* Center pipeline dot */}
-          <motion.circle
-            cx="250" cy={step.y + 4} r="4"
-            fill={step.color} fillOpacity="0.8"
-            animate={{ scale: [1, 1.4, 1], opacity: [0.5, 1, 0.5] }}
-            transition={{ duration: 2 + i * 0.4, repeat: Infinity, ease: "easeInOut" }}
-          />
-
-          {/* Icon near box */}
-          <text
-            x={i % 2 === 0 ? 66 : 434}
-            y={step.y + 6}
-            textAnchor="middle" fill={step.color} fillOpacity="0.6"
-            fontSize="14"
-          >
-            {step.icon}
-          </text>
+          {/* Connector label line + marker */}
+          {i < steps.length - 1 && (
+            <motion.circle
+              cx={(step.x + steps[i + 1].x) / 2}
+              cy={(step.y + steps[i + 1].y) / 2}
+              r="1.5" fill={step.color} fillOpacity="0.3"
+              animate={{ opacity: [0.2, 0.5, 0.2] }}
+              transition={{ duration: 2, repeat: Infinity, delay: i * 0.5 }}
+            />
+          )}
         </motion.g>
       ))}
     </svg>
