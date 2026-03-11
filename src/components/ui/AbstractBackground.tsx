@@ -29,8 +29,8 @@ function createCircuitTraces(w: number, h: number, isMobile: boolean): CircuitTr
   // Left side traces · wider spread, starts below images (~0.35)
   const leftTraceConfigs = isMobile
     ? [
-        [{ x: m, y: h * 0.35 }, { x: m, y: h * 0.48 }, { x: m + 35, y: h * 0.48 }, { x: m + 35, y: h * 0.62 }, { x: m, y: h * 0.62 }, { x: m, y: h * 0.78 }, { x: m + 28, y: h * 0.78 }, { x: m + 28, y: h * 0.92 }],
-        [{ x: m + 55, y: h * 0.40 }, { x: m + 55, y: h * 0.55 }, { x: m + 20, y: h * 0.55 }, { x: m + 20, y: h * 0.70 }, { x: m + 55, y: h * 0.70 }, { x: m + 55, y: h * 0.85 }],
+        [{ x: m, y: h * 0.20 }, { x: m, y: h * 0.35 }, { x: m + 35, y: h * 0.35 }, { x: m + 35, y: h * 0.50 }, { x: m, y: h * 0.50 }, { x: m, y: h * 0.66 }, { x: m + 28, y: h * 0.66 }, { x: m + 28, y: h * 0.82 }, { x: m, y: h * 0.82 }, { x: m, y: h * 0.95 }],
+        [{ x: m + 55, y: h * 0.25 }, { x: m + 55, y: h * 0.42 }, { x: m + 20, y: h * 0.42 }, { x: m + 20, y: h * 0.58 }, { x: m + 55, y: h * 0.58 }, { x: m + 55, y: h * 0.74 }, { x: m + 20, y: h * 0.74 }, { x: m + 20, y: h * 0.90 }],
       ]
     : [
         [{ x: m, y: h * 0.32 }, { x: m, y: h * 0.45 }, { x: m + 50, y: h * 0.45 }, { x: m + 50, y: h * 0.58 }, { x: m, y: h * 0.58 }, { x: m, y: h * 0.72 }, { x: m + 40, y: h * 0.72 }, { x: m + 40, y: h * 0.85 }, { x: m, y: h * 0.85 }, { x: m, y: h * 0.96 }],
@@ -41,8 +41,8 @@ function createCircuitTraces(w: number, h: number, isMobile: boolean): CircuitTr
   // Right side traces · wider spread, starts below images
   const rightTraceConfigs = isMobile
     ? [
-        [{ x: w - m, y: h * 0.33 }, { x: w - m, y: h * 0.46 }, { x: w - m - 35, y: h * 0.46 }, { x: w - m - 35, y: h * 0.60 }, { x: w - m, y: h * 0.60 }, { x: w - m, y: h * 0.76 }, { x: w - m - 28, y: h * 0.76 }, { x: w - m - 28, y: h * 0.90 }],
-        [{ x: w - m - 55, y: h * 0.38 }, { x: w - m - 55, y: h * 0.53 }, { x: w - m - 20, y: h * 0.53 }, { x: w - m - 20, y: h * 0.68 }, { x: w - m - 55, y: h * 0.68 }, { x: w - m - 55, y: h * 0.84 }],
+        [{ x: w - m, y: h * 0.18 }, { x: w - m, y: h * 0.33 }, { x: w - m - 35, y: h * 0.33 }, { x: w - m - 35, y: h * 0.48 }, { x: w - m, y: h * 0.48 }, { x: w - m, y: h * 0.64 }, { x: w - m - 28, y: h * 0.64 }, { x: w - m - 28, y: h * 0.80 }, { x: w - m, y: h * 0.80 }, { x: w - m, y: h * 0.94 }],
+        [{ x: w - m - 55, y: h * 0.23 }, { x: w - m - 55, y: h * 0.40 }, { x: w - m - 20, y: h * 0.40 }, { x: w - m - 20, y: h * 0.56 }, { x: w - m - 55, y: h * 0.56 }, { x: w - m - 55, y: h * 0.72 }, { x: w - m - 20, y: h * 0.72 }, { x: w - m - 20, y: h * 0.88 }],
       ]
     : [
         [{ x: w - m, y: h * 0.30 }, { x: w - m, y: h * 0.43 }, { x: w - m - 50, y: h * 0.43 }, { x: w - m - 50, y: h * 0.56 }, { x: w - m, y: h * 0.56 }, { x: w - m, y: h * 0.70 }, { x: w - m - 40, y: h * 0.70 }, { x: w - m - 40, y: h * 0.83 }, { x: w - m, y: h * 0.83 }, { x: w - m, y: h * 0.95 }],

@@ -902,6 +902,19 @@ section {
   color: rgba(55, 48, 107, 0.85);
 }
 
+.about-carousel-counter {
+  color: rgba(255, 255, 255, 0.3);
+}
+.light-mode .about-carousel-counter {
+  color: rgba(30, 27, 75, 0.5);
+}
+.about-carousel-dot {
+  background: rgba(255, 255, 255, 0.2);
+}
+.light-mode .about-carousel-dot {
+  background: rgba(30, 27, 75, 0.2);
+}
+
 /* About section description - Dark mode intense text */
 .about-description-text {
   color: rgba(255, 255, 255, 0.9);
