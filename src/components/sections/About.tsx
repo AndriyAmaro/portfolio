@@ -99,7 +99,7 @@ export function About() {
           }}
         >
           <div className="relative">
-            <div className="absolute inset-0 bg-indigo-500/5 rounded-full blur-lg" />
+            <div className="absolute inset-4 bg-indigo-500/3 rounded-full blur-md" />
             <Image
               src="/frontend-icon.png"
               alt="Frontend"
@@ -132,7 +132,7 @@ export function About() {
           }}
         >
           <div className="relative">
-            <div className="absolute inset-0 bg-violet-500/5 rounded-full blur-lg" />
+            <div className="absolute inset-4 bg-violet-500/3 rounded-full blur-md" />
             <Image
               src="/backend-icon.png"
               alt="Backend"
