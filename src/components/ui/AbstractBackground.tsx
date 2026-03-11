@@ -48,17 +48,17 @@ function createNodes(w: number, h: number, isDark: boolean): Node[] {
         { x: 0.20, y: 0.50 }, { x: 0.80, y: 0.30 },
       ]
     : [
-        // Left side vertical strip
-        { x: 0.03, y: 0.10 }, { x: 0.07, y: 0.22 }, { x: 0.04, y: 0.34 },
-        { x: 0.09, y: 0.46 }, { x: 0.05, y: 0.58 }, { x: 0.08, y: 0.70 },
-        { x: 0.03, y: 0.82 }, { x: 0.10, y: 0.92 },
+        // Left side vertical strip (starts below images ~0.35)
+        { x: 0.03, y: 0.35 }, { x: 0.07, y: 0.45 }, { x: 0.04, y: 0.55 },
+        { x: 0.09, y: 0.65 }, { x: 0.05, y: 0.75 }, { x: 0.08, y: 0.82 },
+        { x: 0.03, y: 0.90 }, { x: 0.10, y: 0.96 },
         // Right side vertical strip
-        { x: 0.97, y: 0.08 }, { x: 0.93, y: 0.20 }, { x: 0.96, y: 0.32 },
-        { x: 0.91, y: 0.44 }, { x: 0.95, y: 0.56 }, { x: 0.92, y: 0.68 },
-        { x: 0.97, y: 0.80 }, { x: 0.90, y: 0.90 },
+        { x: 0.97, y: 0.35 }, { x: 0.93, y: 0.45 }, { x: 0.96, y: 0.55 },
+        { x: 0.91, y: 0.65 }, { x: 0.95, y: 0.75 }, { x: 0.92, y: 0.82 },
+        { x: 0.97, y: 0.90 }, { x: 0.90, y: 0.96 },
         // Inner accents near edges
-        { x: 0.14, y: 0.30 }, { x: 0.86, y: 0.40 },
-        { x: 0.12, y: 0.65 }, { x: 0.88, y: 0.55 },
+        { x: 0.14, y: 0.50 }, { x: 0.86, y: 0.60 },
+        { x: 0.12, y: 0.78 }, { x: 0.88, y: 0.72 },
       ];
 
   return positions.map((p, i) => ({
@@ -89,16 +89,16 @@ function createHexRings(w: number, h: number, isDark: boolean): HexRing[] {
         { cx: w * 0.94, cy: h * 0.80, radius: 42, rotation: 0, rotationSpeed: -0.0018, opacity: isDark ? 0.07 : 0.09, sides: 4 },
       ]
     : [
-        // Left side vertical
-        { cx: w * 0.05, cy: h * 0.18, radius: 60, rotation: 0, rotationSpeed: 0.002, opacity: isDark ? 0.12 : 0.15, sides: 6 },
-        { cx: w * 0.08, cy: h * 0.45, radius: 45, rotation: Math.PI / 4, rotationSpeed: 0.003, opacity: isDark ? 0.10 : 0.12, sides: 4 },
-        { cx: w * 0.04, cy: h * 0.72, radius: 55, rotation: Math.PI / 6, rotationSpeed: -0.0015, opacity: isDark ? 0.09 : 0.11, sides: 6 },
-        { cx: w * 0.10, cy: h * 0.92, radius: 35, rotation: Math.PI / 3, rotationSpeed: 0.0025, opacity: isDark ? 0.11 : 0.13, sides: 6 },
+        // Left side vertical (starts below images ~0.40)
+        { cx: w * 0.05, cy: h * 0.42, radius: 60, rotation: 0, rotationSpeed: 0.002, opacity: isDark ? 0.12 : 0.15, sides: 6 },
+        { cx: w * 0.08, cy: h * 0.62, radius: 45, rotation: Math.PI / 4, rotationSpeed: 0.003, opacity: isDark ? 0.10 : 0.12, sides: 4 },
+        { cx: w * 0.04, cy: h * 0.80, radius: 55, rotation: Math.PI / 6, rotationSpeed: -0.0015, opacity: isDark ? 0.09 : 0.11, sides: 6 },
+        { cx: w * 0.10, cy: h * 0.94, radius: 35, rotation: Math.PI / 3, rotationSpeed: 0.0025, opacity: isDark ? 0.11 : 0.13, sides: 6 },
         // Right side vertical
-        { cx: w * 0.95, cy: h * 0.15, radius: 80, rotation: Math.PI / 6, rotationSpeed: -0.0015, opacity: isDark ? 0.10 : 0.12, sides: 6 },
-        { cx: w * 0.92, cy: h * 0.42, radius: 50, rotation: 0, rotationSpeed: -0.002, opacity: isDark ? 0.09 : 0.11, sides: 3 },
-        { cx: w * 0.96, cy: h * 0.68, radius: 65, rotation: 0, rotationSpeed: 0.001, opacity: isDark ? 0.08 : 0.10, sides: 6 },
-        { cx: w * 0.90, cy: h * 0.88, radius: 40, rotation: 0, rotationSpeed: -0.0018, opacity: isDark ? 0.07 : 0.09, sides: 4 },
+        { cx: w * 0.95, cy: h * 0.40, radius: 80, rotation: Math.PI / 6, rotationSpeed: -0.0015, opacity: isDark ? 0.10 : 0.12, sides: 6 },
+        { cx: w * 0.92, cy: h * 0.60, radius: 50, rotation: 0, rotationSpeed: -0.002, opacity: isDark ? 0.09 : 0.11, sides: 3 },
+        { cx: w * 0.96, cy: h * 0.78, radius: 65, rotation: 0, rotationSpeed: 0.001, opacity: isDark ? 0.08 : 0.10, sides: 6 },
+        { cx: w * 0.90, cy: h * 0.92, radius: 40, rotation: 0, rotationSpeed: -0.0018, opacity: isDark ? 0.07 : 0.09, sides: 4 },
       ];
 }
 
