@@ -56,11 +56,9 @@ const techStack = [
   "Clean Architecture",
 ];
 
-/* ── Mobile carousel with 2-column auto-scroll ── */
+/* ── Mobile carousel · 1 card per slide ── */
 function MobileCarousel() {
-  const col1 = [highlights[0], highlights[1]];
-  const col2 = [highlights[2], highlights[3]];
-  const [activeCol, setActiveCol] = useState(0);
+  const [active, setActive] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const ref = useRef(null);
   const inView = useInView(ref, { once: false, margin: "-50px" });
@@ -68,8 +66,8 @@ function MobileCarousel() {
   const startTimer = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
-      setActiveCol((prev) => (prev === 0 ? 1 : 0));
-    }, 4000);
+      setActive((prev) => (prev + 1) % highlights.length);
+    }, 3500);
   }, []);
 
   useEffect(() => {
@@ -77,52 +75,41 @@ function MobileCarousel() {
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [inView, startTimer]);
 
-  const columns = [col1, col2];
-
   return (
     <div ref={ref} className="relative overflow-hidden">
       <div
         className="flex transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]"
-        style={{ transform: `translateX(-${activeCol * 100}%)` }}
+        style={{ transform: `translateX(-${active * 100}%)` }}
       >
-        {columns.map((col, colIdx) => (
-          <div key={colIdx} className="min-w-full grid grid-cols-2 gap-3 px-1">
-            {col.map((item) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-                className="group h-full about-glow-wrap"
-              >
-                <div className="about-highlight-card relative p-4 rounded-2xl overflow-hidden h-full z-[1]">
-                  <div className="relative mb-3">
-                    <div className="about-icon-container w-10 h-10 rounded-xl flex items-center justify-center">
-                      <item.icon className="w-5 h-5 text-indigo-400" />
-                    </div>
+        {highlights.map((item) => (
+          <div key={item.title} className="min-w-full px-1">
+            <div className="about-glow-wrap">
+              <div className="about-highlight-card relative p-5 rounded-2xl overflow-hidden z-[1]">
+                <div className="flex items-center gap-4 mb-3">
+                  <div className="about-icon-container w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <item.icon className="w-5 h-5 text-indigo-400" />
                   </div>
-                  <h4 className="text-sm font-semibold mb-1.5 text-white/95 about-card-title">
+                  <h4 className="text-base font-semibold text-white/95 about-card-title">
                     {item.title}
                   </h4>
-                  <p className="text-xs text-white/70 leading-relaxed about-card-description">
-                    {item.description}
-                  </p>
                 </div>
-              </motion.div>
-            ))}
+                <p className="text-sm text-white/70 leading-relaxed about-card-description">
+                  {item.description}
+                </p>
+              </div>
+            </div>
           </div>
         ))}
       </div>
 
       {/* Indicators */}
       <div className="flex justify-center gap-2 mt-4">
-        {columns.map((_, i) => (
+        {highlights.map((_, i) => (
           <button
             key={i}
-            onClick={() => { setActiveCol(i); startTimer(); }}
+            onClick={() => { setActive(i); startTimer(); }}
             className={`h-1.5 rounded-full transition-all duration-500 ${
-              activeCol === i
+              active === i
                 ? "w-6 bg-indigo-500"
                 : "w-1.5 bg-white/20"
             }`}
@@ -178,7 +165,7 @@ export function About() {
               alt=""
               width={420}
               height={420}
-              className="w-[240px] h-[240px] md:w-[420px] md:h-[420px] opacity-[0.16] dark:opacity-[0.18] select-none"
+              className="w-[240px] h-[240px] md:w-[420px] md:h-[420px] opacity-[0.16] dark:opacity-[0.18] select-none hue-rotate-[20deg] saturate-[1.3] brightness-[1.1]"
               draggable={false}
               priority={false}
             />
@@ -208,7 +195,7 @@ export function About() {
               alt=""
               width={420}
               height={420}
-              className="w-[240px] h-[240px] md:w-[420px] md:h-[420px] opacity-[0.16] dark:opacity-[0.18] select-none"
+              className="w-[240px] h-[240px] md:w-[420px] md:h-[420px] opacity-[0.16] dark:opacity-[0.18] select-none hue-rotate-[20deg] saturate-[1.3] brightness-[1.1]"
               draggable={false}
               priority={false}
             />
