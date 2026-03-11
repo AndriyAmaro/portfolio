@@ -84,7 +84,7 @@ export function About() {
         whileInView={{ opacity: 1, x: 0, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8, delay: 0.2 }}
-        className="absolute -top-20 -left-52 md:-left-44 lg:-left-40 z-10 pointer-events-none"
+        className="absolute top-4 -left-52 md:-left-44 lg:-left-40 z-10 pointer-events-none"
       >
         <motion.div
           animate={{
