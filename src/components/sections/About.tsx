@@ -1,8 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Layers, TestTubes, GitBranch, Rocket } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
 import Image from "next/image";
 
@@ -56,48 +56,90 @@ const techStack = [
   "Clean Architecture",
 ];
 
-/* ── Mobile · two scroll rows ── */
+/* ── Mobile · single card carousel with auto-rotate ── */
 function MobileCarousel() {
-  const row1 = [highlights[0], highlights[1]];
-  const row2 = [highlights[2], highlights[3]];
+  const [active, setActive] = useState(0);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const touchX = useRef(0);
+
+  const startTimer = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      setActive((p) => (p + 1) % highlights.length);
+    }, 4000);
+  }, []);
+
+  useEffect(() => {
+    startTimer();
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [startTimer]);
+
+  const goTo = (i: number) => { setActive(i); startTimer(); };
 
   return (
-    <div className="space-y-3 -mx-4">
-      {[row1, row2].map((row, rowIdx) => (
-        <div
-          key={rowIdx}
-          className="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth px-4 pb-1 no-scrollbar"
+    <div
+      className="relative overflow-hidden"
+      onTouchStart={(e) => { touchX.current = e.touches[0].clientX; }}
+      onTouchEnd={(e) => {
+        const d = touchX.current - e.changedTouches[0].clientX;
+        if (Math.abs(d) > 40) {
+          goTo(d > 0
+            ? (active + 1) % highlights.length
+            : (active - 1 + highlights.length) % highlights.length
+          );
+        }
+      }}
+    >
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={active}
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -40 }}
+          transition={{ duration: 0.35, ease: "easeInOut" }}
         >
-          {row.map((item, i) => (
-            <motion.div
-              key={item.title}
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: (rowIdx * 2 + i) * 0.1 }}
-              className="snap-start flex-shrink-0 w-[75vw] max-w-[280px]"
-            >
-              <div className="about-glow-wrap h-full">
-                <div className="about-highlight-card relative p-5 rounded-2xl overflow-hidden z-[1] h-full">
-                  <div className="flex items-start gap-4">
-                    <div className="about-icon-container w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <item.icon className="w-5 h-5 text-indigo-400" />
-                    </div>
-                    <div className="min-w-0">
-                      <h4 className="text-[15px] font-semibold text-white/95 about-card-title mb-1.5">
-                        {item.title}
-                      </h4>
-                      <p className="text-[13px] text-white/60 leading-relaxed about-card-description">
-                        {item.description}
-                      </p>
-                    </div>
-                  </div>
+          <div className="about-glow-wrap">
+            <div className="about-highlight-card relative p-5 rounded-2xl overflow-hidden z-[1]">
+              <div className="flex items-start gap-4">
+                <div className="about-icon-container w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0">
+                  {(() => {
+                    const Icon = highlights[active].icon;
+                    return <Icon className="w-6 h-6 text-indigo-400" />;
+                  })()}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h4 className="text-base font-semibold text-white/95 about-card-title mb-2">
+                    {highlights[active].title}
+                  </h4>
+                  <p className="text-sm text-white/60 leading-relaxed about-card-description">
+                    {highlights[active].description}
+                  </p>
                 </div>
               </div>
-            </motion.div>
+            </div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Counter + dots */}
+      <div className="flex items-center justify-center gap-3 mt-4">
+        <span className="text-xs text-white/30 font-mono">
+          {String(active + 1).padStart(2, "0")}/{String(highlights.length).padStart(2, "0")}
+        </span>
+        <div className="flex gap-1.5">
+          {highlights.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goTo(i)}
+              className={`h-1 rounded-full transition-all duration-500 ${
+                active === i
+                  ? "w-5 bg-indigo-500"
+                  : "w-1.5 bg-white/20"
+              }`}
+            />
           ))}
         </div>
-      ))}
+      </div>
     </div>
   );
 }
