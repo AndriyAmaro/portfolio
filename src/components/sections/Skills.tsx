@@ -11,6 +11,7 @@ import {
   TestTubes,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { skillCategories as importedSkills } from "@/data/skills";
 import { SkillsBackground, SkillsBackgroundLight } from "../ui/SkillsBackground";
 
@@ -390,6 +391,56 @@ export function Skills() {
   return (
     <section id="skills" className="relative py-24 md:py-32 overflow-hidden">
       {isLightMode ? <SkillsBackgroundLight /> : <SkillsBackground />}
+
+      {/* Frontend icon - top left */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.3, filter: "blur(20px)" }}
+        whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        className="absolute top-4 -left-52 md:-left-44 lg:-left-40 z-10 pointer-events-none"
+      >
+        <motion.div
+          animate={{
+            y: [0, -35, 5, -45, 8, -20, -40, 0],
+            x: [0, 8, -5, 12, -8, 5, -3, 0],
+          }}
+          transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <Image
+            src="/frontend-icon.png"
+            alt="Frontend"
+            width={750}
+            height={750}
+            className="opacity-[0.12]"
+          />
+        </motion.div>
+      </motion.div>
+
+      {/* Backend icon - top right */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.3, filter: "blur(20px)" }}
+        whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.2, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="absolute top-[22px] -right-44 md:-right-36 lg:-right-32 z-10 pointer-events-none"
+      >
+        <motion.div
+          animate={{
+            y: [0, -30, 6, -42, 10, -18, -35, 0],
+            x: [0, -7, 4, -10, 8, -4, 3, 0],
+          }}
+          transition={{ duration: 32, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <Image
+            src="/backend-icon.png"
+            alt="Backend"
+            width={750}
+            height={750}
+            className="opacity-[0.12]"
+          />
+        </motion.div>
+      </motion.div>
 
       <div className="container-custom relative z-10">
         {/* Header with radial burst */}
