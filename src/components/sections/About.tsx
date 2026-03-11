@@ -80,10 +80,10 @@ export function About() {
 
       {/* Frontend icon - top left */}
       <motion.div
-        initial={{ opacity: 0, x: -40, y: -20 }}
-        whileInView={{ opacity: 1, x: 0, y: 0 }}
+        initial={{ opacity: 0, scale: 0.3, filter: "blur(20px)" }}
+        whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
         viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.2 }}
+        transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
         className="absolute top-4 -left-52 md:-left-44 lg:-left-40 z-10 pointer-events-none"
       >
         <motion.div
@@ -113,10 +113,10 @@ export function About() {
 
       {/* Backend icon - top right */}
       <motion.div
-        initial={{ opacity: 0, x: 40, y: -20 }}
-        whileInView={{ opacity: 1, x: 0, y: 0 }}
+        initial={{ opacity: 0, scale: 0.3, filter: "blur(20px)" }}
+        whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
         viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.3 }}
+        transition={{ duration: 1.2, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
         className="absolute -top-20 -right-44 md:-right-36 lg:-right-32 z-10 pointer-events-none"
       >
         <motion.div
