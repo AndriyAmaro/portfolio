@@ -48,7 +48,8 @@ function createNodes(w: number, h: number, isDark: boolean): Node[] {
         { x: 0.20, y: 0.50 }, { x: 0.80, y: 0.30 },
       ]
     : [
-        // Left side · starts at cards height (~0.55) down
+        // Left side · starts higher (~0.38) down
+        { x: 0.06, y: 0.38 }, { x: 0.10, y: 0.46 },
         { x: 0.03, y: 0.55 }, { x: 0.07, y: 0.63 }, { x: 0.04, y: 0.71 },
         { x: 0.09, y: 0.79 }, { x: 0.05, y: 0.86 }, { x: 0.08, y: 0.92 },
         { x: 0.03, y: 0.97 },
@@ -66,7 +67,7 @@ function createNodes(w: number, h: number, isDark: boolean): Node[] {
     baseX: w * p.x,
     baseY: h * p.y,
     radius: 2 + Math.random() * 2.5,
-    opacity: isDark ? 0.3 + Math.random() * 0.4 : 0.25 + Math.random() * 0.35,
+    opacity: isDark ? 0.4 + Math.random() * 0.45 : 0.35 + Math.random() * 0.4,
     speed: 0.3 + Math.random() * 0.4,
     amplitude: 8 + Math.random() * 15,
     phase: Math.random() * Math.PI * 2,
@@ -89,15 +90,16 @@ function createHexRings(w: number, h: number, isDark: boolean): HexRing[] {
         { cx: w * 0.94, cy: h * 0.80, radius: 42, rotation: 0, rotationSpeed: -0.0018, opacity: isDark ? 0.07 : 0.09, sides: 4 },
       ]
     : [
-        // Left side · cards height (~0.55) down
-        { cx: w * 0.05, cy: h * 0.58, radius: 60, rotation: 0, rotationSpeed: 0.002, opacity: isDark ? 0.12 : 0.15, sides: 6 },
-        { cx: w * 0.08, cy: h * 0.75, radius: 45, rotation: Math.PI / 4, rotationSpeed: 0.003, opacity: isDark ? 0.10 : 0.12, sides: 4 },
-        { cx: w * 0.04, cy: h * 0.90, radius: 55, rotation: Math.PI / 6, rotationSpeed: -0.0015, opacity: isDark ? 0.09 : 0.11, sides: 6 },
+        // Left side · starts higher (~0.42) down
+        { cx: w * 0.07, cy: h * 0.42, radius: 50, rotation: Math.PI / 3, rotationSpeed: 0.0025, opacity: isDark ? 0.14 : 0.17, sides: 6 },
+        { cx: w * 0.05, cy: h * 0.58, radius: 60, rotation: 0, rotationSpeed: 0.002, opacity: isDark ? 0.16 : 0.18, sides: 6 },
+        { cx: w * 0.08, cy: h * 0.75, radius: 45, rotation: Math.PI / 4, rotationSpeed: 0.003, opacity: isDark ? 0.14 : 0.16, sides: 4 },
+        { cx: w * 0.04, cy: h * 0.90, radius: 55, rotation: Math.PI / 6, rotationSpeed: -0.0015, opacity: isDark ? 0.12 : 0.14, sides: 6 },
         // Right side · "Full Stack Developer" height (~0.45) down
-        { cx: w * 0.95, cy: h * 0.48, radius: 80, rotation: Math.PI / 6, rotationSpeed: -0.0015, opacity: isDark ? 0.10 : 0.12, sides: 6 },
-        { cx: w * 0.92, cy: h * 0.65, radius: 50, rotation: 0, rotationSpeed: -0.002, opacity: isDark ? 0.09 : 0.11, sides: 3 },
-        { cx: w * 0.96, cy: h * 0.82, radius: 65, rotation: 0, rotationSpeed: 0.001, opacity: isDark ? 0.08 : 0.10, sides: 6 },
-        { cx: w * 0.90, cy: h * 0.95, radius: 40, rotation: 0, rotationSpeed: -0.0018, opacity: isDark ? 0.07 : 0.09, sides: 4 },
+        { cx: w * 0.95, cy: h * 0.48, radius: 80, rotation: Math.PI / 6, rotationSpeed: -0.0015, opacity: isDark ? 0.14 : 0.16, sides: 6 },
+        { cx: w * 0.92, cy: h * 0.65, radius: 50, rotation: 0, rotationSpeed: -0.002, opacity: isDark ? 0.12 : 0.14, sides: 3 },
+        { cx: w * 0.96, cy: h * 0.82, radius: 65, rotation: 0, rotationSpeed: 0.001, opacity: isDark ? 0.11 : 0.13, sides: 6 },
+        { cx: w * 0.90, cy: h * 0.95, radius: 40, rotation: 0, rotationSpeed: -0.0018, opacity: isDark ? 0.10 : 0.12, sides: 4 },
       ];
 }
 

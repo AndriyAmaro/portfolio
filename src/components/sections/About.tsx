@@ -178,7 +178,7 @@ export function About() {
               alt=""
               width={420}
               height={420}
-              className="w-[240px] h-[240px] md:w-[420px] md:h-[420px] opacity-[0.10] dark:opacity-[0.11] select-none"
+              className="w-[240px] h-[240px] md:w-[420px] md:h-[420px] opacity-[0.16] dark:opacity-[0.18] select-none"
               draggable={false}
               priority={false}
             />
@@ -208,7 +208,7 @@ export function About() {
               alt=""
               width={420}
               height={420}
-              className="w-[240px] h-[240px] md:w-[420px] md:h-[420px] opacity-[0.10] dark:opacity-[0.11] select-none"
+              className="w-[240px] h-[240px] md:w-[420px] md:h-[420px] opacity-[0.16] dark:opacity-[0.18] select-none"
               draggable={false}
               priority={false}
             />
