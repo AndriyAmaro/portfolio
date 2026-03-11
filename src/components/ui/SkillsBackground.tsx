@@ -42,11 +42,15 @@ const CODE_SYMBOLS = [
   "const", "func", "async", "type", "npm", "git",
   "API", "SQL", "CSS", "DOM", "JSX", "CLI",
   "[]", "::", "/**", "*/", "++", "!=",
+  "React", "Next.js", "Node", "Prisma", "Docker",
+  "Redis", "Zod", "Vitest", "Express", "Socket.io",
+  "TS", "PG", "REST", "JWT", "CI/CD",
+  "import", "export", "return", "await", "yield",
 ];
 
 function createSymbols(w: number, h: number, isDark: boolean): FloatingSymbol[] {
   const symbols: FloatingSymbol[] = [];
-  const count = 28;
+  const count = 42;
 
   for (let i = 0; i < count; i++) {
     symbols.push({
@@ -54,8 +58,8 @@ function createSymbols(w: number, h: number, isDark: boolean): FloatingSymbol[] 
       baseX: Math.random() * w,
       baseY: Math.random() * h,
       text: CODE_SYMBOLS[i % CODE_SYMBOLS.length],
-      fontSize: 11 + Math.random() * 14,
-      opacity: isDark ? 0.06 + Math.random() * 0.1 : 0.05 + Math.random() * 0.08,
+      fontSize: 12 + Math.random() * 16,
+      opacity: isDark ? 0.12 + Math.random() * 0.15 : 0.08 + Math.random() * 0.12,
       speed: 0.15 + Math.random() * 0.25,
       amplitude: 12 + Math.random() * 20,
       phase: Math.random() * Math.PI * 2,
@@ -68,7 +72,7 @@ function createSymbols(w: number, h: number, isDark: boolean): FloatingSymbol[] 
 
 function createBars(w: number, h: number, isDark: boolean): SkillBar[] {
   const bars: SkillBar[] = [];
-  const count = 12;
+  const count = 16;
 
   for (let i = 0; i < count; i++) {
     bars.push({
@@ -87,7 +91,7 @@ function createBars(w: number, h: number, isDark: boolean): SkillBar[] {
 
 function createCircuitNodes(w: number, h: number, isDark: boolean): CircuitNode[] {
   const nodes: CircuitNode[] = [];
-  const count = 18;
+  const count = 28;
 
   for (let i = 0; i < count; i++) {
     nodes.push({
@@ -105,7 +109,7 @@ function createCircuitNodes(w: number, h: number, isDark: boolean): CircuitNode[
     nodes.forEach((other, j) => {
       if (i !== j) {
         const dist = Math.hypot(node.x - other.x, node.y - other.y);
-        if (dist < 200 && node.connections.length < 2) {
+        if (dist < 250 && node.connections.length < 3) {
           node.connections.push(j);
         }
       }
