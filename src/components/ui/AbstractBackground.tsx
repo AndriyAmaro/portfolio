@@ -48,17 +48,17 @@ function createNodes(w: number, h: number, isDark: boolean): Node[] {
         { x: 0.20, y: 0.50 }, { x: 0.80, y: 0.30 },
       ]
     : [
-        // Left side vertical strip (starts below images ~0.35)
-        { x: 0.03, y: 0.35 }, { x: 0.07, y: 0.45 }, { x: 0.04, y: 0.55 },
-        { x: 0.09, y: 0.65 }, { x: 0.05, y: 0.75 }, { x: 0.08, y: 0.82 },
-        { x: 0.03, y: 0.90 }, { x: 0.10, y: 0.96 },
-        // Right side vertical strip
-        { x: 0.97, y: 0.35 }, { x: 0.93, y: 0.45 }, { x: 0.96, y: 0.55 },
-        { x: 0.91, y: 0.65 }, { x: 0.95, y: 0.75 }, { x: 0.92, y: 0.82 },
-        { x: 0.97, y: 0.90 }, { x: 0.90, y: 0.96 },
+        // Left side · starts at cards height (~0.55) down
+        { x: 0.03, y: 0.55 }, { x: 0.07, y: 0.63 }, { x: 0.04, y: 0.71 },
+        { x: 0.09, y: 0.79 }, { x: 0.05, y: 0.86 }, { x: 0.08, y: 0.92 },
+        { x: 0.03, y: 0.97 },
+        // Right side · starts at "Full Stack Developer" height (~0.45) down
+        { x: 0.97, y: 0.45 }, { x: 0.93, y: 0.53 }, { x: 0.96, y: 0.61 },
+        { x: 0.91, y: 0.69 }, { x: 0.95, y: 0.77 }, { x: 0.92, y: 0.84 },
+        { x: 0.97, y: 0.92 }, { x: 0.90, y: 0.97 },
         // Inner accents near edges
-        { x: 0.14, y: 0.50 }, { x: 0.86, y: 0.60 },
-        { x: 0.12, y: 0.78 }, { x: 0.88, y: 0.72 },
+        { x: 0.14, y: 0.65 }, { x: 0.86, y: 0.55 },
+        { x: 0.12, y: 0.85 }, { x: 0.88, y: 0.75 },
       ];
 
   return positions.map((p, i) => ({
@@ -89,16 +89,15 @@ function createHexRings(w: number, h: number, isDark: boolean): HexRing[] {
         { cx: w * 0.94, cy: h * 0.80, radius: 42, rotation: 0, rotationSpeed: -0.0018, opacity: isDark ? 0.07 : 0.09, sides: 4 },
       ]
     : [
-        // Left side vertical (starts below images ~0.40)
-        { cx: w * 0.05, cy: h * 0.42, radius: 60, rotation: 0, rotationSpeed: 0.002, opacity: isDark ? 0.12 : 0.15, sides: 6 },
-        { cx: w * 0.08, cy: h * 0.62, radius: 45, rotation: Math.PI / 4, rotationSpeed: 0.003, opacity: isDark ? 0.10 : 0.12, sides: 4 },
-        { cx: w * 0.04, cy: h * 0.80, radius: 55, rotation: Math.PI / 6, rotationSpeed: -0.0015, opacity: isDark ? 0.09 : 0.11, sides: 6 },
-        { cx: w * 0.10, cy: h * 0.94, radius: 35, rotation: Math.PI / 3, rotationSpeed: 0.0025, opacity: isDark ? 0.11 : 0.13, sides: 6 },
-        // Right side vertical
-        { cx: w * 0.95, cy: h * 0.40, radius: 80, rotation: Math.PI / 6, rotationSpeed: -0.0015, opacity: isDark ? 0.10 : 0.12, sides: 6 },
-        { cx: w * 0.92, cy: h * 0.60, radius: 50, rotation: 0, rotationSpeed: -0.002, opacity: isDark ? 0.09 : 0.11, sides: 3 },
-        { cx: w * 0.96, cy: h * 0.78, radius: 65, rotation: 0, rotationSpeed: 0.001, opacity: isDark ? 0.08 : 0.10, sides: 6 },
-        { cx: w * 0.90, cy: h * 0.92, radius: 40, rotation: 0, rotationSpeed: -0.0018, opacity: isDark ? 0.07 : 0.09, sides: 4 },
+        // Left side · cards height (~0.55) down
+        { cx: w * 0.05, cy: h * 0.58, radius: 60, rotation: 0, rotationSpeed: 0.002, opacity: isDark ? 0.12 : 0.15, sides: 6 },
+        { cx: w * 0.08, cy: h * 0.75, radius: 45, rotation: Math.PI / 4, rotationSpeed: 0.003, opacity: isDark ? 0.10 : 0.12, sides: 4 },
+        { cx: w * 0.04, cy: h * 0.90, radius: 55, rotation: Math.PI / 6, rotationSpeed: -0.0015, opacity: isDark ? 0.09 : 0.11, sides: 6 },
+        // Right side · "Full Stack Developer" height (~0.45) down
+        { cx: w * 0.95, cy: h * 0.48, radius: 80, rotation: Math.PI / 6, rotationSpeed: -0.0015, opacity: isDark ? 0.10 : 0.12, sides: 6 },
+        { cx: w * 0.92, cy: h * 0.65, radius: 50, rotation: 0, rotationSpeed: -0.002, opacity: isDark ? 0.09 : 0.11, sides: 3 },
+        { cx: w * 0.96, cy: h * 0.82, radius: 65, rotation: 0, rotationSpeed: 0.001, opacity: isDark ? 0.08 : 0.10, sides: 6 },
+        { cx: w * 0.90, cy: h * 0.95, radius: 40, rotation: 0, rotationSpeed: -0.0018, opacity: isDark ? 0.07 : 0.09, sides: 4 },
       ];
 }
 
