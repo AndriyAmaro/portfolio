@@ -56,10 +56,11 @@ const techStack = [
   "Clean Architecture",
 ];
 
-/* ── Mobile carousel · 1 card per slide ── */
+/* ── Mobile carousel · compact square cards, 2 visible ── */
 function MobileCarousel() {
   const [active, setActive] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const touchStartX = useRef(0);
   const ref = useRef(null);
   const inView = useInView(ref, { once: false, margin: "-50px" });
 
@@ -75,30 +76,59 @@ function MobileCarousel() {
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [inView, startTimer]);
 
+  const goTo = (i: number) => { setActive(i); startTimer(); };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) goTo((active + 1) % highlights.length);
+      else goTo((active - 1 + highlights.length) % highlights.length);
+    }
+  };
+
   return (
-    <div ref={ref} className="relative overflow-hidden">
+    <div ref={ref} className="relative">
+      {/* Cards grid · 2x2, centered */}
       <div
-        className="flex transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]"
-        style={{ transform: `translateX(-${active * 100}%)` }}
+        className="grid grid-cols-2 gap-3 max-w-[320px] mx-auto"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
       >
-        {highlights.map((item) => (
-          <div key={item.title} className="min-w-full px-1">
-            <div className="about-glow-wrap">
-              <div className="about-highlight-card relative p-5 rounded-2xl overflow-hidden z-[1]">
-                <div className="flex items-center gap-4 mb-3">
-                  <div className="about-icon-container w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <item.icon className="w-5 h-5 text-indigo-400" />
-                  </div>
-                  <h4 className="text-base font-semibold text-white/95 about-card-title">
-                    {item.title}
-                  </h4>
-                </div>
-                <p className="text-sm text-white/70 leading-relaxed about-card-description">
-                  {item.description}
-                </p>
+        {highlights.map((item, i) => (
+          <motion.div
+            key={item.title}
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: i * 0.08 }}
+            onClick={() => goTo(i)}
+            className="about-glow-wrap"
+          >
+            <div
+              className={`about-highlight-card relative rounded-2xl overflow-hidden z-[1] p-4 aspect-square flex flex-col items-center justify-center text-center transition-all duration-500 ${
+                active === i
+                  ? "ring-1 ring-indigo-500/40 scale-[1.03]"
+                  : "opacity-60 scale-[0.97]"
+              }`}
+            >
+              <div className={`about-icon-container w-11 h-11 rounded-xl flex items-center justify-center mb-3 transition-all duration-500 ${
+                active === i ? "scale-110" : ""
+              }`}>
+                <item.icon className="w-5 h-5 text-indigo-400" />
               </div>
+              <h4 className="text-sm font-semibold text-white/95 about-card-title mb-1.5 leading-tight">
+                {item.title}
+              </h4>
+              <p className={`text-[11px] text-white/60 leading-snug about-card-description transition-all duration-500 ${
+                active === i ? "opacity-100" : "opacity-0 h-0 overflow-hidden"
+              }`}>
+                {item.description}
+              </p>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
 
@@ -107,7 +137,7 @@ function MobileCarousel() {
         {highlights.map((_, i) => (
           <button
             key={i}
-            onClick={() => { setActive(i); startTimer(); }}
+            onClick={() => goTo(i)}
             className={`h-1.5 rounded-full transition-all duration-500 ${
               active === i
                 ? "w-6 bg-indigo-500"
