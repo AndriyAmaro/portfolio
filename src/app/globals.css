@@ -188,6 +188,9 @@ body {
   background: var(--border-hover);
 }
 
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
 /* ===== SELECTION ===== */
 ::selection {
   background: var(--primary);
