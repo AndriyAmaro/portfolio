@@ -115,7 +115,7 @@ export function About() {
         whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
         viewport={{ once: true }}
         transition={{ duration: 1.2, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute top-[4.5rem] -right-44 md:-right-36 lg:-right-32 z-10 pointer-events-none"
+        className="absolute top-[22px] -right-44 md:-right-36 lg:-right-32 z-10 pointer-events-none"
       >
         <motion.div
           animate={{
