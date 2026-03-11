@@ -315,6 +315,61 @@ function SkillRow({
 }
 
 // ---------------------------------------------------------------------------
+// Radial burst words from title
+// ---------------------------------------------------------------------------
+const BURST_WORDS = [
+  "React", "Next.js", "TypeScript", "Node.js", "Prisma",
+  "Docker", "Tailwind", "PostgreSQL", "Redis", "Socket.io",
+  "Vitest", "Zod", "Git", "Vercel", "Express",
+  "CI/CD", "REST API", "Framer Motion", "Hono", "Zustand",
+];
+
+function TitleBurst() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+
+  // Pre-calculate positions radiating outward from center
+  const burstItems = BURST_WORDS.map((word, i) => {
+    const total = BURST_WORDS.length;
+    const angle = (i / total) * Math.PI * 2 - Math.PI / 2;
+    // Varying distances for organic feel
+    const distance = 120 + (i % 3) * 60 + Math.sin(i * 1.7) * 40;
+    const x = Math.cos(angle) * distance;
+    const y = Math.sin(angle) * distance * 0.6; // Compress Y for better horizontal spread
+    const delay = 0.3 + (i % 5) * 0.08;
+    const scale = 0.7 + (i % 3) * 0.15;
+
+    return { word, x, y, delay, scale };
+  });
+
+  return (
+    <div ref={ref} className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-visible" aria-hidden>
+      {burstItems.map((item, i) => (
+        <motion.span
+          key={i}
+          initial={{ opacity: 0, x: 0, y: 0, scale: 0.3 }}
+          animate={inView ? {
+            opacity: [0, 0.6, 0],
+            x: item.x,
+            y: item.y,
+            scale: item.scale,
+          } : {}}
+          transition={{
+            duration: 2,
+            delay: item.delay,
+            ease: [0.16, 1, 0.3, 1],
+            opacity: { duration: 2.2, times: [0, 0.3, 1] },
+          }}
+          className="absolute text-xs md:text-sm font-mono font-medium gradient-text whitespace-nowrap"
+        >
+          {item.word}
+        </motion.span>
+      ))}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Main Skills component
 // ---------------------------------------------------------------------------
 export function Skills() {
@@ -337,7 +392,7 @@ export function Skills() {
       {isLightMode ? <SkillsBackgroundLight /> : <SkillsBackground />}
 
       <div className="container-custom relative z-10">
-        {/* Header */}
+        {/* Header with radial burst */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -355,9 +410,13 @@ export function Skills() {
             <span className="text-xs font-medium text-indigo-300">{totalSkills} tecnologias no stack</span>
           </motion.div>
 
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            Minhas <span className="gradient-text">Habilidades</span>
-          </h2>
+          {/* Title with radial burst effect */}
+          <div className="relative">
+            <TitleBurst />
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 relative z-10">
+              Minhas <span className="gradient-text">Habilidades</span>
+            </h2>
+          </div>
           <p className="skills-subtitle max-w-2xl mx-auto">
             Tecnologias que uso para criar produtos digitais de alta qualidade
           </p>
