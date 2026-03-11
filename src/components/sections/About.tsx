@@ -88,11 +88,11 @@ export function About() {
       >
         <motion.div
           animate={{
-            y: [0, -10, 4, -14, 2, -6, 0],
-            x: [0, 5, -3, 7, -4, 2, 0],
+            y: [0, -35, 5, -45, 8, -20, -40, 0],
+            x: [0, 8, -5, 12, -8, 5, -3, 0],
           }}
           transition={{
-            duration: 18,
+            duration: 30,
             repeat: Infinity,
             ease: "easeInOut",
           }}
@@ -119,11 +119,11 @@ export function About() {
       >
         <motion.div
           animate={{
-            y: [0, -8, 6, -12, 3, -5, 0],
-            x: [0, -4, 3, -6, 5, -2, 0],
+            y: [0, -30, 6, -42, 10, -18, -35, 0],
+            x: [0, -7, 4, -10, 8, -4, 3, 0],
           }}
           transition={{
-            duration: 20,
+            duration: 32,
             repeat: Infinity,
             ease: "easeInOut",
           }}
