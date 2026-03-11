@@ -24,30 +24,30 @@ interface TravelingLight {
 /* ── Build PCB traces along the sides ── */
 function createCircuitTraces(w: number, h: number, isMobile: boolean): CircuitTrace[] {
   const traces: CircuitTrace[] = [];
-  const margin = isMobile ? 30 : 50;
+  const m = isMobile ? 20 : 30;
 
-  // Left side traces
+  // Left side traces · wider spread, starts below images (~0.35)
   const leftTraceConfigs = isMobile
     ? [
-        [{ x: margin, y: h * 0.12 }, { x: margin, y: h * 0.28 }, { x: margin + 25, y: h * 0.28 }, { x: margin + 25, y: h * 0.45 }, { x: margin, y: h * 0.45 }, { x: margin, y: h * 0.62 }, { x: margin + 20, y: h * 0.62 }, { x: margin + 20, y: h * 0.78 }, { x: margin, y: h * 0.78 }, { x: margin, y: h * 0.92 }],
-        [{ x: margin + 40, y: h * 0.18 }, { x: margin + 40, y: h * 0.35 }, { x: margin + 15, y: h * 0.35 }, { x: margin + 15, y: h * 0.55 }, { x: margin + 40, y: h * 0.55 }, { x: margin + 40, y: h * 0.72 }, { x: margin + 15, y: h * 0.72 }, { x: margin + 15, y: h * 0.88 }],
+        [{ x: m, y: h * 0.35 }, { x: m, y: h * 0.48 }, { x: m + 35, y: h * 0.48 }, { x: m + 35, y: h * 0.62 }, { x: m, y: h * 0.62 }, { x: m, y: h * 0.78 }, { x: m + 28, y: h * 0.78 }, { x: m + 28, y: h * 0.92 }],
+        [{ x: m + 55, y: h * 0.40 }, { x: m + 55, y: h * 0.55 }, { x: m + 20, y: h * 0.55 }, { x: m + 20, y: h * 0.70 }, { x: m + 55, y: h * 0.70 }, { x: m + 55, y: h * 0.85 }],
       ]
     : [
-        [{ x: margin, y: h * 0.15 }, { x: margin, y: h * 0.30 }, { x: margin + 35, y: h * 0.30 }, { x: margin + 35, y: h * 0.48 }, { x: margin, y: h * 0.48 }, { x: margin, y: h * 0.65 }, { x: margin + 28, y: h * 0.65 }, { x: margin + 28, y: h * 0.80 }, { x: margin, y: h * 0.80 }, { x: margin, y: h * 0.95 }],
-        [{ x: margin + 55, y: h * 0.20 }, { x: margin + 55, y: h * 0.38 }, { x: margin + 20, y: h * 0.38 }, { x: margin + 20, y: h * 0.58 }, { x: margin + 55, y: h * 0.58 }, { x: margin + 55, y: h * 0.75 }, { x: margin + 20, y: h * 0.75 }, { x: margin + 20, y: h * 0.90 }],
-        [{ x: margin + 80, y: h * 0.28 }, { x: margin + 80, y: h * 0.42 }, { x: margin + 45, y: h * 0.42 }, { x: margin + 45, y: h * 0.55 }, { x: margin + 80, y: h * 0.55 }, { x: margin + 80, y: h * 0.68 }],
+        [{ x: m, y: h * 0.32 }, { x: m, y: h * 0.45 }, { x: m + 50, y: h * 0.45 }, { x: m + 50, y: h * 0.58 }, { x: m, y: h * 0.58 }, { x: m, y: h * 0.72 }, { x: m + 40, y: h * 0.72 }, { x: m + 40, y: h * 0.85 }, { x: m, y: h * 0.85 }, { x: m, y: h * 0.96 }],
+        [{ x: m + 75, y: h * 0.36 }, { x: m + 75, y: h * 0.50 }, { x: m + 30, y: h * 0.50 }, { x: m + 30, y: h * 0.65 }, { x: m + 75, y: h * 0.65 }, { x: m + 75, y: h * 0.80 }, { x: m + 30, y: h * 0.80 }, { x: m + 30, y: h * 0.92 }],
+        [{ x: m + 110, y: h * 0.42 }, { x: m + 110, y: h * 0.55 }, { x: m + 60, y: h * 0.55 }, { x: m + 60, y: h * 0.68 }, { x: m + 110, y: h * 0.68 }, { x: m + 110, y: h * 0.78 }],
       ];
 
-  // Right side traces (mirrored)
+  // Right side traces · wider spread, starts below images
   const rightTraceConfigs = isMobile
     ? [
-        [{ x: w - margin, y: h * 0.10 }, { x: w - margin, y: h * 0.26 }, { x: w - margin - 25, y: h * 0.26 }, { x: w - margin - 25, y: h * 0.44 }, { x: w - margin, y: h * 0.44 }, { x: w - margin, y: h * 0.60 }, { x: w - margin - 20, y: h * 0.60 }, { x: w - margin - 20, y: h * 0.76 }, { x: w - margin, y: h * 0.76 }, { x: w - margin, y: h * 0.90 }],
-        [{ x: w - margin - 40, y: h * 0.16 }, { x: w - margin - 40, y: h * 0.34 }, { x: w - margin - 15, y: h * 0.34 }, { x: w - margin - 15, y: h * 0.52 }, { x: w - margin - 40, y: h * 0.52 }, { x: w - margin - 40, y: h * 0.70 }, { x: w - margin - 15, y: h * 0.70 }, { x: w - margin - 15, y: h * 0.86 }],
+        [{ x: w - m, y: h * 0.33 }, { x: w - m, y: h * 0.46 }, { x: w - m - 35, y: h * 0.46 }, { x: w - m - 35, y: h * 0.60 }, { x: w - m, y: h * 0.60 }, { x: w - m, y: h * 0.76 }, { x: w - m - 28, y: h * 0.76 }, { x: w - m - 28, y: h * 0.90 }],
+        [{ x: w - m - 55, y: h * 0.38 }, { x: w - m - 55, y: h * 0.53 }, { x: w - m - 20, y: h * 0.53 }, { x: w - m - 20, y: h * 0.68 }, { x: w - m - 55, y: h * 0.68 }, { x: w - m - 55, y: h * 0.84 }],
       ]
     : [
-        [{ x: w - margin, y: h * 0.12 }, { x: w - margin, y: h * 0.28 }, { x: w - margin - 35, y: h * 0.28 }, { x: w - margin - 35, y: h * 0.46 }, { x: w - margin, y: h * 0.46 }, { x: w - margin, y: h * 0.62 }, { x: w - margin - 28, y: h * 0.62 }, { x: w - margin - 28, y: h * 0.78 }, { x: w - margin, y: h * 0.78 }, { x: w - margin, y: h * 0.93 }],
-        [{ x: w - margin - 55, y: h * 0.18 }, { x: w - margin - 55, y: h * 0.36 }, { x: w - margin - 20, y: h * 0.36 }, { x: w - margin - 20, y: h * 0.54 }, { x: w - margin - 55, y: h * 0.54 }, { x: w - margin - 55, y: h * 0.72 }, { x: w - margin - 20, y: h * 0.72 }, { x: w - margin - 20, y: h * 0.88 }],
-        [{ x: w - margin - 80, y: h * 0.25 }, { x: w - margin - 80, y: h * 0.40 }, { x: w - margin - 45, y: h * 0.40 }, { x: w - margin - 45, y: h * 0.52 }, { x: w - margin - 80, y: h * 0.52 }, { x: w - margin - 80, y: h * 0.66 }],
+        [{ x: w - m, y: h * 0.30 }, { x: w - m, y: h * 0.43 }, { x: w - m - 50, y: h * 0.43 }, { x: w - m - 50, y: h * 0.56 }, { x: w - m, y: h * 0.56 }, { x: w - m, y: h * 0.70 }, { x: w - m - 40, y: h * 0.70 }, { x: w - m - 40, y: h * 0.83 }, { x: w - m, y: h * 0.83 }, { x: w - m, y: h * 0.95 }],
+        [{ x: w - m - 75, y: h * 0.34 }, { x: w - m - 75, y: h * 0.48 }, { x: w - m - 30, y: h * 0.48 }, { x: w - m - 30, y: h * 0.62 }, { x: w - m - 75, y: h * 0.62 }, { x: w - m - 75, y: h * 0.76 }, { x: w - m - 30, y: h * 0.76 }, { x: w - m - 30, y: h * 0.90 }],
+        [{ x: w - m - 110, y: h * 0.40 }, { x: w - m - 110, y: h * 0.53 }, { x: w - m - 60, y: h * 0.53 }, { x: w - m - 60, y: h * 0.66 }, { x: w - m - 110, y: h * 0.66 }, { x: w - m - 110, y: h * 0.76 }],
       ];
 
   const allConfigs = [...leftTraceConfigs, ...rightTraceConfigs];
