@@ -105,7 +105,7 @@ export function Header() {
       transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled ? "glass py-3" : "py-5 bg-transparent"
+        isScrolled ? "glass py-2" : "py-3 bg-transparent"
       )}
     >
       <nav className="container-custom flex items-center justify-between">
@@ -120,7 +120,7 @@ export function Header() {
             width={200}
             height={60}
             className={cn(
-              "h-12 w-auto object-contain transition-opacity duration-300",
+              "h-9 w-auto object-contain transition-opacity duration-300",
               mounted && !isDark ? "opacity-0" : "opacity-100"
             )}
             priority
@@ -131,7 +131,7 @@ export function Header() {
             width={200}
             height={60}
             className={cn(
-              "absolute inset-0 h-12 w-auto object-contain transition-opacity duration-300",
+              "absolute inset-0 h-9 w-auto object-contain transition-opacity duration-300",
               mounted && !isDark ? "opacity-100" : "opacity-0"
             )}
             priority
@@ -147,7 +147,7 @@ export function Header() {
                 <Link
                   href={link.href}
                   className={cn(
-                    "relative px-3 py-1.5 text-sm font-medium rounded-lg transition-all duration-300",
+                    "relative px-2.5 py-1 text-xs font-medium rounded-lg transition-all duration-300",
                     isActive
                       ? "text-[var(--foreground)] nav-link-active"
                       : "text-[var(--text-muted)] hover:text-[var(--foreground)]"
@@ -198,30 +198,30 @@ export function Header() {
               className="p-2 rounded-lg bg-[var(--card-bg)] border border-[var(--border)] text-[var(--text-muted)] active:scale-95 transition-transform"
               aria-label={isDark ? "Ativar modo claro" : "Ativar modo escuro"}
             >
-              {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
           )}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="flex flex-col gap-1.5 p-2 active:scale-95 transition-transform"
+            className="flex flex-col gap-1 p-2 active:scale-95 transition-transform"
             aria-label="Alternar menu"
             aria-expanded={isMobileMenuOpen}
           >
             <span
               className={cn(
-                "w-6 h-0.5 bg-[var(--foreground)] transition-all duration-300",
+                "w-5 h-0.5 bg-[var(--foreground)] transition-all duration-300",
                 isMobileMenuOpen && "rotate-45 translate-y-2"
               )}
             />
             <span
               className={cn(
-                "w-6 h-0.5 bg-[var(--foreground)] transition-all duration-300",
+                "w-5 h-0.5 bg-[var(--foreground)] transition-all duration-300",
                 isMobileMenuOpen && "opacity-0"
               )}
             />
             <span
               className={cn(
-                "w-6 h-0.5 bg-[var(--foreground)] transition-all duration-300",
+                "w-5 h-0.5 bg-[var(--foreground)] transition-all duration-300",
                 isMobileMenuOpen && "-rotate-45 -translate-y-2"
               )}
             />
@@ -239,7 +239,7 @@ export function Header() {
         transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
         className="md:hidden overflow-hidden glass"
       >
-        <ul className="container-custom py-4 flex flex-col gap-1">
+        <ul className="container-custom py-3 flex flex-col gap-0.5">
           {navLinks.map((link) => {
             const isActive = activeSection === link.href.replace("#", "");
             return (
@@ -248,7 +248,7 @@ export function Header() {
                   href={link.href}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={cn(
-                    "block py-2.5 px-3 rounded-lg text-sm font-medium transition-all duration-200",
+                    "block py-2 px-3 rounded-lg text-sm font-medium transition-all duration-200",
                     isActive
                       ? "text-[var(--foreground)] nav-link-active nav-active-pill"
                       : "text-[var(--text-muted)] hover:text-[var(--foreground)]"
