@@ -173,7 +173,7 @@ export function About() {
         whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
         viewport={{ once: true }}
         transition={{ duration: 1.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute top-8 -left-32 md:-left-20 lg:-left-8 max-md:left-1/2 max-md:-translate-x-1/2 max-md:top-4 z-10 pointer-events-none"
+        className="absolute top-8 -left-32 md:-left-20 lg:-left-8 max-md:-left-24 max-md:top-4 z-10 pointer-events-none"
       >
         <motion.div
           animate={{
@@ -203,7 +203,7 @@ export function About() {
         whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
         viewport={{ once: true }}
         transition={{ duration: 1.4, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute top-4 -right-32 md:-right-20 lg:-right-8 max-md:top-auto max-md:bottom-20 max-md:left-1/2 max-md:-translate-x-1/2 max-md:right-auto z-10 pointer-events-none"
+        className="absolute top-4 -right-32 md:-right-20 lg:-right-8 max-md:top-4 max-md:-right-24 z-10 pointer-events-none"
       >
         <motion.div
           animate={{
@@ -324,9 +324,9 @@ export function About() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="mt-16 max-md:mt-24 max-md:-mx-[1rem] max-md:px-0"
+          className="mt-16 max-md:mt-24"
         >
-          <div className="about-marquee-container relative overflow-hidden max-md:rounded-none rounded-2xl py-4">
+          <div className="about-marquee-container relative overflow-hidden max-md:rounded-none rounded-2xl py-4 max-md:w-[100vw] max-md:left-1/2 max-md:-translate-x-1/2">
             <div className="about-marquee-fade overflow-hidden">
               <div className="about-marquee-track flex items-center gap-6">
                 {[...techStack, ...techStack].map((tech, index) => (
