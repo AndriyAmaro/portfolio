@@ -162,7 +162,7 @@ export function About() {
         whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
         viewport={{ once: true }}
         transition={{ duration: 1.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute -top-8 -left-32 md:-left-20 lg:-left-8 z-10 pointer-events-none"
+        className="absolute top-8 -left-32 md:-left-20 lg:-left-8 z-10 pointer-events-none"
       >
         <motion.div
           animate={{
