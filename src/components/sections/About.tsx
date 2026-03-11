@@ -99,13 +99,13 @@ export function About() {
           }}
         >
           <div className="relative">
-            <div className="absolute -inset-6 bg-indigo-500/15 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute -inset-2 bg-indigo-500/8 rounded-full blur-xl animate-pulse" />
             <Image
               src="/frontend-icon.png"
               alt="Frontend"
               width={750}
               height={750}
-              className="relative drop-shadow-[0_0_20px_rgba(99,102,241,0.15)] opacity-25"
+              className="relative drop-shadow-[0_0_8px_rgba(99,102,241,0.1)] opacity-25"
             />
           </div>
         </motion.div>
@@ -132,13 +132,13 @@ export function About() {
           }}
         >
           <div className="relative">
-            <div className="absolute -inset-6 bg-violet-500/15 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute -inset-2 bg-violet-500/8 rounded-full blur-xl animate-pulse" />
             <Image
               src="/backend-icon.png"
               alt="Backend"
               width={750}
               height={750}
-              className="relative drop-shadow-[0_0_20px_rgba(139,92,246,0.15)] opacity-25"
+              className="relative drop-shadow-[0_0_8px_rgba(139,92,246,0.1)] opacity-25"
             />
           </div>
         </motion.div>
