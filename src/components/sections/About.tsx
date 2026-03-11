@@ -96,13 +96,13 @@ export function About() {
         >
           <div className="relative">
             {/* Glow backdrop */}
-            <div className="absolute inset-0 bg-indigo-500/10 rounded-full blur-3xl scale-75" />
+            <div className="absolute inset-0 bg-indigo-500/5 rounded-full blur-3xl scale-75" />
             <Image
               src="/about-stack.png"
               alt=""
               width={420}
               height={420}
-              className="opacity-[0.14] dark:opacity-[0.16] select-none"
+              className="opacity-[0.10] dark:opacity-[0.11] select-none"
               draggable={false}
               priority={false}
             />
@@ -127,13 +127,13 @@ export function About() {
         >
           <div className="relative">
             {/* Glow backdrop */}
-            <div className="absolute inset-0 bg-indigo-500/10 rounded-full blur-3xl scale-75" />
+            <div className="absolute inset-0 bg-indigo-500/5 rounded-full blur-3xl scale-75" />
             <Image
               src="/about-tools.png"
               alt=""
               width={420}
               height={420}
-              className="opacity-[0.14] dark:opacity-[0.16] select-none"
+              className="opacity-[0.10] dark:opacity-[0.11] select-none"
               draggable={false}
               priority={false}
             />
