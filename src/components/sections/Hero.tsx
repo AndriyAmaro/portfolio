@@ -117,7 +117,7 @@ export function Hero() {
         <FuturisticBackground />
       </div>
 
-      <div className="container-custom relative z-10 pt-80 pb-0">
+      <div className="container-custom relative z-10 pt-32 sm:pt-40 md:pt-52 lg:pt-80 pb-0">
         <div className="relative flex flex-col items-center text-center gap-6">
           {/* Name */}
           <motion.div
