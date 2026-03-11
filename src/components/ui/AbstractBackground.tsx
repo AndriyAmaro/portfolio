@@ -2,215 +2,181 @@
 
 import { useEffect, useRef } from "react";
 
-interface Node {
-  x: number;
-  y: number;
-  baseX: number;
-  baseY: number;
-  radius: number;
-  opacity: number;
+/* ── Circuit trace types ── */
+interface TraceSegment {
+  x1: number; y1: number;
+  x2: number; y2: number;
+}
+
+interface CircuitTrace {
+  segments: TraceSegment[];
+  totalLength: number;
+  nodes: { x: number; y: number; radius: number }[];
+}
+
+interface TravelingLight {
+  trace: number;
+  progress: number;
   speed: number;
-  amplitude: number;
-  phase: number;
-  color: string;
+  length: number;
 }
 
-interface HexRing {
-  cx: number;
-  cy: number;
-  radius: number;
-  rotation: number;
-  rotationSpeed: number;
-  opacity: number;
-  sides: number;
-}
+/* ── Build PCB traces along the sides ── */
+function createCircuitTraces(w: number, h: number, isMobile: boolean): CircuitTrace[] {
+  const traces: CircuitTrace[] = [];
+  const margin = isMobile ? 30 : 50;
 
-function createNodes(w: number, h: number, isDark: boolean): Node[] {
-  const colors = isDark
-    ? ["139,92,246", "99,102,241", "167,139,250", "129,140,248", "124,58,237"]
-    : ["99,102,241", "124,58,237", "139,92,246", "79,70,229", "109,40,217"];
-
-  const isMobile = w < 768;
-
-  const positions = isMobile
+  // Left side traces
+  const leftTraceConfigs = isMobile
     ? [
-        // Left side vertical
-        { x: 0.05, y: 0.15 }, { x: 0.10, y: 0.28 }, { x: 0.07, y: 0.42 },
-        { x: 0.12, y: 0.55 }, { x: 0.06, y: 0.68 }, { x: 0.14, y: 0.80 },
-        { x: 0.08, y: 0.92 },
-        // Right side vertical
-        { x: 0.92, y: 0.12 }, { x: 0.88, y: 0.25 }, { x: 0.94, y: 0.38 },
-        { x: 0.90, y: 0.50 }, { x: 0.86, y: 0.63 }, { x: 0.93, y: 0.75 },
-        { x: 0.89, y: 0.88 },
-        // Inner accents
-        { x: 0.18, y: 0.35 }, { x: 0.82, y: 0.45 },
-        { x: 0.15, y: 0.70 }, { x: 0.85, y: 0.60 },
-        { x: 0.20, y: 0.50 }, { x: 0.80, y: 0.30 },
+        [{ x: margin, y: h * 0.12 }, { x: margin, y: h * 0.28 }, { x: margin + 25, y: h * 0.28 }, { x: margin + 25, y: h * 0.45 }, { x: margin, y: h * 0.45 }, { x: margin, y: h * 0.62 }, { x: margin + 20, y: h * 0.62 }, { x: margin + 20, y: h * 0.78 }, { x: margin, y: h * 0.78 }, { x: margin, y: h * 0.92 }],
+        [{ x: margin + 40, y: h * 0.18 }, { x: margin + 40, y: h * 0.35 }, { x: margin + 15, y: h * 0.35 }, { x: margin + 15, y: h * 0.55 }, { x: margin + 40, y: h * 0.55 }, { x: margin + 40, y: h * 0.72 }, { x: margin + 15, y: h * 0.72 }, { x: margin + 15, y: h * 0.88 }],
       ]
     : [
-        // Left side · starts higher (~0.38) down
-        { x: 0.06, y: 0.38 }, { x: 0.10, y: 0.46 },
-        { x: 0.03, y: 0.55 }, { x: 0.07, y: 0.63 }, { x: 0.04, y: 0.71 },
-        { x: 0.09, y: 0.79 }, { x: 0.05, y: 0.86 }, { x: 0.08, y: 0.92 },
-        { x: 0.03, y: 0.97 },
-        // Right side · starts at "Full Stack Developer" height (~0.45) down
-        { x: 0.97, y: 0.45 }, { x: 0.93, y: 0.53 }, { x: 0.96, y: 0.61 },
-        { x: 0.91, y: 0.69 }, { x: 0.95, y: 0.77 }, { x: 0.92, y: 0.84 },
-        { x: 0.97, y: 0.92 }, { x: 0.90, y: 0.97 },
-        // Inner accents near edges
-        { x: 0.14, y: 0.65 }, { x: 0.86, y: 0.55 },
-        { x: 0.12, y: 0.85 }, { x: 0.88, y: 0.75 },
+        [{ x: margin, y: h * 0.15 }, { x: margin, y: h * 0.30 }, { x: margin + 35, y: h * 0.30 }, { x: margin + 35, y: h * 0.48 }, { x: margin, y: h * 0.48 }, { x: margin, y: h * 0.65 }, { x: margin + 28, y: h * 0.65 }, { x: margin + 28, y: h * 0.80 }, { x: margin, y: h * 0.80 }, { x: margin, y: h * 0.95 }],
+        [{ x: margin + 55, y: h * 0.20 }, { x: margin + 55, y: h * 0.38 }, { x: margin + 20, y: h * 0.38 }, { x: margin + 20, y: h * 0.58 }, { x: margin + 55, y: h * 0.58 }, { x: margin + 55, y: h * 0.75 }, { x: margin + 20, y: h * 0.75 }, { x: margin + 20, y: h * 0.90 }],
+        [{ x: margin + 80, y: h * 0.28 }, { x: margin + 80, y: h * 0.42 }, { x: margin + 45, y: h * 0.42 }, { x: margin + 45, y: h * 0.55 }, { x: margin + 80, y: h * 0.55 }, { x: margin + 80, y: h * 0.68 }],
       ];
 
-  return positions.map((p, i) => ({
-    x: 0, y: 0,
-    baseX: w * p.x,
-    baseY: h * p.y,
-    radius: 2 + Math.random() * 2.5,
-    opacity: isDark ? 0.34 + Math.random() * 0.38 : 0.30 + Math.random() * 0.34,
-    speed: 0.3 + Math.random() * 0.4,
-    amplitude: 8 + Math.random() * 15,
-    phase: Math.random() * Math.PI * 2,
-    color: colors[i % colors.length],
-  }));
-}
-
-function createHexRings(w: number, h: number, isDark: boolean): HexRing[] {
-  const isMobile = w < 768;
-
-  return isMobile
+  // Right side traces (mirrored)
+  const rightTraceConfigs = isMobile
     ? [
-        // Left side
-        { cx: w * 0.08, cy: h * 0.25, radius: 40, rotation: 0, rotationSpeed: 0.002, opacity: isDark ? 0.10 : 0.12, sides: 6 },
-        { cx: w * 0.12, cy: h * 0.60, radius: 35, rotation: Math.PI / 4, rotationSpeed: 0.003, opacity: isDark ? 0.09 : 0.11, sides: 4 },
-        { cx: w * 0.06, cy: h * 0.85, radius: 45, rotation: Math.PI / 6, rotationSpeed: -0.0015, opacity: isDark ? 0.08 : 0.10, sides: 6 },
-        // Right side
-        { cx: w * 0.92, cy: h * 0.20, radius: 50, rotation: 0, rotationSpeed: -0.002, opacity: isDark ? 0.09 : 0.11, sides: 3 },
-        { cx: w * 0.88, cy: h * 0.55, radius: 38, rotation: Math.PI / 3, rotationSpeed: 0.0025, opacity: isDark ? 0.10 : 0.12, sides: 6 },
-        { cx: w * 0.94, cy: h * 0.80, radius: 42, rotation: 0, rotationSpeed: -0.0018, opacity: isDark ? 0.07 : 0.09, sides: 4 },
+        [{ x: w - margin, y: h * 0.10 }, { x: w - margin, y: h * 0.26 }, { x: w - margin - 25, y: h * 0.26 }, { x: w - margin - 25, y: h * 0.44 }, { x: w - margin, y: h * 0.44 }, { x: w - margin, y: h * 0.60 }, { x: w - margin - 20, y: h * 0.60 }, { x: w - margin - 20, y: h * 0.76 }, { x: w - margin, y: h * 0.76 }, { x: w - margin, y: h * 0.90 }],
+        [{ x: w - margin - 40, y: h * 0.16 }, { x: w - margin - 40, y: h * 0.34 }, { x: w - margin - 15, y: h * 0.34 }, { x: w - margin - 15, y: h * 0.52 }, { x: w - margin - 40, y: h * 0.52 }, { x: w - margin - 40, y: h * 0.70 }, { x: w - margin - 15, y: h * 0.70 }, { x: w - margin - 15, y: h * 0.86 }],
       ]
     : [
-        // Left side · starts higher (~0.42) down
-        { cx: w * 0.07, cy: h * 0.42, radius: 50, rotation: Math.PI / 3, rotationSpeed: 0.0025, opacity: isDark ? 0.14 : 0.17, sides: 6 },
-        { cx: w * 0.05, cy: h * 0.58, radius: 60, rotation: 0, rotationSpeed: 0.002, opacity: isDark ? 0.16 : 0.18, sides: 6 },
-        { cx: w * 0.08, cy: h * 0.75, radius: 45, rotation: Math.PI / 4, rotationSpeed: 0.003, opacity: isDark ? 0.14 : 0.16, sides: 4 },
-        { cx: w * 0.04, cy: h * 0.90, radius: 55, rotation: Math.PI / 6, rotationSpeed: -0.0015, opacity: isDark ? 0.12 : 0.14, sides: 6 },
-        // Right side · "Full Stack Developer" height (~0.45) down
-        { cx: w * 0.95, cy: h * 0.48, radius: 80, rotation: Math.PI / 6, rotationSpeed: -0.0015, opacity: isDark ? 0.14 : 0.16, sides: 6 },
-        { cx: w * 0.92, cy: h * 0.65, radius: 50, rotation: 0, rotationSpeed: -0.002, opacity: isDark ? 0.12 : 0.14, sides: 3 },
-        { cx: w * 0.96, cy: h * 0.82, radius: 65, rotation: 0, rotationSpeed: 0.001, opacity: isDark ? 0.11 : 0.13, sides: 6 },
-        { cx: w * 0.90, cy: h * 0.95, radius: 40, rotation: 0, rotationSpeed: -0.0018, opacity: isDark ? 0.10 : 0.12, sides: 4 },
+        [{ x: w - margin, y: h * 0.12 }, { x: w - margin, y: h * 0.28 }, { x: w - margin - 35, y: h * 0.28 }, { x: w - margin - 35, y: h * 0.46 }, { x: w - margin, y: h * 0.46 }, { x: w - margin, y: h * 0.62 }, { x: w - margin - 28, y: h * 0.62 }, { x: w - margin - 28, y: h * 0.78 }, { x: w - margin, y: h * 0.78 }, { x: w - margin, y: h * 0.93 }],
+        [{ x: w - margin - 55, y: h * 0.18 }, { x: w - margin - 55, y: h * 0.36 }, { x: w - margin - 20, y: h * 0.36 }, { x: w - margin - 20, y: h * 0.54 }, { x: w - margin - 55, y: h * 0.54 }, { x: w - margin - 55, y: h * 0.72 }, { x: w - margin - 20, y: h * 0.72 }, { x: w - margin - 20, y: h * 0.88 }],
+        [{ x: w - margin - 80, y: h * 0.25 }, { x: w - margin - 80, y: h * 0.40 }, { x: w - margin - 45, y: h * 0.40 }, { x: w - margin - 45, y: h * 0.52 }, { x: w - margin - 80, y: h * 0.52 }, { x: w - margin - 80, y: h * 0.66 }],
       ];
-}
 
-function drawPolygon(ctx: CanvasRenderingContext2D, cx: number, cy: number, radius: number, sides: number, rotation: number) {
-  ctx.beginPath();
-  for (let i = 0; i <= sides; i++) {
-    const angle = (i * Math.PI * 2) / sides + rotation;
-    const x = cx + radius * Math.cos(angle);
-    const y = cy + radius * Math.sin(angle);
-    if (i === 0) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
+  const allConfigs = [...leftTraceConfigs, ...rightTraceConfigs];
+
+  for (const points of allConfigs) {
+    const segments: TraceSegment[] = [];
+    const nodes: { x: number; y: number; radius: number }[] = [];
+    let totalLength = 0;
+
+    for (let i = 0; i < points.length - 1; i++) {
+      const seg = { x1: points[i].x, y1: points[i].y, x2: points[i + 1].x, y2: points[i + 1].y };
+      segments.push(seg);
+      totalLength += Math.sqrt((seg.x2 - seg.x1) ** 2 + (seg.y2 - seg.y1) ** 2);
+    }
+
+    // Add circuit nodes at corners/junctions
+    for (const p of points) {
+      nodes.push({ x: p.x, y: p.y, radius: 2.5 + Math.random() * 1.5 });
+    }
+
+    traces.push({ segments, totalLength, nodes });
   }
-  ctx.closePath();
+
+  return traces;
 }
 
+function createLights(traceCount: number): TravelingLight[] {
+  const lights: TravelingLight[] = [];
+  for (let i = 0; i < traceCount; i++) {
+    // 2 lights per trace at different positions
+    lights.push({ trace: i, progress: Math.random(), speed: 0.08 + Math.random() * 0.06, length: 0.12 + Math.random() * 0.08 });
+    lights.push({ trace: i, progress: (Math.random() + 0.5) % 1, speed: 0.06 + Math.random() * 0.05, length: 0.10 + Math.random() * 0.06 });
+  }
+  return lights;
+}
+
+function getPointOnTrace(trace: CircuitTrace, progress: number): { x: number; y: number } {
+  const targetDist = progress * trace.totalLength;
+  let dist = 0;
+
+  for (const seg of trace.segments) {
+    const segLen = Math.sqrt((seg.x2 - seg.x1) ** 2 + (seg.y2 - seg.y1) ** 2);
+    if (dist + segLen >= targetDist) {
+      const t = (targetDist - dist) / segLen;
+      return { x: seg.x1 + (seg.x2 - seg.x1) * t, y: seg.y1 + (seg.y2 - seg.y1) * t };
+    }
+    dist += segLen;
+  }
+
+  const last = trace.segments[trace.segments.length - 1];
+  return { x: last.x2, y: last.y2 };
+}
+
+/* ── Main animation ── */
 function animateCanvas(
   canvas: HTMLCanvasElement,
   ctx: CanvasRenderingContext2D,
   isDark: boolean
 ) {
-  let time = 0;
   let animationId: number;
+  const isMobile = canvas.width < 768;
+  const traces = createCircuitTraces(canvas.width, canvas.height, isMobile);
+  const lights = createLights(traces.length);
 
-  const nodes = createNodes(canvas.width, canvas.height, isDark);
-  const hexRings = createHexRings(canvas.width, canvas.height, isDark);
-  const connectionDist = 220;
-
-  const baseColor = isDark ? "167,139,250" : "99,102,241";
-  const lineColor = isDark ? "139,92,246" : "79,70,229";
+  const traceColor = isDark ? "99,102,241" : "79,70,229";
+  const nodeColor = isDark ? "139,92,246" : "99,102,241";
+  const lightColor = isDark ? "167,139,250" : "124,58,237";
+  const traceOpacity = isDark ? 0.15 : 0.12;
+  const nodeOpacity = isDark ? 0.25 : 0.20;
 
   const animate = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    time += 0.016;
 
-    // Update node positions
-    nodes.forEach((n) => {
-      n.x = n.baseX + Math.sin(time * n.speed + n.phase) * n.amplitude;
-      n.y = n.baseY + Math.cos(time * n.speed * 0.7 + n.phase) * n.amplitude * 0.6;
-    });
-
-    // Draw hex/polygon rings
-    hexRings.forEach((h) => {
-      h.rotation += h.rotationSpeed;
-
-      // Outer glow ring
-      drawPolygon(ctx, h.cx, h.cy, h.radius * 1.05, h.sides, h.rotation);
-      ctx.shadowColor = `rgba(${baseColor}, ${h.opacity * 0.6})`;
-      ctx.shadowBlur = 15;
-      ctx.strokeStyle = `rgba(${baseColor}, ${h.opacity * 0.3})`;
-      ctx.lineWidth = 0.5;
-      ctx.stroke();
-      ctx.shadowBlur = 0;
-
-      // Main ring
-      drawPolygon(ctx, h.cx, h.cy, h.radius, h.sides, h.rotation);
-      ctx.strokeStyle = `rgba(${baseColor}, ${h.opacity})`;
+    // Draw traces (static PCB lines)
+    traces.forEach((trace) => {
+      ctx.beginPath();
+      trace.segments.forEach((seg, i) => {
+        if (i === 0) ctx.moveTo(seg.x1, seg.y1);
+        ctx.lineTo(seg.x2, seg.y2);
+      });
+      ctx.strokeStyle = `rgba(${traceColor}, ${traceOpacity})`;
       ctx.lineWidth = 1;
       ctx.stroke();
 
-      // Inner ring
-      drawPolygon(ctx, h.cx, h.cy, h.radius * 0.6, h.sides, h.rotation + Math.PI / h.sides);
-      ctx.strokeStyle = `rgba(${baseColor}, ${h.opacity * 0.5})`;
-      ctx.lineWidth = 0.5;
-      ctx.stroke();
+      // Draw nodes at junctions
+      trace.nodes.forEach((node) => {
+        // Via hole (outer ring)
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, node.radius + 2, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(${nodeColor}, ${nodeOpacity * 0.6})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
 
-      // Center dot
-      ctx.beginPath();
-      ctx.arc(h.cx, h.cy, 2, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${baseColor}, ${h.opacity * 0.8})`;
-      ctx.fill();
+        // Core dot
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${nodeColor}, ${nodeOpacity})`;
+        ctx.fill();
+      });
     });
 
-    // Draw connections between nearby nodes
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        const dx = nodes[i].x - nodes[j].x;
-        const dy = nodes[i].y - nodes[j].y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+    // Animate traveling lights
+    lights.forEach((light) => {
+      light.progress = (light.progress + light.speed * 0.016) % 1;
+      const trace = traces[light.trace];
 
-        if (dist < connectionDist) {
-          const alpha = (1 - dist / connectionDist) * 0.2;
+      // Draw light trail
+      const steps = 12;
+      for (let i = 0; i < steps; i++) {
+        const p = (light.progress - (i / steps) * light.length + 1) % 1;
+        const point = getPointOnTrace(trace, p);
+        const alpha = (1 - i / steps) * (isDark ? 0.6 : 0.45);
+
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, 2 - (i / steps) * 1.2, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${lightColor}, ${alpha})`;
+        ctx.fill();
+
+        // Glow on leading point
+        if (i === 0) {
           ctx.beginPath();
-          ctx.moveTo(nodes[i].x, nodes[i].y);
-          ctx.lineTo(nodes[j].x, nodes[j].y);
-          ctx.strokeStyle = `rgba(${lineColor}, ${alpha})`;
-          ctx.lineWidth = 0.8;
-          ctx.stroke();
+          ctx.arc(point.x, point.y, 6, 0, Math.PI * 2);
+          const glow = ctx.createRadialGradient(point.x, point.y, 0, point.x, point.y, 6);
+          glow.addColorStop(0, `rgba(${lightColor}, ${isDark ? 0.35 : 0.25})`);
+          glow.addColorStop(1, `rgba(${lightColor}, 0)`);
+          ctx.fillStyle = glow;
+          ctx.fill();
         }
       }
-    }
-
-    // Draw nodes
-    nodes.forEach((n) => {
-      // Outer glow
-      const glow = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.radius * 8);
-      glow.addColorStop(0, `rgba(${n.color}, ${n.opacity * 0.4})`);
-      glow.addColorStop(0.5, `rgba(${n.color}, ${n.opacity * 0.1})`);
-      glow.addColorStop(1, `rgba(${n.color}, 0)`);
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, n.radius * 8, 0, Math.PI * 2);
-      ctx.fillStyle = glow;
-      ctx.fill();
-
-      // Core dot
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
-      ctx.shadowColor = `rgba(${n.color}, ${n.opacity})`;
-      ctx.shadowBlur = 8;
-      ctx.fillStyle = `rgba(${n.color}, ${n.opacity * 0.9})`;
-      ctx.fill();
-      ctx.shadowBlur = 0;
     });
 
     animationId = requestAnimationFrame(animate);
