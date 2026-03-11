@@ -91,10 +91,10 @@ function useCountUp(target: number, duration = 2000) {
 // Metrics data
 // ---------------------------------------------------------------------------
 const metrics = [
-  { value: 3, suffix: "", label: "SaaS Apps" },
+  { value: 3, suffix: "+", label: "SaaS Apps" },
   { value: 100, suffix: "+", label: "Componentes" },
   { value: 380, suffix: "+", label: "Testes" },
-  { value: 56, suffix: "", label: "Paginas" },
+  { value: 56, suffix: "+", label: "Páginas" },
 ];
 
 // ---------------------------------------------------------------------------
@@ -174,8 +174,8 @@ export function Hero() {
             className="max-w-xl text-base md:text-lg leading-relaxed hero-description"
           >
             Criei o <span className="font-semibold hero-highlight-text">Pulse Ecosystem</span> do zero ·
-            um design system com 100+ componentes que alimenta multiplos SaaS apps em producao,
-            com testes automatizados e deploy continuo.
+            um design system com 100+ componentes que alimenta múltiplos SaaS apps em produção,
+            com testes automatizados e deploy contínuo.
           </motion.p>
 
           {/* CTA Buttons */}
