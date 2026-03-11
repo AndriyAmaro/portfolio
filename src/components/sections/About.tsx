@@ -88,24 +88,22 @@ export function About() {
       >
         <motion.div
           animate={{
-            y: [0, -18, 0, -8, 0],
-            x: [0, 6, 0, -6, 0],
-            rotate: [0, -2, 1, -1, 0],
+            y: [0, -10, 4, -14, 2, -6, 0],
+            x: [0, 5, -3, 7, -4, 2, 0],
           }}
           transition={{
-            duration: 10,
+            duration: 18,
             repeat: Infinity,
             ease: "easeInOut",
           }}
         >
           <div className="relative">
-            <div className="absolute inset-4 bg-indigo-500/3 rounded-full blur-md" />
             <Image
               src="/frontend-icon.png"
               alt="Frontend"
               width={750}
               height={750}
-              className="relative opacity-15"
+              className="relative opacity-[0.12]"
             />
           </div>
         </motion.div>
@@ -121,24 +119,22 @@ export function About() {
       >
         <motion.div
           animate={{
-            y: [0, -15, 0, -10, 0],
-            x: [0, -5, 0, 5, 0],
-            rotate: [0, 2, -1, 1, 0],
+            y: [0, -8, 6, -12, 3, -5, 0],
+            x: [0, -4, 3, -6, 5, -2, 0],
           }}
           transition={{
-            duration: 11,
+            duration: 20,
             repeat: Infinity,
             ease: "easeInOut",
           }}
         >
           <div className="relative">
-            <div className="absolute inset-4 bg-violet-500/3 rounded-full blur-md" />
             <Image
               src="/backend-icon.png"
               alt="Backend"
               width={750}
               height={750}
-              className="relative opacity-15"
+              className="relative opacity-[0.12]"
             />
           </div>
         </motion.div>
