@@ -59,7 +59,7 @@ function createSymbols(w: number, h: number, isDark: boolean): FloatingSymbol[] 
       baseY: Math.random() * h,
       text: CODE_SYMBOLS[i % CODE_SYMBOLS.length],
       fontSize: 12 + Math.random() * 16,
-      opacity: isDark ? 0.12 + Math.random() * 0.15 : 0.08 + Math.random() * 0.12,
+      opacity: isDark ? 0.3 + Math.random() * 0.4 : 0.25 + Math.random() * 0.35,
       speed: 0.15 + Math.random() * 0.25,
       amplitude: 12 + Math.random() * 20,
       phase: Math.random() * Math.PI * 2,
@@ -82,7 +82,7 @@ function createBars(w: number, h: number, isDark: boolean): SkillBar[] {
       progress: 0,
       targetProgress: 0.4 + Math.random() * 0.6,
       speed: 0.003 + Math.random() * 0.004,
-      opacity: isDark ? 0.06 + Math.random() * 0.08 : 0.04 + Math.random() * 0.06,
+      opacity: isDark ? 0.25 + Math.random() * 0.35 : 0.2 + Math.random() * 0.3,
       phase: Math.random() * Math.PI * 2,
     });
   }
@@ -98,7 +98,7 @@ function createCircuitNodes(w: number, h: number, isDark: boolean): CircuitNode[
       x: Math.random() * w,
       y: Math.random() * h,
       radius: 2 + Math.random() * 3,
-      opacity: isDark ? 0.15 + Math.random() * 0.2 : 0.1 + Math.random() * 0.15,
+      opacity: isDark ? 0.3 + Math.random() * 0.4 : 0.25 + Math.random() * 0.35,
       pulsePhase: Math.random() * Math.PI * 2,
       connections: [],
     });
