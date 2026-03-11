@@ -300,7 +300,7 @@ export function About() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="mt-16 max-md:-mx-[calc((100vw-100%)/2)]"
+          className="mt-16 max-md:-mx-4 max-md:px-0"
         >
           <div className="about-marquee-container relative overflow-hidden max-md:rounded-none rounded-2xl py-4">
             <div className="about-marquee-fade overflow-hidden">
