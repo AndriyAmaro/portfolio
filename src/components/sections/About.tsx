@@ -102,7 +102,7 @@ export function About() {
               alt=""
               width={420}
               height={420}
-              className="opacity-[0.14] dark:opacity-[0.16] select-none"
+              className="opacity-[0.18] dark:opacity-[0.20] mix-blend-screen select-none"
               draggable={false}
               priority={false}
             />
@@ -133,7 +133,7 @@ export function About() {
               alt=""
               width={420}
               height={420}
-              className="opacity-[0.14] dark:opacity-[0.16] select-none"
+              className="opacity-[0.18] dark:opacity-[0.20] mix-blend-screen select-none"
               draggable={false}
               priority={false}
             />
