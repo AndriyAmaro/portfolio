@@ -228,8 +228,9 @@ export function AbstractBackground() {
     if (!ctx) return;
 
     const resizeCanvas = () => {
+      const parent = canvas.parentElement;
       canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      canvas.height = parent ? parent.offsetHeight : window.innerHeight;
     };
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
@@ -301,8 +302,9 @@ export function AbstractBackgroundLight() {
     if (!ctx) return;
 
     const resizeCanvas = () => {
+      const parent = canvas.parentElement;
       canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      canvas.height = parent ? parent.offsetHeight : window.innerHeight;
     };
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
