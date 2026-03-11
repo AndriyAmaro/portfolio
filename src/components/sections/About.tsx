@@ -68,7 +68,7 @@ function ArchitectureSVG() {
   ];
 
   return (
-    <svg width="500" height="340" viewBox="0 0 500 340" fill="none" className="opacity-[0.10]">
+    <svg width="500" height="340" viewBox="0 0 500 340" fill="none" className="opacity-[0.25]">
       {/* Connection lines between layers */}
       {layers.slice(0, -1).map((layer, i) => {
         const next = layers[i + 1];
@@ -147,7 +147,7 @@ function PipelineSVG() {
   ];
 
   return (
-    <svg width="500" height="340" viewBox="0 0 500 340" fill="none" className="opacity-[0.10]">
+    <svg width="500" height="340" viewBox="0 0 500 340" fill="none" className="opacity-[0.25]">
       {/* Vertical pipeline line */}
       <motion.line
         x1="250" y1="56" x2="250" y2="272"
