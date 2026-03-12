@@ -56,7 +56,7 @@ const techStack = [
   "Clean Architecture",
 ];
 
-/* ── Mobile · single card carousel with auto-rotate ── */
+/* ── Mobile · 2 stacked cards, rotating 1 at a time ── */
 function MobileCarousel() {
   const [active, setActive] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -75,6 +75,33 @@ function MobileCarousel() {
   }, [startTimer]);
 
   const goTo = (i: number) => { setActive(i); startTimer(); };
+
+  // Show current and next card
+  const secondIdx = (active + 1) % highlights.length;
+
+  const renderCard = (idx: number) => {
+    const item = highlights[idx];
+    const Icon = item.icon;
+    return (
+      <div className="about-glow-wrap">
+        <div className="about-highlight-card relative p-5 rounded-2xl overflow-hidden z-[1]">
+          <div className="flex items-start gap-4">
+            <div className="about-icon-container w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Icon className="w-6 h-6 text-indigo-400" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <h4 className="text-base font-semibold text-white/95 about-card-title mb-2">
+                {item.title}
+              </h4>
+              <p className="text-sm text-white/60 leading-relaxed about-card-description">
+                {item.description}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div
@@ -97,27 +124,10 @@ function MobileCarousel() {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -40 }}
           transition={{ duration: 0.35, ease: "easeInOut" }}
+          className="flex flex-col gap-4"
         >
-          <div className="about-glow-wrap">
-            <div className="about-highlight-card relative p-5 rounded-2xl overflow-hidden z-[1]">
-              <div className="flex items-start gap-4">
-                <div className="about-icon-container w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0">
-                  {(() => {
-                    const Icon = highlights[active].icon;
-                    return <Icon className="w-6 h-6 text-indigo-400" />;
-                  })()}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <h4 className="text-base font-semibold text-white/95 about-card-title mb-2">
-                    {highlights[active].title}
-                  </h4>
-                  <p className="text-sm text-white/60 leading-relaxed about-card-description">
-                    {highlights[active].description}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+          {renderCard(active)}
+          {renderCard(secondIdx)}
         </motion.div>
       </AnimatePresence>
 
@@ -167,13 +177,13 @@ export function About() {
     <section id="about" className="relative pt-36 md:pt-44 pb-24 md:pb-32 overflow-hidden">
       {isLightMode ? <AbstractBackgroundLight /> : <AbstractBackground />}
 
-      {/* Stack illustration - top left (desktop) / hero area (mobile) */}
+      {/* Stack illustration - desktop only */}
       <motion.div
         initial={{ opacity: 0, scale: 0.4, filter: "blur(24px)" }}
         whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
         viewport={{ once: true }}
         transition={{ duration: 1.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute top-8 -left-32 md:-left-20 lg:-left-8 max-md:-left-24 max-md:top-4 z-10 pointer-events-none"
+        className="hidden md:block absolute top-8 -left-20 lg:-left-8 z-10 pointer-events-none"
       >
         <motion.div
           animate={{
@@ -189,7 +199,7 @@ export function About() {
               alt=""
               width={420}
               height={420}
-              className="w-[240px] h-[240px] md:w-[420px] md:h-[420px] opacity-[0.16] dark:opacity-[0.18] select-none hue-rotate-[20deg] saturate-[1.3] brightness-[1.1]"
+              className="w-[420px] h-[420px] opacity-[0.16] dark:opacity-[0.18] select-none hue-rotate-[20deg] saturate-[1.3] brightness-[1.1]"
               draggable={false}
               priority={false}
             />
@@ -197,13 +207,13 @@ export function About() {
         </motion.div>
       </motion.div>
 
-      {/* Tools illustration - top right (desktop) / bottom (mobile) */}
+      {/* Tools illustration - desktop only */}
       <motion.div
         initial={{ opacity: 0, scale: 0.4, filter: "blur(24px)" }}
         whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
         viewport={{ once: true }}
         transition={{ duration: 1.4, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute top-4 -right-32 md:-right-20 lg:-right-8 max-md:top-4 max-md:-right-24 z-10 pointer-events-none"
+        className="hidden md:block absolute top-4 -right-20 lg:-right-8 z-10 pointer-events-none"
       >
         <motion.div
           animate={{
@@ -219,7 +229,7 @@ export function About() {
               alt=""
               width={420}
               height={420}
-              className="w-[240px] h-[240px] md:w-[420px] md:h-[420px] opacity-[0.16] dark:opacity-[0.18] select-none hue-rotate-[20deg] saturate-[1.3] brightness-[1.1]"
+              className="w-[420px] h-[420px] opacity-[0.16] dark:opacity-[0.18] select-none hue-rotate-[20deg] saturate-[1.3] brightness-[1.1]"
               draggable={false}
               priority={false}
             />
