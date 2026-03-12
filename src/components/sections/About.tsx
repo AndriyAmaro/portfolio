@@ -197,9 +197,9 @@ export function About() {
             <Image
               src="/about-stack.png"
               alt=""
-              width={420}
-              height={420}
-              className="w-[420px] h-[420px] opacity-[0.16] dark:opacity-[0.18] select-none hue-rotate-[20deg] saturate-[1.3] brightness-[1.1]"
+              width={560}
+              height={380}
+              className="w-[560px] h-[380px] opacity-[0.16] dark:opacity-[0.18] select-none hue-rotate-[20deg] saturate-[1.3] brightness-[1.1]"
               draggable={false}
               priority={false}
             />
@@ -227,9 +227,9 @@ export function About() {
             <Image
               src="/about-tools.png"
               alt=""
-              width={420}
-              height={420}
-              className="w-[420px] h-[420px] opacity-[0.16] dark:opacity-[0.18] select-none hue-rotate-[20deg] saturate-[1.3] brightness-[1.1]"
+              width={560}
+              height={380}
+              className="w-[560px] h-[380px] opacity-[0.16] dark:opacity-[0.18] select-none hue-rotate-[20deg] saturate-[1.3] brightness-[1.1]"
               draggable={false}
               priority={false}
             />
