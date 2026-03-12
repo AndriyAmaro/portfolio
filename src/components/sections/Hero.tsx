@@ -257,17 +257,17 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.55 }}
-            className="flex flex-col sm:flex-row gap-3 mt-2"
+            className="flex flex-col sm:flex-row items-center gap-3 mt-2 w-full sm:w-auto"
           >
-            <Link href="#ecosystem" className="group">
-              <button className="hero-btn-primary flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5">
+            <Link href="#ecosystem" className="group w-full sm:w-auto">
+              <button className="hero-btn-primary w-full sm:w-auto flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5">
                 <Sparkles className="w-4 h-4" />
                 Ver Ecosystem
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
               </button>
             </Link>
-            <Link href="#projects">
-              <button className="hero-btn-secondary flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5">
+            <Link href="#projects" className="w-full sm:w-auto">
+              <button className="hero-btn-secondary w-full sm:w-auto flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5">
                 Ver Projetos
               </button>
             </Link>
