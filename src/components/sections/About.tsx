@@ -324,9 +324,13 @@ export function About() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="mt-16 max-md:mt-24"
+          className="mt-24 md:mt-32"
         >
-          <div className="about-marquee-container relative overflow-hidden max-md:rounded-none rounded-2xl py-4 max-md:w-[100vw] max-md:left-1/2 max-md:-translate-x-1/2">
+          <div className="about-marquee-container relative overflow-hidden rounded-none py-4 w-[100vw] left-1/2 -translate-x-1/2">
+            {/* Gradient accent top border */}
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent" />
+            {/* Gradient accent bottom border */}
+            <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />
             <div className="about-marquee-fade overflow-hidden">
               <div className="about-marquee-track flex items-center gap-6">
                 {[...techStack, ...techStack].map((tech, index) => (
