@@ -425,7 +425,7 @@ export function Ecosystem() {
         whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
         viewport={{ once: true }}
         transition={{ duration: 1.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        className="hidden md:block absolute -top-4 -left-36 lg:-left-24 z-10 pointer-events-none"
+        className="hidden md:block absolute -top-4 -left-28 lg:-left-16 z-10 pointer-events-none"
       >
         <motion.div
           animate={{
@@ -439,9 +439,9 @@ export function Ecosystem() {
             <Image
               src="/ecosystem-icon.png"
               alt=""
-              width={640}
-              height={420}
-              className="w-[640px] h-[420px] opacity-[0.12] dark:opacity-[0.22] select-none hue-rotate-[40deg] saturate-[1.8] brightness-[0.9]"
+              width={480}
+              height={320}
+              className="w-[480px] h-[320px] opacity-[0.12] dark:opacity-[0.22] select-none hue-rotate-[40deg] saturate-[1.8] brightness-[0.9]"
               draggable={false}
               priority={false}
             />
@@ -449,13 +449,13 @@ export function Ecosystem() {
         </motion.div>
       </motion.div>
 
-      {/* Ecosystem illustration - right, desktop only */}
+      {/* Dashboard illustration - right, desktop only */}
       <motion.div
         initial={{ opacity: 0, scale: 0.4, filter: "blur(24px)" }}
         whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
         viewport={{ once: true }}
         transition={{ duration: 1.4, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="hidden md:block absolute top-4 -right-36 lg:-right-24 z-10 pointer-events-none"
+        className="hidden md:block absolute top-4 -right-28 lg:-right-16 z-10 pointer-events-none"
       >
         <motion.div
           animate={{
@@ -467,11 +467,11 @@ export function Ecosystem() {
           <div className="relative">
             <div className="absolute inset-0 bg-indigo-500/5 rounded-full blur-3xl scale-75" />
             <Image
-              src="/ecosystem-icon.png"
+              src="/ecosystem-dashboard.png"
               alt=""
-              width={640}
-              height={420}
-              className="w-[640px] h-[420px] opacity-[0.12] dark:opacity-[0.22] select-none hue-rotate-[40deg] saturate-[1.8] brightness-[0.9] -scale-x-100"
+              width={480}
+              height={320}
+              className="w-[480px] h-[320px] opacity-[0.12] dark:opacity-[0.22] select-none hue-rotate-[40deg] saturate-[1.8] brightness-[0.9]"
               draggable={false}
               priority={false}
             />
