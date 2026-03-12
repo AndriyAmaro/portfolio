@@ -183,7 +183,7 @@ export function About() {
         whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
         viewport={{ once: true }}
         transition={{ duration: 1.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        className="hidden md:block absolute top-8 -left-20 lg:-left-8 z-10 pointer-events-none"
+        className="hidden md:block absolute top-8 -left-32 lg:-left-20 z-10 pointer-events-none"
       >
         <motion.div
           animate={{
@@ -197,9 +197,9 @@ export function About() {
             <Image
               src="/about-stack.png"
               alt=""
-              width={640}
-              height={420}
-              className="w-[640px] h-[420px] opacity-[0.16] dark:opacity-[0.18] select-none hue-rotate-[20deg] saturate-[1.3] brightness-[1.1]"
+              width={720}
+              height={440}
+              className="w-[720px] h-[440px] opacity-[0.16] dark:opacity-[0.18] select-none hue-rotate-[20deg] saturate-[1.3] brightness-[1.1]"
               draggable={false}
               priority={false}
             />
@@ -213,7 +213,7 @@ export function About() {
         whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
         viewport={{ once: true }}
         transition={{ duration: 1.4, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="hidden md:block absolute top-4 -right-20 lg:-right-8 z-10 pointer-events-none"
+        className="hidden md:block absolute top-4 -right-32 lg:-right-20 z-10 pointer-events-none"
       >
         <motion.div
           animate={{
