@@ -93,7 +93,7 @@ export function FuturisticBackground() {
       h = canvas.height = window.innerHeight;
       cx = w * 0.5;
       const isMobile = w < 768;
-      cy = isMobile ? h * 0.42 : h * 0.48;
+      cy = isMobile ? h * 0.34 : h * 0.48;
 
       const maxRadius = Math.sqrt(cx * cx + cy * cy) * 1.2;
 
