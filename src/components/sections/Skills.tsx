@@ -411,9 +411,9 @@ export function Skills() {
             <Image
               src="/frontend-icon.png"
               alt=""
-              width={640}
-              height={640}
-              className="w-[640px] h-[640px] opacity-[0.12] dark:opacity-[0.22] select-none hue-rotate-[40deg] saturate-[1.8] brightness-[0.9]"
+              width={750}
+              height={750}
+              className="opacity-[0.12] dark:opacity-[0.22] select-none hue-rotate-[40deg] saturate-[1.8] brightness-[0.9]"
               draggable={false}
             />
           </div>
@@ -440,9 +440,9 @@ export function Skills() {
             <Image
               src="/backend-icon.png"
               alt=""
-              width={640}
-              height={640}
-              className="w-[640px] h-[640px] opacity-[0.12] dark:opacity-[0.22] select-none hue-rotate-[40deg] saturate-[1.8] brightness-[0.9]"
+              width={750}
+              height={750}
+              className="opacity-[0.12] dark:opacity-[0.22] select-none hue-rotate-[40deg] saturate-[1.8] brightness-[0.9]"
               draggable={false}
             />
           </div>
