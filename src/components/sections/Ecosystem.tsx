@@ -460,7 +460,7 @@ export function Ecosystem() {
           {[
             { ref: totalTests.ref, count: totalTests.count, suffix: "+", label: "Testes" },
             { ref: totalComponents.ref, count: totalComponents.count, suffix: "+", label: "Componentes" },
-            { ref: totalPages.ref, count: totalPages.count, suffix: "", label: "Páginas" },
+            { ref: totalPages.ref, count: totalPages.count, suffix: "+", label: "Páginas" },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
               <span ref={stat.ref} className="block text-3xl md:text-4xl font-bold gradient-text tabular-nums">

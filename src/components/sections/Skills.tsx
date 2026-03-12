@@ -190,7 +190,7 @@ const skillCategories = importedSkills.map((cat) => ({
 const stats = [
   { icon: TestTubes, value: 380, suffix: "+", label: "Testes Automatizados" },
   { icon: Layers, value: 100, suffix: "+", label: "Componentes UI" },
-  { icon: AppWindow, value: 56, suffix: "", label: "Páginas Construídas" },
+  { icon: AppWindow, value: 56, suffix: "+", label: "Páginas Construídas" },
   { icon: FlaskConical, value: 3, suffix: "", label: "SaaS Apps em Produção" },
 ];
 
