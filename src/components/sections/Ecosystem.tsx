@@ -114,7 +114,7 @@ const liveApps: EcoNode[] = [
     borderClass: "border-indigo-500/30",
     bgClass: "bg-indigo-500/10",
     glowColor: "rgba(99, 102, 241, 0.15)",
-    role: "A fundacao",
+    role: "A fundação",
     techStack: [],
     metrics: [],
     architecture: "",
@@ -134,7 +134,7 @@ const liveApps: EcoNode[] = [
     borderClass: "border-teal-500/30",
     bgClass: "bg-teal-500/10",
     glowColor: "rgba(20, 184, 166, 0.15)",
-    role: "Comunicacao",
+    role: "Comunicação",
     techStack: [],
     metrics: [],
     architecture: "",
@@ -204,7 +204,7 @@ const comingApps: EcoNode[] = [
     id: "pulse-ai",
     name: "Pulse AI",
     shortName: "AI",
-    tagline: "Assistente inteligente com RAG pipeline e agentes autonomos",
+    tagline: "Assistente inteligente com RAG pipeline e agentes autônomos",
     icon: <Bot className="w-5 h-5" />,
     color: "rose",
     colorClass: "text-rose-400",
@@ -305,7 +305,7 @@ function EcoNodeCard({ node, index, isCenter }: { node: EcoNode; index: number; 
                     </a>
                     <a href={node.githubUrl} target="_blank" rel="noopener noreferrer"
                       className="eco-icon-link p-1 rounded-md transition-all duration-200 hover:scale-110"
-                      title="Ver codigo">
+                      title="Ver código">
                       <Github className="w-3 h-3" />
                     </a>
                   </div>
@@ -445,7 +445,7 @@ export function Ecosystem() {
             O <span className="gradient-text">Pulse Ecosystem</span>
           </h2>
           <p className="eco-subtitle max-w-2xl mx-auto">
-            Nao sao projetos isolados · e um ecossistema onde o Design System alimenta cada aplicacao, com tokens, componentes e padroes compartilhados
+            Não são projetos isolados · é um ecossistema onde o Design System alimenta cada aplicação, com tokens, componentes e padrões compartilhados
           </p>
         </motion.div>
 
@@ -460,7 +460,7 @@ export function Ecosystem() {
           {[
             { ref: totalTests.ref, count: totalTests.count, suffix: "+", label: "Testes" },
             { ref: totalComponents.ref, count: totalComponents.count, suffix: "+", label: "Componentes" },
-            { ref: totalPages.ref, count: totalPages.count, suffix: "", label: "Paginas" },
+            { ref: totalPages.ref, count: totalPages.count, suffix: "", label: "Páginas" },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
               <span ref={stat.ref} className="block text-3xl md:text-4xl font-bold gradient-text tabular-nums">
