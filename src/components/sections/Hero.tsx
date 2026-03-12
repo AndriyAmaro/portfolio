@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence, useInView } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -65,11 +65,8 @@ function useTypingEffect(words: string[], typingSpeed = 80, deletingSpeed = 50, 
 // ---------------------------------------------------------------------------
 function useCountUp(target: number, duration = 2000) {
   const [count, setCount] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-20px" });
 
   useEffect(() => {
-    if (!isInView) return;
     let start = 0;
     const step = target / (duration / 16);
     const timer = setInterval(() => {
@@ -82,9 +79,9 @@ function useCountUp(target: number, duration = 2000) {
       }
     }, 16);
     return () => clearInterval(timer);
-  }, [isInView, target, duration]);
+  }, [target, duration]);
 
-  return { count, ref };
+  return count;
 }
 
 // ---------------------------------------------------------------------------
@@ -100,7 +97,7 @@ const metrics = [
 // ---------------------------------------------------------------------------
 // Metrics Carousel (2 at a time, auto-rotate)
 // ---------------------------------------------------------------------------
-function MetricsCarousel({ metrics: items, countRefs }: { metrics: typeof metrics; countRefs: { count: number; ref: React.RefObject<HTMLSpanElement | null> }[] }) {
+function MetricsCarousel({ metrics: items, counts }: { metrics: typeof metrics; counts: number[] }) {
   const [page, setPage] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const pages = [items.slice(0, 2), items.slice(2, 4)];
@@ -123,8 +120,8 @@ function MetricsCarousel({ metrics: items, countRefs }: { metrics: typeof metric
       <div className="hidden sm:grid grid-cols-4 gap-6">
         {items.map((m, i) => (
           <div key={m.label} className="hero-metric text-center py-3 px-2 rounded-xl">
-            <span ref={countRefs[i].ref} className="block text-2xl md:text-3xl font-bold gradient-text tabular-nums">
-              {countRefs[i].count}{m.suffix}
+            <span className="block text-2xl md:text-3xl font-bold gradient-text tabular-nums">
+              {counts[i]}{m.suffix}
             </span>
             <span className="text-[11px] font-semibold uppercase tracking-wider hero-metric-label">{m.label}</span>
           </div>
@@ -146,8 +143,8 @@ function MetricsCarousel({ metrics: items, countRefs }: { metrics: typeof metric
               const idx = page * 2 + i;
               return (
                 <div key={m.label} className="hero-metric text-center py-3 px-2 rounded-xl">
-                  <span ref={countRefs[idx].ref} className="block text-2xl font-bold gradient-text tabular-nums">
-                    {countRefs[idx].count}{m.suffix}
+                  <span className="block text-2xl font-bold gradient-text tabular-nums">
+                    {counts[idx]}{m.suffix}
                   </span>
                   <span className="text-[11px] font-semibold uppercase tracking-wider hero-metric-label">{m.label}</span>
                 </div>
@@ -180,11 +177,12 @@ export function Hero() {
   const typedText = useTypingEffect(roles);
 
   // count-up for each metric
-  const m0 = useCountUp(metrics[0].value, 1200);
-  const m1 = useCountUp(metrics[1].value, 1800);
-  const m2 = useCountUp(metrics[2].value, 2000);
-  const m3 = useCountUp(metrics[3].value, 1600);
-  const countRefs = [m0, m1, m2, m3];
+  const counts = [
+    useCountUp(metrics[0].value, 1200),
+    useCountUp(metrics[1].value, 1800),
+    useCountUp(metrics[2].value, 2000),
+    useCountUp(metrics[3].value, 1600),
+  ];
 
   return (
     <section className="relative gradient-bg overflow-visible mb-[-90px]">
@@ -282,7 +280,7 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.65 }}
             className="relative z-20 mt-4 w-full flex justify-center"
           >
-            <MetricsCarousel metrics={metrics} countRefs={countRefs} />
+            <MetricsCarousel metrics={metrics} counts={counts} />
           </motion.div>
 
         </div>
