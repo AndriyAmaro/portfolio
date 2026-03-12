@@ -183,7 +183,7 @@ export function About() {
         whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
         viewport={{ once: true }}
         transition={{ duration: 1.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        className="hidden md:block absolute top-8 -left-32 lg:-left-20 z-10 pointer-events-none"
+        className="hidden md:block absolute -top-4 -left-36 lg:-left-24 z-10 pointer-events-none"
       >
         <motion.div
           animate={{
