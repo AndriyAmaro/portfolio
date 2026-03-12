@@ -117,13 +117,14 @@ function MetricsCarousel({ metrics: items, counts }: { metrics: typeof metrics; 
   return (
     <div className="w-full max-w-2xl">
       {/* Desktop: show all 4 */}
-      <div className="hidden sm:grid grid-cols-4 gap-6">
+      <div className="hidden sm:grid grid-cols-4 gap-5">
         {items.map((m, i) => (
-          <div key={m.label} className="hero-metric text-center py-3 px-2 rounded-xl">
+          <div key={m.label} className="hero-metric relative text-center py-4 px-3 rounded-2xl overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent" />
             <span className="block text-2xl md:text-3xl font-bold gradient-text tabular-nums">
               {counts[i]}{m.suffix}
             </span>
-            <span className="text-[11px] font-semibold uppercase tracking-wider hero-metric-label">{m.label}</span>
+            <span className="text-[11px] font-semibold uppercase tracking-wider hero-metric-label mt-1 block">{m.label}</span>
           </div>
         ))}
       </div>
@@ -142,11 +143,12 @@ function MetricsCarousel({ metrics: items, counts }: { metrics: typeof metrics; 
             {pages[page].map((m, i) => {
               const idx = page * 2 + i;
               return (
-                <div key={m.label} className="hero-metric text-center py-3 px-2 rounded-xl">
+                <div key={m.label} className="hero-metric relative text-center py-4 px-3 rounded-2xl overflow-hidden">
+                  <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent" />
                   <span className="block text-2xl font-bold gradient-text tabular-nums">
                     {counts[idx]}{m.suffix}
                   </span>
-                  <span className="text-[11px] font-semibold uppercase tracking-wider hero-metric-label">{m.label}</span>
+                  <span className="text-[11px] font-semibold uppercase tracking-wider hero-metric-label mt-1 block">{m.label}</span>
                 </div>
               );
             })}
@@ -185,7 +187,7 @@ export function Hero() {
   ];
 
   return (
-    <section className="relative gradient-bg overflow-visible mb-[-90px]">
+    <section className="relative gradient-bg overflow-visible mb-[-60px]">
       {/* Background */}
       <div className="absolute inset-0 overflow-hidden">
         <FuturisticBackground />
