@@ -117,7 +117,7 @@ export function Hero() {
         <FuturisticBackground />
       </div>
 
-      <div className="container-custom relative z-10 pb-10 min-[414px]:pb-8 md:pb-24" style={{ paddingTop: 'clamp(120px, 16vh, 220px)' }}>
+      <div className="container-custom relative z-10 pb-10 min-[414px]:pb-8 md:pb-24" style={{ paddingTop: 'clamp(100px, 13vh, 220px)' }}>
         <div className="relative flex flex-col items-center text-center gap-4 md:gap-6">
           {/* Name */}
           <motion.div
@@ -125,7 +125,7 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <h1 className="text-[2rem] min-[414px]:text-4xl md:text-5xl lg:text-7xl font-black tracking-tight hero-title">
+            <h1 className="text-[2.25rem] min-[414px]:text-[2.5rem] md:text-5xl lg:text-7xl font-black tracking-tight hero-title">
               Andri{" "}
               <span className="gradient-text">Amaro</span>
             </h1>
