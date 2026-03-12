@@ -109,7 +109,7 @@ function MetricsCarousel({ metrics: items, countRefs }: { metrics: typeof metric
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
       setPage((p) => (p + 1) % pages.length);
-    }, 3000);
+    }, 5000);
   }, [pages.length]);
 
   useEffect(() => {
