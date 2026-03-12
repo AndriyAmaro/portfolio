@@ -425,7 +425,7 @@ export function Ecosystem() {
         whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
         viewport={{ once: true }}
         transition={{ duration: 1.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        className="hidden md:block absolute -top-4 -left-28 lg:-left-16 z-10 pointer-events-none"
+        className="hidden md:block absolute top-16 -left-28 lg:-left-16 z-10 pointer-events-none"
       >
         <motion.div
           animate={{
@@ -455,7 +455,7 @@ export function Ecosystem() {
         whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
         viewport={{ once: true }}
         transition={{ duration: 1.4, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="hidden md:block absolute top-4 -right-28 lg:-right-16 z-10 pointer-events-none"
+        className="hidden md:block absolute top-20 -right-28 lg:-right-16 z-10 pointer-events-none"
       >
         <motion.div
           animate={{
