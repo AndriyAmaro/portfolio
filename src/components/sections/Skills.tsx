@@ -14,6 +14,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { skillCategories as importedSkills } from "@/data/skills";
 import { SkillsBackground, SkillsBackgroundLight } from "../ui/SkillsBackground";
+import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
 
 // ---------------------------------------------------------------------------
 // SVG Tech Icons
@@ -386,19 +387,17 @@ export function Skills() {
     return () => observer.disconnect();
   }, []);
 
-  const totalSkills = skillCategories.reduce((acc, c) => acc + c.skills.length, 0);
-
   return (
     <section id="skills" className="relative py-24 md:py-32 overflow-hidden">
-      {isLightMode ? <SkillsBackgroundLight /> : <SkillsBackground />}
+      {isLightMode ? <AbstractBackgroundLight /> : <AbstractBackground />}
 
-      {/* Frontend icon - top left */}
+      {/* Frontend icon - desktop only */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.3, filter: "blur(20px)" }}
+        initial={{ opacity: 0, scale: 0.4, filter: "blur(24px)" }}
         whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
         viewport={{ once: true }}
-        transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute top-4 -left-52 md:-left-44 lg:-left-40 z-10 pointer-events-none"
+        transition={{ duration: 1.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        className="hidden md:block absolute top-4 -left-52 lg:-left-40 z-10 pointer-events-none"
       >
         <motion.div
           animate={{
@@ -407,23 +406,27 @@ export function Skills() {
           }}
           transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
         >
-          <Image
-            src="/frontend-icon.png"
-            alt="Frontend"
-            width={750}
-            height={750}
-            className="opacity-[0.12]"
-          />
+          <div className="relative">
+            <div className="absolute inset-0 bg-indigo-500/5 rounded-full blur-3xl scale-75" />
+            <Image
+              src="/frontend-icon.png"
+              alt=""
+              width={750}
+              height={750}
+              className="opacity-[0.12] dark:opacity-[0.22] select-none hue-rotate-[40deg] saturate-[1.8] brightness-[0.9]"
+              draggable={false}
+            />
+          </div>
         </motion.div>
       </motion.div>
 
-      {/* Backend icon - top right */}
+      {/* Backend icon - desktop only */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.3, filter: "blur(20px)" }}
+        initial={{ opacity: 0, scale: 0.4, filter: "blur(24px)" }}
         whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
         viewport={{ once: true }}
-        transition={{ duration: 1.2, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute top-[22px] -right-44 md:-right-36 lg:-right-32 z-10 pointer-events-none"
+        transition={{ duration: 1.4, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="hidden md:block absolute top-[22px] -right-44 lg:-right-32 z-10 pointer-events-none"
       >
         <motion.div
           animate={{
@@ -432,13 +435,17 @@ export function Skills() {
           }}
           transition={{ duration: 32, repeat: Infinity, ease: "easeInOut" }}
         >
-          <Image
-            src="/backend-icon.png"
-            alt="Backend"
-            width={750}
-            height={750}
-            className="opacity-[0.12]"
-          />
+          <div className="relative">
+            <div className="absolute inset-0 bg-indigo-500/5 rounded-full blur-3xl scale-75" />
+            <Image
+              src="/backend-icon.png"
+              alt=""
+              width={750}
+              height={750}
+              className="opacity-[0.12] dark:opacity-[0.22] select-none hue-rotate-[40deg] saturate-[1.8] brightness-[0.9]"
+              draggable={false}
+            />
+          </div>
         </motion.div>
       </motion.div>
 
@@ -458,7 +465,7 @@ export function Skills() {
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 mb-6"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
-            <span className="text-xs font-medium text-indigo-300">{totalSkills} tecnologias no stack</span>
+            <span className="text-xs font-medium text-indigo-300">tecnologias no stack</span>
           </motion.div>
 
           {/* Title with radial burst effect */}
@@ -556,11 +563,11 @@ export function Skills() {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="mt-12 text-center"
         >
-          <div className="learning-badge inline-flex items-center gap-4 px-8 py-4 rounded-full">
-            <span className="w-2.5 h-2.5 rounded-full bg-indigo-400 animate-pulse" />
-            <span className="learning-text text-base font-medium">
-              Acelerando projetos com:{" "}
-              <span className="gradient-text text-lg font-semibold">
+          <div className="learning-badge inline-flex flex-col sm:flex-row items-center gap-3 sm:gap-4 px-6 sm:px-8 py-4 sm:py-4 rounded-2xl sm:rounded-full max-w-sm sm:max-w-none mx-auto">
+            <span className="w-2.5 h-2.5 rounded-full bg-indigo-400 animate-pulse hidden sm:block" />
+            <span className="learning-text text-sm sm:text-base font-medium text-center sm:text-left">
+              <span className="block sm:inline mb-1 sm:mb-0">Acelerando projetos com:</span>{" "}
+              <span className="gradient-text text-base sm:text-lg font-semibold">
                 IA para Desenvolvimento, Code Review e Automacao
               </span>
             </span>
