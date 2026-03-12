@@ -169,7 +169,7 @@ const categoryAccents: Record<string, {
 // Category metadata
 const categoryMeta: Record<string, { icon: React.FC<{ className?: string }>; description: string }> = {
   Frontend: { icon: Code2, description: "Interfaces modernas e responsivas" },
-  Backend: { icon: Server, description: "APIs robustas e escalaveis" },
+  Backend: { icon: Server, description: "APIs robustas e escaláveis" },
   "DevOps e Ferramentas": { icon: Wrench, description: "Ferramentas e workflows modernos" },
 };
 
@@ -190,8 +190,8 @@ const skillCategories = importedSkills.map((cat) => ({
 const stats = [
   { icon: TestTubes, value: 380, suffix: "+", label: "Testes Automatizados" },
   { icon: Layers, value: 100, suffix: "+", label: "Componentes UI" },
-  { icon: AppWindow, value: 56, suffix: "", label: "Paginas Construidas" },
-  { icon: FlaskConical, value: 3, suffix: "", label: "SaaS Apps em Producao" },
+  { icon: AppWindow, value: 56, suffix: "", label: "Páginas Construídas" },
+  { icon: FlaskConical, value: 3, suffix: "", label: "SaaS Apps em Produção" },
 ];
 
 // ---------------------------------------------------------------------------
@@ -271,8 +271,8 @@ function StatCard({
 // ---------------------------------------------------------------------------
 const levelLabels: Record<string, { label: string; color: string }> = {
   expert: { label: "Expert", color: "text-violet-400 bg-violet-500/15 border-violet-500/25" },
-  advanced: { label: "Avancado", color: "text-indigo-400 bg-indigo-500/15 border-indigo-500/25" },
-  intermediate: { label: "Intermediario", color: "text-blue-400 bg-blue-500/15 border-blue-500/25" },
+  advanced: { label: "Avançado", color: "text-indigo-400 bg-indigo-500/15 border-indigo-500/25" },
+  intermediate: { label: "Intermediário", color: "text-blue-400 bg-blue-500/15 border-blue-500/25" },
   beginner: { label: "Iniciante", color: "text-amber-400 bg-amber-500/15 border-amber-500/25" },
 };
 
@@ -568,7 +568,7 @@ export function Skills() {
             <span className="learning-text text-sm sm:text-base font-medium text-center sm:text-left">
               <span className="block sm:inline mb-1 sm:mb-0">Acelerando projetos com:</span>{" "}
               <span className="gradient-text text-base sm:text-lg font-semibold">
-                IA para Desenvolvimento, Code Review e Automacao
+                IA para Desenvolvimento, Code Review e Automação
               </span>
             </span>
           </div>
