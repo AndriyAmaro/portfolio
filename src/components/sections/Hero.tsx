@@ -4,7 +4,7 @@ import { motion, AnimatePresence, useInView } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { FuturisticBackground } from "../ui/FuturisticBackground";
 
 // ---------------------------------------------------------------------------
@@ -98,6 +98,82 @@ const metrics = [
 ];
 
 // ---------------------------------------------------------------------------
+// Metrics Carousel (2 at a time, auto-rotate)
+// ---------------------------------------------------------------------------
+function MetricsCarousel({ metrics: items, countRefs }: { metrics: typeof metrics; countRefs: { count: number; ref: React.RefObject<HTMLSpanElement | null> }[] }) {
+  const [page, setPage] = useState(0);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const pages = [items.slice(0, 2), items.slice(2, 4)];
+
+  const startTimer = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      setPage((p) => (p + 1) % pages.length);
+    }, 3000);
+  }, [pages.length]);
+
+  useEffect(() => {
+    startTimer();
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [startTimer]);
+
+  return (
+    <div className="w-full max-w-2xl">
+      {/* Desktop: show all 4 */}
+      <div className="hidden sm:grid grid-cols-4 gap-6">
+        {items.map((m, i) => (
+          <div key={m.label} className="hero-metric text-center py-3 px-2 rounded-xl">
+            <span ref={countRefs[i].ref} className="block text-2xl md:text-3xl font-bold gradient-text tabular-nums">
+              {countRefs[i].count}{m.suffix}
+            </span>
+            <span className="text-[11px] font-semibold uppercase tracking-wider hero-metric-label">{m.label}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Mobile: carousel 2 at a time */}
+      <div className="sm:hidden">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={page}
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -30 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="grid grid-cols-2 gap-4"
+          >
+            {pages[page].map((m, i) => {
+              const idx = page * 2 + i;
+              return (
+                <div key={m.label} className="hero-metric text-center py-3 px-2 rounded-xl">
+                  <span ref={countRefs[idx].ref} className="block text-2xl font-bold gradient-text tabular-nums">
+                    {countRefs[idx].count}{m.suffix}
+                  </span>
+                  <span className="text-[11px] font-semibold uppercase tracking-wider hero-metric-label">{m.label}</span>
+                </div>
+              );
+            })}
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Dots */}
+        <div className="flex items-center justify-center gap-1.5 mt-3">
+          {pages.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => { setPage(i); startTimer(); }}
+              className={`h-1 rounded-full transition-all duration-500 ${
+                page === i ? "w-5 bg-indigo-500" : "w-1.5 bg-white/20"
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Main Hero Component
 // ---------------------------------------------------------------------------
 export function Hero() {
@@ -125,7 +201,7 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <h1 className="text-[2.25rem] min-[414px]:text-[2.5rem] md:text-5xl lg:text-7xl font-black tracking-tight hero-title">
+            <h1 className="text-[2.5rem] min-[414px]:text-[2.75rem] md:text-5xl lg:text-7xl font-black tracking-tight hero-title">
               Andri{" "}
               <span className="gradient-text">Amaro</span>
             </h1>
@@ -136,7 +212,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="h-9 flex items-center"
+            className="h-9 flex items-center justify-center w-full"
           >
             <span className="text-lg md:text-2xl lg:text-3xl font-bold hero-typed-text">
               {typedText}
@@ -204,21 +280,9 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.65 }}
-            className="relative z-20 grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mt-4 w-full max-w-2xl"
+            className="relative z-20 mt-4 w-full flex justify-center"
           >
-            {metrics.map((m, i) => (
-              <div key={m.label} className="hero-metric text-center py-3 px-2 rounded-xl">
-                <span
-                  ref={countRefs[i].ref}
-                  className="block text-2xl md:text-3xl font-bold gradient-text tabular-nums"
-                >
-                  {countRefs[i].count}{m.suffix}
-                </span>
-                <span className="text-[11px] font-semibold uppercase tracking-wider hero-metric-label">
-                  {m.label}
-                </span>
-              </div>
-            ))}
+            <MetricsCarousel metrics={metrics} countRefs={countRefs} />
           </motion.div>
 
         </div>
