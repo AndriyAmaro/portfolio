@@ -419,6 +419,66 @@ export function Ecosystem() {
       {/* Background · animated waves + gradient base + orbs */}
       {isLightMode ? <EcosystemBackgroundLight /> : <EcosystemBackground />}
 
+      {/* Ecosystem illustration - left, desktop only */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.4, filter: "blur(24px)" }}
+        whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        className="hidden md:block absolute -top-4 -left-36 lg:-left-24 z-10 pointer-events-none"
+      >
+        <motion.div
+          animate={{
+            y: [0, -12, 5, -18, 3, -8, -14, 0],
+            x: [0, 4, -2, 6, -4, 2, -1, 0],
+          }}
+          transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <div className="relative">
+            <div className="absolute inset-0 bg-indigo-500/5 rounded-full blur-3xl scale-75" />
+            <Image
+              src="/ecosystem-icon.png"
+              alt=""
+              width={640}
+              height={420}
+              className="w-[640px] h-[420px] opacity-[0.12] dark:opacity-[0.22] select-none hue-rotate-[40deg] saturate-[1.8] brightness-[0.9]"
+              draggable={false}
+              priority={false}
+            />
+          </div>
+        </motion.div>
+      </motion.div>
+
+      {/* Ecosystem illustration - right, desktop only */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.4, filter: "blur(24px)" }}
+        whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.4, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="hidden md:block absolute top-4 -right-36 lg:-right-24 z-10 pointer-events-none"
+      >
+        <motion.div
+          animate={{
+            y: [0, -16, 4, -22, 6, -10, -18, 0],
+            x: [0, -3, 2, -5, 4, -2, 1, 0],
+          }}
+          transition={{ duration: 32, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <div className="relative">
+            <div className="absolute inset-0 bg-indigo-500/5 rounded-full blur-3xl scale-75" />
+            <Image
+              src="/ecosystem-icon.png"
+              alt=""
+              width={640}
+              height={420}
+              className="w-[640px] h-[420px] opacity-[0.12] dark:opacity-[0.22] select-none hue-rotate-[40deg] saturate-[1.8] brightness-[0.9] -scale-x-100"
+              draggable={false}
+              priority={false}
+            />
+          </div>
+        </motion.div>
+      </motion.div>
+
       <div className="container-custom relative z-10">
         {/* Header */}
         <motion.div
