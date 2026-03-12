@@ -111,21 +111,21 @@ export function Hero() {
   const countRefs = [m0, m1, m2, m3];
 
   return (
-    <section className="relative min-h-[110vh] flex items-center justify-center gradient-bg overflow-visible mb-[-90px]">
+    <section className="relative min-h-[120vh] md:min-h-[110vh] flex items-center justify-center gradient-bg overflow-visible mb-[-90px]">
       {/* Background */}
       <div className="absolute inset-0 overflow-hidden">
         <FuturisticBackground />
       </div>
 
-      <div className="container-custom relative z-10 pt-32 sm:pt-40 md:pt-52 lg:pt-80 pb-0">
-        <div className="relative flex flex-col items-center text-center gap-6">
+      <div className="container-custom relative z-10 pt-28 sm:pt-36 md:pt-52 lg:pt-80 pb-16 md:pb-0">
+        <div className="relative flex flex-col items-center text-center gap-4 md:gap-6">
           {/* Name */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <h1 className="text-4xl md:text-5xl lg:text-7xl font-black tracking-tight hero-title">
+            <h1 className="text-3xl md:text-5xl lg:text-7xl font-black tracking-tight hero-title">
               Andri{" "}
               <span className="gradient-text">Amaro</span>
             </h1>
@@ -138,7 +138,7 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="h-9 flex items-center"
           >
-            <span className="text-xl md:text-2xl lg:text-3xl font-bold hero-typed-text">
+            <span className="text-lg md:text-2xl lg:text-3xl font-bold hero-typed-text">
               {typedText}
             </span>
             <span className="hero-cursor w-[3px] h-7 md:h-8 ml-0.5 animate-blink" />

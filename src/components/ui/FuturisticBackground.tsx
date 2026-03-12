@@ -92,7 +92,8 @@ export function FuturisticBackground() {
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
       cx = w * 0.5;
-      cy = h * 0.48;
+      const isMobile = w < 768;
+      cy = isMobile ? h * 0.42 : h * 0.48;
 
       const maxRadius = Math.sqrt(cx * cx + cy * cy) * 1.2;
 
@@ -169,10 +170,12 @@ export function FuturisticBackground() {
 
       // --- Skill labels flowing outward · heavier on left & right ---
       skillLabels = [];
-      for (let i = 0; i < 18; i++) {
+      const labelCount = isMobile ? 12 : 18;
+      const minDist = isMobile ? 120 : 60;
+      for (let i = 0; i < labelCount; i++) {
         // 70% go left or right, 30% any direction
         let angle: number;
-        if (i < 13) {
+        if (i < Math.floor(labelCount * 0.7)) {
           // Lateral · left or right with slight vertical spread
           const side = i % 2 === 0 ? 0 : Math.PI; // right or left
           angle = side + (Math.random() - 0.5) * 1.2; // ±~35° spread
@@ -182,11 +185,11 @@ export function FuturisticBackground() {
         skillLabels.push({
           text: SKILLS[i % SKILLS.length],
           angle,
-          dist: 60 + Math.random() * maxRadius * 0.5,
+          dist: minDist + Math.random() * maxRadius * 0.5,
           speed: 0.25 + Math.random() * 0.5,
           maxDist: maxRadius * (0.55 + Math.random() * 0.35),
-          opacity: 0.18 + Math.random() * 0.2,
-          fontSize: 11 + Math.floor(Math.random() * 3),
+          opacity: isMobile ? 0.12 + Math.random() * 0.15 : 0.18 + Math.random() * 0.2,
+          fontSize: isMobile ? 10 + Math.floor(Math.random() * 2) : 11 + Math.floor(Math.random() * 3),
         });
       }
 
