@@ -212,12 +212,12 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="h-9 flex items-center justify-center w-full"
+            className="h-9 flex items-center justify-center"
           >
             <span className="text-lg md:text-2xl lg:text-3xl font-bold hero-typed-text">
               {typedText}
             </span>
-            <span className="hero-cursor w-[3px] h-7 md:h-8 ml-0.5 animate-blink" />
+            <span className="hero-cursor w-[3px] h-7 md:h-8 ml-0.5 animate-blink flex-shrink-0" />
           </motion.div>
 
           {/* Avatar */}
