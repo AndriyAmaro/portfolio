@@ -158,11 +158,11 @@ const categoryAccents: Record<string, {
     lightIconBg: "from-emerald-500 to-teal-600",
   },
   "DevOps e Ferramentas": {
-    gradient: "from-amber-500/20 via-amber-500/5 to-transparent",
-    iconBg: "from-amber-500 to-orange-600",
-    barColor: "from-amber-500 to-orange-500",
-    lightGradient: "from-amber-500/10 via-amber-500/5 to-transparent",
-    lightIconBg: "from-amber-500 to-orange-600",
+    gradient: "from-cyan-500/20 via-cyan-500/5 to-transparent",
+    iconBg: "from-cyan-500 to-blue-600",
+    barColor: "from-cyan-500 to-blue-500",
+    lightGradient: "from-cyan-500/10 via-cyan-500/5 to-transparent",
+    lightIconBg: "from-cyan-500 to-blue-600",
   },
 };
 
@@ -512,14 +512,14 @@ export function Skills() {
 
                 {/* Top accent line */}
                 <div className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-current to-transparent opacity-50`}
-                  style={{ color: accent.barColor.includes("indigo") ? "#6366f1" : accent.barColor.includes("emerald") ? "#10b981" : "#f59e0b" }}
+                  style={{ color: accent.barColor.includes("indigo") ? "#6366f1" : accent.barColor.includes("emerald") ? "#10b981" : "#06b6d4" }}
                 />
 
                 <div className="relative p-6 md:p-8">
                   {/* Category header */}
                   <div className="flex items-center gap-4 mb-8">
                     <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${accent.iconBg} flex items-center justify-center shadow-lg`}
-                      style={{ boxShadow: `0 8px 24px ${accent.barColor.includes("indigo") ? "rgba(99,102,241,0.3)" : accent.barColor.includes("emerald") ? "rgba(16,185,129,0.3)" : "rgba(245,158,11,0.3)"}` }}
+                      style={{ boxShadow: `0 8px 24px ${accent.barColor.includes("indigo") ? "rgba(99,102,241,0.3)" : accent.barColor.includes("emerald") ? "rgba(16,185,129,0.3)" : "rgba(6,182,212,0.3)"}` }}
                     >
                       <category.icon className="w-6 h-6 text-white" />
                     </div>
