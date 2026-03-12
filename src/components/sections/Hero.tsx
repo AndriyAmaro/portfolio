@@ -111,13 +111,13 @@ export function Hero() {
   const countRefs = [m0, m1, m2, m3];
 
   return (
-    <section className="relative min-h-[140vh] md:min-h-[110vh] flex items-center justify-center gradient-bg overflow-visible mb-[-90px]">
+    <section className="relative gradient-bg overflow-visible mb-[-90px]">
       {/* Background */}
       <div className="absolute inset-0 overflow-hidden">
         <FuturisticBackground />
       </div>
 
-      <div className="container-custom relative z-10 pt-20 sm:pt-48 md:pt-56 lg:pt-80 pb-16 md:pb-0">
+      <div className="container-custom relative z-10 pb-10 min-[414px]:pb-8 md:pb-24" style={{ paddingTop: 'clamp(120px, 16vh, 220px)' }}>
         <div className="relative flex flex-col items-center text-center gap-4 md:gap-6">
           {/* Name */}
           <motion.div
@@ -125,7 +125,7 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <h1 className="text-3xl md:text-5xl lg:text-7xl font-black tracking-tight hero-title">
+            <h1 className="text-[2rem] min-[414px]:text-4xl md:text-5xl lg:text-7xl font-black tracking-tight hero-title">
               Andri{" "}
               <span className="gradient-text">Amaro</span>
             </h1>
