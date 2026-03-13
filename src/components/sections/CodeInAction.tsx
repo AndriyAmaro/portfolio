@@ -167,22 +167,33 @@ function useCodeTyping(code: string, isActive: boolean, speed = 12) {
       return;
     }
 
-    let i = 0;
-    setDisplayed("");
-    setIsDone(false);
+    let cancelled = false;
 
-    const timer = setInterval(() => {
-      i++;
-      if (i >= code.length) {
-        setDisplayed(code);
-        setIsDone(true);
-        clearInterval(timer);
-      } else {
-        setDisplayed(code.slice(0, i));
-      }
-    }, speed);
+    function runCycle() {
+      let i = 0;
+      setDisplayed("");
+      setIsDone(false);
 
-    return () => clearInterval(timer);
+      const timer = setInterval(() => {
+        if (cancelled) { clearInterval(timer); return; }
+        i++;
+        if (i >= code.length) {
+          setDisplayed(code);
+          setIsDone(true);
+          clearInterval(timer);
+          // Pause 3s then restart
+          setTimeout(() => {
+            if (!cancelled) runCycle();
+          }, 3000);
+        } else {
+          setDisplayed(code.slice(0, i));
+        }
+      }, speed);
+    }
+
+    runCycle();
+
+    return () => { cancelled = true; };
   }, [code, isActive, speed]);
 
   return { displayed, isDone };
@@ -359,7 +370,7 @@ export function CodeInAction() {
               </div>
 
               {/* Code area with line numbers */}
-              <div className="code-content flex-1 min-h-[300px] sm:min-h-[400px] overflow-x-auto overflow-y-hidden font-mono text-[11px] sm:text-[13px] leading-relaxed">
+              <div className="code-content flex-1 min-h-[300px] sm:min-h-[400px] overflow-x-auto overflow-y-hidden font-mono text-[12px] sm:text-[13px] leading-relaxed">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activeTab}
