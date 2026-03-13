@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "../ui/Button";
 import { Input, Textarea } from "../ui/Input";
-import { ContactBackground, ContactBackgroundLight } from "../ui/ContactBackground";
+import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
 
 // Validation schema
 const contactSchema = z.object({
@@ -80,7 +80,7 @@ export function Contact() {
   return (
     <section id="contact" className="relative py-24 md:py-32 overflow-hidden">
       {/* Animated Background */}
-      {isLightMode ? <ContactBackgroundLight /> : <ContactBackground />}
+      {isLightMode ? <AbstractBackgroundLight /> : <AbstractBackground />}
 
       <div className="container-custom relative z-10">
         {/* Section header */}

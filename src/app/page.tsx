@@ -23,6 +23,7 @@ export default function Home() {
         <Services />
         <SectionDivider />
         <Contact />
+        <SectionDivider />
       </main>
       <Footer />
     </>
