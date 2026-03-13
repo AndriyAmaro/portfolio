@@ -276,13 +276,13 @@ export function CodeInAction() {
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-5 gap-8 items-stretch">
+        <div className="grid lg:grid-cols-5 gap-8 items-stretch min-w-0">
           {/* Code editor - 3 cols */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="lg:col-span-3 flex"
+            className="lg:col-span-3 flex min-w-0"
           >
             <div className="code-editor rounded-2xl overflow-hidden group/editor flex flex-col w-full">
               {/* Top gradient accent bar */}
@@ -413,7 +413,7 @@ export function CodeInAction() {
             initial={{ opacity: 0, x: 20 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="lg:col-span-2 flex"
+            className="lg:col-span-2 flex min-w-0"
           >
             <div className="code-commit-panel rounded-2xl overflow-hidden h-full flex flex-col w-full">
               {/* Top accent */}
