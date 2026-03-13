@@ -40,13 +40,13 @@ const timelineData: TimelineEntry[] = [
     date: "",
     title: "O Primeiro Passo",
     description:
-      "Decidi aprender desenvolvimento web por conta própria. Sem bootcamp, sem atalhos. Comecei pelo básico porque sabia que fundamentos sólidos fazem a diferença no longo prazo.",
+      "Decidi aprender desenvolvimento web por conta própria. Sem bootcamp, sem atalhos · comecei pelo básico porque fundamentos sólidos são o que separam quem programa de quem resolve problemas.",
     icon: BookOpen,
     color: "amber",
     achievements: [
       "HTML, CSS e JavaScript do zero",
       "Lógica de programação e algoritmos",
-      "Primeiro contato com React e o ecossistema",
+      "Primeiro contato com React e TypeScript",
     ],
     type: "learning",
   },
@@ -55,7 +55,7 @@ const timelineData: TimelineEntry[] = [
     date: "",
     title: "Formação Contínua",
     description:
-      "Investi em cursos para acelerar o aprendizado e preencher gaps técnicos. Cada curso era um degrau, mas a prática real veio dos projetos.",
+      "Investi tempo e recursos em cursos para acelerar o aprendizado e preencher gaps técnicos. Cada curso era um degrau · o conhecimento real se consolidou quando comecei a aplicar tudo em projetos próprios.",
     icon: GraduationCap,
     color: "indigo",
     achievements: [
@@ -89,7 +89,7 @@ const timelineData: TimelineEntry[] = [
     date: "",
     title: "Pulse Design System",
     description:
-      "O momento em que os projetos de prática se transformaram em algo maior. Construí um design system completo do zero · não uma lib copiada, mas 100+ componentes pensados para escalar.",
+      "Depois de meses estudando e praticando, quis construir algo que reunisse tudo que aprendi. Criei um design system completo do zero · não uma lib copiada, mas 100+ componentes pensados para escalar.",
     icon: Palette,
     color: "teal",
     achievements: [
@@ -106,7 +106,7 @@ const timelineData: TimelineEntry[] = [
     date: "",
     title: "Pulse Chat · Real-Time",
     description:
-      "Primeiro app full-stack real do ecossistema. WebSocket com 32 eventos tipados, queue offline e 98 testes. Resolver problemas de real-time ensinou mais do que qualquer curso.",
+      "App full-stack real-time do ecossistema. WebSocket com 32 eventos tipados, queue offline e 98 testes. Resolver problemas de real-time em produção ensinou mais do que qualquer curso.",
     icon: MessageCircle,
     color: "emerald",
     achievements: [
@@ -123,7 +123,7 @@ const timelineData: TimelineEntry[] = [
     date: "",
     title: "Pulse Finance · Clean Architecture",
     description:
-      "Dashboard financeiro multi-tenant com arquitetura limpa de verdade. Camadas bem definidas, cache Redis, background jobs. O tipo de projeto que mostra maturidade técnica.",
+      "Dashboard financeiro multi-tenant com arquitetura limpa de verdade. Camadas bem definidas, cache Redis, background jobs · o nível de complexidade que separa projetos de estudo de produtos reais.",
     icon: BarChart3,
     color: "amber",
     achievements: [
@@ -144,7 +144,7 @@ const timelineData: TimelineEntry[] = [
     icon: Sparkles,
     color: "cyan",
     achievements: [
-      "3 SaaS apps interligados por design tokens",
+      "SaaS apps interligados por design tokens",
       "380+ testes no ecossistema total",
       "CI/CD com GitHub Actions em todos os repos",
       "Documentação técnica com ADRs",

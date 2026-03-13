@@ -2777,23 +2777,41 @@ section {
 
 /* Tech chips */
 .tl-tech-chip {
-  background: rgba(255, 255, 255, 0.06);
-  color: rgba(255, 255, 255, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(139, 92, 246, 0.08));
+  color: rgba(199, 210, 254, 0.85);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  backdrop-filter: blur(8px);
+  transition: all 0.25s ease;
+  letter-spacing: 0.02em;
+}
+
+.tl-tech-chip:hover {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.14));
+  border-color: rgba(99, 102, 241, 0.35);
+  color: rgba(199, 210, 254, 1);
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.15);
+  transform: translateY(-1px);
 }
 
 .light-mode .tl-tech-chip {
-  background: rgba(241, 245, 249, 0.9);
-  color: rgba(51, 65, 85, 0.75);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(139, 92, 246, 0.05));
+  color: rgba(67, 56, 202, 0.8);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+}
+
+.light-mode .tl-tech-chip:hover {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.14), rgba(139, 92, 246, 0.1));
+  border-color: rgba(99, 102, 241, 0.3);
+  color: rgba(67, 56, 202, 1);
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.1);
 }
 
 .tl-tech-border {
-  border-color: rgba(255, 255, 255, 0.06);
+  border-color: rgba(99, 102, 241, 0.1);
 }
 
 .light-mode .tl-tech-border {
-  border-color: rgba(0, 0, 0, 0.06);
+  border-color: rgba(99, 102, 241, 0.08);
 }
 
 /* Type badges */
