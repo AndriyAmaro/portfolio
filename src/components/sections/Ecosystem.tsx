@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { EcosystemBackground, EcosystemBackgroundLight } from "../ui/EcosystemBackground";
+import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
 
 // ---------------------------------------------------------------------------
 // Count-up hook
@@ -416,8 +416,8 @@ export function Ecosystem() {
 
   return (
     <section id="ecosystem" className="relative py-24 md:py-32 overflow-hidden">
-      {/* Background · animated waves + gradient base + orbs */}
-      {isLightMode ? <EcosystemBackgroundLight /> : <EcosystemBackground />}
+      {/* Background · vertical circuit lines on sides */}
+      {isLightMode ? <AbstractBackgroundLight /> : <AbstractBackground />}
 
       {/* Ecosystem illustration - left, desktop only */}
       <motion.div
