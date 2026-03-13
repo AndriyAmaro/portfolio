@@ -52,32 +52,32 @@ function createAllColumns(width: number, height: number): FallingColumn[] {
   const columns: FallingColumn[] = [];
   const isMobile = width < 640;
 
-  // --- Lateral columns (left + right zones) ---
-  const zoneWidth = isMobile ? Math.min(width * 0.18, 60) : Math.min(width * 0.22, 280);
-  const lateralSpacing = isMobile ? 24 : 18;
-  const lateralCount = Math.max(2, Math.floor(zoneWidth / lateralSpacing));
+  // --- Lateral columns (left + right zones, more dense) ---
+  const zoneWidth = isMobile ? Math.min(width * 0.20, 70) : Math.min(width * 0.22, 280);
+  const lateralSpacing = isMobile ? 20 : 18;
+  const lateralCount = Math.max(3, Math.floor(zoneWidth / lateralSpacing));
 
   for (let i = 0; i < lateralCount; i++) {
-    const leftX = (i / lateralCount) * zoneWidth + Math.random() * 8;
-    const rightX = width - zoneWidth + (i / lateralCount) * zoneWidth + Math.random() * 8;
+    const leftX = (i / lateralCount) * zoneWidth + Math.random() * 6;
+    const rightX = width - zoneWidth + (i / lateralCount) * zoneWidth + Math.random() * 6;
     const opacity = isMobile ? 0.30 + Math.random() * 0.20 : 0.35 + Math.random() * 0.25;
     const fontSize = isMobile ? 9 + Math.floor(Math.random() * 2) : 10 + Math.floor(Math.random() * 3);
     columns.push(createColumn(leftX, height, opacity, fontSize));
     columns.push(createColumn(rightX, height, opacity, fontSize));
   }
 
-  // --- Center columns (scattered across middle) ---
+  // --- Center columns (well distributed, subtle) ---
   const centerPositions = isMobile
-    ? [width * 0.25, width * 0.40, width * 0.55, width * 0.75]
+    ? [width * 0.28, width * 0.42, width * 0.58, width * 0.72]
     : [
-        width * 0.22, width * 0.30, width * 0.38, width * 0.46,
-        width * 0.56, width * 0.64, width * 0.72, width * 0.80,
+        width * 0.24, width * 0.32, width * 0.40, width * 0.48,
+        width * 0.56, width * 0.64, width * 0.72, width * 0.78,
       ];
   for (const x of centerPositions) {
     columns.push(createColumn(
-      x + (Math.random() - 0.5) * (isMobile ? 12 : 20),
+      x + (Math.random() - 0.5) * (isMobile ? 10 : 16),
       height,
-      isMobile ? 0.15 + Math.random() * 0.12 : 0.20 + Math.random() * 0.15,
+      isMobile ? 0.10 + Math.random() * 0.08 : 0.12 + Math.random() * 0.10,
       isMobile ? 8 + Math.floor(Math.random() * 2) : 9 + Math.floor(Math.random() * 2),
     ));
   }
