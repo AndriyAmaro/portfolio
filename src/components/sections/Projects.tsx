@@ -20,7 +20,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import Image from "next/image";
-import { ProjectsBackground, ProjectsBackgroundLight } from "../ui/ProjectsBackground";
+import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
 
 // ---------------------------------------------------------------------------
 // Project Logo SVG Components
@@ -352,9 +352,9 @@ function ProjectCard({ project, index }: { project: ProjectData; index: number }
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: index * 0.15 }}
-      className="group"
+      className="group h-full"
     >
-      <div className={`proj-card relative rounded-2xl overflow-hidden border ${c.border} transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl ${c.glow}`}>
+      <div className={`proj-card relative rounded-2xl overflow-hidden border ${c.border} transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl ${c.glow} h-full flex flex-col`}>
         {/* Top gradient bar */}
         <div className={`h-1 bg-gradient-to-r ${c.gradient}`} />
 
@@ -366,7 +366,7 @@ function ProjectCard({ project, index }: { project: ProjectData; index: number }
           <ScreenshotCarousel screenshots={project.screenshots} color={project.color} name={project.name} />
         </div>
 
-        <div className="p-5 pt-4">
+        <div className="p-5 pt-4 flex-1 flex flex-col">
           {/* Header with real logo */}
           <div className="flex items-start gap-3 mb-3">
             <div className="w-10 h-10 shrink-0 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
@@ -451,7 +451,7 @@ function ProjectCard({ project, index }: { project: ProjectData; index: number }
           </motion.div>
 
           {/* Tech */}
-          <div className="flex flex-wrap gap-1.5 mb-4">
+          <div className="flex flex-wrap gap-1.5 mb-4 mt-auto">
             {project.tech.map((t) => (
               <span key={t} className="proj-tech-chip px-2.5 py-1 rounded-lg text-[11px] font-medium">
                 {t}
@@ -526,7 +526,67 @@ export function Projects() {
 
   return (
     <section id="projects" className="relative py-24 md:py-32 overflow-hidden">
-      {isLightMode ? <ProjectsBackgroundLight /> : <ProjectsBackground />}
+      {isLightMode ? <AbstractBackgroundLight /> : <AbstractBackground />}
+
+      {/* Floating illustration - left, desktop only */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.4, filter: "blur(24px)" }}
+        whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        className="hidden md:block absolute top-16 -left-28 lg:-left-16 z-10 pointer-events-none"
+      >
+        <motion.div
+          animate={{
+            y: [0, -12, 5, -18, 3, -8, -14, 0],
+            x: [0, 4, -2, 6, -4, 2, -1, 0],
+          }}
+          transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <div className="relative">
+            <div className="absolute inset-0 bg-indigo-500/5 rounded-full blur-3xl scale-75" />
+            <Image
+              src="/frontend-icon.png"
+              alt=""
+              width={750}
+              height={750}
+              className="w-[750px] h-[750px] opacity-[0.12] dark:opacity-[0.22] select-none hue-rotate-[40deg] saturate-[1.8] brightness-[0.9]"
+              draggable={false}
+              priority={false}
+            />
+          </div>
+        </motion.div>
+      </motion.div>
+
+      {/* Floating illustration - right, desktop only */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.4, filter: "blur(24px)" }}
+        whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.4, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="hidden md:block absolute top-20 -right-28 lg:-right-16 z-10 pointer-events-none"
+      >
+        <motion.div
+          animate={{
+            y: [0, -16, 4, -22, 6, -10, -18, 0],
+            x: [0, -3, 2, -5, 4, -2, 1, 0],
+          }}
+          transition={{ duration: 32, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <div className="relative">
+            <div className="absolute inset-0 bg-indigo-500/5 rounded-full blur-3xl scale-75" />
+            <Image
+              src="/backend-icon.png"
+              alt=""
+              width={750}
+              height={750}
+              className="w-[750px] h-[750px] opacity-[0.12] dark:opacity-[0.22] select-none hue-rotate-[40deg] saturate-[1.8] brightness-[0.9]"
+              draggable={false}
+              priority={false}
+            />
+          </div>
+        </motion.div>
+      </motion.div>
 
       <div className="container-custom relative z-10">
         {/* Section header */}
