@@ -59,7 +59,7 @@ function createAllColumns(width: number, height: number): FallingColumn[] {
   for (let i = 0; i < lateralCount; i++) {
     const leftX = (i / lateralCount) * zoneWidth + Math.random() * 10;
     const rightX = width - zoneWidth + (i / lateralCount) * zoneWidth + Math.random() * 10;
-    const opacity = 0.2 + Math.random() * 0.15;
+    const opacity = 0.35 + Math.random() * 0.25;
     const fontSize = 10 + Math.floor(Math.random() * 3);
     columns.push(createColumn(leftX, height, opacity, fontSize));
     columns.push(createColumn(rightX, height, opacity, fontSize));
@@ -74,7 +74,7 @@ function createAllColumns(width: number, height: number): FallingColumn[] {
     columns.push(createColumn(
       x + (Math.random() - 0.5) * 20,
       height,
-      0.10 + Math.random() * 0.08,
+      0.20 + Math.random() * 0.15,
       9 + Math.floor(Math.random() * 2),
     ));
   }
