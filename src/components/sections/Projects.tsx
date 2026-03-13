@@ -461,16 +461,16 @@ function ProjectCard({ project, index }: { project: ProjectData; index: number }
 
           {/* Actions */}
           <div className="flex gap-2">
-            <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
-              <button className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 bg-gradient-to-r ${c.gradient} text-white hover:shadow-lg ${c.glow} hover:opacity-90`}>
-                <ExternalLink className="w-3.5 h-3.5" />
-                Live Demo
+            <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex-1 min-w-0">
+              <button className={`w-full flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all duration-300 bg-gradient-to-r ${c.gradient} text-white hover:shadow-lg ${c.glow} hover:opacity-90`}>
+                <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+                <span className="truncate">Live Demo</span>
               </button>
             </a>
-            <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
-              <button className="w-full proj-btn-code flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300">
-                <Github className="w-3.5 h-3.5" />
-                Código
+            <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="flex-1 min-w-0">
+              <button className="w-full proj-btn-code flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all duration-300">
+                <Github className="w-3.5 h-3.5 shrink-0" />
+                <span className="truncate">Código</span>
               </button>
             </a>
           </div>
