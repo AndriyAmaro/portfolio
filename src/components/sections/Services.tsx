@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ServicesBackground, ServicesBackgroundLight } from "@/components/ui/ServicesBackground";
+import { AbstractBackground, AbstractBackgroundLight } from "@/components/ui/AbstractBackground";
 
 // ---------------------------------------------------------------------------
 // Services Data
@@ -37,11 +37,11 @@ const services: Service[] = [
     icon: Layout,
     title: "Frontend Development",
     description:
-      "Interfaces performaticas com React e Next.js · design systems, dashboards, landing pages e SPAs com acessibilidade e animacoes premium.",
+      "Interfaces performáticas com React e Next.js · design systems, dashboards, landing pages e SPAs com acessibilidade e animações premium.",
     deliverables: [
       "React / Next.js App Router",
       "Design System com Radix UI",
-      "Animacoes Framer Motion",
+      "Animações Framer Motion",
       "Responsivo mobile-first",
       "Lighthouse 90+",
     ],
@@ -52,7 +52,7 @@ const services: Service[] = [
     icon: Server,
     title: "Backend & APIs",
     description:
-      "APIs type-safe com Node.js, banco de dados relacional, cache, filas e arquitetura escalavel. Do MVP ao multi-tenant.",
+      "APIs type-safe com Node.js, banco de dados relacional, cache, filas e arquitetura escalável. Do MVP ao multi-tenant.",
     deliverables: [
       "Node.js / Express / Hono",
       "PostgreSQL + Prisma ORM",
@@ -67,7 +67,7 @@ const services: Service[] = [
     icon: Rocket,
     title: "Full Stack Apps",
     description:
-      "Aplicacoes completas do design ao deploy · frontend, backend, banco de dados, CI/CD e monitoramento. Tudo num unico pacote.",
+      "Aplicações completas do design ao deploy · frontend, backend, banco de dados, CI/CD e monitoramento. Tudo num único pacote.",
     deliverables: [
       "App completo end-to-end",
       "Auth + multi-tenancy",
@@ -82,7 +82,7 @@ const services: Service[] = [
     icon: Palette,
     title: "Design Systems",
     description:
-      "Sistemas de design reutilizaveis com tokens, componentes compostos e documentacao. A mesma abordagem do Pulse DS com 100+ componentes.",
+      "Sistemas de design reutilizáveis com tokens, componentes compostos e documentação. A mesma abordagem do Pulse DS com 100+ componentes.",
     deliverables: [
       "Tokens de design (cores, tipografia)",
       "Componentes compostos",
@@ -106,17 +106,17 @@ const processSteps = [
   {
     icon: FileSearch,
     title: "Proposta",
-    description: "Arquitetura, cronograma e orcamento claros",
+    description: "Arquitetura, cronograma e orçamento claros",
   },
   {
     icon: Code2,
     title: "Desenvolvimento",
-    description: "Sprints com entregas parciais e feedback continuo",
+    description: "Sprints com entregas parciais e feedback contínuo",
   },
   {
     icon: Rocket,
     title: "Entrega",
-    description: "Deploy, documentacao e handoff completo",
+    description: "Deploy, documentação e handoff completo",
   },
 ];
 
@@ -192,9 +192,22 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
           className={`absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br ${c.gradient} opacity-0 group-hover:opacity-[0.06] rounded-full blur-3xl transition-opacity duration-700`}
         />
 
-        <div className="p-6 flex flex-col flex-1">
+        <div className="p-6 flex flex-col flex-1 relative">
+          {/* Decorative icon - bottom right */}
+          <motion.div
+            className="absolute bottom-4 right-4 pointer-events-none"
+            animate={{
+              opacity: [0.06, 0.12, 0.06],
+              scale: [1, 1.1, 1],
+              rotate: [0, 8, 0],
+            }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <Icon className={`w-20 h-20 ${c.text}`} />
+          </motion.div>
+
           {/* Icon + Title */}
-          <div className="flex items-center gap-3 mb-4">
+          <div className="flex items-center gap-3 mb-4 relative z-[1]">
             <div
               className={`w-11 h-11 rounded-xl ${c.bg} flex items-center justify-center ring-1 ${c.ring} transition-transform duration-300 group-hover:scale-110`}
             >
@@ -204,12 +217,12 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
           </div>
 
           {/* Description */}
-          <p className="text-sm leading-relaxed mb-5 svc-card-description">
+          <p className="text-sm leading-relaxed mb-5 svc-card-description relative z-[1]">
             {service.description}
           </p>
 
           {/* Deliverables */}
-          <div className="space-y-2 mt-auto">
+          <div className="space-y-2 mt-auto relative z-[1]">
             <span className="text-[10px] font-bold uppercase tracking-wider svc-deliverables-label">
               Entregas
             </span>
@@ -343,7 +356,7 @@ export function Services() {
   return (
     <section id="services" className="relative py-24 md:py-32 overflow-hidden">
       {/* Background */}
-      {isLightMode ? <ServicesBackgroundLight /> : <ServicesBackground />}
+      {isLightMode ? <AbstractBackgroundLight /> : <AbstractBackground />}
 
       <div className="container-custom relative z-10">
         {/* Section Header */}
@@ -371,7 +384,7 @@ export function Services() {
             Como posso <span className="gradient-text">ajudar</span>
           </h2>
           <p className="svc-subtitle max-w-2xl mx-auto">
-            Do MVP ao produto escalavel · entrego aplicacoes completas com a mesma
+            Do MVP ao produto escalável · entrego aplicações completas com a mesma
             qualidade e rigor que aplico no Pulse Ecosystem
           </p>
         </motion.div>
@@ -414,21 +427,38 @@ export function Services() {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="text-center"
         >
-          <div className="svc-cta-card inline-flex flex-col items-center gap-4 px-8 py-8 rounded-2xl max-w-md mx-auto">
-            <Layers className="w-8 h-8 svc-cta-icon" />
-            <h3 className="text-xl font-bold svc-cta-title">
+          <div className="svc-cta-card relative inline-flex flex-col items-center gap-5 px-10 py-10 rounded-2xl max-w-lg mx-auto overflow-hidden border border-indigo-500/20">
+            {/* Top gradient accent */}
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
+
+            {/* Decorative glow */}
+            <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-[300px] h-[200px] bg-indigo-500/10 rounded-full blur-[80px] pointer-events-none" />
+
+            {/* Animated icon */}
+            <motion.div
+              animate={{ y: [0, -6, 0], rotate: [0, 5, -5, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-violet-500/20 ring-1 ring-indigo-500/30 flex items-center justify-center"
+            >
+              <Layers className="w-8 h-8 text-indigo-400" />
+            </motion.div>
+
+            <h3 className="text-2xl font-bold svc-cta-title relative z-[1]">
               Tem um projeto em mente?
             </h3>
-            <p className="text-sm svc-cta-description">
-              Vamos conversar sobre como posso transformar sua ideia em um produto real e escalavel.
+            <p className="text-sm svc-cta-description text-center max-w-sm relative z-[1]">
+              Vamos conversar sobre como posso transformar sua ideia em um produto real e escalável.
             </p>
-            <Link href="#contact" className="group w-full sm:w-auto">
-              <button className="w-full sm:w-auto svc-cta-btn flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-xl text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5">
+            <Link href="#contact" className="group w-full sm:w-auto relative z-[1]">
+              <button className="w-full sm:w-auto svc-cta-btn flex items-center justify-center gap-2.5 px-10 py-4 rounded-xl text-sm font-semibold transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/20">
                 <MessageSquare className="w-4 h-4" />
                 Iniciar Conversa
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-300" />
               </button>
             </Link>
+
+            {/* Bottom decorative line */}
+            <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-violet-500/30 to-transparent" />
           </div>
         </motion.div>
       </div>
