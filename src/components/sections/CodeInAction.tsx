@@ -221,7 +221,7 @@ export function CodeInAction() {
   const [copied, setCopied] = useState(false);
   const [isLightMode, setIsLightMode] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const isInView = useInView(sectionRef, { once: true, margin: "-30px" });
 
   const { displayed, isDone } = useCodeTyping(
     snippets[activeTab].code,
@@ -281,7 +281,7 @@ export function CodeInAction() {
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
             className="lg:col-span-3 flex min-w-0"
           >
             <div className="code-editor rounded-2xl overflow-hidden group/editor flex flex-col w-full">
@@ -412,7 +412,7 @@ export function CodeInAction() {
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
             className="lg:col-span-2 flex min-w-0"
           >
             <div className="code-commit-panel rounded-2xl overflow-hidden h-full flex flex-col w-full">
@@ -437,7 +437,7 @@ export function CodeInAction() {
                     key={commit.hash}
                     initial={{ opacity: 0, x: 10 }}
                     animate={isInView ? { opacity: 1, x: 0 } : {}}
-                    transition={{ duration: 0.3, delay: 0.5 + i * 0.1 }}
+                    transition={{ duration: 0.3, delay: 0.2 + i * 0.06 }}
                     className="code-commit-item p-2.5 rounded-lg group"
                   >
                     <div className="flex items-start gap-3">
@@ -513,7 +513,7 @@ export function CodeInAction() {
                     <motion.div
                       initial={{ width: 0 }}
                       animate={isInView ? { width: "100%" } : {}}
-                      transition={{ duration: 1.5, delay: 1, ease: "easeOut" }}
+                      transition={{ duration: 1.2, delay: 0.5, ease: "easeOut" }}
                       className="h-full rounded-full bg-gradient-to-r from-green-500 to-emerald-400"
                     />
                   </div>
