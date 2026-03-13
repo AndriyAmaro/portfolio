@@ -271,7 +271,7 @@ export function CodeInAction() {
   };
 
   return (
-    <section ref={sectionRef} id="code" className="relative py-24 md:py-32 overflow-x-clip">
+    <section ref={sectionRef} id="code" className="relative py-24 md:py-32 overflow-hidden">
       {/* Circuit lines + Code rain overlay */}
       {isLightMode ? <AbstractBackgroundLight /> : <AbstractBackground />}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -387,7 +387,7 @@ export function CodeInAction() {
               </div>
 
               {/* Code area with line numbers */}
-              <div className="code-content flex-1 min-h-[300px] sm:min-h-[400px] overflow-x-auto overflow-y-hidden font-mono text-[12px] sm:text-[13px] leading-relaxed">
+              <div className="code-content flex-1 min-h-[300px] sm:min-h-[400px] overflow-hidden sm:overflow-x-auto sm:overflow-y-hidden font-mono text-[12px] sm:text-[13px] leading-relaxed">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activeTab}
@@ -406,7 +406,7 @@ export function CodeInAction() {
                       ))}
                     </div>
                     {/* Code */}
-                    <pre className="whitespace-pre overflow-x-auto p-3 sm:p-5 flex-1 max-w-full">
+                    <pre className="whitespace-pre-wrap sm:whitespace-pre overflow-x-hidden sm:overflow-x-auto p-3 sm:p-5 flex-1 max-w-full break-all sm:break-normal">
                       <code
                         dangerouslySetInnerHTML={{
                           __html: highlightCode(displayed) + (isDone ? "" : '<span class="code-cursor">|</span>'),
