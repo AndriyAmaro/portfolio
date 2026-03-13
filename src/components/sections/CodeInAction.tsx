@@ -156,9 +156,15 @@ const projectColors: Record<string, string> = {
 // ---------------------------------------------------------------------------
 // Typing animation for code
 // ---------------------------------------------------------------------------
-function useCodeTyping(code: string, isActive: boolean, speed = 12) {
+function useCodeTypingCycle(
+  codes: string[],
+  isActive: boolean,
+  speed = 18,
+  pauseBetween = 3000,
+) {
   const [displayed, setDisplayed] = useState("");
   const [isDone, setIsDone] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     if (!isActive) {
@@ -168,12 +174,16 @@ function useCodeTyping(code: string, isActive: boolean, speed = 12) {
     }
 
     let cancelled = false;
+    let tabIndex = 0;
 
-    function runCycle() {
-      let i = 0;
-      setDisplayed("");
+    function runTab() {
+      if (cancelled) return;
+      const code = codes[tabIndex];
+      setCurrentIndex(tabIndex);
       setIsDone(false);
+      setDisplayed("");
 
+      let i = 0;
       const timer = setInterval(() => {
         if (cancelled) { clearInterval(timer); return; }
         i++;
@@ -181,22 +191,24 @@ function useCodeTyping(code: string, isActive: boolean, speed = 12) {
           setDisplayed(code);
           setIsDone(true);
           clearInterval(timer);
-          // Pause 3s then restart
+          // Pause then move to next tab
           setTimeout(() => {
-            if (!cancelled) runCycle();
-          }, 3000);
+            if (cancelled) return;
+            tabIndex = (tabIndex + 1) % codes.length;
+            runTab();
+          }, pauseBetween);
         } else {
           setDisplayed(code.slice(0, i));
         }
       }, speed);
     }
 
-    runCycle();
+    runTab();
 
     return () => { cancelled = true; };
-  }, [code, isActive, speed]);
+  }, [codes, isActive, speed, pauseBetween]);
 
-  return { displayed, isDone };
+  return { displayed, isDone, currentIndex };
 }
 
 // ---------------------------------------------------------------------------
@@ -228,16 +240,17 @@ function highlightCode(code: string): string {
 // Main Component
 // ---------------------------------------------------------------------------
 export function CodeInAction() {
-  const [activeTab, setActiveTab] = useState(0);
   const [copied, setCopied] = useState(false);
   const [isLightMode, setIsLightMode] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-30px" });
 
-  const { displayed, isDone } = useCodeTyping(
-    snippets[activeTab].code,
+  const allCodes = snippets.map((s) => s.code);
+  const { displayed, isDone, currentIndex: activeTab } = useCodeTypingCycle(
+    allCodes,
     isInView,
-    8
+    18,
+    3000,
   );
 
   useEffect(() => {
@@ -343,7 +356,7 @@ export function CodeInAction() {
                 {snippets.map((s, i) => (
                   <button
                     key={s.id}
-                    onClick={() => setActiveTab(i)}
+                    onClick={() => {}}
                     className={`relative px-4 py-2.5 text-xs font-medium transition-colors ${
                       activeTab === i
                         ? "text-white"
