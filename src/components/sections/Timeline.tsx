@@ -226,6 +226,93 @@ const typeLabels = {
 } as const;
 
 // ---------------------------------------------------------------------------
+// Circuit Fragment — subtle decorative SVG for empty column
+// ---------------------------------------------------------------------------
+const circuitPatterns = [
+  // Pattern 0: horizontal line with branch down + nodes
+  <svg key="p0" viewBox="0 0 120 60" className="w-full h-full">
+    <line x1="10" y1="20" x2="80" y2="20" stroke="currentColor" strokeWidth="1" />
+    <line x1="50" y1="20" x2="50" y2="50" stroke="currentColor" strokeWidth="1" />
+    <line x1="80" y1="20" x2="110" y2="20" stroke="currentColor" strokeWidth="1" strokeDasharray="4 4" />
+    <circle cx="10" cy="20" r="2" fill="currentColor" />
+    <circle cx="50" cy="20" r="2" fill="currentColor" />
+    <circle cx="80" cy="20" r="2.5" fill="none" stroke="currentColor" strokeWidth="1" />
+    <circle cx="50" cy="50" r="2" fill="currentColor" />
+  </svg>,
+  // Pattern 1: L-shape with dashed extension
+  <svg key="p1" viewBox="0 0 120 60" className="w-full h-full">
+    <line x1="20" y1="10" x2="20" y2="40" stroke="currentColor" strokeWidth="1" />
+    <line x1="20" y1="40" x2="90" y2="40" stroke="currentColor" strokeWidth="1" />
+    <line x1="90" y1="40" x2="90" y2="15" stroke="currentColor" strokeWidth="1" strokeDasharray="4 4" />
+    <circle cx="20" cy="10" r="2" fill="currentColor" />
+    <circle cx="20" cy="40" r="2" fill="currentColor" />
+    <circle cx="90" cy="40" r="2.5" fill="none" stroke="currentColor" strokeWidth="1" />
+  </svg>,
+  // Pattern 2: T-junction
+  <svg key="p2" viewBox="0 0 120 60" className="w-full h-full">
+    <line x1="15" y1="30" x2="105" y2="30" stroke="currentColor" strokeWidth="1" />
+    <line x1="60" y1="30" x2="60" y2="8" stroke="currentColor" strokeWidth="1" />
+    <line x1="60" y1="8" x2="95" y2="8" stroke="currentColor" strokeWidth="1" strokeDasharray="4 4" />
+    <circle cx="15" cy="30" r="2" fill="currentColor" />
+    <circle cx="60" cy="30" r="2" fill="currentColor" />
+    <circle cx="105" cy="30" r="2.5" fill="none" stroke="currentColor" strokeWidth="1" />
+    <circle cx="60" cy="8" r="2" fill="currentColor" />
+  </svg>,
+  // Pattern 3: zigzag path
+  <svg key="p3" viewBox="0 0 120 60" className="w-full h-full">
+    <polyline points="10,15 40,15 55,45 100,45" fill="none" stroke="currentColor" strokeWidth="1" />
+    <line x1="100" y1="45" x2="100" y2="20" stroke="currentColor" strokeWidth="1" strokeDasharray="4 4" />
+    <circle cx="10" cy="15" r="2" fill="currentColor" />
+    <circle cx="55" cy="45" r="2" fill="currentColor" />
+    <circle cx="100" cy="45" r="2.5" fill="none" stroke="currentColor" strokeWidth="1" />
+  </svg>,
+  // Pattern 4: fork
+  <svg key="p4" viewBox="0 0 120 60" className="w-full h-full">
+    <line x1="10" y1="30" x2="50" y2="30" stroke="currentColor" strokeWidth="1" />
+    <line x1="50" y1="30" x2="100" y2="12" stroke="currentColor" strokeWidth="1" />
+    <line x1="50" y1="30" x2="100" y2="48" stroke="currentColor" strokeWidth="1" strokeDasharray="4 4" />
+    <circle cx="10" cy="30" r="2" fill="currentColor" />
+    <circle cx="50" cy="30" r="2.5" fill="none" stroke="currentColor" strokeWidth="1" />
+    <circle cx="100" cy="12" r="2" fill="currentColor" />
+    <circle cx="100" cy="48" r="2" fill="currentColor" />
+  </svg>,
+  // Pattern 5: step pattern
+  <svg key="p5" viewBox="0 0 120 60" className="w-full h-full">
+    <polyline points="15,10 15,30 55,30 55,50 95,50" fill="none" stroke="currentColor" strokeWidth="1" />
+    <line x1="95" y1="50" x2="110" y2="30" stroke="currentColor" strokeWidth="1" strokeDasharray="4 4" />
+    <circle cx="15" cy="10" r="2" fill="currentColor" />
+    <circle cx="55" cy="30" r="2" fill="currentColor" />
+    <circle cx="95" cy="50" r="2.5" fill="none" stroke="currentColor" strokeWidth="1" />
+  </svg>,
+  // Pattern 6: cross junction
+  <svg key="p6" viewBox="0 0 120 60" className="w-full h-full">
+    <line x1="10" y1="30" x2="110" y2="30" stroke="currentColor" strokeWidth="1" />
+    <line x1="60" y1="8" x2="60" y2="52" stroke="currentColor" strokeWidth="1" />
+    <circle cx="60" cy="30" r="3" fill="none" stroke="currentColor" strokeWidth="1" />
+    <circle cx="10" cy="30" r="2" fill="currentColor" />
+    <circle cx="110" cy="30" r="2" fill="currentColor" />
+    <circle cx="60" cy="8" r="2" fill="currentColor" />
+    <circle cx="60" cy="52" r="2" fill="currentColor" />
+  </svg>,
+];
+
+function CircuitFragment({ index, isLeft }: { index: number; isLeft: boolean }) {
+  const pattern = circuitPatterns[index % circuitPatterns.length];
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8, delay: 0.5 }}
+      className={`w-24 h-14 text-indigo-400/[0.08] ${isLeft ? "ml-auto mr-8" : "mr-auto ml-8"} mt-6`}
+      style={{ transform: isLeft ? "scaleX(-1)" : undefined }}
+    >
+      {pattern}
+    </motion.div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Timeline Entry Component
 // ---------------------------------------------------------------------------
 function TimelineItem({
@@ -248,7 +335,7 @@ function TimelineItem({
       <div className="hidden md:grid md:grid-cols-[1fr_56px_1fr] md:gap-0 items-start">
         {/* Left column */}
         <div className="flex justify-end pr-6">
-          {isLeft && (
+          {isLeft ? (
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -258,6 +345,8 @@ function TimelineItem({
             >
               <TimelineCard entry={entry} colors={c} typeInfo={typeInfo} />
             </motion.div>
+          ) : (
+            <CircuitFragment index={index} isLeft />
           )}
         </div>
 
@@ -339,7 +428,7 @@ function TimelineItem({
 
         {/* Right column */}
         <div className="flex justify-start pl-6">
-          {!isLeft && (
+          {!isLeft ? (
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -349,6 +438,8 @@ function TimelineItem({
             >
               <TimelineCard entry={entry} colors={c} typeInfo={typeInfo} />
             </motion.div>
+          ) : (
+            <CircuitFragment index={index} isLeft={false} />
           )}
         </div>
       </div>
