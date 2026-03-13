@@ -17,7 +17,6 @@ import {
   GraduationCap,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
 
 // ---------------------------------------------------------------------------
@@ -166,6 +165,7 @@ const colorMap = {
     ring: "ring-amber-500/30",
     dot: "bg-amber-400",
     line: "from-amber-500/40",
+    trail: "rgba(245, 158, 11, 0.5)",
   },
   indigo: {
     gradient: "from-indigo-500 to-blue-500",
@@ -175,6 +175,7 @@ const colorMap = {
     ring: "ring-indigo-500/30",
     dot: "bg-indigo-400",
     line: "from-indigo-500/40",
+    trail: "rgba(99, 102, 241, 0.5)",
   },
   violet: {
     gradient: "from-violet-500 to-purple-500",
@@ -184,6 +185,7 @@ const colorMap = {
     ring: "ring-violet-500/30",
     dot: "bg-violet-400",
     line: "from-violet-500/40",
+    trail: "rgba(139, 92, 246, 0.5)",
   },
   teal: {
     gradient: "from-teal-500 to-cyan-500",
@@ -193,6 +195,7 @@ const colorMap = {
     ring: "ring-teal-500/30",
     dot: "bg-teal-400",
     line: "from-teal-500/40",
+    trail: "rgba(20, 184, 166, 0.5)",
   },
   emerald: {
     gradient: "from-emerald-500 to-green-500",
@@ -202,6 +205,7 @@ const colorMap = {
     ring: "ring-emerald-500/30",
     dot: "bg-emerald-400",
     line: "from-emerald-500/40",
+    trail: "rgba(16, 185, 129, 0.5)",
   },
   cyan: {
     gradient: "from-cyan-400 to-blue-500",
@@ -211,6 +215,7 @@ const colorMap = {
     ring: "ring-cyan-500/30",
     dot: "bg-cyan-400",
     line: "from-cyan-500/40",
+    trail: "rgba(6, 182, 212, 0.5)",
   },
 } as const;
 
@@ -256,17 +261,55 @@ function TimelineItem({
           )}
         </div>
 
-        {/* Center: icon + line */}
+        {/* Center: icon + trail + line */}
         <div className="flex flex-col items-center">
-          <motion.div
-            initial={{ scale: 0 }}
-            whileInView={{ scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.2, type: "spring", stiffness: 300 }}
-            className={`w-12 h-12 rounded-2xl ${c.bg} flex items-center justify-center ring-2 ${c.ring} tl-icon-container`}
-          >
-            <Icon className={`w-5 h-5 ${c.text}`} />
-          </motion.div>
+          <div className="relative">
+            <motion.div
+              initial={{ scale: 0 }}
+              whileInView={{ scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.2, type: "spring", stiffness: 300 }}
+              className={`w-12 h-12 rounded-2xl ${c.bg} flex items-center justify-center ring-2 ${c.ring} tl-icon-container relative z-[2]`}
+            >
+              <Icon className={`w-5 h-5 ${c.text}`} />
+            </motion.div>
+
+            {/* Gradient trail — horizontal line from icon to card */}
+            <motion.div
+              initial={{ scaleX: 0, opacity: 0 }}
+              whileInView={{ scaleX: 1, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+              className={`absolute top-1/2 -translate-y-1/2 h-[2px] w-[24px] z-[1] ${
+                isLeft ? "right-full origin-right mr-0" : "left-full origin-left ml-0"
+              }`}
+              style={{
+                background: isLeft
+                  ? `linear-gradient(to left, ${c.trail}, transparent)`
+                  : `linear-gradient(to right, ${c.trail}, transparent)`,
+              }}
+            />
+
+            {/* Traveling dot on trail */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 1 }}
+              className={`absolute top-1/2 -translate-y-1/2 z-[3] ${
+                isLeft ? "right-full mr-0" : "left-full ml-0"
+              }`}
+            >
+              <motion.div
+                animate={isLeft
+                  ? { x: [0, -20, 0] }
+                  : { x: [0, 20, 0] }
+                }
+                transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: index * 0.2 }}
+                className={`w-1 h-1 rounded-full ${colorMap[entry.color].dot} shadow-[0_0_6px_currentColor]`}
+              />
+            </motion.div>
+          </div>
           {!isLast && (
             <div className="relative flex-1 min-h-[40px] flex justify-center">
               <motion.div
@@ -429,36 +472,6 @@ export function Timeline() {
     <section id="journey" className="relative py-24 md:py-32 overflow-hidden">
       {/* Background */}
       {isLightMode ? <AbstractBackgroundLight /> : <AbstractBackground />}
-
-      {/* Floating illustration - desktop only */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.4, filter: "blur(24px)" }}
-        whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        className="hidden md:block absolute -top-8 -right-36 lg:-right-24 z-10 pointer-events-none"
-      >
-        <motion.div
-          animate={{
-            y: [0, -14, 6, -20, 4, -10, -16, 0],
-            x: [0, -3, 2, -5, 3, -2, 1, 0],
-          }}
-          transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <div className="relative">
-            <div className="absolute inset-0 bg-indigo-500/5 rounded-full blur-3xl scale-75" />
-            <Image
-              src="/journey-illustration.png"
-              alt=""
-              width={640}
-              height={420}
-              className="w-[640px] h-[420px] opacity-[0.12] dark:opacity-[0.20] select-none hue-rotate-[40deg] saturate-[1.8] brightness-[0.9]"
-              draggable={false}
-              priority={false}
-            />
-          </div>
-        </motion.div>
-      </motion.div>
 
       <div className="container-custom relative z-10">
         {/* Header */}
