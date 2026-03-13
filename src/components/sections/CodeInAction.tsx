@@ -246,7 +246,7 @@ export function CodeInAction() {
   };
 
   return (
-    <section ref={sectionRef} id="code" className="relative py-24 md:py-32 overflow-hidden">
+    <section ref={sectionRef} id="code" className="relative py-24 md:py-32 overflow-x-clip">
       {/* Animated Background */}
       {isLightMode ? <CodeInActionBackgroundLight /> : <CodeInActionBackground />}
 
