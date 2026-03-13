@@ -284,7 +284,7 @@ export function CodeInAction() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="lg:col-span-3 flex"
           >
-            <div className="code-editor sm:rounded-2xl overflow-hidden group/editor flex flex-col sm:w-full">
+            <div className="code-editor rounded-2xl overflow-hidden group/editor flex flex-col w-full">
               {/* Top gradient accent bar */}
               <div className="h-[2px] bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500" />
 

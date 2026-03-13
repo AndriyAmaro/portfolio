@@ -33,12 +33,12 @@ function createColumn(x: number, height: number, opacity: number, fontSize: numb
   for (let j = 0; j < trailLength; j++) {
     chars.push(CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)]);
   }
-  // Stagger start positions across full 2x height so columns loop seamlessly
+  // Start above the viewport, staggered so they don't all arrive at once
   return {
     x,
     chars,
-    y: Math.random() * height * 2 - height,
-    speed: 0.5,
+    y: -Math.random() * height * 1.5,
+    speed: 0.4 + Math.random() * 0.4,
     opacity,
     fontSize,
     charIndex: 0,
@@ -230,13 +230,6 @@ export function CodeInActionBackground() {
       <div className="absolute bottom-0 left-0 w-[300px] h-[400px] bg-indigo-400/6 rounded-full blur-[100px] animate-pulse-slow animation-delay-2000" />
       <div className="absolute bottom-0 right-0 w-[300px] h-[400px] bg-violet-400/6 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
 
-      {/* Center overlay for text readability - fades out the rain in the middle */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(12, 10, 29, 0.95) 0%, rgba(12, 10, 29, 0.4) 40%, transparent 70%)",
-        }}
-      />
     </div>
   );
 }
@@ -277,14 +270,6 @@ export function CodeInActionBackgroundLight() {
       <div className="absolute -bottom-20 left-[15%] w-[300px] h-[250px] bg-indigo-200/8 rounded-full blur-[100px] animate-pulse-slow" />
       <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-[350px] h-[230px] bg-slate-300/8 rounded-full blur-[110px] animate-pulse-slow animation-delay-2000" />
       <div className="absolute -bottom-20 right-[15%] w-[300px] h-[250px] bg-indigo-200/8 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
-
-      {/* Center overlay for text readability */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.4) 40%, transparent 70%)",
-        }}
-      />
 
       {/* Top fade */}
       <div
