@@ -94,7 +94,7 @@ export function FuturisticBackground() {
       cx = w * 0.5;
       const isSmallMobile = w < 400;
       const isMobile = w < 768;
-      cy = isSmallMobile ? h * 0.38 : isMobile ? h * 0.34 : h * 0.48;
+      cy = isSmallMobile ? h * 0.42 : isMobile ? h * 0.38 : h * 0.48;
 
       const maxRadius = Math.sqrt(cx * cx + cy * cy) * 1.2;
 
