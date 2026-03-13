@@ -284,7 +284,7 @@ export function CodeInAction() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="lg:col-span-3 flex"
           >
-            <div className="code-editor rounded-2xl overflow-hidden group/editor flex flex-col w-full">
+            <div className="code-editor rounded-2xl overflow-hidden group/editor flex flex-col w-full max-w-[calc(100vw-2rem)]">
               {/* Top gradient accent bar */}
               <div className="h-[2px] bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500" />
 
@@ -359,7 +359,7 @@ export function CodeInAction() {
               </div>
 
               {/* Code area with line numbers */}
-              <div className="code-content flex-1 min-h-[400px] overflow-auto font-mono text-[13px] leading-relaxed">
+              <div className="code-content flex-1 min-h-[300px] sm:min-h-[400px] overflow-auto font-mono text-[11px] sm:text-[13px] leading-relaxed">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activeTab}
@@ -370,7 +370,7 @@ export function CodeInAction() {
                     className="flex"
                   >
                     {/* Line numbers gutter */}
-                    <div className="code-line-numbers select-none text-right pr-4 pl-4 py-5 border-r border-white/[0.04]" aria-hidden="true">
+                    <div className="code-line-numbers select-none text-right pr-2 sm:pr-4 pl-2 sm:pl-4 py-3 sm:py-5 border-r border-white/[0.04]" aria-hidden="true">
                       {displayed.split("\n").map((_, i) => (
                         <div key={i} className="leading-relaxed">
                           {i + 1}
@@ -378,7 +378,7 @@ export function CodeInAction() {
                       ))}
                     </div>
                     {/* Code */}
-                    <pre className="whitespace-pre p-5 flex-1">
+                    <pre className="whitespace-pre overflow-x-auto p-3 sm:p-5 flex-1 max-w-full">
                       <code
                         dangerouslySetInnerHTML={{
                           __html: highlightCode(displayed) + (isDone ? "" : '<span class="code-cursor">|</span>'),

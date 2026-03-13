@@ -59,7 +59,7 @@ function createAllColumns(width: number, height: number): FallingColumn[] {
   for (let i = 0; i < lateralCount; i++) {
     const leftX = (i / lateralCount) * zoneWidth + Math.random() * 10;
     const rightX = width - zoneWidth + (i / lateralCount) * zoneWidth + Math.random() * 10;
-    const opacity = 0.3 + Math.random() * 0.25;
+    const opacity = 0.2 + Math.random() * 0.15;
     const fontSize = 10 + Math.floor(Math.random() * 3);
     columns.push(createColumn(leftX, height, opacity, fontSize));
     columns.push(createColumn(rightX, height, opacity, fontSize));
@@ -74,7 +74,7 @@ function createAllColumns(width: number, height: number): FallingColumn[] {
     columns.push(createColumn(
       x + (Math.random() - 0.5) * 20,
       height,
-      0.15 + Math.random() * 0.12,
+      0.10 + Math.random() * 0.08,
       9 + Math.floor(Math.random() * 2),
     ));
   }
@@ -121,8 +121,8 @@ function CodeRainCanvas({ isDark }: { isDark: boolean }) {
 
       ctx.clearRect(0, 0, w, h);
 
-      const baseColor = isDark ? [139, 92, 246] : [55, 48, 163];   // violet-500 / indigo-800
-      const headColor = isDark ? [167, 139, 250] : [49, 46, 129]; // violet-400 / indigo-900
+      const baseColor = isDark ? [99, 102, 241] : [79, 70, 229];   // indigo-500 / indigo-600
+      const headColor = isDark ? [129, 140, 248] : [99, 102, 241]; // indigo-400 / indigo-500
 
       for (const col of columnsRef.current) {
         col.y += col.speed;
