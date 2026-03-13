@@ -89,7 +89,7 @@ const timelineData: TimelineEntry[] = [
     date: "",
     title: "Pulse Design System",
     description:
-      "Depois de meses estudando e praticando, quis construir algo que reunisse tudo que aprendi. Criei um design system completo do zero · não uma lib copiada, mas 100+ componentes pensados para escalar.",
+      "Com uma base sólida construída, quis ir além dos projetos de estudo. Criei um design system completo do zero · não uma lib copiada, mas 100+ componentes pensados para escalar.",
     icon: Palette,
     color: "teal",
     achievements: [
