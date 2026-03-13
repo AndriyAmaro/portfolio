@@ -3,7 +3,8 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { Terminal, FileCode2, GitCommit, Play, Copy, Check } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { CodeInActionBackground, CodeInActionBackgroundLight } from "../ui/CodeInActionBackground";
+import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
+import { CodeRainCanvas } from "../ui/CodeInActionBackground";
 
 // ---------------------------------------------------------------------------
 // Code snippets from the real Pulse Ecosystem
@@ -271,8 +272,11 @@ export function CodeInAction() {
 
   return (
     <section ref={sectionRef} id="code" className="relative py-24 md:py-32 overflow-x-clip">
-      {/* Animated Background */}
-      {isLightMode ? <CodeInActionBackgroundLight /> : <CodeInActionBackground />}
+      {/* Circuit lines + Code rain overlay */}
+      {isLightMode ? <AbstractBackgroundLight /> : <AbstractBackground />}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <CodeRainCanvas isDark={!isLightMode} />
+      </div>
 
       <div className="container-custom relative z-10">
         {/* Section header */}

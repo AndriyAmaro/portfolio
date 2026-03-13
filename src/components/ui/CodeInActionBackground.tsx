@@ -84,7 +84,7 @@ function createAllColumns(width: number, height: number): FallingColumn[] {
   return columns;
 }
 
-function CodeRainCanvas({ isDark }: { isDark: boolean }) {
+export function CodeRainCanvas({ isDark }: { isDark: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const columnsRef = useRef<FallingColumn[]>([]);
   const animRef = useRef<number>(0);
