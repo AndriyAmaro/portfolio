@@ -17,6 +17,7 @@ import {
   GraduationCap,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
 
 // ---------------------------------------------------------------------------
@@ -428,6 +429,36 @@ export function Timeline() {
     <section id="journey" className="relative py-24 md:py-32 overflow-hidden">
       {/* Background */}
       {isLightMode ? <AbstractBackgroundLight /> : <AbstractBackground />}
+
+      {/* Floating illustration - desktop only */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.4, filter: "blur(24px)" }}
+        whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        className="hidden md:block absolute -top-8 -right-36 lg:-right-24 z-10 pointer-events-none"
+      >
+        <motion.div
+          animate={{
+            y: [0, -14, 6, -20, 4, -10, -16, 0],
+            x: [0, -3, 2, -5, 3, -2, 1, 0],
+          }}
+          transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <div className="relative">
+            <div className="absolute inset-0 bg-indigo-500/5 rounded-full blur-3xl scale-75" />
+            <Image
+              src="/journey-illustration.png"
+              alt=""
+              width={640}
+              height={420}
+              className="w-[640px] h-[420px] opacity-[0.12] dark:opacity-[0.20] select-none hue-rotate-[40deg] saturate-[1.8] brightness-[0.9]"
+              draggable={false}
+              priority={false}
+            />
+          </div>
+        </motion.div>
+      </motion.div>
 
       <div className="container-custom relative z-10">
         {/* Header */}
