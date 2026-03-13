@@ -2,16 +2,15 @@
 
 import { useEffect, useRef, useState } from "react";
 
-// Code characters that make sense for a dev portfolio
+// Single characters + short symbols for clean vertical columns (no overlap)
 const CODE_CHARS = [
-  "const", "let", "async", "await", "=>", "return", "import", "export",
-  "function", "class", "interface", "type", "if", "else", "for", "map",
-  "Promise", "void", "string", "number", "boolean", "null", "true", "false",
-  "{", "}", "(", ")", "[", "]", ";", ":", "=", "&&", "||", "!==", "===",
-  "<T>", "tsx", "ts", "React", "Node", "API", "GET", "POST", "ws://",
-  ".then", ".catch", "try", "new", "this", "super", "extends", "implements",
-  "private", "readonly", "enum", "switch", "case", "break", "throw",
-  "@", "#", "$", "%", "0x", ">>", "<<", "??", "?.", "...",
+  "{", "}", "(", ")", "[", "]", ";", ":", "=", "<", ">", "/", "\\",
+  "+", "-", "*", "&", "|", "!", "?", ".", ",", "#", "$", "%", "@",
+  "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+  "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
+  "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
+  "A", "B", "C", "D", "E", "F", "T", "R", "N", "S", "P", "I", "O",
+  "=>", "!=", "==", "::", "->", "&&", "||", "??", "..",
 ];
 
 interface FallingColumn {
@@ -52,30 +51,30 @@ function createAllColumns(width: number, height: number): FallingColumn[] {
   const columns: FallingColumn[] = [];
   const isMobile = width < 640;
 
-  // --- Lateral columns (left + right zones, more dense) ---
+  // --- Lateral columns (left + right zones, well spaced) ---
   const zoneWidth = isMobile ? Math.min(width * 0.20, 70) : Math.min(width * 0.22, 280);
-  const lateralSpacing = isMobile ? 20 : 18;
-  const lateralCount = Math.max(3, Math.floor(zoneWidth / lateralSpacing));
+  const lateralSpacing = isMobile ? 45 : 55;
+  const lateralCount = Math.max(2, Math.floor(zoneWidth / lateralSpacing));
 
   for (let i = 0; i < lateralCount; i++) {
-    const leftX = (i / lateralCount) * zoneWidth + Math.random() * 6;
-    const rightX = width - zoneWidth + (i / lateralCount) * zoneWidth + Math.random() * 6;
+    const leftX = (i / lateralCount) * zoneWidth + lateralSpacing * 0.3;
+    const rightX = width - zoneWidth + (i / lateralCount) * zoneWidth + lateralSpacing * 0.3;
     const opacity = isMobile ? 0.45 + Math.random() * 0.25 : 0.50 + Math.random() * 0.30;
     const fontSize = isMobile ? 10 + Math.floor(Math.random() * 2) : 11 + Math.floor(Math.random() * 3);
     columns.push(createColumn(leftX, height, opacity, fontSize));
     columns.push(createColumn(rightX, height, opacity, fontSize));
   }
 
-  // --- Center columns (well distributed) ---
+  // --- Center columns (well distributed, wide spacing) ---
   const centerPositions = isMobile
-    ? [width * 0.28, width * 0.42, width * 0.58, width * 0.72]
+    ? [width * 0.30, width * 0.55, width * 0.75]
     : [
-        width * 0.24, width * 0.32, width * 0.40, width * 0.48,
-        width * 0.56, width * 0.64, width * 0.72, width * 0.78,
+        width * 0.25, width * 0.38, width * 0.52,
+        width * 0.65, width * 0.78,
       ];
   for (const x of centerPositions) {
     columns.push(createColumn(
-      x + (Math.random() - 0.5) * (isMobile ? 10 : 16),
+      x + (Math.random() - 0.5) * 8,
       height,
       isMobile ? 0.18 + Math.random() * 0.12 : 0.22 + Math.random() * 0.15,
       isMobile ? 9 + Math.floor(Math.random() * 2) : 10 + Math.floor(Math.random() * 2),
