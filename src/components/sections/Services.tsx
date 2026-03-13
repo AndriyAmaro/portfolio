@@ -17,7 +17,6 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { AbstractBackground, AbstractBackgroundLight } from "@/components/ui/AbstractBackground";
 
 // ---------------------------------------------------------------------------
@@ -428,73 +427,39 @@ export function Services() {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="text-center"
         >
-          <div className="svc-cta-card relative flex flex-col items-center gap-6 px-8 md:px-14 py-12 rounded-2xl max-w-2xl mx-auto overflow-hidden">
+          <div className="svc-cta-card relative inline-flex flex-col items-center gap-4 px-8 py-8 rounded-2xl max-w-md mx-auto overflow-hidden">
             {/* Top gradient accent */}
             <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
 
-            {/* Shimmer sweep */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent -translate-x-full animate-[shimmer_4s_ease-in-out_infinite] pointer-events-none" />
+            {/* Decorative glow */}
+            <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-[300px] h-[200px] bg-indigo-500/10 rounded-full blur-[80px] pointer-events-none" />
 
-            {/* Corner glows */}
-            <div className="absolute -top-20 -left-20 w-[200px] h-[200px] bg-indigo-500/15 rounded-full blur-[80px] pointer-events-none" />
-            <div className="absolute -bottom-20 -right-20 w-[200px] h-[200px] bg-violet-500/10 rounded-full blur-[80px] pointer-events-none" />
-
-            {/* Animated icon with pulsing ring */}
+            {/* Animated icon */}
             <motion.div
-              animate={{ y: [0, -8, 0] }}
+              animate={{ y: [0, -6, 0], rotate: [0, 5, -5, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="relative"
+              className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-violet-500/20 ring-1 ring-indigo-500/30 flex items-center justify-center"
             >
-              <motion.div
-                animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.1, 0.3] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute inset-0 -m-3 rounded-3xl bg-indigo-500/20 blur-xl"
-              />
-              <div className="w-18 h-18 w-[72px] h-[72px] rounded-2xl bg-gradient-to-br from-indigo-500/25 to-violet-500/25 ring-1 ring-indigo-500/40 flex items-center justify-center relative">
-                <Layers className="w-9 h-9 text-indigo-400" />
-              </div>
+              <Layers className="w-8 h-8 text-indigo-400" />
             </motion.div>
 
-            <h3 className="text-2xl md:text-3xl font-bold svc-cta-title relative z-[1]">
+            <h3 className="text-xl font-bold svc-cta-title">
               Tem um projeto em mente?
             </h3>
-            <p className="text-sm md:text-base svc-cta-description text-center max-w-md relative z-[1] leading-relaxed">
+            <p className="text-sm svc-cta-description">
               Vamos conversar sobre como posso transformar sua ideia em um produto real e escalável.
             </p>
-            <Link href="#contact" className="group w-full sm:w-auto relative z-[1]">
-              <button className="w-full sm:w-auto svc-cta-btn flex items-center justify-center gap-2.5 px-12 py-4 rounded-xl text-sm font-semibold transition-all duration-300 hover:-translate-y-1">
+            <Link href="#contact" className="group w-full sm:w-auto">
+              <button className="w-full sm:w-auto svc-cta-btn flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-xl text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5">
                 <MessageSquare className="w-4 h-4" />
                 Iniciar Conversa
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-300" />
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
               </button>
             </Link>
 
             {/* Bottom decorative line */}
-            <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-violet-500/40 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-violet-500/30 to-transparent" />
           </div>
-
-          {/* Tech strip decorative image */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.6 }}
-            className="mt-10 relative pointer-events-none select-none"
-          >
-            <motion.div
-              animate={{ x: [-8, 8, -8] }}
-              transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <Image
-                src="/services-tech-strip.png"
-                alt=""
-                width={800}
-                height={200}
-                className="mx-auto w-full max-w-2xl h-auto opacity-[0.12] dark:opacity-[0.20] hue-rotate-[40deg] saturate-[1.8] brightness-[0.9]"
-                draggable={false}
-              />
-            </motion.div>
-          </motion.div>
         </motion.div>
       </div>
     </section>
