@@ -88,12 +88,12 @@ const projectsData: ProjectData[] = [
     name: "Pulse Design System",
     tagline: "A fundação do ecossistema",
     description:
-      "Design system production-grade com Atomic Design, 25 variantes de dashboard, animacoes SVG customizadas e acessibilidade completa com Radix UI.",
+      "Design system production-grade com Atomic Design, 25 variantes de dashboard, animações SVG customizadas e acessibilidade completa com Radix UI.",
     logoComponent: "pulse-ds",
     color: "indigo",
     metrics: [
       { label: "Componentes", value: "100+" },
-      { label: "Paginas", value: "56" },
+      { label: "Páginas", value: "56" },
       { label: "Dashboards", value: "25" },
       { label: "Idiomas", value: "3" },
     ],
@@ -103,13 +103,13 @@ const projectsData: ProjectData[] = [
       { icon: Shield, text: "Acessibilidade Radix UI" },
     ],
     problem:
-      "Componentes repetidos em cada projeto, sem consistencia visual nem reutilizacao real.",
+      "Componentes repetidos em cada projeto, sem consistência visual nem reutilização real.",
     solution:
-      "Design system unificado com tokens, primitivos e padroes que alimenta todos os SaaS do ecossistema.",
+      "Design system unificado com tokens, primitivos e padrões que alimenta todos os SaaS do ecossistema.",
     challenges: [
       "100+ componentes consistentes",
       "i18n em 3 idiomas",
-      "Animacoes SVG sem JS",
+      "Animações SVG sem JS",
     ],
     tech: ["Next.js 16", "React 19", "TypeScript", "Tailwind 4", "Radix UI", "next-intl"],
     liveUrl: "https://pulse-saas-theme.vercel.app",
@@ -136,9 +136,9 @@ const projectsData: ProjectData[] = [
       { icon: Database, text: "3-layer backend architecture" },
     ],
     problem:
-      "Ir alem de CRUD · comunicacao real-time com estado concorrente e resiliencia.",
+      "Ir além de CRUD · comunicação real-time com estado concorrente e resiliência.",
     solution:
-      "Arquitetura event-driven com type safety end-to-end e mecanismos de recuperacao automatica.",
+      "Arquitetura event-driven com type safety end-to-end e mecanismos de recuperação automática.",
     challenges: [
       "Estado concorrente multi-user",
       "Queue offline com retry",
@@ -165,11 +165,11 @@ const projectsData: ProjectData[] = [
     ],
     highlights: [
       { icon: Shield, text: "Multi-tenancy com isolamento" },
-      { icon: Cpu, text: "Background jobs assincronos" },
+      { icon: Cpu, text: "Background jobs assíncronos" },
       { icon: Database, text: "Cache invalidation Redis" },
     ],
     problem:
-      "Demonstrar arquitetura production-ready com multi-tenancy, cache e processamento assincrono.",
+      "Demonstrar arquitetura production-ready com multi-tenancy, cache e processamento assíncrono.",
     solution:
       "Clean Architecture com camadas definidas, Redis para performance e BullMQ para jobs pesados.",
     challenges: [
@@ -303,7 +303,7 @@ function ScreenshotCarousel({ screenshots, color, name }: { screenshots: string[
       <button
         onClick={() => go(1)}
         className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-200 hover:bg-black/60"
-        aria-label="Proximo"
+        aria-label="Próximo"
       >
         <ChevronRight className="w-4 h-4 text-white" />
       </button>
@@ -409,7 +409,7 @@ function ProjectCard({ project, index }: { project: ProjectData; index: number }
           >
             <span className="text-xs font-semibold proj-expand-label flex items-center gap-1.5">
               <Lightbulb className={`w-3.5 h-3.5 ${c.text}`} />
-              Problema → Solucao
+              Problema → Solução
             </span>
             <ArrowRight
               className={`w-3.5 h-3.5 proj-expand-icon transition-transform duration-300 ${expanded ? "rotate-90" : ""}`}
@@ -435,7 +435,7 @@ function ProjectCard({ project, index }: { project: ProjectData; index: number }
               <div className="flex gap-2">
                 <Zap className={`w-4 h-4 ${c.text} shrink-0 mt-0.5`} />
                 <div>
-                  <span className={`text-[10px] font-bold uppercase tracking-wider ${c.text} opacity-80`}>Solucao</span>
+                  <span className={`text-[10px] font-bold uppercase tracking-wider ${c.text} opacity-80`}>Solução</span>
                   <p className="text-xs proj-solution-text leading-relaxed">{project.solution}</p>
                 </div>
               </div>
@@ -470,7 +470,7 @@ function ProjectCard({ project, index }: { project: ProjectData; index: number }
             <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
               <button className="w-full proj-btn-code flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300">
                 <Github className="w-3.5 h-3.5" />
-                Codigo
+                Código
               </button>
             </a>
           </div>
@@ -554,7 +554,7 @@ export function Projects() {
             Projetos <span className="gradient-text">Production-Ready</span>
           </h2>
           <p className="projects-subtitle max-w-2xl mx-auto">
-            Cada projeto e um case study completo · do problema a solucao, com arquitetura documentada, testes e deploy automatizado
+            Cada projeto é um case study completo · do problema à solução, com arquitetura documentada, testes e deploy automatizado
           </p>
         </motion.div>
 
