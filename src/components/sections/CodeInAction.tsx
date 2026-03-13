@@ -2,7 +2,7 @@
 
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { Terminal, FileCode2, GitCommit, Play, Copy, Check } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { CodeInActionBackground, CodeInActionBackgroundLight } from "../ui/CodeInActionBackground";
 
 // ---------------------------------------------------------------------------
@@ -245,7 +245,7 @@ export function CodeInAction() {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-30px" });
 
-  const allCodes = snippets.map((s) => s.code);
+  const allCodes = useMemo(() => snippets.map((s) => s.code), []);
   const { displayed, isDone, currentIndex: activeTab } = useCodeTypingCycle(
     allCodes,
     isInView,
