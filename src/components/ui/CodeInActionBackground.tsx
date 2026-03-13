@@ -38,7 +38,7 @@ function createColumn(x: number, height: number, opacity: number, fontSize: numb
     x,
     chars,
     y: -Math.random() * height * 1.5,
-    speed: 0.4 + Math.random() * 0.4,
+    speed: 0.5 + Math.random() * 0.5,
     opacity,
     fontSize,
     charIndex: 0,
@@ -60,13 +60,13 @@ function createAllColumns(width: number, height: number): FallingColumn[] {
   for (let i = 0; i < lateralCount; i++) {
     const leftX = (i / lateralCount) * zoneWidth + Math.random() * 6;
     const rightX = width - zoneWidth + (i / lateralCount) * zoneWidth + Math.random() * 6;
-    const opacity = isMobile ? 0.30 + Math.random() * 0.20 : 0.35 + Math.random() * 0.25;
-    const fontSize = isMobile ? 9 + Math.floor(Math.random() * 2) : 10 + Math.floor(Math.random() * 3);
+    const opacity = isMobile ? 0.45 + Math.random() * 0.25 : 0.50 + Math.random() * 0.30;
+    const fontSize = isMobile ? 10 + Math.floor(Math.random() * 2) : 11 + Math.floor(Math.random() * 3);
     columns.push(createColumn(leftX, height, opacity, fontSize));
     columns.push(createColumn(rightX, height, opacity, fontSize));
   }
 
-  // --- Center columns (well distributed, subtle) ---
+  // --- Center columns (well distributed) ---
   const centerPositions = isMobile
     ? [width * 0.28, width * 0.42, width * 0.58, width * 0.72]
     : [
@@ -77,8 +77,8 @@ function createAllColumns(width: number, height: number): FallingColumn[] {
     columns.push(createColumn(
       x + (Math.random() - 0.5) * (isMobile ? 10 : 16),
       height,
-      isMobile ? 0.10 + Math.random() * 0.08 : 0.12 + Math.random() * 0.10,
-      isMobile ? 8 + Math.floor(Math.random() * 2) : 9 + Math.floor(Math.random() * 2),
+      isMobile ? 0.18 + Math.random() * 0.12 : 0.22 + Math.random() * 0.15,
+      isMobile ? 9 + Math.floor(Math.random() * 2) : 10 + Math.floor(Math.random() * 2),
     ));
   }
 
@@ -165,8 +165,8 @@ function CodeRainCanvas({ isDark }: { isDark: boolean }) {
 
           // Glow on head character
           if (j === 0) {
-            ctx.shadowColor = `rgba(${headColor[0]}, ${headColor[1]}, ${headColor[2]}, ${alpha * 0.6})`;
-            ctx.shadowBlur = isDark ? 8 : 6;
+            ctx.shadowColor = `rgba(${headColor[0]}, ${headColor[1]}, ${headColor[2]}, ${alpha * 0.8})`;
+            ctx.shadowBlur = isDark ? 12 : 8;
           } else {
             ctx.shadowBlur = 0;
           }
