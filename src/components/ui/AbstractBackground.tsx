@@ -26,28 +26,28 @@ function createCircuitTraces(w: number, h: number, isMobile: boolean): CircuitTr
   const traces: CircuitTrace[] = [];
   const m = isMobile ? 20 : 30;
 
-  // Left side traces · wider spread, starts below images (~0.35)
+  // Left side traces · full height from top to bottom
   const leftTraceConfigs = isMobile
     ? [
-        [{ x: m, y: h * 0.20 }, { x: m, y: h * 0.35 }, { x: m + 35, y: h * 0.35 }, { x: m + 35, y: h * 0.50 }, { x: m, y: h * 0.50 }, { x: m, y: h * 0.66 }, { x: m + 28, y: h * 0.66 }, { x: m + 28, y: h * 0.82 }, { x: m, y: h * 0.82 }, { x: m, y: h * 0.95 }],
-        [{ x: m + 55, y: h * 0.25 }, { x: m + 55, y: h * 0.42 }, { x: m + 20, y: h * 0.42 }, { x: m + 20, y: h * 0.58 }, { x: m + 55, y: h * 0.58 }, { x: m + 55, y: h * 0.74 }, { x: m + 20, y: h * 0.74 }, { x: m + 20, y: h * 0.90 }],
+        [{ x: m, y: h * 0.04 }, { x: m, y: h * 0.18 }, { x: m + 35, y: h * 0.18 }, { x: m + 35, y: h * 0.34 }, { x: m, y: h * 0.34 }, { x: m, y: h * 0.50 }, { x: m + 28, y: h * 0.50 }, { x: m + 28, y: h * 0.66 }, { x: m, y: h * 0.66 }, { x: m, y: h * 0.82 }, { x: m + 35, y: h * 0.82 }, { x: m + 35, y: h * 0.96 }],
+        [{ x: m + 55, y: h * 0.08 }, { x: m + 55, y: h * 0.24 }, { x: m + 20, y: h * 0.24 }, { x: m + 20, y: h * 0.40 }, { x: m + 55, y: h * 0.40 }, { x: m + 55, y: h * 0.56 }, { x: m + 20, y: h * 0.56 }, { x: m + 20, y: h * 0.72 }, { x: m + 55, y: h * 0.72 }, { x: m + 55, y: h * 0.88 }, { x: m + 20, y: h * 0.88 }, { x: m + 20, y: h * 0.97 }],
       ]
     : [
-        [{ x: m, y: h * 0.32 }, { x: m, y: h * 0.45 }, { x: m + 50, y: h * 0.45 }, { x: m + 50, y: h * 0.58 }, { x: m, y: h * 0.58 }, { x: m, y: h * 0.72 }, { x: m + 40, y: h * 0.72 }, { x: m + 40, y: h * 0.85 }, { x: m, y: h * 0.85 }, { x: m, y: h * 0.96 }],
-        [{ x: m + 75, y: h * 0.36 }, { x: m + 75, y: h * 0.50 }, { x: m + 30, y: h * 0.50 }, { x: m + 30, y: h * 0.65 }, { x: m + 75, y: h * 0.65 }, { x: m + 75, y: h * 0.80 }, { x: m + 30, y: h * 0.80 }, { x: m + 30, y: h * 0.92 }],
-        [{ x: m + 110, y: h * 0.42 }, { x: m + 110, y: h * 0.55 }, { x: m + 60, y: h * 0.55 }, { x: m + 60, y: h * 0.68 }, { x: m + 110, y: h * 0.68 }, { x: m + 110, y: h * 0.78 }],
+        [{ x: m, y: h * 0.04 }, { x: m, y: h * 0.18 }, { x: m + 50, y: h * 0.18 }, { x: m + 50, y: h * 0.32 }, { x: m, y: h * 0.32 }, { x: m, y: h * 0.48 }, { x: m + 40, y: h * 0.48 }, { x: m + 40, y: h * 0.62 }, { x: m, y: h * 0.62 }, { x: m, y: h * 0.78 }, { x: m + 50, y: h * 0.78 }, { x: m + 50, y: h * 0.92 }, { x: m, y: h * 0.92 }, { x: m, y: h * 0.98 }],
+        [{ x: m + 75, y: h * 0.06 }, { x: m + 75, y: h * 0.22 }, { x: m + 30, y: h * 0.22 }, { x: m + 30, y: h * 0.38 }, { x: m + 75, y: h * 0.38 }, { x: m + 75, y: h * 0.54 }, { x: m + 30, y: h * 0.54 }, { x: m + 30, y: h * 0.70 }, { x: m + 75, y: h * 0.70 }, { x: m + 75, y: h * 0.86 }, { x: m + 30, y: h * 0.86 }, { x: m + 30, y: h * 0.97 }],
+        [{ x: m + 110, y: h * 0.10 }, { x: m + 110, y: h * 0.26 }, { x: m + 60, y: h * 0.26 }, { x: m + 60, y: h * 0.42 }, { x: m + 110, y: h * 0.42 }, { x: m + 110, y: h * 0.58 }, { x: m + 60, y: h * 0.58 }, { x: m + 60, y: h * 0.74 }, { x: m + 110, y: h * 0.74 }, { x: m + 110, y: h * 0.90 }],
       ];
 
-  // Right side traces · wider spread, starts below images
+  // Right side traces · full height from top to bottom
   const rightTraceConfigs = isMobile
     ? [
-        [{ x: w - m, y: h * 0.18 }, { x: w - m, y: h * 0.33 }, { x: w - m - 35, y: h * 0.33 }, { x: w - m - 35, y: h * 0.48 }, { x: w - m, y: h * 0.48 }, { x: w - m, y: h * 0.64 }, { x: w - m - 28, y: h * 0.64 }, { x: w - m - 28, y: h * 0.80 }, { x: w - m, y: h * 0.80 }, { x: w - m, y: h * 0.94 }],
-        [{ x: w - m - 55, y: h * 0.23 }, { x: w - m - 55, y: h * 0.40 }, { x: w - m - 20, y: h * 0.40 }, { x: w - m - 20, y: h * 0.56 }, { x: w - m - 55, y: h * 0.56 }, { x: w - m - 55, y: h * 0.72 }, { x: w - m - 20, y: h * 0.72 }, { x: w - m - 20, y: h * 0.88 }],
+        [{ x: w - m, y: h * 0.06 }, { x: w - m, y: h * 0.20 }, { x: w - m - 35, y: h * 0.20 }, { x: w - m - 35, y: h * 0.36 }, { x: w - m, y: h * 0.36 }, { x: w - m, y: h * 0.52 }, { x: w - m - 28, y: h * 0.52 }, { x: w - m - 28, y: h * 0.68 }, { x: w - m, y: h * 0.68 }, { x: w - m, y: h * 0.84 }, { x: w - m - 35, y: h * 0.84 }, { x: w - m - 35, y: h * 0.97 }],
+        [{ x: w - m - 55, y: h * 0.10 }, { x: w - m - 55, y: h * 0.26 }, { x: w - m - 20, y: h * 0.26 }, { x: w - m - 20, y: h * 0.42 }, { x: w - m - 55, y: h * 0.42 }, { x: w - m - 55, y: h * 0.58 }, { x: w - m - 20, y: h * 0.58 }, { x: w - m - 20, y: h * 0.74 }, { x: w - m - 55, y: h * 0.74 }, { x: w - m - 55, y: h * 0.90 }, { x: w - m - 20, y: h * 0.90 }, { x: w - m - 20, y: h * 0.98 }],
       ]
     : [
-        [{ x: w - m, y: h * 0.30 }, { x: w - m, y: h * 0.43 }, { x: w - m - 50, y: h * 0.43 }, { x: w - m - 50, y: h * 0.56 }, { x: w - m, y: h * 0.56 }, { x: w - m, y: h * 0.70 }, { x: w - m - 40, y: h * 0.70 }, { x: w - m - 40, y: h * 0.83 }, { x: w - m, y: h * 0.83 }, { x: w - m, y: h * 0.95 }],
-        [{ x: w - m - 75, y: h * 0.34 }, { x: w - m - 75, y: h * 0.48 }, { x: w - m - 30, y: h * 0.48 }, { x: w - m - 30, y: h * 0.62 }, { x: w - m - 75, y: h * 0.62 }, { x: w - m - 75, y: h * 0.76 }, { x: w - m - 30, y: h * 0.76 }, { x: w - m - 30, y: h * 0.90 }],
-        [{ x: w - m - 110, y: h * 0.40 }, { x: w - m - 110, y: h * 0.53 }, { x: w - m - 60, y: h * 0.53 }, { x: w - m - 60, y: h * 0.66 }, { x: w - m - 110, y: h * 0.66 }, { x: w - m - 110, y: h * 0.76 }],
+        [{ x: w - m, y: h * 0.05 }, { x: w - m, y: h * 0.20 }, { x: w - m - 50, y: h * 0.20 }, { x: w - m - 50, y: h * 0.34 }, { x: w - m, y: h * 0.34 }, { x: w - m, y: h * 0.50 }, { x: w - m - 40, y: h * 0.50 }, { x: w - m - 40, y: h * 0.64 }, { x: w - m, y: h * 0.64 }, { x: w - m, y: h * 0.80 }, { x: w - m - 50, y: h * 0.80 }, { x: w - m - 50, y: h * 0.94 }, { x: w - m, y: h * 0.94 }, { x: w - m, y: h * 0.98 }],
+        [{ x: w - m - 75, y: h * 0.08 }, { x: w - m - 75, y: h * 0.24 }, { x: w - m - 30, y: h * 0.24 }, { x: w - m - 30, y: h * 0.40 }, { x: w - m - 75, y: h * 0.40 }, { x: w - m - 75, y: h * 0.56 }, { x: w - m - 30, y: h * 0.56 }, { x: w - m - 30, y: h * 0.72 }, { x: w - m - 75, y: h * 0.72 }, { x: w - m - 75, y: h * 0.88 }, { x: w - m - 30, y: h * 0.88 }, { x: w - m - 30, y: h * 0.98 }],
+        [{ x: w - m - 110, y: h * 0.08 }, { x: w - m - 110, y: h * 0.24 }, { x: w - m - 60, y: h * 0.24 }, { x: w - m - 60, y: h * 0.40 }, { x: w - m - 110, y: h * 0.40 }, { x: w - m - 110, y: h * 0.56 }, { x: w - m - 60, y: h * 0.56 }, { x: w - m - 60, y: h * 0.72 }, { x: w - m - 110, y: h * 0.72 }, { x: w - m - 110, y: h * 0.88 }],
       ];
 
   const allConfigs = [...leftTraceConfigs, ...rightTraceConfigs];
