@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   BookOpen,
   Palette,
@@ -16,7 +16,8 @@ import {
   ArrowRight,
   GraduationCap,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
 
 // ---------------------------------------------------------------------------
 // Timeline Data
@@ -39,12 +40,12 @@ const timelineData: TimelineEntry[] = [
     date: "",
     title: "O Primeiro Passo",
     description:
-      "Decidi aprender desenvolvimento web por conta propria. Sem bootcamp, sem atalhos. Comecei pelo basico porque sabia que fundamentos solidos fazem a diferenca no longo prazo.",
+      "Decidi aprender desenvolvimento web por conta própria. Sem bootcamp, sem atalhos. Comecei pelo básico porque sabia que fundamentos sólidos fazem a diferença no longo prazo.",
     icon: BookOpen,
     color: "amber",
     achievements: [
       "HTML, CSS e JavaScript do zero",
-      "Logica de programacao e algoritmos",
+      "Lógica de programação e algoritmos",
       "Primeiro contato com React e o ecossistema",
     ],
     type: "learning",
@@ -52,15 +53,15 @@ const timelineData: TimelineEntry[] = [
   {
     id: "courses",
     date: "",
-    title: "Formacao Continua",
+    title: "Formação Contínua",
     description:
-      "Investi em cursos para acelerar o aprendizado e preencher gaps tecnicos. Cada curso era um degrau, mas a pratica real veio dos projetos.",
+      "Investi em cursos para acelerar o aprendizado e preencher gaps técnicos. Cada curso era um degrau, mas a prática real veio dos projetos.",
     icon: GraduationCap,
     color: "indigo",
     achievements: [
       "Curso completo de Node.js",
-      "Formacao Webmaster Full-Stack",
-      "Curso de Java e orientacao a objetos",
+      "Formação Webmaster Full-Stack",
+      "Curso de Java e orientação a objetos",
       "Web Developer com foco em React",
     ],
     tech: ["Node.js", "Java", "React", "Full-Stack"],
@@ -69,16 +70,16 @@ const timelineData: TimelineEntry[] = [
   {
     id: "practice",
     date: "",
-    title: "Projetos de Pratica",
+    title: "Projetos de Prática",
     description:
-      "Teoria sem pratica e conhecimento pela metade. Construi dezenas de projetos pequenos para fixar cada conceito: APIs REST, autenticacao, CRUD, integracao com banco de dados.",
+      "Teoria sem prática é conhecimento pela metade. Construí dezenas de projetos pequenos para fixar cada conceito: APIs REST, autenticação, CRUD, integração com banco de dados.",
     icon: Code2,
     color: "violet",
     achievements: [
       "React com TypeScript strict mode",
       "APIs REST com Express e Prisma",
       "Tailwind CSS e design responsivo",
-      "Git workflow e boas praticas",
+      "Git workflow e boas práticas",
     ],
     tech: ["React", "TypeScript", "Tailwind CSS", "Prisma"],
     type: "learning",
@@ -88,11 +89,11 @@ const timelineData: TimelineEntry[] = [
     date: "",
     title: "Pulse Design System",
     description:
-      "O momento em que os projetos de pratica se transformaram em algo maior. Construi um design system completo do zero · nao uma lib copiada, mas 100+ componentes pensados para escalar.",
+      "O momento em que os projetos de prática se transformaram em algo maior. Construí um design system completo do zero · não uma lib copiada, mas 100+ componentes pensados para escalar.",
     icon: Palette,
     color: "teal",
     achievements: [
-      "100+ componentes reutilizaveis",
+      "100+ componentes reutilizáveis",
       "25 variantes de dashboard",
       "i18n com pathname routing em 3 idiomas",
       "Dark/light mode com Radix UI",
@@ -122,12 +123,12 @@ const timelineData: TimelineEntry[] = [
     date: "",
     title: "Pulse Finance · Clean Architecture",
     description:
-      "Dashboard financeiro multi-tenant com arquitetura limpa de verdade. Camadas bem definidas, cache Redis, background jobs. O tipo de projeto que mostra maturidade tecnica.",
+      "Dashboard financeiro multi-tenant com arquitetura limpa de verdade. Camadas bem definidas, cache Redis, background jobs. O tipo de projeto que mostra maturidade técnica.",
     icon: BarChart3,
     color: "amber",
     achievements: [
       "Clean Architecture com camadas definidas",
-      "Multi-tenancy com isolamento por usuario",
+      "Multi-tenancy com isolamento por usuário",
       "Redis cache + BullMQ background jobs",
       "143 testes automatizados",
     ],
@@ -139,14 +140,14 @@ const timelineData: TimelineEntry[] = [
     date: "",
     title: "Pulse Ecosystem Completo",
     description:
-      "Os projetos se conectaram num ecossistema real. Design tokens compartilhados, 380+ testes, CI/CD em todos os repos. Nao e so codigo · e uma arquitetura que escala.",
+      "Os projetos se conectaram num ecossistema real. Design tokens compartilhados, 380+ testes, CI/CD em todos os repos. Não é só código · é uma arquitetura que escala.",
     icon: Sparkles,
     color: "cyan",
     achievements: [
       "3 SaaS apps interligados por design tokens",
       "380+ testes no ecossistema total",
       "CI/CD com GitHub Actions em todos os repos",
-      "Documentacao tecnica com ADRs",
+      "Documentação técnica com ADRs",
     ],
     type: "milestone",
   },
@@ -266,13 +267,29 @@ function TimelineItem({
             <Icon className={`w-5 h-5 ${c.text}`} />
           </motion.div>
           {!isLast && (
-            <motion.div
-              initial={{ scaleY: 0 }}
-              whileInView={{ scaleY: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="w-[2px] flex-1 min-h-[40px] origin-top tl-connector-line"
-            />
+            <div className="relative flex-1 min-h-[40px] flex justify-center">
+              <motion.div
+                initial={{ scaleY: 0 }}
+                whileInView={{ scaleY: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="w-[2px] h-full origin-top tl-connector-line"
+              />
+              {/* Traveling dot */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.8 }}
+                className="absolute left-1/2 -translate-x-1/2 top-0"
+              >
+                <motion.div
+                  animate={{ y: ["0%", "800%", "0%"] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: index * 0.3 }}
+                  className={`w-1.5 h-1.5 rounded-full ${colorMap[entry.color].dot} shadow-[0_0_6px_currentColor]`}
+                />
+              </motion.div>
+            </div>
           )}
         </div>
 
@@ -410,10 +427,7 @@ export function Timeline() {
   return (
     <section id="journey" className="relative py-24 md:py-32 overflow-hidden">
       {/* Background */}
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <div className="absolute top-1/4 left-1/3 w-72 h-72 bg-indigo-500/[0.03] rounded-full blur-[100px]" />
-        <div className="absolute bottom-1/3 right-1/4 w-72 h-72 bg-violet-500/[0.03] rounded-full blur-[100px]" />
-      </div>
+      {isLightMode ? <AbstractBackgroundLight /> : <AbstractBackground />}
 
       <div className="container-custom relative z-10">
         {/* Header */}
@@ -441,8 +455,8 @@ export function Timeline() {
             Minha <span className="gradient-text">Jornada</span>
           </h2>
           <p className="tl-subtitle max-w-2xl mx-auto">
-            Autodidata por escolha, engenheiro por dedicacao · cursos, projetos de pratica
-            e um ecossistema inteiro construido para provar que consistencia supera talento
+            Autodidata por escolha, Full Stack por dedicação · cada curso virou projeto,
+            cada projeto virou produto e a consistência fez o resto
           </p>
         </motion.div>
 
@@ -469,7 +483,7 @@ export function Timeline() {
           <div className="tl-next-card inline-flex items-center gap-3 px-6 py-3 rounded-full">
             <Rocket className="w-4 h-4 tl-next-icon" />
             <span className="text-sm font-semibold tl-next-text">
-              Proximo: mais 3 apps no ecossistema
+              Próximo: mais 3 apps no ecossistema
             </span>
             <span className="flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-indigo-400 opacity-75" />
