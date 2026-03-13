@@ -19,6 +19,21 @@ const contactSchema = z.object({
 
 type ContactFormData = z.infer<typeof contactSchema>;
 
+const contactMarqueeItems = [
+  "380+ Testes",
+  "100+ Componentes",
+  "Aplicações Full-Stack",
+  "Clean Architecture",
+  "APIs RESTful",
+  "Real-Time Apps",
+  "Design Systems",
+  "CI/CD Automatizado",
+  "Dashboards Interativos",
+  "Deploy Contínuo",
+  "Código Documentado",
+  "Mobile-First",
+];
+
 export function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -291,6 +306,32 @@ export function Contact() {
           </motion.div>
         </div>
       </div>
+
+      {/* Stats + Services marquee */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+        className="relative z-10 mt-24 md:mt-32"
+      >
+        <div className="about-marquee-container relative overflow-hidden rounded-none py-4 w-[100vw] left-1/2 -translate-x-1/2">
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />
+          <div className="about-marquee-fade overflow-hidden">
+            <div className="about-marquee-track flex items-center gap-6">
+              {[...contactMarqueeItems, ...contactMarqueeItems].map((item, index) => (
+                <span key={`${item}-${index}`} className="contents">
+                  {index > 0 && <span className="about-marquee-dot" />}
+                  <span className="about-marquee-item flex-shrink-0 text-sm font-medium whitespace-nowrap">
+                    {item}
+                  </span>
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </motion.div>
     </section>
   );
 }
