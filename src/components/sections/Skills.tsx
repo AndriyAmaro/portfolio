@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { skillCategories as importedSkills } from "@/data/skills";
 import { SkillsBackground, SkillsBackgroundLight } from "../ui/SkillsBackground";
 import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
@@ -166,18 +167,29 @@ const categoryAccents: Record<string, {
   },
 };
 
-// Category metadata
-const categoryMeta: Record<string, { icon: React.FC<{ className?: string }>; description: string }> = {
-  Frontend: { icon: Code2, description: "Interfaces modernas e responsivas" },
-  Backend: { icon: Server, description: "APIs robustas e escaláveis" },
-  "DevOps e Ferramentas": { icon: Wrench, description: "Ferramentas e workflows modernos" },
+// Category metadata (descriptions come from translations)
+const categoryMeta: Record<string, { icon: React.FC<{ className?: string }> }> = {
+  Frontend: { icon: Code2 },
+  Backend: { icon: Server },
+  "DevOps e Ferramentas": { icon: Wrench },
+};
+
+// Maps from data title to translation keys
+const categoryTitleKeys: Record<string, string> = {
+  "Frontend": "categories.frontend",
+  "Backend": "categories.backend",
+  "DevOps e Ferramentas": "categories.devops",
+};
+const categoryDescKeys: Record<string, string> = {
+  "Frontend": "categories.frontendDesc",
+  "Backend": "categories.backendDesc",
+  "DevOps e Ferramentas": "categories.devopsDesc",
 };
 
 // Build skill categories from imported data
 const skillCategories = importedSkills.map((cat) => ({
   title: cat.title,
   icon: categoryMeta[cat.title]?.icon ?? Code2,
-  description: categoryMeta[cat.title]?.description ?? "",
   skills: cat.skills.map((s) => ({
     name: s.name,
     icon: s.icon,
@@ -186,12 +198,12 @@ const skillCategories = importedSkills.map((cat) => ({
   })),
 }));
 
-// Stats
+// Stats (labels come from translations via key)
 const stats = [
-  { icon: TestTubes, value: 380, suffix: "+", label: "Testes Automatizados" },
-  { icon: Layers, value: 100, suffix: "+", label: "Componentes UI" },
-  { icon: AppWindow, value: 56, suffix: "+", label: "Páginas Construídas" },
-  { icon: FlaskConical, value: 3, suffix: "", label: "SaaS Apps em Produção" },
+  { icon: TestTubes, value: 380, suffix: "+", labelKey: "stats.tests" },
+  { icon: Layers, value: 100, suffix: "+", labelKey: "stats.components" },
+  { icon: AppWindow, value: 56, suffix: "+", labelKey: "stats.pages" },
+  { icon: FlaskConical, value: 3, suffix: "", labelKey: "stats.apps" },
 ];
 
 // ---------------------------------------------------------------------------
@@ -233,7 +245,7 @@ function StatCard({
   icon: React.FC<{ className?: string }>;
   value: number;
   suffix: string;
-  label: string;
+  label: string | React.ReactNode;
   delay: number;
 }) {
   const ref = useRef(null);
@@ -269,28 +281,37 @@ function StatCard({
 // ---------------------------------------------------------------------------
 // Progress bar skill row
 // ---------------------------------------------------------------------------
-const levelLabels: Record<string, { label: string; color: string }> = {
-  expert: { label: "Expert", color: "text-violet-400 bg-violet-500/15 border-violet-500/25" },
-  advanced: { label: "Avançado", color: "text-indigo-400 bg-indigo-500/15 border-indigo-500/25" },
-  intermediate: { label: "Intermediário", color: "text-blue-400 bg-blue-500/15 border-blue-500/25" },
-  beginner: { label: "Iniciante", color: "text-amber-400 bg-amber-500/15 border-amber-500/25" },
+const levelColors: Record<string, string> = {
+  expert: "text-violet-400 bg-violet-500/15 border-violet-500/25",
+  advanced: "text-indigo-400 bg-indigo-500/15 border-indigo-500/25",
+  intermediate: "text-blue-400 bg-blue-500/15 border-blue-500/25",
+  beginner: "text-amber-400 bg-amber-500/15 border-amber-500/25",
+};
+
+const levelTranslationKeys: Record<string, string> = {
+  expert: "levels.expert",
+  advanced: "levels.advanced",
+  intermediate: "levels.intermediate",
+  beginner: "levels.beginner",
 };
 
 function SkillRow({
   name,
   icon,
   level,
+  levelLabel,
   barColor,
   delay,
 }: {
   name: string;
   icon: string;
   level: string;
+  levelLabel: string;
   barColor: string;
   delay: number;
 }) {
   const IconComponent = TechIcons[icon];
-  const lvl = levelLabels[level] ?? levelLabels.intermediate;
+  const color = levelColors[level] ?? levelColors.intermediate;
 
   return (
     <motion.div
@@ -308,8 +329,8 @@ function SkillRow({
       {/* Name + level badge */}
       <div className="flex-1 min-w-0 flex items-center justify-between gap-2">
         <span className="skill-row-name text-sm font-medium truncate">{name}</span>
-        <span className={`skill-level-badge flex-shrink-0 px-2 py-0.5 rounded-md text-[10px] font-semibold border ${lvl.color}`}>
-          {lvl.label}
+        <span className={`skill-level-badge flex-shrink-0 px-2 py-0.5 rounded-md text-[10px] font-semibold border ${color}`}>
+          {levelLabel}
         </span>
       </div>
     </motion.div>
@@ -375,6 +396,7 @@ function TitleBurst() {
 // Main Skills component
 // ---------------------------------------------------------------------------
 export function Skills() {
+  const t = useTranslations("skills");
   const [isLightMode, setIsLightMode] = useState(false);
 
   useEffect(() => {
@@ -465,18 +487,18 @@ export function Skills() {
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 mb-6"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
-            <span className="text-xs font-medium text-indigo-300">tecnologias no stack</span>
+            <span className="text-xs font-medium text-indigo-300">{t("badge")}</span>
           </motion.div>
 
           {/* Title with radial burst effect */}
           <div className="relative">
             <TitleBurst />
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 relative z-10">
-              Minhas <span className="gradient-text">Habilidades</span>
+              {t("title")} <span className="gradient-text">{t("titleHighlight")}</span>
             </h2>
           </div>
           <p className="skills-subtitle max-w-2xl mx-auto">
-            Tecnologias que uso para criar produtos digitais de alta qualidade
+            {t("subtitle")}
           </p>
         </motion.div>
 
@@ -484,11 +506,11 @@ export function Skills() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-16">
           {stats.map((stat, index) => (
             <StatCard
-              key={stat.label}
+              key={stat.labelKey}
               icon={stat.icon}
               value={stat.value}
               suffix={stat.suffix}
-              label={stat.label}
+              label={t(stat.labelKey)}
               delay={0.1 + index * 0.1}
             />
           ))}
@@ -525,10 +547,10 @@ export function Skills() {
                     </div>
                     <div>
                       <h3 className="skill-category-title text-lg font-bold">
-                        {category.title}
+                        {t(categoryTitleKeys[category.title] ?? "categories.frontend")}
                       </h3>
                       <p className="skill-category-description text-xs">
-                        {category.description}
+                        {t(categoryDescKeys[category.title] ?? "categories.frontendDesc")}
                       </p>
                     </div>
                     <span className="ml-auto text-xs font-bold opacity-40 tabular-nums">
@@ -544,6 +566,7 @@ export function Skills() {
                         name={skill.name}
                         icon={skill.icon}
                         level={skill.level}
+                        levelLabel={t(levelTranslationKeys[skill.level] ?? "levels.intermediate")}
                         barColor={accent.barColor}
                         delay={categoryIndex * 0.1 + skillIndex * 0.06}
                       />
@@ -566,9 +589,9 @@ export function Skills() {
           <div className="learning-badge inline-flex flex-col sm:flex-row items-center gap-3 sm:gap-4 px-6 sm:px-8 py-4 sm:py-4 rounded-2xl sm:rounded-full max-w-sm sm:max-w-none mx-auto">
             <span className="w-2.5 h-2.5 rounded-full bg-indigo-400 animate-pulse hidden sm:block" />
             <span className="learning-text text-sm sm:text-base font-medium text-center sm:text-left">
-              <span className="block sm:inline mb-1 sm:mb-0">Acelerando projetos com:</span>{" "}
+              <span className="block sm:inline mb-1 sm:mb-0">{t("aiBadge.prefix")}</span>{" "}
               <span className="gradient-text text-base sm:text-lg font-semibold">
-                IA para Desenvolvimento, Code Review e Automação
+                {t("aiBadge.text")}
               </span>
             </span>
           </div>

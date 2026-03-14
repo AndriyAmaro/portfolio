@@ -7,7 +7,6 @@ import {
   Palette,
   Rocket,
   Code2,
-  Database,
   ArrowRight,
   CheckCircle2,
   MessageSquare,
@@ -16,7 +15,7 @@ import {
   Zap,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { AbstractBackground, AbstractBackgroundLight } from "@/components/ui/AbstractBackground";
 
 // ---------------------------------------------------------------------------
@@ -24,74 +23,16 @@ import { AbstractBackground, AbstractBackgroundLight } from "@/components/ui/Abs
 // ---------------------------------------------------------------------------
 interface Service {
   id: string;
+  tKey: string;
   icon: typeof Layout;
-  title: string;
-  description: string;
-  deliverables: string[];
   color: "indigo" | "violet" | "cyan" | "emerald";
 }
 
 const services: Service[] = [
-  {
-    id: "frontend",
-    icon: Layout,
-    title: "Frontend Development",
-    description:
-      "Interfaces performáticas com React e Next.js · design systems, dashboards, landing pages e SPAs com acessibilidade e animações premium.",
-    deliverables: [
-      "React / Next.js App Router",
-      "Design System com Radix UI",
-      "Animações Framer Motion",
-      "Responsivo mobile-first",
-      "Lighthouse 90+",
-    ],
-    color: "indigo",
-  },
-  {
-    id: "backend",
-    icon: Server,
-    title: "Backend & APIs",
-    description:
-      "APIs type-safe com Node.js, banco de dados relacional, cache, filas e arquitetura escalável. Do MVP ao multi-tenant.",
-    deliverables: [
-      "Node.js / Express / Hono",
-      "PostgreSQL + Prisma ORM",
-      "Redis cache + BullMQ",
-      "WebSocket real-time",
-      "Clean Architecture",
-    ],
-    color: "violet",
-  },
-  {
-    id: "fullstack",
-    icon: Rocket,
-    title: "Full Stack Apps",
-    description:
-      "Aplicações completas do design ao deploy · frontend, backend, banco de dados, CI/CD e monitoramento. Tudo num único pacote.",
-    deliverables: [
-      "App completo end-to-end",
-      "Auth + multi-tenancy",
-      "Deploy Vercel / Railway",
-      "CI/CD GitHub Actions",
-      "Testes automatizados",
-    ],
-    color: "cyan",
-  },
-  {
-    id: "design-system",
-    icon: Palette,
-    title: "Design Systems",
-    description:
-      "Sistemas de design reutilizáveis com tokens, componentes compostos e documentação. A mesma abordagem do Pulse DS com 100+ componentes.",
-    deliverables: [
-      "Tokens de design (cores, tipografia)",
-      "Componentes compostos",
-      "Dark / Light mode",
-      "Storybook ou docs",
-      "Acessibilidade WCAG AA",
-    ],
-    color: "emerald",
-  },
+  { id: "frontend", tKey: "frontend", icon: Layout, color: "indigo" },
+  { id: "backend", tKey: "backend", icon: Server, color: "violet" },
+  { id: "fullstack", tKey: "fullstack", icon: Rocket, color: "cyan" },
+  { id: "design-system", tKey: "designSystem", icon: Palette, color: "emerald" },
 ];
 
 // ---------------------------------------------------------------------------
@@ -100,23 +41,19 @@ const services: Service[] = [
 const processSteps = [
   {
     icon: MessageSquare,
-    title: "Conversa",
-    description: "Entendo o problema, escopo e expectativas",
+    tKey: "process.conversation",
   },
   {
     icon: FileSearch,
-    title: "Proposta",
-    description: "Arquitetura, cronograma e orçamento claros",
+    tKey: "process.proposal",
   },
   {
     icon: Code2,
-    title: "Desenvolvimento",
-    description: "Sprints com entregas parciais e feedback contínuo",
+    tKey: "process.development",
   },
   {
     icon: Rocket,
-    title: "Entrega",
-    description: "Deploy, documentação e handoff completo",
+    tKey: "process.delivery",
   },
 ];
 
@@ -170,6 +107,7 @@ const colorMap = {
 // Service Card
 // ---------------------------------------------------------------------------
 function ServiceCard({ service, index }: { service: Service; index: number }) {
+  const t = useTranslations("services");
   const c = colorMap[service.color];
   const Icon = service.icon;
 
@@ -213,24 +151,24 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
             >
               <Icon className={`w-5 h-5 ${c.text}`} />
             </div>
-            <h3 className="svc-card-title text-lg font-bold">{service.title}</h3>
+            <h3 className="svc-card-title text-lg font-bold">{t(`${service.tKey}.title`)}</h3>
           </div>
 
           {/* Description */}
           <p className="text-sm leading-relaxed mb-5 svc-card-description relative z-[1]">
-            {service.description}
+            {t(`${service.tKey}.description`)}
           </p>
 
           {/* Deliverables */}
           <div className="space-y-2 mt-auto relative z-[1]">
             <span className="text-[10px] font-bold uppercase tracking-wider svc-deliverables-label">
-              Entregas
+              {t("deliverablesLabel")}
             </span>
             <ul className="space-y-1.5">
-              {service.deliverables.map((d) => (
-                <li key={d} className="flex items-start gap-2">
+              {(t.raw(`${service.tKey}.deliverables`) as string[]).map((item, i) => (
+                <li key={i} className="flex items-start gap-2">
                   <CheckCircle2 className={`w-3.5 h-3.5 mt-0.5 shrink-0 ${c.checkColor}`} />
-                  <span className="text-xs svc-deliverable-text">{d}</span>
+                  <span className="text-xs svc-deliverable-text">{item}</span>
                 </li>
               ))}
             </ul>
@@ -253,6 +191,7 @@ function ProcessStep({
   index: number;
   isLast: boolean;
 }) {
+  const t = useTranslations("services");
   const Icon = step.icon;
 
   return (
@@ -319,7 +258,7 @@ function ProcessStep({
         transition={{ duration: 0.4, delay: 0.5 + index * 0.15 }}
         className="text-sm font-bold mb-1 svc-process-title"
       >
-        {step.title}
+        {t(`${step.tKey}.title`)}
       </motion.h4>
       <motion.p
         initial={{ opacity: 0 }}
@@ -328,7 +267,7 @@ function ProcessStep({
         transition={{ duration: 0.4, delay: 0.6 + index * 0.15 }}
         className="text-xs leading-relaxed svc-process-description max-w-[140px]"
       >
-        {step.description}
+        {t(`${step.tKey}.description`)}
       </motion.p>
     </motion.div>
   );
@@ -338,6 +277,7 @@ function ProcessStep({
 // Main Services Section
 // ---------------------------------------------------------------------------
 export function Services() {
+  const t = useTranslations("services");
   const [isLightMode, setIsLightMode] = useState(false);
 
   useEffect(() => {
@@ -376,16 +316,15 @@ export function Services() {
           >
             <Zap className="w-3.5 h-3.5 svc-badge-icon" />
             <span className="text-xs font-semibold tracking-wider uppercase svc-badge-text">
-              Aberto para Projetos
+              {t("badge")}
             </span>
           </motion.div>
 
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            Como posso <span className="gradient-text">ajudar</span>
+            {t("title")} <span className="gradient-text">{t("titleHighlight")}</span>
           </h2>
           <p className="svc-subtitle max-w-2xl mx-auto">
-            Do MVP ao produto escalável · entrego aplicações completas com a mesma
-            qualidade e rigor que aplico no Pulse Ecosystem
+            {t("subtitle")}
           </p>
         </motion.div>
 
@@ -405,12 +344,12 @@ export function Services() {
           className="mb-12"
         >
           <h3 className="text-center text-lg font-semibold mb-10 svc-process-heading">
-            Como funciona
+            {t("process.title")}
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-4 max-w-2xl mx-auto">
             {processSteps.map((step, index) => (
               <ProcessStep
-                key={step.title}
+                key={step.tKey}
                 step={step}
                 index={index}
                 isLast={index === processSteps.length - 1}
@@ -444,18 +383,18 @@ export function Services() {
             </motion.div>
 
             <h3 className="text-xl font-bold svc-cta-title">
-              Tem um projeto em mente?
+              {t("cta.title")}
             </h3>
             <p className="text-sm svc-cta-description">
-              Vamos conversar sobre como posso transformar sua ideia em um produto real e escalável.
+              {t("cta.description")}
             </p>
-            <Link href="#contact" className="group w-full sm:w-auto">
+            <a href="#contact" className="group w-full sm:w-auto">
               <button className="w-full sm:w-auto svc-cta-btn flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-xl text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5">
                 <MessageSquare className="w-4 h-4" />
-                Iniciar Conversa
+                {t("cta.button")}
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
               </button>
-            </Link>
+            </a>
 
             {/* Bottom decorative line */}
             <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-violet-500/30 to-transparent" />

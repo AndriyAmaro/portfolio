@@ -3,35 +3,16 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Layers, TestTubes, GitBranch, Rocket } from "lucide-react";
 import { useEffect, useState, useRef, useCallback } from "react";
+import { useTranslations } from "next-intl";
 import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
 import Image from "next/image";
 
 const highlights = [
-  {
-    icon: Layers,
-    title: "Arquitetura Completa",
-    description:
-      "Do design system ao deploy. Tokens, componentes, páginas, API, banco de dados e cache num único ecossistema.",
-  },
-  {
-    icon: TestTubes,
-    title: "380+ Testes",
-    description:
-      "Unit, integration e e2e com Vitest e Testing Library. Cobertura real, não só pra encher número.",
-  },
-  {
-    icon: GitBranch,
-    title: "Documentação Técnica",
-    description:
-      "ADRs, diagramas SVG, guias de scaling. Cada decisão arquitetural está documentada e justificada.",
-  },
-  {
-    icon: Rocket,
-    title: "Deploy Contínuo",
-    description:
-      "CI/CD com GitHub Actions, deploy automático na Vercel e Railway, conventional commits em todos os repos.",
-  },
-];
+  { icon: Layers, key: "architecture" },
+  { icon: TestTubes, key: "tests" },
+  { icon: GitBranch, key: "docs" },
+  { icon: Rocket, key: "deploy" },
+] as const;
 
 const techStack = [
   "Next.js",
@@ -57,7 +38,7 @@ const techStack = [
 ];
 
 /* ── Mobile · 2 stacked cards, rotating 1 at a time ── */
-function MobileCarousel() {
+function MobileCarousel({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
   const [active, setActive] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const touchX = useRef(0);
@@ -91,10 +72,10 @@ function MobileCarousel() {
             </div>
             <div className="min-w-0 flex-1">
               <h4 className="text-base font-semibold text-white/95 about-card-title mb-2">
-                {item.title}
+                {t(`highlights.${item.key}.title`)}
               </h4>
               <p className="text-sm text-white/60 leading-relaxed about-card-description">
-                {item.description}
+                {t(`highlights.${item.key}.description`)}
               </p>
             </div>
           </div>
@@ -156,6 +137,7 @@ function MobileCarousel() {
 
 
 export function About() {
+  const t = useTranslations("about");
   const [isLightMode, setIsLightMode] = useState(false);
 
   useEffect(() => {
@@ -247,11 +229,10 @@ export function About() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            Sobre <span className="gradient-text">Mim</span>
+            {t("title")} <span className="gradient-text">{t("titleHighlight")}</span>
           </h2>
           <p className="about-subtitle max-w-2xl mx-auto">
-            Quem eu sou, o que construí e como posso ajudar no seu próximo
-            projeto
+            {t("subtitle")}
           </p>
         </motion.div>
 
@@ -265,30 +246,21 @@ export function About() {
             className="space-y-6"
           >
             <h3 className="text-2xl md:text-3xl font-semibold">
-              Full Stack Developer{" "}
-              <span className="gradient-text">orientado a produto</span>
+              {t("heading")}{" "}
+              <span className="gradient-text">{t("headingHighlight")}</span>
             </h3>
 
             <div className="space-y-4 about-description-text">
               <p>
-                Sou Full Stack Developer focado em React, Next.js e Node.js.
-                Não construo apenas telas ou APIs isoladas · projeto e
-                implemento aplicações completas, do design system até o
-                deploy em produção.
+                {t("paragraph1")}
               </p>
 
               <p>
-                Criei o <span className="font-semibold text-indigo-400">Pulse Ecosystem</span> do
-                zero: um design system com 100+ componentes que serve de
-                fundação para múltiplas aplicações em produção · dashboards,
-                plataformas real-time, marketplaces e mais por vir.
+                {t("paragraph2prefix")} <span className="font-semibold text-indigo-400">{t("paragraph2highlight")}</span> {t("paragraph2suffix")}
               </p>
 
               <p>
-                Cada projeto tem arquitetura documentada, testes
-                automatizados, CI/CD configurado e decisões técnicas
-                registradas em ADRs. Não é só código que funciona · é código
-                que escala e que outros devs conseguem manter.
+                {t("paragraph3")}
               </p>
             </div>
           </motion.div>
@@ -297,7 +269,7 @@ export function About() {
           <div className="hidden md:grid sm:grid-cols-2 gap-5">
             {highlights.map((item, index) => (
               <motion.div
-                key={item.title}
+                key={item.key}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -312,10 +284,10 @@ export function About() {
                     </div>
                   </div>
                   <h4 className="text-lg font-semibold mb-2 text-white/95 about-card-title">
-                    {item.title}
+                    {t(`highlights.${item.key}.title`)}
                   </h4>
                   <p className="text-sm text-white/70 leading-relaxed about-card-description">
-                    {item.description}
+                    {t(`highlights.${item.key}.description`)}
                   </p>
                 </div>
               </motion.div>
@@ -324,7 +296,7 @@ export function About() {
 
           {/* Mobile carousel */}
           <div className="md:hidden">
-            <MobileCarousel />
+            <MobileCarousel t={t} />
           </div>
         </div>
 

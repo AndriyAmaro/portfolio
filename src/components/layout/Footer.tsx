@@ -3,9 +3,9 @@
 import { cn } from "@/lib/utils";
 import { Github, Linkedin, Mail } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 const socialLinks = [
   { name: "GitHub", href: "https://github.com/AndriyAmaro", icon: Github },
@@ -13,17 +13,19 @@ const socialLinks = [
   { name: "Email", href: "mailto:andrifullstackdev@gmail.com", icon: Mail },
 ];
 
-const navLinks = [
-  { label: "Sobre", href: "#about" },
-  { label: "Habilidades", href: "#skills" },
-  { label: "Ecosystem", href: "#ecosystem" },
-  { label: "Projetos", href: "#projects" },
-  { label: "Jornada", href: "#journey" },
-  { label: "Servicos", href: "#services" },
-  { label: "Contato", href: "#contact" },
-];
+const navKeys = [
+  { key: "about", href: "#about" },
+  { key: "skills", href: "#skills" },
+  { key: "ecosystem", href: "#ecosystem" },
+  { key: "projects", href: "#projects" },
+  { key: "journey", href: "#journey" },
+  { key: "services", href: "#services" },
+  { key: "contact", href: "#contact" },
+] as const;
 
 export function Footer() {
+  const t = useTranslations("header");
+  const tFooter = useTranslations("footer");
   const currentYear = new Date().getFullYear();
   const [isDark, setIsDark] = useState(true);
   const [mounted, setMounted] = useState(false);
@@ -49,7 +51,7 @@ export function Footer() {
         {/* Main content - centered */}
         <div className="py-12 flex flex-col items-center text-center gap-6">
           {/* Logo */}
-          <Link href="/" className="relative shrink-0 hover:opacity-90 transition-opacity">
+          <a href="/" className="relative shrink-0 hover:opacity-90 transition-opacity">
             <Image
               src="/logo-dark.png"
               alt="Andri Dev"
@@ -70,18 +72,18 @@ export function Footer() {
                 mounted && !isDark ? "opacity-100" : "opacity-0"
               )}
             />
-          </Link>
+          </a>
 
           {/* Nav links - horizontal */}
           <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-            {navLinks.map((link) => (
-              <Link
+            {navKeys.map((link) => (
+              <a
                 key={link.href}
                 href={link.href}
                 className="footer-link text-sm font-medium transition-colors duration-200 hover:text-indigo-400"
               >
-                {link.label}
-              </Link>
+                {t(`nav.${link.key}`)}
+              </a>
             ))}
           </nav>
 
@@ -111,7 +113,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="py-5 flex flex-col sm:flex-row justify-between items-center gap-3">
           <p className="footer-copyright text-xs">
-            &copy; {currentYear} <span className="gradient-text font-semibold">Andri Amaro</span> · Todos os direitos reservados
+            &copy; {currentYear} <span className="gradient-text font-semibold">Andri Amaro</span> · {tFooter("copyright")}
           </p>
 
           <div className="flex items-center gap-3">

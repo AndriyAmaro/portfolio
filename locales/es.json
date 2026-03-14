@@ -1,0 +1,482 @@
+{
+  "metadata": {
+    "title": "Andri Amaro · Full Stack Developer",
+    "description": "Full Stack Developer especializado en React, Next.js y Node.js. Creador del Pulse Ecosystem · un design system con 100+ componentes que impulsa 3 SaaS apps en producción, 380+ tests automatizados.",
+    "ogDescription": "Creador del Pulse Ecosystem · Design system + 3 SaaS apps en producción con 380+ tests. React, Next.js, Node.js, TypeScript.",
+    "twitterDescription": "Creador del Pulse Ecosystem · Design system + 3 SaaS apps en producción con 380+ tests.",
+    "jsonLdDescription": "Full Stack Developer especializado en React, Next.js y Node.js. Creador del Pulse Ecosystem.",
+    "jsonLdServiceFrontend": "React, Next.js, Design Systems, SPAs",
+    "jsonLdServiceBackend": "Node.js, APIs REST, PostgreSQL, Redis",
+    "jsonLdServiceFullStack": "Aplicaciones completas del diseño al deploy",
+    "siteName": "Andri Amaro · Portfolio",
+    "jobTitle": "Full Stack Developer",
+    "personDescription": "Full Stack Developer especializado en React, Next.js y Node.js. Creador del Pulse Ecosystem."
+  },
+  "header": {
+    "nav": {
+      "about": "Sobre mí",
+      "skills": "Habilidades",
+      "ecosystem": "Ecosystem",
+      "projects": "Proyectos",
+      "code": "Código",
+      "journey": "Trayectoria",
+      "services": "Servicios",
+      "contact": "Contacto"
+    },
+    "cta": "Contáctame",
+    "themeLight": "Activar modo claro",
+    "themeDark": "Activar modo oscuro",
+    "menuToggle": "Alternar menú"
+  },
+  "hero": {
+    "roles": [
+      "Full Stack Developer",
+      "Design System Architect",
+      "React & Next.js Specialist",
+      "TypeScript Enthusiast"
+    ],
+    "metrics": {
+      "saas": "SaaS Apps",
+      "components": "Componentes",
+      "tests": "Tests",
+      "pages": "Páginas"
+    },
+    "description": "Creé el <highlight>Pulse Ecosystem</highlight> desde cero · un design system con 100+ componentes que impulsa múltiples SaaS apps en producción, con tests automatizados y deploy continuo.",
+    "descriptionHighlight": "Pulse Ecosystem",
+    "descriptionText": "desde cero · un design system con 100+ componentes que impulsa múltiples SaaS apps en producción, con tests automatizados y deploy continuo.",
+    "ctaPrimary": "Ver Ecosystem",
+    "ctaSecondary": "Ver Proyectos"
+  },
+  "about": {
+    "title": "Sobre",
+    "titleHighlight": "Mí",
+    "subtitle": "Quién soy, qué construí y cómo puedo ayudar en tu próximo proyecto",
+    "heading": "Full Stack Developer",
+    "headingHighlight": "orientado a producto",
+    "paragraph1": "Soy Full Stack Developer enfocado en React, Next.js y Node.js. No construyo solo pantallas o APIs aisladas · diseño e implemento aplicaciones completas, desde el design system hasta el deploy en producción.",
+    "paragraph2prefix": "Creé el",
+    "paragraph2highlight": "Pulse Ecosystem",
+    "paragraph2suffix": "desde cero: un design system con 100+ componentes que sirve de base para múltiples aplicaciones en producción · dashboards, plataformas real-time, marketplaces y más por venir.",
+    "paragraph3": "Cada proyecto tiene arquitectura documentada, tests automatizados, CI/CD configurado y decisiones técnicas registradas en ADRs. No es solo código que funciona · es código que escala y que otros devs pueden mantener.",
+    "highlights": {
+      "architecture": {
+        "title": "Arquitectura Completa",
+        "description": "Del design system al deploy. Tokens, componentes, páginas, API, base de datos y cache en un único ecosistema."
+      },
+      "tests": {
+        "title": "380+ Tests",
+        "description": "Unit, integration y e2e con Vitest y Testing Library. Cobertura real, no solo para inflar números."
+      },
+      "docs": {
+        "title": "Documentación Técnica",
+        "description": "ADRs, diagramas SVG, guías de scaling. Cada decisión arquitectónica está documentada y justificada."
+      },
+      "deploy": {
+        "title": "Deploy Continuo",
+        "description": "CI/CD con GitHub Actions, deploy automático en Vercel y Railway, conventional commits en todos los repos."
+      }
+    }
+  },
+  "skills": {
+    "badge": "tecnologías en el stack",
+    "title": "Mis",
+    "titleHighlight": "Habilidades",
+    "subtitle": "Tecnologías que uso para crear productos digitales de alta calidad",
+    "categories": {
+      "frontend": "Frontend",
+      "frontendDesc": "Interfaces modernas y responsivas",
+      "backend": "Backend",
+      "backendDesc": "APIs robustas y escalables",
+      "devops": "DevOps y Herramientas",
+      "devopsDesc": "Herramientas y workflows modernos"
+    },
+    "levels": {
+      "expert": "Experto",
+      "advanced": "Avanzado",
+      "intermediate": "Intermedio",
+      "beginner": "Principiante"
+    },
+    "stats": {
+      "tests": "Tests Automatizados",
+      "components": "Componentes UI",
+      "pages": "Páginas Construidas",
+      "apps": "SaaS Apps en Producción"
+    },
+    "aiBadge": {
+      "prefix": "Acelerando proyectos con:",
+      "text": "IA para Desarrollo, Code Review y Automatización"
+    }
+  },
+  "projects": {
+    "badge": "Tests en el Ecosistema",
+    "title": "Proyectos",
+    "titleHighlight": "Production-Ready",
+    "subtitle": "Cada proyecto es un caso de estudio completo · del problema a la solución, con arquitectura documentada, tests y deploy automatizado",
+    "problemSolution": "Problema → Solución",
+    "problemLabel": "Problema",
+    "solutionLabel": "Solución",
+    "liveDemo": "Live Demo",
+    "viewCode": "Código",
+    "githubCta": "Ver Todos en GitHub",
+    "carouselPrev": "Anterior",
+    "carouselNext": "Siguiente",
+    "pulseDs": {
+      "tagline": "La base del ecosistema",
+      "description": "Design system production-grade con Atomic Design, 25 variantes de dashboard, animaciones SVG personalizadas y accesibilidad completa con Radix UI.",
+      "metrics": {
+        "components": "Componentes",
+        "pages": "Páginas",
+        "dashboards": "Dashboards",
+        "languages": "Idiomas"
+      },
+      "highlights": [
+        "Atomic Design · Tokens → Pages",
+        "i18n con pathname routing",
+        "Accesibilidad Radix UI"
+      ],
+      "problem": "Componentes repetidos en cada proyecto, sin consistencia visual ni reutilización real.",
+      "solution": "Design system unificado con tokens, primitivos y patrones que alimenta todos los SaaS del ecosistema.",
+      "challenges": [
+        "100+ componentes consistentes",
+        "i18n en 3 idiomas",
+        "Animaciones SVG sin JS"
+      ]
+    },
+    "pulseChat": {
+      "tagline": "Comunicación en tiempo real",
+      "description": "Chat full-stack con WebSocket, 32 eventos tipados, cola offline con retry exponencial y 40+ componentes adaptados del Design System.",
+      "metrics": {
+        "tests": "Tests",
+        "wsEvents": "Eventos WS",
+        "components": "Componentes",
+        "uptime": "Uptime"
+      },
+      "highlights": [
+        "WebSocket con reconnection sync",
+        "Cola offline + exponential backoff",
+        "Arquitectura backend 3 capas"
+      ],
+      "problem": "Ir más allá de CRUD · comunicación real-time con estado concurrente y resiliencia.",
+      "solution": "Arquitectura event-driven con type safety end-to-end y mecanismos de recuperación automática.",
+      "challenges": [
+        "Estado concurrente multi-usuario",
+        "Cola offline con retry",
+        "40+ componentes adaptados"
+      ]
+    },
+    "pulseFinance": {
+      "tagline": "Dashboard financiero",
+      "description": "SaaS financiero multi-tenant con Clean Architecture, API Hono type-safe, cache Redis y background jobs con BullMQ.",
+      "metrics": {
+        "tests": "Tests",
+        "architecture": "Arquitectura",
+        "cache": "Cache",
+        "jobs": "Jobs"
+      },
+      "highlights": [
+        "Multi-tenancy con aislamiento",
+        "Background jobs asíncronos",
+        "Cache invalidation Redis"
+      ],
+      "problem": "Demostrar arquitectura production-ready con multi-tenancy, cache y procesamiento asíncrono.",
+      "solution": "Clean Architecture con capas definidas, Redis para performance y BullMQ para jobs pesados.",
+      "challenges": [
+        "Multi-tenancy aislado",
+        "Cache invalidation",
+        "Importación CSV en background"
+      ]
+    }
+  },
+  "codeInAction": {
+    "title": "Código en",
+    "titleHighlight": "Acción",
+    "subtitle": "Código real de los proyectos del ecosistema · no es lorem ipsum",
+    "tabs": {
+      "ds": "Design System",
+      "chat": "Chat",
+      "finance": "Finance"
+    },
+    "commitsTitle": "Commits Recientes",
+    "stats": {
+      "repos": "REPOS",
+      "commits": "COMMITS",
+      "lines": "LINES"
+    },
+    "testsPassing": "All tests passing",
+    "testsPassed": "passed",
+    "testsFailed": "failed",
+    "testsSkipped": "skipped"
+  },
+  "timeline": {
+    "badge": "De Cero al Ecosistema",
+    "title": "Mi",
+    "titleHighlight": "Trayectoria",
+    "subtitle": "Autodidacta por elección, Full Stack por dedicación · cada curso se volvió proyecto, cada proyecto se volvió producto y la constancia hizo el resto",
+    "types": {
+      "learning": "Aprendizaje",
+      "project": "Proyecto",
+      "milestone": "Hito"
+    },
+    "entries": {
+      "start": {
+        "title": "El Primer Paso",
+        "description": "Decidí aprender desarrollo web por mi cuenta. Sin bootcamp, sin atajos · empecé por lo básico porque los fundamentos sólidos son lo que separan a quien programa de quien resuelve problemas.",
+        "achievements": [
+          "HTML, CSS y JavaScript desde cero",
+          "Lógica de programación y algoritmos",
+          "Primer contacto con React y TypeScript"
+        ]
+      },
+      "courses": {
+        "title": "Formación Continua",
+        "description": "Invertí tiempo y recursos en cursos para acelerar el aprendizaje y llenar vacíos técnicos. Cada curso era un escalón · el conocimiento real se consolidó cuando empecé a aplicar todo en proyectos propios.",
+        "achievements": [
+          "Curso completo de Node.js",
+          "Formación Webmaster Full-Stack",
+          "Curso de Java y orientación a objetos",
+          "Web Developer con enfoque en React"
+        ]
+      },
+      "practice": {
+        "title": "Proyectos de Práctica",
+        "description": "Teoría sin práctica es conocimiento a medias. Construí decenas de proyectos pequeños para fijar cada concepto: APIs REST, autenticación, CRUD, integración con base de datos.",
+        "achievements": [
+          "React con TypeScript strict mode",
+          "APIs REST con Express y Prisma",
+          "Tailwind CSS y diseño responsivo",
+          "Git workflow y buenas prácticas"
+        ]
+      },
+      "pulseDs": {
+        "title": "Pulse Design System",
+        "description": "Con una base sólida construida, quise ir más allá de los proyectos de estudio. Creé un design system completo desde cero · no una librería copiada, sino 100+ componentes pensados para escalar.",
+        "achievements": [
+          "100+ componentes reutilizables",
+          "25 variantes de dashboard",
+          "i18n con pathname routing en 3 idiomas",
+          "Dark/light mode con Radix UI"
+        ]
+      },
+      "pulseChat": {
+        "title": "Pulse Chat · Real-Time",
+        "description": "App full-stack real-time del ecosistema. WebSocket con 32 eventos tipados, queue offline y 98 tests. Resolver problemas de real-time en producción enseñó más que cualquier curso.",
+        "achievements": [
+          "WebSocket con reconnection sync",
+          "32 eventos tipados end-to-end",
+          "Queue offline con exponential backoff",
+          "98 tests automatizados"
+        ]
+      },
+      "pulseFinance": {
+        "title": "Pulse Finance · Clean Architecture",
+        "description": "Dashboard financiero multi-tenant con arquitectura limpia de verdad. Capas bien definidas, cache Redis, background jobs · el nivel de complejidad que separa proyectos de estudio de productos reales.",
+        "achievements": [
+          "Clean Architecture con capas definidas",
+          "Multi-tenancy con aislamiento por usuario",
+          "Redis cache + BullMQ background jobs",
+          "143 tests automatizados"
+        ]
+      },
+      "ecosystem": {
+        "title": "Pulse Ecosystem Completo",
+        "description": "Los proyectos se conectaron en un ecosistema real. Design tokens compartidos, 380+ tests, CI/CD en todos los repos. No es solo código · es una arquitectura que escala.",
+        "achievements": [
+          "SaaS apps conectados por design tokens",
+          "380+ tests en el ecosistema total",
+          "CI/CD con GitHub Actions en todos los repos",
+          "Documentación técnica con ADRs"
+        ]
+      }
+    },
+    "nextTeaser": "Próximo: 3 apps más en el ecosistema"
+  },
+  "ecosystem": {
+    "badge": "Ecosistema Interconectado",
+    "title": "El",
+    "titleHighlight": "Pulse Ecosystem",
+    "subtitle": "No son proyectos aislados · es un ecosistema donde el Design System alimenta cada aplicación, con tokens, componentes y patrones compartidos",
+    "stats": {
+      "tests": "Tests",
+      "components": "Componentes",
+      "pages": "Páginas"
+    },
+    "principles": {
+      "sharedTokens": "Tokens Compartidos",
+      "typeSafety": "Type Safety E2E",
+      "tests": "380+ Tests",
+      "cicd": "CI/CD Automatizado"
+    },
+    "liveApps": {
+      "pulseDs": {
+        "tagline": "Base del ecosistema · exporta tokens, componentes y layouts a todas las apps",
+        "role": "La fundación",
+        "sharedLabel": "Exporta"
+      },
+      "pulseChat": {
+        "tagline": "Consume tokens y 40+ componentes del DS · agrega capa real-time",
+        "role": "Comunicación",
+        "sharedLabel": "Hereda del DS"
+      },
+      "pulseFinance": {
+        "tagline": "Hereda dashboard variants y data components del DS · agrega capa de cache",
+        "role": "Dashboard",
+        "sharedLabel": "Hereda del DS"
+      }
+    },
+    "comingApps": {
+      "vexiat": {
+        "tagline": "SaaS de project management con Kanban, Stripe billing y RBAC granular",
+        "role": "Project Management"
+      },
+      "pulseMarket": {
+        "tagline": "Marketplace multi-vendor con Stripe Connect, split payments y search engine",
+        "role": "Marketplace"
+      },
+      "pulseAi": {
+        "tagline": "Asistente inteligente con RAG pipeline y agentes autónomos",
+        "role": "AI Agent"
+      }
+    },
+    "statusLive": "Live",
+    "statusComing": "Próximamente",
+    "expandingLabel": "Expandiendo el ecosistema",
+    "viewDemo": "Ver demo",
+    "viewCode": "Ver código"
+  },
+  "services": {
+    "badge": "Abierto a Proyectos",
+    "title": "Cómo puedo",
+    "titleHighlight": "ayudar",
+    "subtitle": "Del MVP al producto escalable · entrego aplicaciones completas con la misma calidad y rigor que aplico en el Pulse Ecosystem",
+    "frontend": {
+      "title": "Frontend Development",
+      "description": "Interfaces performantes con React y Next.js · design systems, dashboards, landing pages y SPAs con accesibilidad y animaciones premium.",
+      "deliverables": [
+        "React / Next.js App Router",
+        "Design System con Radix UI",
+        "Animaciones Framer Motion",
+        "Responsivo mobile-first",
+        "Lighthouse 90+"
+      ]
+    },
+    "backend": {
+      "title": "Backend & APIs",
+      "description": "APIs type-safe con Node.js, base de datos relacional, cache, colas y arquitectura escalable. Del MVP al multi-tenant.",
+      "deliverables": [
+        "Node.js / Express / Hono",
+        "PostgreSQL + Prisma ORM",
+        "Redis cache + BullMQ",
+        "WebSocket real-time",
+        "Clean Architecture"
+      ]
+    },
+    "fullstack": {
+      "title": "Full Stack Apps",
+      "description": "Aplicaciones completas del diseño al deploy · frontend, backend, base de datos, CI/CD y monitoreo. Todo en un único paquete.",
+      "deliverables": [
+        "App completa end-to-end",
+        "Auth + multi-tenancy",
+        "Deploy Vercel / Railway",
+        "CI/CD GitHub Actions",
+        "Tests automatizados"
+      ]
+    },
+    "designSystem": {
+      "title": "Design Systems",
+      "description": "Sistemas de diseño reutilizables con tokens, componentes compuestos y documentación. El mismo enfoque del Pulse DS con 100+ componentes.",
+      "deliverables": [
+        "Tokens de diseño (colores, tipografía)",
+        "Componentes compuestos",
+        "Dark / Light mode",
+        "Storybook o docs",
+        "Accesibilidad WCAG AA"
+      ]
+    },
+    "deliverablesLabel": "Entregables",
+    "process": {
+      "title": "Cómo funciona",
+      "conversation": {
+        "title": "Conversación",
+        "description": "Entiendo el problema, alcance y expectativas"
+      },
+      "proposal": {
+        "title": "Propuesta",
+        "description": "Arquitectura, cronograma y presupuesto claros"
+      },
+      "development": {
+        "title": "Desarrollo",
+        "description": "Sprints con entregas parciales y feedback continuo"
+      },
+      "delivery": {
+        "title": "Entrega",
+        "description": "Deploy, documentación y handoff completo"
+      }
+    },
+    "cta": {
+      "title": "¿Tienes un proyecto en mente?",
+      "description": "Hablemos sobre cómo puedo transformar tu idea en un producto real y escalable.",
+      "button": "Iniciar Conversación"
+    }
+  },
+  "contact": {
+    "badge": "Disponible para proyectos",
+    "title": "Construyamos algo",
+    "titleHighlight": "increíble",
+    "subtitle": "Del concepto al deploy · transformo ideas en productos digitales con código limpio y arquitectura escalable",
+    "nextStep": "¿Próximo paso?",
+    "nextStepDescription": "Sea un MVP, una plataforma SaaS o una refactorización completa · trabajo con dedicación total en cada proyecto, aplicando las mismas prácticas que uso en el Pulse Ecosystem.",
+    "whatIDeliver": "Lo que entrego",
+    "deliverables": [
+      "Aplicaciones Full-Stack",
+      "APIs RESTful",
+      "Dashboards interactivos",
+      "Design Systems",
+      "Deploy & CI/CD",
+      "Código documentado"
+    ],
+    "email": "Email",
+    "location": "Ubicación",
+    "locationValue": "Brasil · Remoto worldwide",
+    "responseTime": "Tiempo de respuesta",
+    "responseTimeValue": "Normalmente en menos de 24h",
+    "form": {
+      "name": "Nombre",
+      "namePlaceholder": "Tu nombre",
+      "email": "Email",
+      "emailPlaceholder": "tu@email.com",
+      "message": "Mensaje",
+      "messagePlaceholder": "Cuéntame sobre tu proyecto u oportunidad...",
+      "submit": "Enviar Mensaje",
+      "success": {
+        "title": "¡Mensaje Enviado!",
+        "description": "Gracias por contactarme. Responderé pronto."
+      },
+      "error": {
+        "generic": "Algo salió mal",
+        "send": "Error al enviar el mensaje"
+      }
+    },
+    "validation": {
+      "nameMin": "El nombre debe tener al menos 2 caracteres",
+      "emailInvalid": "Por favor, ingresa un email válido",
+      "messageMin": "El mensaje debe tener al menos 10 caracteres"
+    },
+    "marquee": [
+      "380+ Tests",
+      "100+ Componentes",
+      "Aplicaciones Full-Stack",
+      "Clean Architecture",
+      "APIs RESTful",
+      "Real-Time Apps",
+      "Design Systems",
+      "CI/CD Automatizado",
+      "Dashboards Interactivos",
+      "Deploy Continuo",
+      "Código Documentado",
+      "Mobile-First"
+    ]
+  },
+  "footer": {
+    "copyright": "Todos los derechos reservados"
+  }
+}

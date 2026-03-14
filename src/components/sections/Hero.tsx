@@ -3,20 +3,13 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FuturisticBackground } from "../ui/FuturisticBackground";
 
 // ---------------------------------------------------------------------------
 // Typing Effect Hook
 // ---------------------------------------------------------------------------
-const roles = [
-  "Full Stack Developer",
-  "Design System Architect",
-  "React & Next.js Specialist",
-  "TypeScript Enthusiast",
-];
-
 function useTypingEffect(words: string[], typingSpeed = 80, deletingSpeed = 50, pauseTime = 2000) {
   const [text, setText] = useState("");
   const [wordIndex, setWordIndex] = useState(0);
@@ -85,19 +78,14 @@ function useCountUp(target: number, duration = 2000) {
 }
 
 // ---------------------------------------------------------------------------
-// Metrics data
+// Metrics data type
 // ---------------------------------------------------------------------------
-const metrics = [
-  { value: 3, suffix: "+", label: "SaaS Apps" },
-  { value: 100, suffix: "+", label: "Componentes" },
-  { value: 380, suffix: "+", label: "Testes" },
-  { value: 56, suffix: "+", label: "Páginas" },
-];
+type Metric = { value: number; suffix: string; label: string };
 
 // ---------------------------------------------------------------------------
 // Metrics Carousel (2 at a time, auto-rotate)
 // ---------------------------------------------------------------------------
-function MetricsCarousel({ metrics: items, counts }: { metrics: typeof metrics; counts: number[] }) {
+function MetricsCarousel({ metrics: items, counts }: { metrics: Metric[]; counts: number[] }) {
   const [page, setPage] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const pages = [items.slice(0, 2), items.slice(2, 4)];
@@ -176,7 +164,17 @@ function MetricsCarousel({ metrics: items, counts }: { metrics: typeof metrics; 
 // Main Hero Component
 // ---------------------------------------------------------------------------
 export function Hero() {
+  const t = useTranslations("hero");
+
+  const roles = t.raw("roles") as string[];
   const typedText = useTypingEffect(roles);
+
+  const metrics: Metric[] = [
+    { value: 3, suffix: "+", label: t("metrics.saas") },
+    { value: 100, suffix: "+", label: t("metrics.components") },
+    { value: 380, suffix: "+", label: t("metrics.tests") },
+    { value: 56, suffix: "+", label: t("metrics.pages") },
+  ];
 
   // count-up for each metric
   const counts = [
@@ -249,9 +247,9 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.45 }}
             className="max-w-xl text-base md:text-lg leading-relaxed hero-description"
           >
-            Criei o <span className="font-semibold hero-highlight-text">Pulse Ecosystem</span> do zero ·
-            um design system com 100+ componentes que alimenta múltiplos SaaS apps em produção,
-            com testes automatizados e deploy contínuo.
+            {t.rich("description", {
+              highlight: (chunks) => <span className="font-semibold hero-highlight-text">{chunks}</span>,
+            })}
           </motion.p>
 
           {/* CTA Buttons */}
@@ -261,18 +259,18 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.55 }}
             className="flex flex-col sm:flex-row items-center gap-3 mt-2 w-full sm:w-auto"
           >
-            <Link href="#ecosystem" className="group w-full sm:w-auto">
+            <a href="#ecosystem" className="group w-full sm:w-auto">
               <button className="hero-btn-primary w-full sm:w-auto flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5">
                 <Sparkles className="w-4 h-4" />
-                Ver Ecosystem
+                {t("ctaPrimary")}
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
               </button>
-            </Link>
-            <Link href="#projects" className="w-full sm:w-auto">
+            </a>
+            <a href="#projects" className="w-full sm:w-auto">
               <button className="hero-btn-secondary w-full sm:w-auto flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5">
-                Ver Projetos
+                {t("ctaSecondary")}
               </button>
-            </Link>
+            </a>
           </motion.div>
 
           {/* Metrics · bridge between Hero and About */}

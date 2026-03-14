@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
 
 // ---------------------------------------------------------------------------
@@ -85,14 +86,13 @@ interface EcoNode {
   id: string;
   name: string;
   shortName: string;
-  tagline: string;
+  tKey: string;
   icon: React.ReactNode;
   color: string;
   colorClass: string;
   borderClass: string;
   bgClass: string;
   glowColor: string;
-  role: string;
   techStack: string[];
   metrics: { value: string; label: string }[];
   architecture: string;
@@ -107,14 +107,13 @@ const liveApps: EcoNode[] = [
     id: "pulse-ds",
     name: "Pulse Design System",
     shortName: "Design System",
-    tagline: "Base do ecossistema · exporta tokens, componentes e layouts para todos os apps",
+    tKey: "pulseDs",
     icon: <PulseDSIcon />,
     color: "indigo",
     colorClass: "text-indigo-400",
     borderClass: "border-indigo-500/30",
     bgClass: "bg-indigo-500/10",
     glowColor: "rgba(99, 102, 241, 0.15)",
-    role: "A fundação",
     techStack: [],
     metrics: [],
     architecture: "",
@@ -127,14 +126,13 @@ const liveApps: EcoNode[] = [
     id: "pulse-chat",
     name: "Pulse Chat",
     shortName: "Chat",
-    tagline: "Consome tokens e 40+ componentes do DS · adiciona real-time layer",
+    tKey: "pulseChat",
     icon: <PulseChatIcon />,
     color: "teal",
     colorClass: "text-teal-400",
     borderClass: "border-teal-500/30",
     bgClass: "bg-teal-500/10",
     glowColor: "rgba(20, 184, 166, 0.15)",
-    role: "Comunicação",
     techStack: [],
     metrics: [],
     architecture: "",
@@ -147,14 +145,13 @@ const liveApps: EcoNode[] = [
     id: "pulse-finance",
     name: "Pulse Finance",
     shortName: "Finance",
-    tagline: "Herda dashboard variants e data components do DS · adiciona cache layer",
+    tKey: "pulseFinance",
     icon: <PulseFinanceIcon />,
     color: "emerald",
     colorClass: "text-emerald-400",
     borderClass: "border-emerald-500/30",
     bgClass: "bg-emerald-500/10",
     glowColor: "rgba(16, 185, 129, 0.15)",
-    role: "Dashboard",
     techStack: [],
     metrics: [],
     architecture: "",
@@ -170,14 +167,13 @@ const comingApps: EcoNode[] = [
     id: "vexiat",
     name: "Vexiat",
     shortName: "Vexiat",
-    tagline: "SaaS de project management com Kanban, Stripe billing e RBAC granular",
+    tKey: "vexiat",
     icon: <LayoutDashboard className="w-5 h-5" />,
     color: "amber",
     colorClass: "text-amber-400",
     borderClass: "border-amber-500/20",
     bgClass: "bg-amber-500/10",
     glowColor: "rgba(245, 158, 11, 0.1)",
-    role: "Project Management",
     techStack: [],
     metrics: [],
     architecture: "",
@@ -187,14 +183,13 @@ const comingApps: EcoNode[] = [
     id: "pulse-market",
     name: "Pulse Market",
     shortName: "Market",
-    tagline: "Marketplace multi-vendor com Stripe Connect, split payments e search engine",
+    tKey: "pulseMarket",
     icon: <Store className="w-5 h-5" />,
     color: "purple",
     colorClass: "text-purple-400",
     borderClass: "border-purple-500/20",
     bgClass: "bg-purple-500/10",
     glowColor: "rgba(168, 85, 247, 0.1)",
-    role: "Marketplace",
     techStack: [],
     metrics: [],
     architecture: "",
@@ -204,14 +199,13 @@ const comingApps: EcoNode[] = [
     id: "pulse-ai",
     name: "Pulse AI",
     shortName: "AI",
-    tagline: "Assistente inteligente com RAG pipeline e agentes autônomos",
+    tKey: "pulseAi",
     icon: <Bot className="w-5 h-5" />,
     color: "rose",
     colorClass: "text-rose-400",
     borderClass: "border-rose-500/20",
     bgClass: "bg-rose-500/10",
     glowColor: "rgba(244, 63, 94, 0.1)",
-    role: "AI Agent",
     techStack: [],
     metrics: [],
     architecture: "",
@@ -219,18 +213,19 @@ const comingApps: EcoNode[] = [
   },
 ];
 
-const principles = [
-  { icon: Layers, label: "Tokens Compartilhados" },
-  { icon: Zap, label: "Type Safety E2E" },
-  { icon: Shield, label: "380+ Testes" },
-  { icon: Globe, label: "CI/CD Automatizado" },
+const principleIcons = [
+  { icon: Layers, tKey: "sharedTokens" },
+  { icon: Zap, tKey: "typeSafety" },
+  { icon: Shield, tKey: "tests" },
+  { icon: Globe, tKey: "cicd" },
 ];
 
 // ---------------------------------------------------------------------------
 // Ecosystem Node Component
 // ---------------------------------------------------------------------------
-function EcoNodeCard({ node, index, isCenter }: { node: EcoNode; index: number; isCenter?: boolean }) {
+function EcoNodeCard({ node, index, isCenter, t }: { node: EcoNode; index: number; isCenter?: boolean; t: ReturnType<typeof useTranslations> }) {
   const isComing = node.status === "coming";
+  const appSection = isComing ? "comingApps" : "liveApps";
 
   const gradientClass = node.color === "indigo" ? "from-indigo-500 via-violet-500 to-purple-500" :
     node.color === "teal" ? "from-teal-500 via-cyan-400 to-teal-500" :
@@ -284,28 +279,28 @@ function EcoNodeCard({ node, index, isCenter }: { node: EcoNode; index: number; 
                 <h3 className="eco-card-title text-base font-bold leading-tight truncate">{node.name}</h3>
                 {isComing ? (
                   <span className="shrink-0 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider eco-coming-badge">
-                    Em breve
+                    {t("statusComing")}
                   </span>
                 ) : (
                   <span className="shrink-0 flex items-center gap-1 px-2 py-0.5 rounded-full eco-status-badge">
                     <span className={`w-1.5 h-1.5 rounded-full ${dotColor} animate-pulse`} />
-                    <span className="text-[9px] font-bold uppercase tracking-wider eco-status-text">Live</span>
+                    <span className="text-[9px] font-bold uppercase tracking-wider eco-status-text">{t("statusLive")}</span>
                   </span>
                 )}
               </div>
               <div className="flex items-center gap-1.5 mt-0.5">
-                <p className={`text-xs ${node.colorClass} font-medium eco-card-tagline`}>{node.role}</p>
+                <p className={`text-xs ${node.colorClass} font-medium eco-card-tagline`}>{t(`${appSection}.${node.tKey}.role`)}</p>
                 {/* Subtle icon links */}
                 {!isComing && node.liveUrl && node.githubUrl && (
                   <div className="flex items-center gap-1 ml-auto">
                     <a href={node.liveUrl} target="_blank" rel="noopener noreferrer"
                       className="eco-icon-link p-1 rounded-md transition-all duration-200 hover:scale-110"
-                      title="Ver demo">
+                      title={t("viewDemo")}>
                       <ExternalLink className="w-3 h-3" />
                     </a>
                     <a href={node.githubUrl} target="_blank" rel="noopener noreferrer"
                       className="eco-icon-link p-1 rounded-md transition-all duration-200 hover:scale-110"
-                      title="Ver código">
+                      title={t("viewCode")}>
                       <Github className="w-3 h-3" />
                     </a>
                   </div>
@@ -315,7 +310,7 @@ function EcoNodeCard({ node, index, isCenter }: { node: EcoNode; index: number; 
           </div>
 
           {/* Description - ecosystem relationship */}
-          <p className="text-xs leading-relaxed eco-card-description mb-4">{node.tagline}</p>
+          <p className="text-xs leading-relaxed eco-card-description mb-4">{t(`${appSection}.${node.tKey}.tagline`)}</p>
 
           {/* Shared resources - what connects to the ecosystem */}
           {!isComing && node.shared && node.shared.length > 0 && (
@@ -323,7 +318,7 @@ function EcoNodeCard({ node, index, isCenter }: { node: EcoNode; index: number; 
               <div className="flex items-center gap-1.5">
                 <Layers className={`w-3 h-3 ${node.colorClass}`} />
                 <span className="text-[10px] font-semibold uppercase tracking-wider eco-card-description">
-                  {node.id === "pulse-ds" ? "Exporta" : "Herda do DS"}
+                  {t(`liveApps.${node.tKey}.sharedLabel`)}
                 </span>
               </div>
               <div className="grid grid-cols-2 gap-1.5">
@@ -399,6 +394,7 @@ function MapConnections() {
 // Main Ecosystem Section
 // ---------------------------------------------------------------------------
 export function Ecosystem() {
+  const t = useTranslations("ecosystem");
   const [isLightMode, setIsLightMode] = useState(false);
   const totalTests = useCountUp(380, 2000);
   const totalComponents = useCountUp(100, 1800);
@@ -497,15 +493,15 @@ export function Ecosystem() {
           >
             <span className="w-2 h-2 rounded-full bg-gradient-to-r from-indigo-400 to-violet-400 animate-pulse" />
             <span className="text-xs font-semibold tracking-wider uppercase eco-badge-text">
-              Ecossistema Interligado
+              {t("badge")}
             </span>
           </motion.div>
 
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            O <span className="gradient-text">Pulse Ecosystem</span>
+            {t("title")} <span className="gradient-text">{t("titleHighlight")}</span>
           </h2>
           <p className="eco-subtitle max-w-2xl mx-auto">
-            Não são projetos isolados · é um ecossistema onde o Design System alimenta cada aplicação, com tokens, componentes e padrões compartilhados
+            {t("subtitle")}
           </p>
         </motion.div>
 
@@ -518,9 +514,9 @@ export function Ecosystem() {
           className="flex flex-wrap justify-center gap-8 md:gap-12 mb-14"
         >
           {[
-            { ref: totalTests.ref, count: totalTests.count, suffix: "+", label: "Testes" },
-            { ref: totalComponents.ref, count: totalComponents.count, suffix: "+", label: "Componentes" },
-            { ref: totalPages.ref, count: totalPages.count, suffix: "+", label: "Páginas" },
+            { ref: totalTests.ref, count: totalTests.count, suffix: "+", label: t("stats.tests") },
+            { ref: totalComponents.ref, count: totalComponents.count, suffix: "+", label: t("stats.components") },
+            { ref: totalPages.ref, count: totalPages.count, suffix: "+", label: t("stats.pages") },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
               <span ref={stat.ref} className="block text-3xl md:text-4xl font-bold gradient-text tabular-nums">
@@ -543,10 +539,10 @@ export function Ecosystem() {
             transition={{ duration: 0.4 }}
             className="flex flex-wrap justify-center gap-3 md:gap-4 mb-10"
           >
-            {principles.map((p) => (
-              <div key={p.label} className="eco-principle-pill flex items-center gap-2 px-3 py-1.5 rounded-full">
+            {principleIcons.map((p) => (
+              <div key={p.tKey} className="eco-principle-pill flex items-center gap-2 px-3 py-1.5 rounded-full">
                 <p.icon className="w-3.5 h-3.5 text-indigo-400 eco-principle-icon" />
-                <span className="text-xs font-medium eco-principle-text">{p.label}</span>
+                <span className="text-xs font-medium eco-principle-text">{t(`principles.${p.tKey}`)}</span>
               </div>
             ))}
           </motion.div>
@@ -554,7 +550,7 @@ export function Ecosystem() {
           {/* Live apps row */}
           <div className="grid md:grid-cols-3 gap-5 mb-8">
             {liveApps.map((app, i) => (
-              <EcoNodeCard key={app.id} node={app} index={i} />
+              <EcoNodeCard key={app.id} node={app} index={i} t={t} />
             ))}
           </div>
 
@@ -568,14 +564,14 @@ export function Ecosystem() {
           >
             <span className="eco-expanding-label inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase">
               <span className="w-1.5 h-1.5 rounded-full bg-amber-400/60 animate-pulse" />
-              Expandindo o ecossistema
+              {t("expandingLabel")}
             </span>
           </motion.div>
 
           {/* Coming soon apps row */}
           <div className="grid md:grid-cols-3 gap-5">
             {comingApps.map((app, i) => (
-              <EcoNodeCard key={app.id} node={app} index={i} />
+              <EcoNodeCard key={app.id} node={app} index={i} t={t} />
             ))}
           </div>
         </div>

@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { CheckCircle, Mail, MapPin, Send, Github, Linkedin, Clock, Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -10,31 +11,24 @@ import { Button } from "../ui/Button";
 import { Input, Textarea } from "../ui/Input";
 import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
 
-// Validation schema
-const contactSchema = z.object({
-  name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
-  email: z.string().email("Por favor, insira um email válido"),
-  message: z.string().min(10, "Mensagem deve ter pelo menos 10 caracteres"),
-});
-
-type ContactFormData = z.infer<typeof contactSchema>;
-
-const contactMarqueeItems = [
-  "380+ Testes",
-  "100+ Componentes",
-  "Aplicações Full-Stack",
-  "Clean Architecture",
-  "APIs RESTful",
-  "Real-Time Apps",
-  "Design Systems",
-  "CI/CD Automatizado",
-  "Dashboards Interativos",
-  "Deploy Contínuo",
-  "Código Documentado",
-  "Mobile-First",
-];
+type ContactFormData = {
+  name: string;
+  email: string;
+  message: string;
+};
 
 export function Contact() {
+  const t = useTranslations("contact");
+
+  const contactSchema = z.object({
+    name: z.string().min(2, t("validation.nameMin")),
+    email: z.string().email(t("validation.emailInvalid")),
+    message: z.string().min(10, t("validation.messageMin")),
+  });
+
+  const deliverables = t.raw("deliverables") as string[];
+  const marqueeItems = t.raw("marquee") as string[];
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -77,7 +71,7 @@ export function Contact() {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.error || "Algo deu errado");
+        throw new Error(result.error || t("form.error.generic"));
       }
 
       setIsSuccess(true);
@@ -86,7 +80,7 @@ export function Contact() {
       // Reset success state after 5 seconds
       setTimeout(() => setIsSuccess(false), 5000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Falha ao enviar mensagem");
+      setError(err instanceof Error ? err.message : t("form.error.send"));
     } finally {
       setIsSubmitting(false);
     }
@@ -118,16 +112,15 @@ export function Contact() {
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
             </span>
             <span className="text-xs font-semibold tracking-wider uppercase contact-description">
-              Disponivel para projetos
+              {t("badge")}
             </span>
           </motion.div>
 
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            Vamos construir algo <span className="gradient-text">incrivel</span>
+            {t("title")} <span className="gradient-text">{t("titleHighlight")}</span>
           </h2>
           <p className="contact-subtitle max-w-2xl mx-auto">
-            Do conceito ao deploy · transformo ideias em produtos digitais
-            com codigo limpo e arquitetura escalavel
+            {t("subtitle")}
           </p>
         </motion.div>
 
@@ -142,12 +135,10 @@ export function Contact() {
           >
             <div>
               <h3 className="contact-title text-2xl font-semibold mb-3">
-                Proximo passo?
+                {t("nextStep")}
               </h3>
               <p className="contact-description text-sm leading-relaxed">
-                Seja um MVP, uma plataforma SaaS ou uma refatoracao completa ·
-                trabalho com dedicacao total em cada projeto, aplicando as mesmas
-                praticas que uso no Pulse Ecosystem.
+                {t("nextStepDescription")}
               </p>
             </div>
 
@@ -156,11 +147,11 @@ export function Contact() {
               <div className="flex items-center gap-2 mb-3">
                 <Sparkles className="w-4 h-4 text-indigo-400" />
                 <span className="text-xs font-bold tracking-wider uppercase contact-title">
-                  O que entrego
+                  {t("whatIDeliver")}
                 </span>
               </div>
               <div className="grid grid-cols-2 gap-2">
-                {["Aplicacoes Full-Stack", "APIs RESTful", "Dashboards interativos", "Design Systems", "Deploy & CI/CD", "Codigo documentado"].map((item) => (
+                {deliverables.map((item) => (
                   <div key={item} className="flex items-center gap-2">
                     <CheckCircle className="w-3.5 h-3.5 text-emerald-400/70 shrink-0" />
                     <span className="text-xs contact-description">{item}</span>
@@ -180,7 +171,7 @@ export function Contact() {
                   <Mail className="w-5 h-5 text-indigo-400" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-xs text-[var(--text-muted)]">Email</p>
+                  <p className="text-xs text-[var(--text-muted)]">{t("email")}</p>
                   <p className="text-sm font-medium">andrifullstackdev@gmail.com</p>
                 </div>
               </motion.a>
@@ -194,8 +185,8 @@ export function Contact() {
                   <MapPin className="w-5 h-5 text-violet-400" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-xs text-[var(--text-muted)]">Localizacao</p>
-                  <p className="text-sm font-medium">Brasil · Remoto worldwide</p>
+                  <p className="text-xs text-[var(--text-muted)]">{t("location")}</p>
+                  <p className="text-sm font-medium">{t("locationValue")}</p>
                 </div>
               </motion.div>
 
@@ -208,8 +199,8 @@ export function Contact() {
                   <Clock className="w-5 h-5 text-cyan-400" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-xs text-[var(--text-muted)]">Tempo de resposta</p>
-                  <p className="text-sm font-medium">Normalmente em ate 24h</p>
+                  <p className="text-xs text-[var(--text-muted)]">{t("responseTime")}</p>
+                  <p className="text-sm font-medium">{t("responseTimeValue")}</p>
                 </div>
               </motion.div>
             </div>
@@ -255,31 +246,31 @@ export function Contact() {
                   <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-500/20 flex items-center justify-center">
                     <CheckCircle className="w-8 h-8 text-green-500" />
                   </div>
-                  <h4 className="contact-title text-xl font-semibold mb-2">Mensagem Enviada!</h4>
+                  <h4 className="contact-title text-xl font-semibold mb-2">{t("form.success.title")}</h4>
                   <p className="contact-description">
-                    Obrigado por entrar em contato. Responderei em breve.
+                    {t("form.success.description")}
                   </p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <Input
-                    label="Nome"
-                    placeholder="Seu nome"
+                    label={t("form.name")}
+                    placeholder={t("form.namePlaceholder")}
                     error={errors.name?.message}
                     {...register("name")}
                   />
 
                   <Input
-                    label="Email"
+                    label={t("form.email")}
                     type="email"
-                    placeholder="seu@email.com"
+                    placeholder={t("form.emailPlaceholder")}
                     error={errors.email?.message}
                     {...register("email")}
                   />
 
                   <Textarea
-                    label="Mensagem"
-                    placeholder="Conte-me sobre seu projeto ou oportunidade..."
+                    label={t("form.message")}
+                    placeholder={t("form.messagePlaceholder")}
                     error={errors.message?.message}
                     {...register("message")}
                   />
@@ -298,7 +289,7 @@ export function Contact() {
                     isLoading={isSubmitting}
                   >
                     {!isSubmitting && <Send className="w-5 h-5 mr-2" />}
-                    Enviar Mensagem
+                    {t("form.submit")}
                   </Button>
                 </form>
               )}
@@ -320,7 +311,7 @@ export function Contact() {
           <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />
           <div className="about-marquee-fade overflow-hidden">
             <div className="about-marquee-track flex items-center gap-6">
-              {[...contactMarqueeItems, ...contactMarqueeItems].map((item, index) => (
+              {[...marqueeItems, ...marqueeItems].map((item, index) => (
                 <span key={`${item}-${index}`} className="contents">
                   {index > 0 && <span className="about-marquee-dot" />}
                   <span className="about-marquee-item flex-shrink-0 text-sm font-medium whitespace-nowrap">

@@ -2,6 +2,7 @@
 
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { Terminal, FileCode2, GitCommit, Play, Copy, Check } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
 import { CodeRainCanvas } from "../ui/CodeInActionBackground";
@@ -241,6 +242,7 @@ function highlightCode(code: string): string {
 // Main Component
 // ---------------------------------------------------------------------------
 export function CodeInAction() {
+  const t = useTranslations("codeInAction");
   const [copied, setCopied] = useState(false);
   const [isLightMode, setIsLightMode] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
@@ -296,11 +298,10 @@ export function CodeInAction() {
           </motion.div>
 
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            Código em <span className="gradient-text">Ação</span>
+            {t("title")} <span className="gradient-text">{t("titleHighlight")}</span>
           </h2>
           <p className="code-subtitle max-w-2xl mx-auto">
-            Snippets reais dos 3 projetos do Pulse Ecosystem.
-            TypeScript rigoroso, arquitetura limpa, patterns de produção.
+            {t("subtitle")}
           </p>
         </motion.div>
 
@@ -451,7 +452,7 @@ export function CodeInAction() {
               <div className="code-editor-header flex items-center gap-2 px-4 py-3">
                 <GitCommit className="w-4 h-4 text-indigo-400" />
                 <span className="text-xs font-semibold code-panel-title">
-                  Commits Recentes
+                  {t("commitsTitle")}
                 </span>
                 <span className="ml-auto text-[10px] px-2 py-0.5 rounded-full code-commit-count font-mono font-semibold">
                   {commits.length}
@@ -501,9 +502,9 @@ export function CodeInAction() {
               <div className="px-3 pb-2">
                 <div className="grid grid-cols-3 gap-2">
                   {[
-                    { label: "Repos", value: "3", color: "#6366f1" },
-                    { label: "Commits", value: "847", color: "#14b8a6" },
-                    { label: "Lines", value: "52k", color: "#10b981" },
+                    { label: t("stats.repos"), value: "3", color: "#6366f1" },
+                    { label: t("stats.commits"), value: "847", color: "#14b8a6" },
+                    { label: t("stats.lines"), value: "52k", color: "#10b981" },
                   ].map((stat) => (
                     <div key={stat.label} className="code-commit-item rounded-lg p-2 text-center">
                       <p className="text-sm font-bold" style={{ color: stat.color }}>{stat.value}</p>
@@ -520,20 +521,20 @@ export function CodeInAction() {
                     <div className="flex items-center gap-2">
                       <Play className="w-3.5 h-3.5 text-green-400" />
                       <span className="text-xs font-semibold text-green-400">
-                        All tests passing
+                        {t("testsPassing")}
                       </span>
                     </div>
                     <span className="text-[10px] font-mono text-green-400/60">✓ CI/CD</span>
                   </div>
                   <div className="flex items-center gap-4 text-[10px] code-test-stats">
                     <span>
-                      <span className="text-green-400 font-bold">381</span> passed
+                      <span className="text-green-400 font-bold">381</span> {t("testsPassed")}
                     </span>
                     <span>
-                      <span className="text-red-400 font-bold">0</span> failed
+                      <span className="text-red-400 font-bold">0</span> {t("testsFailed")}
                     </span>
                     <span>
-                      <span className="text-yellow-400 font-bold">0</span> skipped
+                      <span className="text-yellow-400 font-bold">0</span> {t("testsSkipped")}
                     </span>
                   </div>
                   {/* Progress bar */}

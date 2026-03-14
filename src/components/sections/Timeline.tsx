@@ -17,6 +17,7 @@ import {
   GraduationCap,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
 
 // ---------------------------------------------------------------------------
@@ -24,12 +25,11 @@ import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackg
 // ---------------------------------------------------------------------------
 interface TimelineEntry {
   id: string;
+  tKey: string;
   date: string;
-  title: string;
-  description: string;
+  achievementCount: number;
   icon: typeof BookOpen;
   color: "indigo" | "violet" | "teal" | "emerald" | "amber" | "cyan";
-  achievements: string[];
   tech?: string[];
   type: "learning" | "project" | "milestone";
 }
@@ -37,118 +37,70 @@ interface TimelineEntry {
 const timelineData: TimelineEntry[] = [
   {
     id: "start",
+    tKey: "start",
     date: "",
-    title: "O Primeiro Passo",
-    description:
-      "Decidi aprender desenvolvimento web por conta própria. Sem bootcamp, sem atalhos · comecei pelo básico porque fundamentos sólidos são o que separam quem programa de quem resolve problemas.",
     icon: BookOpen,
     color: "amber",
-    achievements: [
-      "HTML, CSS e JavaScript do zero",
-      "Lógica de programação e algoritmos",
-      "Primeiro contato com React e TypeScript",
-    ],
+    achievementCount: 3,
     type: "learning",
   },
   {
     id: "courses",
+    tKey: "courses",
     date: "",
-    title: "Formação Contínua",
-    description:
-      "Investi tempo e recursos em cursos para acelerar o aprendizado e preencher gaps técnicos. Cada curso era um degrau · o conhecimento real se consolidou quando comecei a aplicar tudo em projetos próprios.",
     icon: GraduationCap,
     color: "indigo",
-    achievements: [
-      "Curso completo de Node.js",
-      "Formação Webmaster Full-Stack",
-      "Curso de Java e orientação a objetos",
-      "Web Developer com foco em React",
-    ],
+    achievementCount: 4,
     tech: ["Node.js", "Java", "React", "Full-Stack"],
     type: "learning",
   },
   {
     id: "practice",
+    tKey: "practice",
     date: "",
-    title: "Projetos de Prática",
-    description:
-      "Teoria sem prática é conhecimento pela metade. Construí dezenas de projetos pequenos para fixar cada conceito: APIs REST, autenticação, CRUD, integração com banco de dados.",
     icon: Code2,
     color: "violet",
-    achievements: [
-      "React com TypeScript strict mode",
-      "APIs REST com Express e Prisma",
-      "Tailwind CSS e design responsivo",
-      "Git workflow e boas práticas",
-    ],
+    achievementCount: 4,
     tech: ["React", "TypeScript", "Tailwind CSS", "Prisma"],
     type: "learning",
   },
   {
     id: "pulse-ds",
+    tKey: "pulseDs",
     date: "",
-    title: "Pulse Design System",
-    description:
-      "Com uma base sólida construída, quis ir além dos projetos de estudo. Criei um design system completo do zero · não uma lib copiada, mas 100+ componentes pensados para escalar.",
     icon: Palette,
     color: "teal",
-    achievements: [
-      "100+ componentes reutilizáveis",
-      "25 variantes de dashboard",
-      "i18n com pathname routing em 3 idiomas",
-      "Dark/light mode com Radix UI",
-    ],
+    achievementCount: 4,
     tech: ["Next.js 16", "React 19", "Radix UI", "Tailwind 4"],
     type: "project",
   },
   {
     id: "pulse-chat",
+    tKey: "pulseChat",
     date: "",
-    title: "Pulse Chat · Real-Time",
-    description:
-      "App full-stack real-time do ecossistema. WebSocket com 32 eventos tipados, queue offline e 98 testes. Resolver problemas de real-time em produção ensinou mais do que qualquer curso.",
     icon: MessageCircle,
     color: "emerald",
-    achievements: [
-      "WebSocket com reconnection sync",
-      "32 eventos tipados end-to-end",
-      "Queue offline com exponential backoff",
-      "98 testes automatizados",
-    ],
+    achievementCount: 4,
     tech: ["React 19", "Socket.io", "Express 5", "Prisma 7"],
     type: "project",
   },
   {
     id: "pulse-finance",
+    tKey: "pulseFinance",
     date: "",
-    title: "Pulse Finance · Clean Architecture",
-    description:
-      "Dashboard financeiro multi-tenant com arquitetura limpa de verdade. Camadas bem definidas, cache Redis, background jobs · o nível de complexidade que separa projetos de estudo de produtos reais.",
     icon: BarChart3,
     color: "amber",
-    achievements: [
-      "Clean Architecture com camadas definidas",
-      "Multi-tenancy com isolamento por usuário",
-      "Redis cache + BullMQ background jobs",
-      "143 testes automatizados",
-    ],
+    achievementCount: 4,
     tech: ["Next.js 15", "Hono 4", "Redis", "BullMQ"],
     type: "project",
   },
   {
     id: "ecosystem",
+    tKey: "ecosystem",
     date: "",
-    title: "Pulse Ecosystem Completo",
-    description:
-      "Os projetos se conectaram num ecossistema real. Design tokens compartilhados, 380+ testes, CI/CD em todos os repos. Não é só código · é uma arquitetura que escala.",
     icon: Sparkles,
     color: "cyan",
-    achievements: [
-      "SaaS apps interligados por design tokens",
-      "380+ testes no ecossistema total",
-      "CI/CD com GitHub Actions em todos os repos",
-      "Documentação técnica com ADRs",
-    ],
+    achievementCount: 4,
     type: "milestone",
   },
 ];
@@ -219,11 +171,7 @@ const colorMap = {
   },
 } as const;
 
-const typeLabels = {
-  learning: { label: "Aprendizado", className: "tl-type-learning" },
-  project: { label: "Projeto", className: "tl-type-project" },
-  milestone: { label: "Marco", className: "tl-type-milestone" },
-} as const;
+// typeLabels moved inside Timeline component to use translations
 
 // ---------------------------------------------------------------------------
 // Circuit Fragment — subtle decorative SVG for empty column
@@ -319,10 +267,14 @@ function TimelineItem({
   entry,
   index,
   isLast,
+  t,
+  typeLabels,
 }: {
   entry: TimelineEntry;
   index: number;
   isLast: boolean;
+  t: { (key: string): string; raw: (key: string) => unknown };
+  typeLabels: Record<string, { label: string; className: string }>;
 }) {
   const c = colorMap[entry.color];
   const Icon = entry.icon;
@@ -343,7 +295,7 @@ function TimelineItem({
               transition={{ duration: 0.5, delay: 0.1 }}
               className="w-full max-w-md"
             >
-              <TimelineCard entry={entry} colors={c} typeInfo={typeInfo} />
+              <TimelineCard entry={entry} colors={c} typeInfo={typeInfo} t={t} />
             </motion.div>
           ) : (
             <CircuitFragment index={index} isLeft />
@@ -436,7 +388,7 @@ function TimelineItem({
               transition={{ duration: 0.5, delay: 0.1 }}
               className="w-full max-w-md"
             >
-              <TimelineCard entry={entry} colors={c} typeInfo={typeInfo} />
+              <TimelineCard entry={entry} colors={c} typeInfo={typeInfo} t={t} />
             </motion.div>
           ) : (
             <CircuitFragment index={index} isLeft={false} />
@@ -473,7 +425,7 @@ function TimelineItem({
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <TimelineCard entry={entry} colors={c} typeInfo={typeInfo} />
+            <TimelineCard entry={entry} colors={c} typeInfo={typeInfo} t={t} />
           </motion.div>
         </div>
       </div>
@@ -488,11 +440,15 @@ function TimelineCard({
   entry,
   colors: c,
   typeInfo,
+  t,
 }: {
   entry: TimelineEntry;
   colors: (typeof colorMap)[keyof typeof colorMap];
-  typeInfo: (typeof typeLabels)[keyof typeof typeLabels];
+  typeInfo: { label: string; className: string };
+  t: { (key: string): string; raw: (key: string) => unknown };
 }) {
+  const achievements = t.raw(`entries.${entry.tKey}.achievements`) as string[];
+
   return (
     <div className={`tl-card group relative rounded-2xl border ${c.border} overflow-hidden transition-all duration-300 hover:-translate-y-1`}>
       {/* Top gradient */}
@@ -510,15 +466,15 @@ function TimelineCard({
         </div>
 
         {/* Title */}
-        <h3 className="tl-card-title text-base font-bold mb-2">{entry.title}</h3>
+        <h3 className="tl-card-title text-base font-bold mb-2">{t(`entries.${entry.tKey}.title`)}</h3>
 
         {/* Description */}
-        <p className="text-xs leading-relaxed mb-4 tl-card-description">{entry.description}</p>
+        <p className="text-xs leading-relaxed mb-4 tl-card-description">{t(`entries.${entry.tKey}.description`)}</p>
 
         {/* Achievements */}
         <ul className="space-y-1.5 mb-3">
-          {entry.achievements.map((a) => (
-            <li key={a} className="flex items-start gap-2">
+          {achievements.map((a, i) => (
+            <li key={i} className="flex items-start gap-2">
               <ArrowRight className={`w-3 h-3 mt-0.5 shrink-0 ${c.text} opacity-60`} />
               <span className="text-[11px] tl-achievement-text">{a}</span>
             </li>
@@ -528,9 +484,9 @@ function TimelineCard({
         {/* Tech chips */}
         {entry.tech && (
           <div className="flex flex-wrap gap-1.5 pt-2 border-t tl-tech-border">
-            {entry.tech.map((t) => (
-              <span key={t} className="tl-tech-chip px-2 py-0.5 rounded-md text-[10px] font-medium">
-                {t}
+            {entry.tech.map((techName) => (
+              <span key={techName} className="tl-tech-chip px-2 py-0.5 rounded-md text-[10px] font-medium">
+                {techName}
               </span>
             ))}
           </div>
@@ -544,7 +500,14 @@ function TimelineCard({
 // Main Timeline Section
 // ---------------------------------------------------------------------------
 export function Timeline() {
+  const t = useTranslations("timeline");
   const [isLightMode, setIsLightMode] = useState(false);
+
+  const typeLabels: Record<string, { label: string; className: string }> = {
+    learning: { label: t("types.learning"), className: "tl-type-learning" },
+    project: { label: t("types.project"), className: "tl-type-project" },
+    milestone: { label: t("types.milestone"), className: "tl-type-milestone" },
+  };
 
   useEffect(() => {
     const checkTheme = () => {
@@ -582,16 +545,15 @@ export function Timeline() {
           >
             <GitBranch className="w-3.5 h-3.5 tl-badge-icon" />
             <span className="text-xs font-semibold tracking-wider uppercase tl-badge-text">
-              Do Zero ao Ecossistema
+              {t("badge")}
             </span>
           </motion.div>
 
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            Minha <span className="gradient-text">Jornada</span>
+            {t("title")} <span className="gradient-text">{t("titleHighlight")}</span>
           </h2>
           <p className="tl-subtitle max-w-2xl mx-auto">
-            Autodidata por escolha, Full Stack por dedicação · cada curso virou projeto,
-            cada projeto virou produto e a consistência fez o resto
+            {t("subtitle")}
           </p>
         </motion.div>
 
@@ -603,6 +565,8 @@ export function Timeline() {
               entry={entry}
               index={index}
               isLast={index === timelineData.length - 1}
+              t={t}
+              typeLabels={typeLabels}
             />
           ))}
         </div>
@@ -618,7 +582,7 @@ export function Timeline() {
           <div className="tl-next-card inline-flex items-center gap-3 px-6 py-3 rounded-full">
             <Rocket className="w-4 h-4 tl-next-icon" />
             <span className="text-sm font-semibold tl-next-text">
-              Próximo: mais 3 apps no ecossistema
+              {t("nextTeaser")}
             </span>
             <span className="flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-indigo-400 opacity-75" />

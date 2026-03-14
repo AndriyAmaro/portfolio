@@ -20,6 +20,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
 
 // ---------------------------------------------------------------------------
@@ -67,15 +68,11 @@ function PulseFinanceLogo({ className }: { className?: string }) {
 interface ProjectData {
   id: string;
   name: string;
-  tagline: string;
-  description: string;
+  tKey: string;
   logoComponent: "pulse-ds" | "pulse-chat" | "pulse-finance";
   color: "indigo" | "teal" | "emerald";
-  metrics: { label: string; value: string }[];
-  highlights: { icon: typeof Layers; text: string }[];
-  problem: string;
-  solution: string;
-  challenges: string[];
+  metricValues: { key: string; value: string }[];
+  highlightIcons: (typeof Layers)[];
   tech: string[];
   liveUrl: string;
   githubUrl: string;
@@ -86,31 +83,16 @@ const projectsData: ProjectData[] = [
   {
     id: "pulse-ds",
     name: "Pulse Design System",
-    tagline: "A fundação do ecossistema",
-    description:
-      "Design system production-grade com Atomic Design, 25 variantes de dashboard, animações SVG customizadas e acessibilidade completa com Radix UI.",
+    tKey: "pulseDs",
     logoComponent: "pulse-ds",
     color: "indigo",
-    metrics: [
-      { label: "Componentes", value: "100+" },
-      { label: "Páginas", value: "56" },
-      { label: "Dashboards", value: "25" },
-      { label: "Idiomas", value: "3" },
+    metricValues: [
+      { key: "components", value: "100+" },
+      { key: "pages", value: "56" },
+      { key: "dashboards", value: "25" },
+      { key: "languages", value: "3" },
     ],
-    highlights: [
-      { icon: Layers, text: "Atomic Design · Tokens → Pages" },
-      { icon: Globe, text: "i18n com pathname routing" },
-      { icon: Shield, text: "Acessibilidade Radix UI" },
-    ],
-    problem:
-      "Componentes repetidos em cada projeto, sem consistência visual nem reutilização real.",
-    solution:
-      "Design system unificado com tokens, primitivos e padrões que alimenta todos os SaaS do ecossistema.",
-    challenges: [
-      "100+ componentes consistentes",
-      "i18n em 3 idiomas",
-      "Animações SVG sem JS",
-    ],
+    highlightIcons: [Layers, Globe, Shield],
     tech: ["Next.js 16", "React 19", "TypeScript", "Tailwind 4", "Radix UI", "next-intl"],
     liveUrl: "https://pulse-saas-theme.vercel.app",
     githubUrl: "https://github.com/AndriyAmaro/pulse-saas-theme",
@@ -119,31 +101,16 @@ const projectsData: ProjectData[] = [
   {
     id: "pulse-chat",
     name: "Pulse Chat",
-    tagline: "Real-time communication",
-    description:
-      "Chat full-stack com WebSocket, 32 eventos tipados, queue offline com retry exponencial e 40+ componentes adaptados do Design System.",
+    tKey: "pulseChat",
     logoComponent: "pulse-chat",
     color: "teal",
-    metrics: [
-      { label: "Testes", value: "98" },
-      { label: "Eventos WS", value: "32" },
-      { label: "Componentes", value: "40+" },
-      { label: "Uptime", value: "99%" },
+    metricValues: [
+      { key: "tests", value: "98" },
+      { key: "wsEvents", value: "32" },
+      { key: "components", value: "40+" },
+      { key: "uptime", value: "99%" },
     ],
-    highlights: [
-      { icon: Radio, text: "WebSocket com reconnection sync" },
-      { icon: Cpu, text: "Queue offline + exponential backoff" },
-      { icon: Database, text: "3-layer backend architecture" },
-    ],
-    problem:
-      "Ir além de CRUD · comunicação real-time com estado concorrente e resiliência.",
-    solution:
-      "Arquitetura event-driven com type safety end-to-end e mecanismos de recuperação automática.",
-    challenges: [
-      "Estado concorrente multi-user",
-      "Queue offline com retry",
-      "40+ componentes adaptados",
-    ],
+    highlightIcons: [Radio, Cpu, Database],
     tech: ["React 19", "Express 5", "Socket.io", "Prisma 7", "PostgreSQL", "Docker"],
     liveUrl: "https://realtime-chat-eight-beryl.vercel.app",
     githubUrl: "https://github.com/AndriyAmaro/realtime-chat",
@@ -152,31 +119,16 @@ const projectsData: ProjectData[] = [
   {
     id: "pulse-finance",
     name: "Pulse Finance",
-    tagline: "Financial dashboard",
-    description:
-      "SaaS financeiro multi-tenant com Clean Architecture, API Hono type-safe, cache Redis e background jobs com BullMQ.",
+    tKey: "pulseFinance",
     logoComponent: "pulse-finance",
     color: "emerald",
-    metrics: [
-      { label: "Testes", value: "143" },
-      { label: "Arquitetura", value: "Clean" },
-      { label: "Cache", value: "Redis" },
-      { label: "Jobs", value: "BullMQ" },
+    metricValues: [
+      { key: "tests", value: "143" },
+      { key: "architecture", value: "Clean" },
+      { key: "cache", value: "Redis" },
+      { key: "jobs", value: "BullMQ" },
     ],
-    highlights: [
-      { icon: Shield, text: "Multi-tenancy com isolamento" },
-      { icon: Cpu, text: "Background jobs assíncronos" },
-      { icon: Database, text: "Cache invalidation Redis" },
-    ],
-    problem:
-      "Demonstrar arquitetura production-ready com multi-tenancy, cache e processamento assíncrono.",
-    solution:
-      "Clean Architecture com camadas definidas, Redis para performance e BullMQ para jobs pesados.",
-    challenges: [
-      "Multi-tenancy isolado",
-      "Cache invalidation",
-      "CSV import background",
-    ],
+    highlightIcons: [Shield, Cpu, Database],
     tech: ["Next.js 15", "Hono 4", "Prisma 6", "PostgreSQL", "Redis", "BullMQ"],
     liveUrl: "https://dashboard-finance-swart.vercel.app",
     githubUrl: "https://github.com/AndriyAmaro/finance-flow",
@@ -296,14 +248,14 @@ function ScreenshotCarousel({ screenshots, color, name }: { screenshots: string[
       <button
         onClick={() => go(-1)}
         className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-200 hover:bg-black/60"
-        aria-label="Anterior"
+        aria-label="Previous"
       >
         <ChevronLeft className="w-4 h-4 text-white" />
       </button>
       <button
         onClick={() => go(1)}
         className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-200 hover:bg-black/60"
-        aria-label="Próximo"
+        aria-label="Next"
       >
         <ChevronRight className="w-4 h-4 text-white" />
       </button>
@@ -342,9 +294,11 @@ function ProjectLogo({ type, className }: { type: ProjectData["logoComponent"]; 
 // ---------------------------------------------------------------------------
 // Project Card Component
 // ---------------------------------------------------------------------------
-function ProjectCard({ project, index }: { project: ProjectData; index: number }) {
+function ProjectCard({ project, index, t }: { project: ProjectData; index: number; t: { (key: string): string; raw: (key: string) => unknown } }) {
   const c = colors[project.color];
   const [expanded, setExpanded] = useState(false);
+  const highlights = t.raw(`${project.tKey}.highlights`) as string[];
+  const challenges = t.raw(`${project.tKey}.challenges`) as string[];
 
   return (
     <motion.article
@@ -374,31 +328,34 @@ function ProjectCard({ project, index }: { project: ProjectData; index: number }
             </div>
             <div className="min-w-0">
               <h3 className="proj-card-title text-lg font-bold leading-tight">{project.name}</h3>
-              <p className={`text-xs font-medium ${c.text} proj-card-tagline`}>{project.tagline}</p>
+              <p className={`text-xs font-medium ${c.text} proj-card-tagline`}>{t(`${project.tKey}.tagline`)}</p>
             </div>
           </div>
 
           {/* Description */}
-          <p className="text-sm leading-relaxed mb-4 proj-card-description">{project.description}</p>
+          <p className="text-sm leading-relaxed mb-4 proj-card-description">{t(`${project.tKey}.description`)}</p>
 
           {/* Metrics grid - responsive text */}
           <div className="grid grid-cols-4 gap-1.5 mb-4">
-            {project.metrics.map((m) => (
-              <div key={m.label} className="proj-metric text-center py-2 px-1 rounded-lg overflow-hidden">
+            {project.metricValues.map((m) => (
+              <div key={m.key} className="proj-metric text-center py-2 px-1 rounded-lg overflow-hidden">
                 <div className={`text-sm font-bold ${c.text} truncate`}>{m.value}</div>
-                <div className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-wider proj-metric-label truncate">{m.label}</div>
+                <div className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-wider proj-metric-label truncate">{t(`${project.tKey}.metrics.${m.key}`)}</div>
               </div>
             ))}
           </div>
 
           {/* Architecture highlights */}
           <div className="space-y-1.5 mb-4">
-            {project.highlights.map((h) => (
-              <div key={h.text} className="flex items-center gap-2 proj-highlight">
-                <h.icon className={`w-3.5 h-3.5 ${c.text} shrink-0`} />
-                <span className="text-xs proj-highlight-text">{h.text}</span>
-              </div>
-            ))}
+            {highlights.map((text, i) => {
+              const Icon = project.highlightIcons[i];
+              return (
+                <div key={i} className="flex items-center gap-2 proj-highlight">
+                  <Icon className={`w-3.5 h-3.5 ${c.text} shrink-0`} />
+                  <span className="text-xs proj-highlight-text">{text}</span>
+                </div>
+              );
+            })}
           </div>
 
           {/* Expandable Problem → Solution */}
@@ -409,7 +366,7 @@ function ProjectCard({ project, index }: { project: ProjectData; index: number }
           >
             <span className="text-xs font-semibold proj-expand-label flex items-center gap-1.5">
               <Lightbulb className={`w-3.5 h-3.5 ${c.text}`} />
-              Problema → Solução
+              {t("problemSolution")}
             </span>
             <ArrowRight
               className={`w-3.5 h-3.5 proj-expand-icon transition-transform duration-300 ${expanded ? "rotate-90" : ""}`}
@@ -427,22 +384,22 @@ function ProjectCard({ project, index }: { project: ProjectData; index: number }
               <div className="flex gap-2">
                 <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400/80">Problema</span>
-                  <p className="text-xs proj-problem-text leading-relaxed">{project.problem}</p>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400/80">{t("problemLabel")}</span>
+                  <p className="text-xs proj-problem-text leading-relaxed">{t(`${project.tKey}.problem`)}</p>
                 </div>
               </div>
               {/* Solution */}
               <div className="flex gap-2">
                 <Zap className={`w-4 h-4 ${c.text} shrink-0 mt-0.5`} />
                 <div>
-                  <span className={`text-[10px] font-bold uppercase tracking-wider ${c.text} opacity-80`}>Solução</span>
-                  <p className="text-xs proj-solution-text leading-relaxed">{project.solution}</p>
+                  <span className={`text-[10px] font-bold uppercase tracking-wider ${c.text} opacity-80`}>{t("solutionLabel")}</span>
+                  <p className="text-xs proj-solution-text leading-relaxed">{t(`${project.tKey}.solution`)}</p>
                 </div>
               </div>
               {/* Challenges */}
               <div className="flex flex-wrap gap-1.5 pt-1">
-                {project.challenges.map((ch) => (
-                  <span key={ch} className="proj-challenge-chip px-2 py-0.5 rounded-md text-[10px] font-medium">
+                {challenges.map((ch, i) => (
+                  <span key={i} className="proj-challenge-chip px-2 py-0.5 rounded-md text-[10px] font-medium">
                     {ch}
                   </span>
                 ))}
@@ -464,13 +421,13 @@ function ProjectCard({ project, index }: { project: ProjectData; index: number }
             <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex-1 min-w-0">
               <button className={`w-full flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all duration-300 bg-gradient-to-r ${c.gradient} text-white hover:shadow-lg ${c.glow} hover:opacity-90`}>
                 <ExternalLink className="w-3.5 h-3.5 shrink-0" />
-                <span className="truncate">Live Demo</span>
+                <span className="truncate">{t("liveDemo")}</span>
               </button>
             </a>
             <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="flex-1 min-w-0">
               <button className="w-full proj-btn-code flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all duration-300">
                 <Github className="w-3.5 h-3.5 shrink-0" />
-                <span className="truncate">Código</span>
+                <span className="truncate">{t("viewCode")}</span>
               </button>
             </a>
           </div>
@@ -511,6 +468,7 @@ function useCountUp(target: number, duration = 2000) {
 // Main Projects Section
 // ---------------------------------------------------------------------------
 export function Projects() {
+  const t = useTranslations("projects");
   const [isLightMode, setIsLightMode] = useState(false);
   const totalTests = useCountUp(381, 2000);
 
@@ -546,22 +504,22 @@ export function Projects() {
           >
             <TestTubes className="w-3.5 h-3.5 proj-badge-icon" />
             <span className="text-xs font-semibold tracking-wider uppercase proj-badge-text">
-              <span ref={totalTests.ref} className="tabular-nums">{totalTests.count}</span>+ Testes no Ecossistema
+              <span ref={totalTests.ref} className="tabular-nums">{totalTests.count}</span>+ {t("badge")}
             </span>
           </motion.div>
 
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            Projetos <span className="gradient-text">Production-Ready</span>
+            {t("title")} <span className="gradient-text">{t("titleHighlight")}</span>
           </h2>
           <p className="projects-subtitle max-w-2xl mx-auto">
-            Cada projeto é um case study completo · do problema à solução, com arquitetura documentada, testes e deploy automatizado
+            {t("subtitle")}
           </p>
         </motion.div>
 
         {/* Projects grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projectsData.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
+            <ProjectCard key={project.id} project={project} index={index} t={t} />
           ))}
         </div>
 
@@ -581,7 +539,7 @@ export function Projects() {
           >
             <div className="github-cta-btn group inline-flex items-center gap-3 px-6 py-3 rounded-full font-medium transition-all duration-300 hover:-translate-y-1">
               <Github className="w-5 h-5" />
-              <span>Ver Todos no GitHub</span>
+              <span>{t("githubCta")}</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
             </div>
           </a>

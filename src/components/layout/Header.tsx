@@ -4,25 +4,28 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { Moon, Sun } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
+import { Link } from "../../../i18n/navigation";
 import { Button } from "../ui/Button";
+import { LanguageSwitcher } from "../ui/LanguageSwitcher";
 
-const navLinks = [
-  { label: "Sobre", href: "#about" },
-  { label: "Habilidades", href: "#skills" },
-  { label: "Ecosystem", href: "#ecosystem" },
-  { label: "Projetos", href: "#projects" },
-  { label: "Codigo", href: "#code" },
-  { label: "Jornada", href: "#journey" },
-  { label: "Servicos", href: "#services" },
-  { label: "Contato", href: "#contact" },
-];
+const navKeys = [
+  { key: "about", href: "#about" },
+  { key: "skills", href: "#skills" },
+  { key: "ecosystem", href: "#ecosystem" },
+  { key: "projects", href: "#projects" },
+  { key: "code", href: "#code" },
+  { key: "journey", href: "#journey" },
+  { key: "services", href: "#services" },
+  { key: "contact", href: "#contact" },
+] as const;
 
 // Section IDs for scroll tracking
-const sectionIds = navLinks.map((l) => l.href.replace("#", ""));
+const sectionIds = navKeys.map((l) => l.href.replace("#", ""));
 
 export function Header() {
+  const t = useTranslations("header");
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDark, setIsDark] = useState(true);
@@ -140,11 +143,11 @@ export function Header() {
 
         {/* Desktop Navigation with active indicator */}
         <ul className="hidden md:flex items-center gap-1">
-          {navLinks.map((link) => {
+          {navKeys.map((link) => {
             const isActive = activeSection === link.href.replace("#", "");
             return (
               <li key={link.href}>
-                <Link
+                <a
                   href={link.href}
                   className={cn(
                     "relative px-2.5 py-1 text-xs font-medium rounded-lg transition-all duration-300",
@@ -165,46 +168,52 @@ export function Header() {
                       }}
                     />
                   )}
-                  <span className="relative z-10">{link.label}</span>
-                </Link>
+                  <span className="relative z-10">{t(`nav.${link.key}`)}</span>
+                </a>
               </li>
             );
           })}
         </ul>
 
-        {/* Theme Toggle & CTA Button */}
-        <div className="hidden md:flex items-center gap-3">
+        {/* Theme Toggle, Language Switcher & CTA Button */}
+        <div className="hidden md:flex items-center gap-2">
           {mounted && (
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg bg-[var(--card-bg)] border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--foreground)] hover:border-[var(--border-hover)] transition-all duration-200 active:scale-95"
-              aria-label={isDark ? "Ativar modo claro" : "Ativar modo escuro"}
-            >
-              {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </button>
+            <>
+              <LanguageSwitcher />
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-lg bg-[var(--card-bg)] border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--foreground)] hover:border-[var(--border-hover)] transition-all duration-200 active:scale-95"
+                aria-label={isDark ? t("themeLight") : t("themeDark")}
+              >
+                {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              </button>
+            </>
           )}
-          <Link href="#contact">
+          <a href="#contact">
             <Button variant="primary" size="sm" className="active:scale-[0.97] transition-transform">
-              Fale Comigo
+              {t("cta")}
             </Button>
-          </Link>
+          </a>
         </div>
 
         {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center gap-2">
           {mounted && (
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg bg-[var(--card-bg)] border border-[var(--border)] text-[var(--text-muted)] active:scale-95 transition-transform"
-              aria-label={isDark ? "Ativar modo claro" : "Ativar modo escuro"}
-            >
-              {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </button>
+            <>
+              <LanguageSwitcher />
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-lg bg-[var(--card-bg)] border border-[var(--border)] text-[var(--text-muted)] active:scale-95 transition-transform"
+                aria-label={isDark ? t("themeLight") : t("themeDark")}
+              >
+                {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              </button>
+            </>
           )}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="flex flex-col gap-1 p-2 active:scale-95 transition-transform"
-            aria-label="Alternar menu"
+            aria-label={t("menuToggle")}
             aria-expanded={isMobileMenuOpen}
           >
             <span
@@ -240,11 +249,11 @@ export function Header() {
         className="md:hidden overflow-hidden glass"
       >
         <ul className="container-custom py-3 flex flex-col gap-0.5">
-          {navLinks.map((link) => {
+          {navKeys.map((link) => {
             const isActive = activeSection === link.href.replace("#", "");
             return (
               <li key={link.href}>
-                <Link
+                <a
                   href={link.href}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={cn(
@@ -254,17 +263,17 @@ export function Header() {
                       : "text-[var(--text-muted)] hover:text-[var(--foreground)]"
                   )}
                 >
-                  {link.label}
-                </Link>
+                  {t(`nav.${link.key}`)}
+                </a>
               </li>
             );
           })}
           <li className="pt-2">
-            <Link href="#contact" onClick={() => setIsMobileMenuOpen(false)} className="block">
+            <a href="#contact" onClick={() => setIsMobileMenuOpen(false)} className="block">
               <Button variant="primary" size="sm" className="w-full active:scale-[0.97]">
-                Fale Comigo
+                {t("cta")}
               </Button>
-            </Link>
+            </a>
           </li>
         </ul>
       </motion.div>
