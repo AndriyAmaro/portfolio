@@ -20,7 +20,9 @@
 <br />
 
 <div align="center">
-  <img src=".github/screenshots/hero-banner.png" alt="Portfolio Hero" width="100%" />
+  <img src=".github/screenshots/hero-dark.png" alt="Portfolio Hero · Dark Mode" width="100%" />
+  <br /><br />
+  <img src=".github/screenshots/hero-light.png" alt="Portfolio Hero · Light Mode" width="100%" />
 </div>
 
 <br />
@@ -78,18 +80,28 @@ Financial dashboard with Clean Architecture, multi-tenancy isolation, Redis cach
 ## Screenshots
 
 <div align="center">
-  <img src=".github/screenshots/projects.png" alt="Projects Section" width="100%" />
+  <img src=".github/screenshots/projects-dark.png" alt="Projects Section · Dark" width="100%" />
   <br /><br />
-  <img src=".github/screenshots/code-in-action.png" alt="Code In Action" width="100%" />
+  <img src=".github/screenshots/code-dark.png" alt="Code In Action · Dark" width="100%" />
   <br /><br />
-  <img src=".github/screenshots/ecosystem.png" alt="Pulse Ecosystem" width="100%" />
+  <img src=".github/screenshots/ecosystem-dark.png" alt="Pulse Ecosystem · Dark" width="100%" />
 </div>
+
+<details>
+<summary><strong>Light Mode</strong></summary>
+<br />
+<div align="center">
+  <img src=".github/screenshots/projects-light.png" alt="Projects Section · Light" width="100%" />
+</div>
+</details>
 
 <details>
 <summary><strong>Mobile Preview</strong></summary>
 <br />
 <div align="center">
-  <img src=".github/screenshots/mobile-preview.png" alt="Mobile Preview" width="280" />
+  <img src=".github/screenshots/mobile-dark.png" alt="Mobile · Dark" width="280" />
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src=".github/screenshots/mobile-light.png" alt="Mobile · Light" width="280" />
 </div>
 </details>
 
