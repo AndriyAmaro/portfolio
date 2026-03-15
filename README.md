@@ -27,9 +27,9 @@
 
 <br />
 
-## What is this?
+## About This Project
 
-This isn't a generic portfolio template. It's an **engineering showcase** built to demonstrate real-world full-stack capabilities through the **Pulse Ecosystem** — a suite of interconnected production applications sharing a unified design system.
+A personal portfolio built to reflect how I think about software — from component architecture to deployment pipelines. Every section is a working example of the tools and patterns I use daily across the **Pulse Ecosystem**, a suite of interconnected apps sharing a unified design system.
 
 ### The Numbers
 
