@@ -1,11 +1,12 @@
-<svg viewBox="0 0 1200 60" xmlns="http://www.w3.org/2000/svg">
+<svg width="1440" height="120" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="wave-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:0.15" />
-      <stop offset="50%" style="stop-color:#8b5cf6;stop-opacity:0.25" />
-      <stop offset="100%" style="stop-color:#6366f1;stop-opacity:0.15" />
+    <linearGradient id="waveGrad" x1="0" y1="0" x2="1440" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="50%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#6366f1"/>
     </linearGradient>
   </defs>
-  <path d="M0,30 C200,60 400,0 600,30 C800,60 1000,0 1200,30 L1200,60 L0,60 Z" fill="url(#wave-grad)"/>
-  <path d="M0,35 C300,55 500,10 700,35 C900,55 1100,15 1200,35 L1200,60 L0,60 Z" fill="url(#wave-grad)" opacity="0.5"/>
+  <path d="M0,64 C120,100 240,110 360,90 C480,70 600,20 720,24 C840,28 960,80 1080,96 C1200,112 1320,88 1440,64 L1440,120 L0,120 Z" fill="url(#waveGrad)" opacity="0.15"/>
+  <path d="M0,80 C160,110 320,120 480,100 C640,80 720,40 880,36 C1040,32 1200,72 1360,96 L1440,104 L1440,120 L0,120 Z" fill="url(#waveGrad)" opacity="0.3"/>
+  <path d="M0,96 C200,120 400,112 600,96 C800,80 900,56 1080,64 C1200,70 1320,100 1440,108 L1440,120 L0,120 Z" fill="url(#waveGrad)" opacity="0.6"/>
 </svg>
