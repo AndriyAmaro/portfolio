@@ -56,11 +56,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: t("title"),
       description: t("ogDescription"),
       siteName: t("siteName"),
+      images: [
+        {
+          url: "/og-image.jpg",
+          width: 1200,
+          height: 627,
+          alt: "Andri Amaro — Full Stack Developer Portfolio",
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: t("title"),
       description: t("twitterDescription"),
+      images: ["/og-image.jpg"],
     },
     robots: {
       index: true,
