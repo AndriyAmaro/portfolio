@@ -13,7 +13,7 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-const BASE_URL = "https://portfolio-andriyamaros-projects.vercel.app";
+const BASE_URL = "https://portfolio-three-kappa-11.vercel.app";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
