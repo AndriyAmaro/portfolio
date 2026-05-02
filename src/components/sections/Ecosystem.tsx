@@ -160,9 +160,6 @@ const liveApps: EcoNode[] = [
     githubUrl: "https://github.com/AndriyAmaro/finance-flow",
     status: "live",
   },
-];
-
-const comingApps: EcoNode[] = [
   {
     id: "vexiat",
     name: "Vexiat",
@@ -174,11 +171,16 @@ const comingApps: EcoNode[] = [
     borderClass: "border-amber-500/20",
     bgClass: "bg-amber-500/10",
     glowColor: "rgba(245, 158, 11, 0.1)",
-    techStack: [],
+    techStack: ["Vite", "React 19", "TypeScript", "Node.js", "Prisma"],
     metrics: [],
     architecture: "",
-    status: "coming",
+    liveUrl: "https://vexiat.andrifullstack.workers.dev",
+    githubUrl: "https://github.com/AndriyAmaro/vexiat",
+    status: "live",
   },
+];
+
+const comingApps: EcoNode[] = [
   {
     id: "pulse-market",
     name: "Pulse Market",
