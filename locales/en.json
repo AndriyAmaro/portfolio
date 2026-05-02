@@ -321,13 +321,14 @@
         "tagline": "Inherits dashboard variants and data components from the DS · adds cache layer",
         "role": "Dashboard",
         "sharedLabel": "Inherits from DS"
+      },
+      "vexiat": {
+        "tagline": "Project management SaaS with Kanban, Stripe billing and granular RBAC",
+        "role": "Project Management",
+        "sharedLabel": "Standalone stack"
       }
     },
     "comingApps": {
-      "vexiat": {
-        "tagline": "Project management SaaS with Kanban, Stripe billing and granular RBAC",
-        "role": "Project Management"
-      },
       "pulseMarket": {
         "tagline": "Multi-vendor marketplace with Stripe Connect, split payments and search engine",
         "role": "Marketplace"

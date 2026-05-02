@@ -321,13 +321,14 @@
         "tagline": "Hereda dashboard variants y data components del DS · agrega capa de cache",
         "role": "Dashboard",
         "sharedLabel": "Hereda del DS"
+      },
+      "vexiat": {
+        "tagline": "SaaS de project management con Kanban, Stripe billing y RBAC granular",
+        "role": "Project Management",
+        "sharedLabel": "Stack independiente"
       }
     },
     "comingApps": {
-      "vexiat": {
-        "tagline": "SaaS de project management con Kanban, Stripe billing y RBAC granular",
-        "role": "Project Management"
-      },
       "pulseMarket": {
         "tagline": "Marketplace multi-vendor con Stripe Connect, split payments y search engine",
         "role": "Marketplace"
