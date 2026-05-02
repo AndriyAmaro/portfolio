@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const BASE_URL = "https://portfolio-andriamaro.vercel.app";
+const BASE_URL = "https://portfolio.andrifullstack.workers.dev";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

@@ -99,7 +99,7 @@ export function buildContactEmailHtml({ name, email, message }: ContactEmailProp
           <tr>
             <td style="padding:20px 40px;background-color:rgba(0,0,0,0.2);border-top:1px solid rgba(255,255,255,0.04);">
               <span style="color:#6b7280;font-size:12px;">
-                Enviado via formulário de contato · portfolio-andriamaro.vercel.app
+                Enviado via formulário de contato · portfolio.andrifullstack.workers.dev
               </span>
             </td>
           </tr>
@@ -122,7 +122,7 @@ Mensagem:
 ${message}
 
 ---
-Enviado via formulário de contato · portfolio-andriamaro.vercel.app`;
+Enviado via formulário de contato · portfolio.andrifullstack.workers.dev`;
 }
 
 function escapeHtml(str: string): string {
