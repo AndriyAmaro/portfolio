@@ -17,7 +17,7 @@ export const projects: Project[] = [
       "Radix UI",
       "next-intl",
     ],
-    liveUrl: "https://pulse-saas-theme.vercel.app",
+    liveUrl: "https://pulse-saas-theme.andrifullstack.workers.dev",
     githubUrl: "https://github.com/AndriyAmaro/pulse-saas-theme",
     problem:
       "Falta de consistencia visual entre projetos e componentes repetidos em cada novo app.",
@@ -75,7 +75,7 @@ export const projects: Project[] = [
       "Redis",
       "BullMQ",
     ],
-    liveUrl: "https://dashboard-finance-swart.vercel.app",
+    liveUrl: "https://dashboard-finance.andrifullstack.workers.dev",
     githubUrl: "https://github.com/AndriyAmaro/finance-flow",
     problem:
       "Demonstrar arquitetura production-ready com multi-tenancy, cache e background jobs.",

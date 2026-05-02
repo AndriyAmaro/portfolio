@@ -44,3 +44,7 @@ next-env.d.ts
 planofinal.md
 
 .vercel
+
+# Cloudflare Workers / OpenNext
+.open-next/
+.wrangler/
