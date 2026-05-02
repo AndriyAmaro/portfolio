@@ -112,7 +112,7 @@ const projectsData: ProjectData[] = [
     ],
     highlightIcons: [Radio, Cpu, Database],
     tech: ["React 19", "Express 5", "Socket.io", "Prisma 7", "PostgreSQL", "Docker"],
-    liveUrl: "https://realtime-chat-eight-beryl.vercel.app",
+    liveUrl: "https://realtime-chat.andrifullstack.workers.dev",
     githubUrl: "https://github.com/AndriyAmaro/realtime-chat",
     screenshots: ["/projects/chat-1.jpeg", "/projects/chat-2.jpeg", "/projects/chat-3.jpeg"],
   },

@@ -137,7 +137,7 @@ const liveApps: EcoNode[] = [
     metrics: [],
     architecture: "",
     shared: ["40+ Components", "Color Tokens", "Typography", "Spacing Scale"],
-    liveUrl: "https://realtime-chat-eight-beryl.vercel.app",
+    liveUrl: "https://realtime-chat.andrifullstack.workers.dev",
     githubUrl: "https://github.com/AndriyAmaro/realtime-chat",
     status: "live",
   },

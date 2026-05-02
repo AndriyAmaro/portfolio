@@ -46,7 +46,7 @@ export const projects: Project[] = [
       "PostgreSQL",
       "Docker",
     ],
-    liveUrl: "https://realtime-chat-eight-beryl.vercel.app",
+    liveUrl: "https://realtime-chat.andrifullstack.workers.dev",
     githubUrl: "https://github.com/AndriyAmaro/realtime-chat",
     problem:
       "Construir algo que vai alem de CRUD · comunicacao real-time com estado concorrente.",
