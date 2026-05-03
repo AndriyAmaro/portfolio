@@ -1,17 +1,17 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Layers, TestTubes, GitBranch, Rocket } from "lucide-react";
+import { Sparkles, ShieldCheck, BadgeCheck, Zap } from "lucide-react";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
 import Image from "next/image";
 
 const highlights = [
-  { icon: Layers, key: "architecture" },
-  { icon: TestTubes, key: "tests" },
-  { icon: GitBranch, key: "docs" },
-  { icon: Rocket, key: "deploy" },
+  { icon: Sparkles, key: "ai" },
+  { icon: ShieldCheck, key: "production" },
+  { icon: BadgeCheck, key: "quality" },
+  { icon: Zap, key: "aiAssisted" },
 ] as const;
 
 const techStack = [
@@ -266,7 +266,7 @@ export function About() {
               </p>
 
               <p>
-                {t("paragraph3")}
+                {t("paragraph3prefix")} <span className="font-semibold text-indigo-400">{t("paragraph3highlight")}</span> {t("paragraph3suffix")}
               </p>
             </div>
           </motion.div>

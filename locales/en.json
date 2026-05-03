@@ -50,30 +50,32 @@
   "about": {
     "title": "About",
     "titleHighlight": "Me",
-    "subtitle": "Who I am, what I've built, and how I can help with your next project",
-    "heading": "Product-oriented",
-    "headingHighlight": "Full Stack Developer",
-    "paragraph1": "I'm a Full Stack Developer focused on React, Next.js and Node.js. I don't just build screens or isolated APIs · I design and implement complete applications, from the design system to production deployment.",
-    "paragraph2prefix": "I built the",
-    "paragraph2highlight": "Pulse Ecosystem",
-    "paragraph2suffix": "from scratch: a design system with 100+ components that serves as the foundation for multiple production apps · dashboards, real-time platforms, marketplaces and more to come.",
-    "paragraph3": "Every project has documented architecture, automated tests, CI/CD configured and technical decisions recorded in ADRs. It's not just code that works · it's code that scales and that other devs can maintain.",
+    "subtitle": "I build multi-tenant SaaS with AI treated as infrastructure, not wrapper",
+    "heading": "While most call an LLM, I build the",
+    "headingHighlight": "orchestrator",
+    "paragraph1": "Full Stack Developer focused on multi-tenant SaaS with native AI in production. Real end-to-end ownership: frontend, backend, database with vector extensions (pgvector + HNSW), distributed cache (Redis), queues (BullMQ), real-time (Socket.io), structured observability, security and CI/CD. I don't outsource architectural decisions · I design, implement and operate.",
+    "paragraph2prefix": "Currently building",
+    "paragraph2highlight": "Sellorex",
+    "paragraph2suffix": "· B2B SaaS with native AI: 107 relational models, 1036 REST endpoints, end-to-end multi-tenant with Row-Level Security, 12 specialized agents (orchestrator + 11 business + super admin with 227 tools across 43 categories) coordinated via Event Bus pub/sub in 10 Worlds. Multi-provider LLM gateway with automatic fallback, 5-layer anti-hallucination, 3-tier Budget Enforcement, hierarchical Memory System with semantic deduplication.",
+    "paragraph3prefix": "Before Sellorex I built the",
+    "paragraph3highlight": "Pulse Ecosystem",
+    "paragraph3suffix": "· 4 production-ready apps sharing a design system, 380+ tests, 740+ commits · Pulse Theme already commercially published. Each app deployed and in use · zero abandoned code in portfolio.",
     "highlights": {
-      "architecture": {
-        "title": "Complete Architecture",
-        "description": "From design system to deploy. Tokens, components, pages, API, database and cache in a single ecosystem."
+      "ai": {
+        "title": "AI as infrastructure",
+        "description": "While most add a wrapper over an AI SDK, I build the gateway. Structured response framework in 4 layers (Result · Insight · Action · Next Step), 5-layer anti-hallucination, 3-tier Budget Enforcement, hierarchical Memory System with semantic deduplication."
       },
-      "tests": {
-        "title": "380+ Tests",
-        "description": "Unit, integration and e2e with Vitest and Testing Library. Real coverage, not just padding numbers."
+      "production": {
+        "title": "Production-ready from day 1",
+        "description": "Multi-tenancy with Row-Level Security correctly implemented from the first migration · not retrofitted later. Race conditions resolved, retry with exponential backoff, dead letter queue, cursor pagination, granular RBAC, audit logs, webhooks with HMAC verification, idempotency keys."
       },
-      "docs": {
-        "title": "Technical Documentation",
-        "description": "ADRs, SVG diagrams, scaling guides. Every architectural decision is documented and justified."
+      "quality": {
+        "title": "Quality as standard, not feature",
+        "description": "TypeScript strict mode, runtime validation on every input (Zod), 380+ automated tests (unit + integration + E2E), mandatory CI/CD, ADRs on every architectural decision, conventional commits across all repos."
       },
-      "deploy": {
-        "title": "Continuous Deployment",
-        "description": "CI/CD with GitHub Actions, automatic deploy on Vercel and Railway, conventional commits across all repos."
+      "aiAssisted": {
+        "title": "AI-assisted engineering as edge",
+        "description": "Autonomous engineering workflow with contextual skill detection, proactive quality guardian, parallel sub-agents connected to observability, infra, repo, database and cache. 3-5x productivity with preserved quality · AI is part of the stack, not a shortcut."
       }
     }
   },
