@@ -345,6 +345,7 @@ const BURST_WORDS = [
   "Vitest", "Zod", "Git", "Vercel", "Express",
   "CI/CD", "REST API", "Framer Motion", "Hono", "Zustand",
   "pgvector", "AI Agents", "Event-Driven", "LLM Gateway", "Multi-tenant",
+  "BullMQ", "WebSocket", "JavaScript", "Cloudflare", "TanStack Query",
 ];
 
 function TitleBurst() {
