@@ -38,7 +38,7 @@
     "metrics": {
       "models": "Prisma Models",
       "endpoints": "REST Endpoints",
-      "agents": "AI Agents",
+      "aiTools": "AI Tools",
       "apps": "SaaS in production"
     },
     "description": "Full Stack Developer specialized in multi-tenant SaaS with native AI. Building <highlight>Sellorex</highlight> · B2B SaaS with 107 models, 1036 endpoints, 12 AI agents orchestrated via multi-provider gateway with fallback. Plus the <highlight>Pulse Ecosystem</highlight> · 4 production-ready SaaS, 380+ tests, 740+ commits.",
@@ -99,7 +99,7 @@
     "stats": {
       "models": "Prisma Models",
       "endpoints": "REST Endpoints",
-      "agents": "AI Agents",
+      "aiTools": "AI Tools",
       "apps": "SaaS in production"
     },
     "aiBadge": {

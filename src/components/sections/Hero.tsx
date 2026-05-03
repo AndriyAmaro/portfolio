@@ -180,7 +180,7 @@ export function Hero() {
   const metrics: Metric[] = [
     { value: 107, suffix: "", label: t("metrics.models") },
     { value: 1036, suffix: "", label: t("metrics.endpoints") },
-    { value: 12, suffix: "", label: t("metrics.agents") },
+    { value: 394, suffix: "", label: t("metrics.aiTools") },
     { value: 4, suffix: "", label: t("metrics.apps") },
   ];
 

@@ -201,7 +201,7 @@ const skillCategories = importedSkills.map((cat) => ({
 const stats = [
   { icon: Layers, value: 107, suffix: "", labelKey: "stats.models" },
   { icon: Server, value: 1036, suffix: "", labelKey: "stats.endpoints" },
-  { icon: FlaskConical, value: 12, suffix: "", labelKey: "stats.agents" },
+  { icon: FlaskConical, value: 394, suffix: "", labelKey: "stats.aiTools" },
   { icon: AppWindow, value: 4, suffix: "", labelKey: "stats.apps" },
 ];
 
