@@ -36,8 +36,8 @@
       "Frontend · React · Next.js · Tailwind · HTML · CSS · Motion"
     ],
     "metrics": {
-      "models": "Prisma Models",
-      "endpoints": "REST Endpoints",
+      "docker": "Docker runtime",
+      "queryP95": "Query p95",
       "aiTools": "AI Tools",
       "apps": "SaaS in production"
     },
@@ -97,8 +97,8 @@
       "beginner": "Beginner"
     },
     "stats": {
-      "models": "Prisma Models",
-      "endpoints": "REST Endpoints",
+      "docker": "Docker runtime",
+      "queryP95": "Query p95",
       "aiTools": "AI Tools",
       "apps": "SaaS in production"
     },

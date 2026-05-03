@@ -199,8 +199,8 @@ const skillCategories = importedSkills.map((cat) => ({
 
 // Stats (labels come from translations via key) · matches Hero metrics
 const stats = [
-  { icon: Layers, value: 107, suffix: "", labelKey: "stats.models" },
-  { icon: Server, value: 1036, suffix: "", labelKey: "stats.endpoints" },
+  { icon: Layers, value: 75, suffix: "MB", labelKey: "stats.docker" },
+  { icon: Server, value: 50, suffix: "ms", labelKey: "stats.queryP95" },
   { icon: FlaskConical, value: 394, suffix: "", labelKey: "stats.aiTools" },
   { icon: AppWindow, value: 4, suffix: "", labelKey: "stats.apps" },
 ];

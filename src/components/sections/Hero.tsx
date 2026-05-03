@@ -178,8 +178,8 @@ export function Hero() {
   const typedText = useTypingEffect(roles);
 
   const metrics: Metric[] = [
-    { value: 107, suffix: "", label: t("metrics.models") },
-    { value: 1036, suffix: "", label: t("metrics.endpoints") },
+    { value: 75, suffix: "MB", label: t("metrics.docker") },
+    { value: 50, suffix: "ms", label: t("metrics.queryP95") },
     { value: 394, suffix: "", label: t("metrics.aiTools") },
     { value: 4, suffix: "", label: t("metrics.apps") },
   ];
