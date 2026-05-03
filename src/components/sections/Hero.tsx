@@ -176,12 +176,12 @@ export function Hero() {
     { value: 4, suffix: "", label: t("metrics.apps") },
   ];
 
-  // count-up for each metric
+  // count-up for each metric · uniform 1800ms duration matches Skills stats animation
   const counts = [
-    useCountUp(metrics[0].value, 1600),
-    useCountUp(metrics[1].value, 2000),
-    useCountUp(metrics[2].value, 1200),
-    useCountUp(metrics[3].value, 1000),
+    useCountUp(metrics[0].value, 1800),
+    useCountUp(metrics[1].value, 1800),
+    useCountUp(metrics[2].value, 1800),
+    useCountUp(metrics[3].value, 1800),
   ];
 
   return (
