@@ -170,18 +170,18 @@ export function Hero() {
   const typedText = useTypingEffect(roles);
 
   const metrics: Metric[] = [
-    { value: 3, suffix: "+", label: t("metrics.saas") },
-    { value: 100, suffix: "+", label: t("metrics.components") },
-    { value: 380, suffix: "+", label: t("metrics.tests") },
-    { value: 56, suffix: "+", label: t("metrics.pages") },
+    { value: 107, suffix: "", label: t("metrics.models") },
+    { value: 1036, suffix: "", label: t("metrics.endpoints") },
+    { value: 12, suffix: "", label: t("metrics.agents") },
+    { value: 4, suffix: "", label: t("metrics.apps") },
   ];
 
   // count-up for each metric
   const counts = [
-    useCountUp(metrics[0].value, 1200),
-    useCountUp(metrics[1].value, 1800),
-    useCountUp(metrics[2].value, 2000),
-    useCountUp(metrics[3].value, 1600),
+    useCountUp(metrics[0].value, 1600),
+    useCountUp(metrics[1].value, 2000),
+    useCountUp(metrics[2].value, 1200),
+    useCountUp(metrics[3].value, 1000),
   ];
 
   return (
@@ -259,14 +259,14 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.55 }}
             className="flex flex-col sm:flex-row items-center gap-3 mt-2 w-full sm:w-auto"
           >
-            <a href="#ecosystem" className="group w-full sm:w-auto">
+            <a href="#projects" className="group w-full sm:w-auto">
               <button className="hero-btn-primary w-full sm:w-auto flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5">
                 <Sparkles className="w-4 h-4" />
                 {t("ctaPrimary")}
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
               </button>
             </a>
-            <a href="#projects" className="w-full sm:w-auto">
+            <a href="#contact" className="w-full sm:w-auto">
               <button className="hero-btn-secondary w-full sm:w-auto flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5">
                 {t("ctaSecondary")}
               </button>

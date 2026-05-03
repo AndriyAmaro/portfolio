@@ -30,22 +30,22 @@
   },
   "hero": {
     "roles": [
-      "Full Stack Developer",
-      "Design System Architect",
-      "React & Next.js Specialist",
-      "TypeScript Enthusiast"
+      "Full Stack Engineer · Multi-tenant SaaS",
+      "AI Systems Builder · LLMs multi-provider com fallback",
+      "Backend Engineer · Node · TypeScript · PostgreSQL · Redis",
+      "Frontend Engineer · React · Next.js · Tailwind · Motion"
     ],
     "metrics": {
-      "saas": "SaaS Apps",
-      "components": "Componentes",
-      "tests": "Testes",
-      "pages": "Páginas"
+      "models": "Models Prisma",
+      "endpoints": "Endpoints REST",
+      "agents": "Agentes IA",
+      "apps": "SaaS em produção"
     },
-    "description": "Criei o <highlight>Pulse Ecosystem</highlight> do zero · um design system com 100+ componentes que alimenta múltiplos SaaS apps em produção, com testes automatizados e deploy contínuo.",
-    "descriptionHighlight": "Pulse Ecosystem",
-    "descriptionText": "do zero · um design system com 100+ componentes que alimenta múltiplos SaaS apps em produção, com testes automatizados e deploy contínuo.",
-    "ctaPrimary": "Ver Ecosystem",
-    "ctaSecondary": "Ver Projetos"
+    "description": "Engenheiro Full Stack especializado em SaaS multi-tenant com IA nativa. Construo o <highlight>Sellorex</highlight> · SaaS B2B com 107 models, 1036 endpoints, 12 agentes IA orquestrados via gateway multi-provider com fallback. Antes disso criei o <highlight>Pulse Ecosystem</highlight> · 4 SaaS production-ready, 380+ testes, 740+ commits.",
+    "descriptionHighlight": "Sellorex",
+    "descriptionText": "· SaaS B2B com 107 models, 1036 endpoints, 12 agentes IA orquestrados via gateway multi-provider com fallback.",
+    "ctaPrimary": "Ver Projetos",
+    "ctaSecondary": "Falar comigo"
   },
   "about": {
     "title": "Sobre",
