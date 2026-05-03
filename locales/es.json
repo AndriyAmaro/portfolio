@@ -32,8 +32,8 @@
     "roles": [
       "Full Stack Developer · SaaS Multi-tenant",
       "AI Systems Builder · LLMs multi-provider con fallback",
-      "Backend Developer · Node · TypeScript · PostgreSQL · Redis",
-      "Frontend Developer · React · Next.js · Tailwind · Motion"
+      "Backend Developer · Node · TypeScript · JavaScript · REST APIs · PostgreSQL · Redis",
+      "Frontend Developer · React · Next.js · Tailwind · HTML · CSS · Motion"
     ],
     "metrics": {
       "models": "Modelos Prisma",
