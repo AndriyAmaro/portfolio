@@ -51,19 +51,19 @@
     "title": "About",
     "titleHighlight": "Me",
     "subtitle": "I build multi-tenant SaaS with AI treated as infrastructure, not wrapper",
-    "heading": "While most call an LLM, I build the",
-    "headingHighlight": "orchestrator",
+    "heading": "End-to-end engineering · from design system to",
+    "headingHighlight": "AI orchestrator",
     "paragraph1": "Full Stack Developer focused on multi-tenant SaaS with native AI in production. Real end-to-end ownership: frontend, backend, database with vector extensions (pgvector + HNSW), distributed cache (Redis), queues (BullMQ), real-time (Socket.io), structured observability, security and CI/CD. I don't outsource architectural decisions · I design, implement and operate.",
     "paragraph2prefix": "Currently building",
     "paragraph2highlight": "Sellorex",
     "paragraph2suffix": "· B2B SaaS with native AI: 107 relational models, 1036 REST endpoints, end-to-end multi-tenant with Row-Level Security, 12 specialized agents (orchestrator + 11 business + super admin with 227 tools across 43 categories) coordinated via Event Bus pub/sub in 10 Worlds. Multi-provider LLM gateway with automatic fallback, 5-layer anti-hallucination, 3-tier Budget Enforcement, hierarchical Memory System with semantic deduplication.",
     "paragraph3prefix": "Before Sellorex I built the",
     "paragraph3highlight": "Pulse Ecosystem",
-    "paragraph3suffix": "· 4 production-ready apps sharing a design system, 380+ tests, 740+ commits · Pulse Theme already commercially published. Each app deployed and in use · zero abandoned code in portfolio.",
+    "paragraph3suffix": "· 4 production-ready apps sharing a design system, 380+ tests, 740+ commits · Pulse Theme already commercially published. Each app live in production · zero abandoned code in portfolio.",
     "highlights": {
       "ai": {
         "title": "AI as infrastructure",
-        "description": "While most add a wrapper over an AI SDK, I build the gateway. Structured response framework in 4 layers (Result · Insight · Action · Next Step), 5-layer anti-hallucination, 3-tier Budget Enforcement, hierarchical Memory System with semantic deduplication."
+        "description": "Multi-provider LLM gateway with automatic fallback · structured response framework in 4 layers (Result · Insight · Action · Next Step) · 5-layer anti-hallucination · 3-tier Budget Enforcement · hierarchical Memory System with semantic deduplication · embeddings with pgvector + HNSW for semantic search."
       },
       "production": {
         "title": "Production-ready from day 1",
@@ -73,9 +73,9 @@
         "title": "Quality as standard, not feature",
         "description": "TypeScript strict mode, runtime validation on every input (Zod), 380+ automated tests (unit + integration + E2E), mandatory CI/CD, ADRs on every architectural decision, conventional commits across all repos."
       },
-      "aiAssisted": {
-        "title": "AI-assisted engineering as edge",
-        "description": "Autonomous engineering workflow with contextual skill detection, proactive quality guardian, parallel sub-agents connected to observability, infra, repo, database and cache. 3-5x productivity with preserved quality · AI is part of the stack, not a shortcut."
+      "modular": {
+        "title": "Modular event-driven architecture",
+        "description": "10 independent Worlds coordinated via Event Bus pub/sub · 33 API modules with barrel index · each new feature = a new folder. Controller → Service → Repository with tenant isolation enforced in one layer. Add capability without touching the rest of the system."
       }
     }
   },

@@ -1,17 +1,17 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, ShieldCheck, BadgeCheck, Zap } from "lucide-react";
+import { Cpu, ShieldCheck, BadgeCheck, Network } from "lucide-react";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
 import Image from "next/image";
 
 const highlights = [
-  { icon: Sparkles, key: "ai" },
+  { icon: Cpu, key: "ai" },
   { icon: ShieldCheck, key: "production" },
   { icon: BadgeCheck, key: "quality" },
-  { icon: Zap, key: "aiAssisted" },
+  { icon: Network, key: "modular" },
 ] as const;
 
 const techStack = [
@@ -242,7 +242,7 @@ export function About() {
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-[1fr_1.2fr] gap-10 items-center">
           {/* Text content */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}

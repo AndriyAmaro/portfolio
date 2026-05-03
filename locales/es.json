@@ -51,19 +51,19 @@
     "title": "Sobre",
     "titleHighlight": "Mí",
     "subtitle": "Construyo SaaS multi-tenant con IA tratada como infraestructura, no wrapper",
-    "heading": "Donde la mayoría llama un LLM, yo construyo el",
-    "headingHighlight": "orquestador",
+    "heading": "Ingeniería end-to-end · del design system al",
+    "headingHighlight": "orquestador de IA",
     "paragraph1": "Desarrollador Full Stack enfocado en SaaS multi-tenant con IA nativa en producción. End-to-end ownership real: frontend, backend, banco con extensiones vectoriales (pgvector + HNSW), cache distribuido (Redis), colas (BullMQ), real-time (Socket.io), observabilidad estructurada, seguridad y CI/CD. No tercerizo decisiones arquitectónicas · diseño, implemento y opero.",
     "paragraph2prefix": "Actualmente construyendo el",
     "paragraph2highlight": "Sellorex",
     "paragraph2suffix": "· SaaS B2B con IA nativa: 107 modelos relacionales, 1036 endpoints REST, multi-tenant end-to-end con Row-Level Security, 12 agentes especializados (orquestador + 11 de negocio + super admin con 227 tools en 43 categorías) coordinados vía Event Bus pub/sub en 10 Worlds. Gateway LLM multi-provider con fallback automático, anti-alucinación 5 layers, Budget Enforcement en 3 niveles, Memory System jerárquico con deduplicación semántica.",
     "paragraph3prefix": "Antes de Sellorex creé el",
     "paragraph3highlight": "Pulse Ecosystem",
-    "paragraph3suffix": "· 4 apps production-ready compartiendo design system, 380+ tests, 740+ commits · Pulse Theme ya publicado comercialmente. Cada app deployado y en uso · cero código abandonado en portfolio.",
+    "paragraph3suffix": "· 4 apps production-ready compartiendo design system, 380+ tests, 740+ commits · Pulse Theme ya publicado comercialmente. Cada app en producción y en uso · cero código abandonado en portfolio.",
     "highlights": {
       "ai": {
         "title": "IA como infraestructura",
-        "description": "Donde la mayoría agrega wrapper sobre un SDK de IA, yo construyo el gateway. Framework de respuesta estructurada en 4 capas (Resultado · Insight · Acción · Próximo Paso), anti-alucinación 5 layers, Budget Enforcement en 3 niveles, Memory System jerárquico con deduplicación semántica."
+        "description": "Gateway LLM multi-provider con fallback automático · framework de respuesta estructurada en 4 capas (Resultado · Insight · Acción · Próximo Paso) · anti-alucinación 5 layers · Budget Enforcement en 3 niveles · Memory System jerárquico con deduplicación semántica · embeddings con pgvector + HNSW para búsqueda semántica."
       },
       "production": {
         "title": "Production-ready desde el día 1",
@@ -73,9 +73,9 @@
         "title": "Quality como estándar, no feature",
         "description": "TypeScript strict mode, validación runtime en toda entrada (Zod), 380+ tests automatizados (unit + integration + E2E), CI/CD obligatorio, ADRs en cada decisión arquitectónica, conventional commits en todos los repos."
       },
-      "aiAssisted": {
-        "title": "AI-assisted engineering como ventaja",
-        "description": "Flujo de ingeniería autónoma con skills detection contextual, quality guardian proactivo, sub-agentes paralelos conectados a observabilidad, infra, repo, banco y cache. Productividad 3-5x con calidad preservada · IA es parte del stack, no atajo."
+      "modular": {
+        "title": "Arquitectura modular event-driven",
+        "description": "10 Worlds independientes coordinados vía Event Bus pub/sub · 33 módulos de API con barrel index · cada feature nueva = una carpeta nueva. Controller → Service → Repository con tenant isolation enforced en una capa. Agregar capability sin tocar el resto del sistema."
       }
     }
   },

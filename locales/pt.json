@@ -51,19 +51,19 @@
     "title": "Sobre",
     "titleHighlight": "Mim",
     "subtitle": "Construo SaaS multi-tenant com IA tratada como infraestrutura, não wrapper",
-    "heading": "Onde a maioria chama um LLM, eu construo o",
-    "headingHighlight": "orquestrador",
+    "heading": "Engenharia ponta a ponta · do design system ao",
+    "headingHighlight": "orquestrador de IA",
     "paragraph1": "Desenvolvedor Full Stack focado em SaaS multi-tenant com IA nativa em produção. End-to-end ownership real: frontend, backend, banco com extensões vetoriais (pgvector + HNSW), cache distribuído (Redis), filas (BullMQ), real-time (Socket.io), observabilidade estruturada, segurança e CI/CD. Não terceirizo decisões arquiteturais · projeto, implemento e opero.",
     "paragraph2prefix": "Atualmente construindo o",
     "paragraph2highlight": "Sellorex",
     "paragraph2suffix": "· SaaS B2B com IA nativa: 107 modelos relacionais, 1036 endpoints REST, multi-tenant end-to-end com Row-Level Security, 12 agentes especializados (orquestrador + 11 de negócio + super admin com 227 tools em 43 categorias) coordenados via Event Bus pub/sub em 10 Worlds. Gateway LLM multi-provider com fallback automático, anti-alucinação 5 layers, Budget Enforcement em 3 níveis, Memory System hierárquico com deduplicação semântica.",
     "paragraph3prefix": "Antes do Sellorex criei o",
     "paragraph3highlight": "Pulse Ecosystem",
-    "paragraph3suffix": "· 4 apps production-ready compartilhando design system, 380+ testes, 740+ commits · Pulse Theme já publicado comercialmente. Cada app deployado e em uso · zero código abandonado em portfólio.",
+    "paragraph3suffix": "· 4 apps production-ready compartilhando design system, 380+ testes, 740+ commits · Pulse Theme já publicado comercialmente. Cada app em produção e em uso · zero código abandonado em portfólio.",
     "highlights": {
       "ai": {
         "title": "IA como infraestrutura",
-        "description": "Onde a maioria adiciona wrapper sobre um SDK de IA, eu construo o gateway. Framework de resposta estruturada em 4 camadas (Resultado · Insight · Ação · Próximo Passo), anti-alucinação 5 layers, Budget Enforcement em 3 níveis, Memory System hierárquico com deduplicação semântica."
+        "description": "Gateway LLM multi-provider com fallback automático · framework de resposta estruturada em 4 camadas (Resultado · Insight · Ação · Próximo Passo) · anti-alucinação 5 layers · Budget Enforcement em 3 níveis · Memory System hierárquico com deduplicação semântica · embeddings com pgvector + HNSW para busca semântica."
       },
       "production": {
         "title": "Production-ready desde o dia 1",
@@ -73,9 +73,9 @@
         "title": "Quality como padrão, não feature",
         "description": "TypeScript strict mode, validação runtime em toda entrada (Zod), 380+ testes automatizados (unit + integration + E2E), CI/CD obrigatório, ADRs em cada decisão arquitetural, conventional commits em todos os repos."
       },
-      "aiAssisted": {
-        "title": "AI-assisted engineering como vantagem",
-        "description": "Fluxo de engenharia autônoma com skills detection contextual, quality guardian proativo, sub-agentes paralelos conectados a observabilidade, infra, repo, banco e cache. Produtividade 3-5x com qualidade preservada · IA é parte do stack, não atalho."
+      "modular": {
+        "title": "Arquitetura modular event-driven",
+        "description": "10 Worlds independentes coordenados via Event Bus pub/sub · 33 módulos de API com barrel index · cada feature nova = uma pasta nova. Controller → Service → Repository com tenant isolation enforced em uma camada. Adicionar capability sem tocar no resto do sistema."
       }
     }
   },
