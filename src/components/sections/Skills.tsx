@@ -8,7 +8,6 @@ import {
   FlaskConical,
   Layers,
   AppWindow,
-  TestTubes,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
@@ -198,12 +197,12 @@ const skillCategories = importedSkills.map((cat) => ({
   })),
 }));
 
-// Stats (labels come from translations via key)
+// Stats (labels come from translations via key) · matches Hero metrics
 const stats = [
-  { icon: TestTubes, value: 380, suffix: "+", labelKey: "stats.tests" },
-  { icon: Layers, value: 100, suffix: "+", labelKey: "stats.components" },
-  { icon: AppWindow, value: 56, suffix: "+", labelKey: "stats.pages" },
-  { icon: FlaskConical, value: 3, suffix: "", labelKey: "stats.apps" },
+  { icon: Layers, value: 107, suffix: "", labelKey: "stats.models" },
+  { icon: Server, value: 1036, suffix: "", labelKey: "stats.endpoints" },
+  { icon: FlaskConical, value: 12, suffix: "", labelKey: "stats.agents" },
+  { icon: AppWindow, value: 4, suffix: "", labelKey: "stats.apps" },
 ];
 
 // ---------------------------------------------------------------------------

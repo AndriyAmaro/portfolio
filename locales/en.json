@@ -32,8 +32,8 @@
     "roles": [
       "Full Stack Developer · Multi-tenant SaaS",
       "AI Systems Builder · Multi-provider LLMs with fallback",
-      "Backend Developer · Node · TypeScript · JavaScript · REST APIs · PostgreSQL · Redis",
-      "Frontend Developer · React · Next.js · Tailwind · HTML · CSS · Motion"
+      "Backend · Node · TypeScript · JavaScript · REST APIs · PostgreSQL · Redis",
+      "Frontend · React · Next.js · Tailwind · HTML · CSS · Motion"
     ],
     "metrics": {
       "models": "Prisma Models",
@@ -97,10 +97,10 @@
       "beginner": "Beginner"
     },
     "stats": {
-      "tests": "Automated Tests",
-      "components": "UI Components",
-      "pages": "Pages Built",
-      "apps": "SaaS Apps in Production"
+      "models": "Prisma Models",
+      "endpoints": "REST Endpoints",
+      "agents": "AI Agents",
+      "apps": "SaaS in production"
     },
     "aiBadge": {
       "prefix": "Accelerating projects with:",
