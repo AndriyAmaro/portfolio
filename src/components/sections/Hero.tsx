@@ -103,21 +103,25 @@ function MetricsCarousel({ metrics: items, counts }: { metrics: Metric[]; counts
   }, [startTimer]);
 
   return (
-    <div className="w-full max-w-2xl">
-      {/* Desktop: show all 4 */}
+    <div className="w-full max-w-3xl">
+      {/* Desktop: show all 4 · matches Skills stat-card style */}
       <div className="hidden sm:grid grid-cols-4 gap-5">
         {items.map((m, i) => (
-          <div key={m.label} className="hero-metric relative text-center py-4 px-3 rounded-2xl overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent" />
-            <span className="block text-2xl md:text-3xl font-bold gradient-text tabular-nums">
-              {counts[i]}{m.suffix}
-            </span>
-            <span className="text-[11px] font-semibold uppercase tracking-wider hero-metric-label mt-1 block">{m.label}</span>
+          <div key={m.label} className="stat-card group relative p-5 md:p-6 rounded-2xl text-center overflow-hidden">
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-indigo-500/10 to-violet-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="relative z-10">
+              <div className="text-3xl md:text-4xl font-extrabold gradient-text mb-0.5 tabular-nums tracking-tight">
+                {counts[i]}{m.suffix}
+              </div>
+              <div className="stat-label text-xs md:text-sm font-medium">
+                {m.label}
+              </div>
+            </div>
           </div>
         ))}
       </div>
 
-      {/* Mobile: carousel 2 at a time */}
+      {/* Mobile: carousel 2 at a time · matches Skills stat-card style */}
       <div className="sm:hidden">
         <AnimatePresence mode="wait">
           <motion.div
@@ -131,12 +135,16 @@ function MetricsCarousel({ metrics: items, counts }: { metrics: Metric[]; counts
             {pages[page].map((m, i) => {
               const idx = page * 2 + i;
               return (
-                <div key={m.label} className="hero-metric relative text-center py-4 px-3 rounded-2xl overflow-hidden">
-                  <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent" />
-                  <span className="block text-2xl font-bold gradient-text tabular-nums">
-                    {counts[idx]}{m.suffix}
-                  </span>
-                  <span className="text-[11px] font-semibold uppercase tracking-wider hero-metric-label mt-1 block">{m.label}</span>
+                <div key={m.label} className="stat-card group relative p-5 rounded-2xl text-center overflow-hidden">
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-indigo-500/10 to-violet-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="relative z-10">
+                    <div className="text-3xl font-extrabold gradient-text mb-0.5 tabular-nums tracking-tight">
+                      {counts[idx]}{m.suffix}
+                    </div>
+                    <div className="stat-label text-xs font-medium">
+                      {m.label}
+                    </div>
+                  </div>
                 </div>
               );
             })}
