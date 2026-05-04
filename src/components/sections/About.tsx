@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { Cpu, ShieldCheck, BadgeCheck, Network } from "lucide-react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
+import { Cpu, ShieldCheck, BadgeCheck, Network, Terminal } from "lucide-react";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
@@ -13,6 +13,117 @@ const highlights = [
   { icon: BadgeCheck, key: "quality" },
   { icon: Network, key: "modular" },
 ] as const;
+
+// ─── Stats data ──────────────────────────────────────────
+type StatItem = { value: number; suffix: string; labelKey: string };
+
+const aboutStats: StatItem[] = [
+  { value: 32, suffix: "", labelKey: "modules" },
+  { value: 9, suffix: "", labelKey: "worlds" },
+  { value: 4, suffix: "", labelKey: "llmProviders" },
+  { value: 330, suffix: "k", labelKey: "loc" },
+  { value: 740, suffix: "+", labelKey: "commits" },
+  { value: 100, suffix: "%", labelKey: "strictMode" },
+];
+
+// ─── Count-up hook ───────────────────────────────────────
+function useCountUp(target: number, inView: boolean, duration = 1800) {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    if (!inView) return;
+    let start = 0;
+    const step = target / (duration / 16);
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= target) { setCount(target); clearInterval(timer); }
+      else setCount(Math.floor(start));
+    }, 16);
+    return () => clearInterval(timer);
+  }, [target, inView, duration]);
+  return count;
+}
+
+function StatTile({ stat, t, inView, delay }: { stat: StatItem; t: ReturnType<typeof useTranslations<"about">>; inView: boolean; delay: number }) {
+  const count = useCountUp(stat.value, inView);
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, delay }}
+      className="stat-card group relative p-4 md:p-5 rounded-2xl text-center overflow-hidden"
+    >
+      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-indigo-500/10 to-violet-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="relative z-10">
+        <div className="text-2xl md:text-3xl font-extrabold gradient-text mb-0.5 tabular-nums tracking-tight">
+          {count}{stat.suffix}
+        </div>
+        <div className="stat-label text-[11px] md:text-xs font-medium leading-tight">
+          {t(`metrics.${stat.labelKey}`)}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+function AboutStatsRow({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+  return (
+    <div ref={ref} className="grid grid-cols-3 md:grid-cols-6 gap-3 md:gap-4 mb-12 md:mb-16">
+      {aboutStats.map((stat, i) => (
+        <StatTile key={stat.labelKey} stat={stat} t={t} inView={inView} delay={i * 0.08} />
+      ))}
+    </div>
+  );
+}
+
+// ─── Code snippet card · real production code ────────────
+function CodeSnippetCard({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.6 }}
+      className="mt-16 md:mt-20"
+    >
+      <div className="about-code-card relative rounded-2xl overflow-hidden">
+        {/* Header bar */}
+        <div className="flex items-center gap-2.5 px-5 py-3 about-code-header border-b border-white/[0.06]">
+          <div className="flex gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
+            <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
+            <span className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
+          </div>
+          <Terminal className="w-3.5 h-3.5 text-indigo-400 ml-2" />
+          <span className="text-xs font-mono text-white/60">
+            apps/api/src/modules/ai-gateway/gateway.service.ts
+          </span>
+        </div>
+
+        {/* Code body */}
+        <pre className="about-code-body p-5 md:p-6 text-xs md:text-sm font-mono leading-relaxed overflow-x-auto">
+{`// AI Gateway · single entry point for ALL LLM calls
+async gatewayCall(req: GatewayCallRequest, ctx: TenantContext) {
+  await `}<span className="text-indigo-400">{`validateSchema`}</span>{`(req);                      `}<span className="text-white/40">{`// Zod runtime validation`}</span>{`
+  const model = `}<span className="text-indigo-400">{`routeModel`}</span>{`(req, ctx.plan);        `}<span className="text-white/40">{`// complexity + plan routing`}</span>{`
+  await `}<span className="text-indigo-400">{`creditEnforcer.check`}</span>{`(ctx.tenantId, model); `}<span className="text-white/40">{`// 3-tier budget`}</span>{`
+  const res = await `}<span className="text-indigo-400">{`callWithFallback`}</span>{`(model, req); `}<span className="text-white/40">{`// circuit breaker`}</span>{`
+  await `}<span className="text-indigo-400">{`logUsage`}</span>{`(ctx, model, res);                `}<span className="text-white/40">{`// AiUsageLog persisted`}</span>{`
+  return res;
+}`}
+        </pre>
+
+        {/* Caption */}
+        <div className="px-5 md:px-6 py-3 about-code-caption border-t border-white/[0.06]">
+          <p className="text-xs md:text-sm text-white/60 leading-relaxed">
+            {t("codeSnippet.caption")}
+          </p>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
 const techStack = [
   "Next.js",
@@ -242,6 +353,9 @@ export function About() {
           </p>
         </motion.div>
 
+        {/* Stats row · 6 senior depth metrics with count-up */}
+        <AboutStatsRow t={t} />
+
         <div className="grid lg:grid-cols-[1fr_1.2fr] gap-10 items-center">
           {/* Text content */}
           <motion.div
@@ -305,6 +419,9 @@ export function About() {
             <MobileCarousel t={t} />
           </div>
         </div>
+
+        {/* Code snippet card · real production code from Sellorex */}
+        <CodeSnippetCard t={t} />
 
         {/* Tech stack marquee - full width on mobile */}
         <motion.div

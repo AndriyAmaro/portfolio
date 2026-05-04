@@ -1015,6 +1015,57 @@ section {
   backdrop-filter: blur(8px);
 }
 
+/* Code snippet card · production code proof */
+.about-code-card {
+  background: linear-gradient(
+    145deg,
+    rgba(15, 13, 31, 0.95) 0%,
+    rgba(30, 27, 75, 0.85) 50%,
+    rgba(15, 13, 31, 0.95) 100%
+  );
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(99, 102, 241, 0.1) inset;
+  backdrop-filter: blur(12px);
+}
+
+.about-code-header {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.about-code-body {
+  color: rgba(229, 231, 235, 0.95);
+  background: transparent;
+  font-family: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+}
+
+.about-code-caption {
+  background: rgba(99, 102, 241, 0.05);
+}
+
+.light-mode .about-code-card {
+  background: linear-gradient(
+    145deg,
+    rgba(15, 23, 42, 0.98) 0%,
+    rgba(30, 41, 59, 0.95) 50%,
+    rgba(15, 23, 42, 0.98) 100%
+  );
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  box-shadow:
+    0 12px 40px rgba(15, 23, 42, 0.25),
+    0 0 0 1px rgba(99, 102, 241, 0.15) inset;
+}
+
+.light-mode .about-code-header {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.light-mode .about-code-caption {
+  background: rgba(99, 102, 241, 0.12);
+  color: rgba(255, 255, 255, 0.8);
+}
+
 .light-mode .about-marquee-container {
   background: linear-gradient(
     135deg,

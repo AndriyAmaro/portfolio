@@ -60,6 +60,17 @@
     "paragraph3prefix": "Antes de Sellorex creé el",
     "paragraph3highlight": "Pulse Ecosystem",
     "paragraph3suffix": "· 4 apps production-ready compartiendo design system, 380+ tests, 740+ commits · Pulse Theme ya publicado comercialmente. Cada app en producción y en uso · cero código abandonado en portfolio.",
+    "metrics": {
+      "modules": "Módulos backend",
+      "worlds": "Worlds (dominios)",
+      "llmProviders": "LLM Providers",
+      "loc": "LOC TypeScript",
+      "commits": "Commits",
+      "strictMode": "TS Strict Mode"
+    },
+    "codeSnippet": {
+      "caption": "Pipeline de 5 capas con tenant isolation, budget enforcement en 3 niveles, fallback automático multi-provider y observabilidad estructurada · código real de Sellorex en producción."
+    },
     "highlights": {
       "ai": {
         "title": "IA como infraestructura",
