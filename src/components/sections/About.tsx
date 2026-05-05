@@ -856,28 +856,128 @@ const TECH_QAS: TechQA[] = [
   { id: "passwordStorage", category: "SECURITY" },
 ];
 
+function TechQASlide({
+  qa,
+  idx,
+  position,
+  onActivate,
+  t,
+}: {
+  qa: TechQA;
+  idx: number;
+  position: SlidePosition;
+  onActivate: () => void;
+  t: ReturnType<typeof useTranslations<"about">>;
+}) {
+  const intentRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const isPeek = position === "peek-left" || position === "peek-right";
+
+  const handleEnter = () => {
+    if (!isPeek) return;
+    if (intentRef.current) clearTimeout(intentRef.current);
+    intentRef.current = setTimeout(onActivate, 450);
+  };
+  const handleLeave = () => {
+    if (intentRef.current) clearTimeout(intentRef.current);
+  };
+  const handleClick = () => {
+    if (!isPeek) return;
+    if (intentRef.current) clearTimeout(intentRef.current);
+    onActivate();
+  };
+
+  const positionClass =
+    position === "active"
+      ? "is-active"
+      : position === "peek-left"
+      ? "is-peek-left"
+      : position === "peek-right"
+      ? "is-peek-right"
+      : "is-hidden";
+
+  // Peek mode · vertical hint with number + arrow + category
+  if (isPeek) {
+    return (
+      <div
+        className={`about-usecase-slide ${positionClass}`}
+        aria-hidden="true"
+        onMouseEnter={handleEnter}
+        onMouseLeave={handleLeave}
+        onClick={handleClick}
+      >
+        <div className="about-usecase-peek-hint">
+          <span className="peek-num">{String(idx + 1).padStart(2, "0")}</span>
+          <span className="peek-arrow">{position === "peek-left" ? "←" : "→"}</span>
+          <span className="peek-title">{qa.category}</span>
+        </div>
+      </div>
+    );
+  }
+
+  // Active mode · full Q&A card
+  return (
+    <div className={`about-usecase-card about-usecase-slide ${positionClass}`}>
+      <div className="p-7 md:p-10 lg:p-12 h-full flex flex-col overflow-y-auto">
+        <div className="flex-1">
+          <span className={`about-techqa-category about-techqa-category-${qa.category.toLowerCase()} text-[11px] font-semibold tracking-[0.2em] uppercase mb-5 inline-flex items-center gap-2 px-3 py-1 rounded-full`}>
+            <span className="w-1 h-1 rounded-full bg-current" />
+            {t(`techQA.categories.${qa.category.toLowerCase()}`)}
+          </span>
+          <h4 className="text-xl md:text-2xl lg:text-3xl font-bold leading-tight mb-5 text-white">
+            {t(`techQA.${qa.id}.question`)}
+          </h4>
+          <p className="about-techqa-tldr text-sm md:text-base italic leading-relaxed mb-5 pl-4 border-l-2">
+            💡 {t(`techQA.${qa.id}.tldr`)}
+          </p>
+          <p className="text-sm md:text-base leading-relaxed text-white/75 mb-5">
+            {t(`techQA.${qa.id}.detail`)}
+          </p>
+          <div className="about-techqa-proof flex items-start gap-3 p-4 rounded-xl">
+            <span className="text-lg shrink-0 leading-none about-techqa-proof-check">✓</span>
+            <span className="text-sm md:text-base leading-relaxed text-white/80">
+              {t(`techQA.${qa.id}.proof`)}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function TechQACarousel({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
   const [active, setActive] = useState(0);
-  const [direction, setDirection] = useState(1);
   const [paused, setPaused] = useState(false);
+  const pauseTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const total = TECH_QAS.length;
-  const current = TECH_QAS[active];
 
   useEffect(() => {
     if (paused) return;
-    const id = setInterval(() => {
-      setDirection(1);
-      setActive((p) => (p + 1) % total);
-    }, 10000);
+    const id = setInterval(() => setActive((p) => (p + 1) % total), 10000);
     return () => clearInterval(id);
   }, [paused, total]);
 
+  const pauseAutoFor = useCallback((ms = 9000) => {
+    setPaused(true);
+    if (pauseTimerRef.current) clearTimeout(pauseTimerRef.current);
+    pauseTimerRef.current = setTimeout(() => setPaused(false), ms);
+  }, []);
+
   const goTo = useCallback((idx: number) => {
-    setDirection(idx > active ? 1 : -1);
-    setActive(idx);
-  }, [active]);
-  const next = useCallback(() => goTo((active + 1) % total), [active, total, goTo]);
-  const prev = useCallback(() => goTo((active - 1 + total) % total), [active, total, goTo]);
+    setActive(((idx % total) + total) % total);
+  }, [total]);
+
+  const next = useCallback(() => { goTo(active + 1); pauseAutoFor(); }, [active, goTo, pauseAutoFor]);
+  const prev = useCallback(() => { goTo(active - 1); pauseAutoFor(); }, [active, goTo, pauseAutoFor]);
+
+  const leftIdx = (active - 1 + total) % total;
+  const rightIdx = (active + 1) % total;
+
+  const getPos = (i: number): SlidePosition => {
+    if (i === active) return "active";
+    if (i === leftIdx) return "peek-left";
+    if (i === rightIdx) return "peek-right";
+    return "hidden";
+  };
 
   return (
     <motion.div
@@ -898,9 +998,23 @@ function TechQACarousel({ t }: { t: ReturnType<typeof useTranslations<"about">> 
         </h3>
       </div>
 
-      <div className="about-usecase-card relative rounded-3xl overflow-hidden">
-        {/* Progress bar */}
-        <div className="absolute top-0 left-0 right-0 h-[2px] bg-white/[0.04] z-10">
+      {/* Peek carousel · all 9 Q&A slides absolutely positioned */}
+      <div className="about-usecase-shell">
+        <div className="about-usecase-track">
+          {TECH_QAS.map((qa, i) => (
+            <TechQASlide
+              key={qa.id}
+              qa={qa}
+              idx={i}
+              position={getPos(i)}
+              onActivate={() => { goTo(i); pauseAutoFor(); }}
+              t={t}
+            />
+          ))}
+        </div>
+
+        {/* Top progress bar */}
+        <div className="max-w-[1100px] mx-auto mt-2 h-[2px] bg-white/[0.04] rounded-full overflow-hidden relative z-10">
           <motion.div
             key={`qa-bar-${active}-${paused ? "p" : "r"}`}
             initial={{ scaleX: 0 }}
@@ -911,88 +1025,45 @@ function TechQACarousel({ t }: { t: ReturnType<typeof useTranslations<"about">> 
           />
         </div>
 
-        <div className="p-7 md:p-10 lg:p-12 min-h-[460px] flex flex-col">
-          <AnimatePresence mode="wait" custom={direction}>
-            <motion.div
-              key={current.id}
-              custom={direction}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="flex-1"
-            >
-              {/* Category badge */}
-              <span className={`about-techqa-category about-techqa-category-${current.category.toLowerCase()} text-[11px] font-semibold tracking-[0.2em] uppercase mb-5 inline-flex items-center gap-2 px-3 py-1 rounded-full`}>
-                <span className="w-1 h-1 rounded-full bg-current" />
-                {t(`techQA.categories.${current.category.toLowerCase()}`)}
-              </span>
+        {/* External controls · dots + counter + prev/next */}
+        <div className="max-w-[1100px] mx-auto mt-5 flex items-center justify-between px-2">
+          <div className="flex items-center gap-1.5 flex-wrap" role="tablist" aria-label={t("techQA.dotsAriaLabel")}>
+            {TECH_QAS.map((qa, i) => (
+              <button
+                key={qa.id}
+                type="button"
+                role="tab"
+                aria-selected={i === active}
+                aria-label={`${i + 1} / ${total}`}
+                onClick={() => { goTo(i); pauseAutoFor(); }}
+                className={`about-techqa-dot about-techqa-dot-${qa.category.toLowerCase()} h-1.5 rounded-full transition-all duration-300 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400 ${
+                  i === active ? "w-8" : "w-1.5"
+                }`}
+              />
+            ))}
+          </div>
 
-              {/* Question (title) */}
-              <h4 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight mb-5 text-white">
-                {t(`techQA.${current.id}.question`)}
-              </h4>
-
-              {/* TL;DR · pull-quote style */}
-              <p className="about-techqa-tldr text-base md:text-lg italic leading-relaxed mb-6 pl-4 border-l-2">
-                💡 {t(`techQA.${current.id}.tldr`)}
-              </p>
-
-              {/* Detail · paragraph */}
-              <p className="text-sm md:text-base leading-relaxed text-white/75 mb-6">
-                {t(`techQA.${current.id}.detail`)}
-              </p>
-
-              {/* Proof · production evidence */}
-              <div className="about-techqa-proof flex items-start gap-3 p-4 rounded-xl">
-                <span className="text-lg shrink-0 leading-none about-techqa-proof-check">✓</span>
-                <span className="text-sm md:text-base leading-relaxed text-white/80">
-                  {t(`techQA.${current.id}.proof`)}
-                </span>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Bottom · pagination dots + nav + counter */}
-          <div className="flex items-center justify-between mt-8 md:mt-10 pt-6 border-t border-white/[0.06]">
-            <div className="flex items-center gap-1.5 flex-wrap" role="tablist" aria-label={t("techQA.dotsAriaLabel")}>
-              {TECH_QAS.map((qa, i) => (
-                <button
-                  key={qa.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={i === active}
-                  aria-label={`${i + 1} / ${total}`}
-                  onClick={() => goTo(i)}
-                  className={`about-techqa-dot about-techqa-dot-${qa.category.toLowerCase()} h-1.5 rounded-full transition-all duration-300 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400 ${
-                    i === active ? "w-8" : "w-1.5"
-                  }`}
-                />
-              ))}
-            </div>
-
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-mono tabular-nums text-white/45">
-                {String(active + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-              </span>
-              <div className="flex items-center gap-1">
-                <button
-                  type="button"
-                  onClick={prev}
-                  aria-label={t("snippets.controls.prev")}
-                  className="about-snippet-ctrl w-8 h-8 rounded-md flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                <button
-                  type="button"
-                  onClick={next}
-                  aria-label={t("snippets.controls.next")}
-                  className="about-snippet-ctrl w-8 h-8 rounded-md flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-mono tabular-nums text-white/45">
+              {String(active + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+            </span>
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={prev}
+                aria-label={t("snippets.controls.prev")}
+                className="about-snippet-ctrl w-8 h-8 rounded-md flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={next}
+                aria-label={t("snippets.controls.next")}
+                className="about-snippet-ctrl w-8 h-8 rounded-md flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
             </div>
           </div>
         </div>
