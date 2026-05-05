@@ -76,8 +76,8 @@
       "off": "Track Record"
     },
     "techQA": {
-      "sectionCaption": "How I think",
-      "sectionTitle": "9 senior decisions · production-grade",
+      "sectionCaption": "How I work",
+      "sectionTitle": "9 decisions · production-grade",
       "dotsAriaLabel": "Navigate between technical questions",
       "categories": {
         "system": "System Design · Distributed",

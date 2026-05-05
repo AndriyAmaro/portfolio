@@ -76,8 +76,8 @@
       "off": "Histórico"
     },
     "techQA": {
-      "sectionCaption": "Cómo pienso",
-      "sectionTitle": "9 decisiones senior · production-grade",
+      "sectionCaption": "Cómo trabajo",
+      "sectionTitle": "9 decisiones · production-grade",
       "dotsAriaLabel": "Navegar entre preguntas técnicas",
       "categories": {
         "system": "System Design · Distribuido",
