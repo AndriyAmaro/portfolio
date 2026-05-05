@@ -281,11 +281,11 @@
       },
       "idempotency": {
         "title": "Idempotency arquitectónica",
-        "bullet1": "El webhook Stripe puede disparar 2× por retry · processedWebhook table + transaction garantizan at-most-once en side effects",
-        "bullet2": "stripe.webhooks.constructEvent() valida HMAC-SHA256 antes de procesar · evento inválido = 400 sin efecto",
-        "bullet3": "Idempotency-Key header en mutations críticas · UUID enviado por el cliente · servidor cachea respuesta · retry seguro del client side",
-        "bullet4": "Double-charge arquitectónicamente imposible · no depende de lógica de retry en el cliente · checa 1ª vez en DB, procesa, marca como done",
-        "bullet5": "Workers BullMQ \"at least once delivery\" · UPSERT en vez de INSERT, o job_id check en DB antes de procesar · sin efecto duplicado"
+        "bullet1": "GET/PUT/DELETE son idempotent por HTTP spec · POST nunca · solución: header Idempotency-Key con UUID del cliente · servidor cachea primera respuesta",
+        "bullet2": "Race condition de 2 requests con misma key llegando simultáneo · INSERT ON CONFLICT DO NOTHING + advisory lock garantizan que solo 1 gana · el otro retorna respuesta cacheada",
+        "bullet3": "TTL de 24h en idempotency keys (patrón Stripe/PayPal) · si no la tabla crece infinito · cron limpia keys expiradas · trade-off: retry después de 24h no es idempotent",
+        "bullet4": "Saga pattern en ops distribuidas · pedido → reserva stock → cobra tarjeta → confirma envío · falla en cualquier step dispara compensating actions (undo) · sin rollback global",
+        "bullet5": "Outbox pattern para eventos · publish evento + persist DB en MISMA transaction · cron poll outbox y publica · garantiza exactly-once incluso con network partition"
       }
     },
     "highlights": {
