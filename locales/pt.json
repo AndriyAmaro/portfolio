@@ -242,32 +242,38 @@
       "multitenant": {
         "title": "Multi-tenant correto desde o dia 1",
         "bullet1": "Repository pattern injeta tenantId em toda query · zero leak em 6 meses de produção",
-        "bullet2": "Auditor automático scaneia codebase · RLS backup em pgvector"
+        "bullet2": "Auditor automático scaneia codebase · RLS backup em pgvector",
+        "bullet3": ""
       },
       "aiGateway": {
         "title": "AI Gateway com cost intelligence",
         "bullet1": "Pipeline 5 camadas · validate · route · budget · call · log",
-        "bullet2": "4 providers chain com fallback · Math.ceil em fração de centavo"
+        "bullet2": "4 providers chain com fallback · Math.ceil em fração de centavo",
+        "bullet3": ""
       },
       "antiHallucination": {
         "title": "Anti-hallucination em 5 camadas",
         "bullet1": "Regras invioáveis no system prompt · não em validação posterior",
-        "bullet2": "Schema · fact-check · tool whitelist · tenant boundary · semantic similarity"
+        "bullet2": "Schema · fact-check · tool whitelist · tenant boundary · semantic similarity",
+        "bullet3": ""
       },
       "modular": {
-        "title": "Modular event-driven · 9 Worlds",
-        "bullet1": "Business Event Bus tipado · pub/sub in-process com tenantId no payload",
-        "bullet2": "Adicionar capacidade nova é só assinar evento · zero refactor cross-world"
+        "title": "Arquitetura Modular Event-Driven",
+        "bullet1": "Modular por domínio · modules/{nome}/ com routes/service/repository/types · imports via path absoluto · zero relative-hell",
+        "bullet2": "Event Bus pub/sub · 1 evento → N listeners independentes · falhas isoladas · payload carrega tenantId",
+        "bullet3": "Tenant isolation em 1 camada · Repository injeta tenantId em toda query · auditor automático flagga violations"
       },
       "infra": {
         "title": "Boot-time auto-migration",
         "bullet1": "Nixpacks (Railway) não roda migrations · resolvido com SQL idempotente no boot",
-        "bullet2": "30+ ALTERs separados com IF NOT EXISTS · evita Postgres erro 42601"
+        "bullet2": "30+ ALTERs separados com IF NOT EXISTS · evita Postgres erro 42601",
+        "bullet3": ""
       },
       "idempotency": {
         "title": "Idempotency arquitetural",
         "bullet1": "Webhook Stripe pode disparar duas vezes · processedWebhook table + transaction",
-        "bullet2": "Double-charge é arquiteturalmente impossível · não depende de logic retry"
+        "bullet2": "Double-charge é arquiteturalmente impossível · não depende de logic retry",
+        "bullet3": ""
       }
     },
     "highlights": {

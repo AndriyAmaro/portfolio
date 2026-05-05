@@ -242,32 +242,38 @@
       "multitenant": {
         "title": "Multi-tenant correct from day 1",
         "bullet1": "Repository pattern injects tenantId in every query · zero leaks in 6 months of production",
-        "bullet2": "Automated auditor scans the codebase · RLS backup in pgvector"
+        "bullet2": "Automated auditor scans the codebase · RLS backup in pgvector",
+        "bullet3": ""
       },
       "aiGateway": {
         "title": "AI Gateway with cost intelligence",
         "bullet1": "5-layer pipeline · validate · route · budget · call · log",
-        "bullet2": "4 chained providers with fallback · Math.ceil on cent fractions"
+        "bullet2": "4 chained providers with fallback · Math.ceil on cent fractions",
+        "bullet3": ""
       },
       "antiHallucination": {
         "title": "Anti-hallucination in 5 layers",
         "bullet1": "Inviolable rules in the system prompt · not in post-validation",
-        "bullet2": "Schema · fact-check · tool whitelist · tenant boundary · semantic similarity"
+        "bullet2": "Schema · fact-check · tool whitelist · tenant boundary · semantic similarity",
+        "bullet3": ""
       },
       "modular": {
-        "title": "Modular event-driven · 9 Worlds",
-        "bullet1": "Typed Business Event Bus · in-process pub/sub with tenantId in payload",
-        "bullet2": "Adding a new capability is just subscribing · zero cross-world refactor"
+        "title": "Modular Event-Driven Architecture",
+        "bullet1": "Modular per domain · modules/{name}/ with routes/service/repository/types · absolute path imports · zero relative-hell",
+        "bullet2": "Event Bus pub/sub · 1 event → N independent listeners · isolated failures · payload carries tenantId",
+        "bullet3": "Tenant isolation in 1 layer · Repository injects tenantId on every query · automated auditor flags violations"
       },
       "infra": {
         "title": "Boot-time auto-migration",
         "bullet1": "Nixpacks (Railway) doesn't run migrations · solved with idempotent SQL at boot",
-        "bullet2": "30+ separate ALTERs with IF NOT EXISTS · avoids Postgres error 42601"
+        "bullet2": "30+ separate ALTERs with IF NOT EXISTS · avoids Postgres error 42601",
+        "bullet3": ""
       },
       "idempotency": {
         "title": "Architectural idempotency",
         "bullet1": "Stripe webhooks can fire twice · processedWebhook table + transaction",
-        "bullet2": "Double-charges are architecturally impossible · not dependent on retry logic"
+        "bullet2": "Double-charges are architecturally impossible · not dependent on retry logic",
+        "bullet3": ""
       }
     },
     "highlights": {

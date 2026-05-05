@@ -180,19 +180,35 @@ export async function callWithFallback(model: Model, req: Req) {
   },
   {
     id: "eventBus",
-    file: "apps/api/src/shared/services/business-event-bus.ts",
+    file: "modules/crm/crm.service.ts",
     captionKey: "snippets.eventBus",
     render: () => (
       <>
-{`// Event Bus · 9 worlds coordinate via typed pub/sub, in-process
-bus.`}<span className="text-indigo-400">on</span>{`<`}<span className="text-fuchsia-400">'lead.qualified'</span>{`>(`}<span className="text-fuchsia-400">'lead.qualified'</span>{`, async (e) => {
-  `}<span className="text-white/40">{`// every handler receives tenantId in payload`}</span>{`
-  await `}<span className="text-indigo-400">crmWorld.scheduleFollowup</span>{`(e.tenantId, e.leadId);
-  await `}<span className="text-indigo-400">contentWorld.draftWelcome</span>{`(e.tenantId, e.leadId);
-  await `}<span className="text-indigo-400">analyticsWorld.trackEvent</span>{`(`}<span className="text-fuchsia-400">'lead_qualified'</span>{`, e);
-});
+{`import { eventBus } from `}<span className="text-fuchsia-400">{`'@/shared/business-event-bus'`}</span>{`;
+import { CrmRepository } from `}<span className="text-fuchsia-400">{`'./crm.repository'`}</span>{`;
 
-`}<span className="text-white/40">{`// Add a new World? Subscribe. No coordination meeting required.`}</span>
+`}<span className="text-indigo-400">export class</span>{` CrmService {
+  constructor(`}<span className="text-indigo-400">private</span>{` repo: CrmRepository) {}
+
+  `}<span className="text-indigo-400">async</span>{` `}<span className="text-cyan-400">createLead</span>{`(data: CreateLeadDto) {
+    `}<span className="text-white/40">{`// 1️⃣ Repository · tenantId auto-injected via Prisma extension`}</span>{`
+    `}<span className="text-indigo-400">const</span>{` lead = `}<span className="text-indigo-400">await</span>{` `}<span className="text-indigo-400">this</span>{`.repo.create(data);
+
+    `}<span className="text-white/40">{`// 2️⃣ Event Bus · listeners independentes em outros módulos`}</span>{`
+    `}<span className="text-indigo-400">await</span>{` eventBus.`}<span className="text-cyan-400">emit</span>{`(`}<span className="text-fuchsia-400">'lead.created'</span>{`, {
+      tenantId: lead.tenantId,
+      leadId: lead.id,
+      source: data.source,
+    });
+
+    `}<span className="text-indigo-400">return</span>{` lead;
+  }
+}
+
+`}<span className="text-white/40">{`// 3️⃣ Listeners em outros módulos · adicionar capacidade = só assinar evento`}</span>{`
+`}<span className="text-white/40">{`//    brain/listeners      → indexa lead pra busca semântica`}</span>{`
+`}<span className="text-white/40">{`//    automation/listeners → dispara workflow`}</span>{`
+`}<span className="text-white/40">{`//    audit/listeners      → loga ação no audit trail`}</span>
       </>
     ),
   },
@@ -600,12 +616,16 @@ function UseCaseSlide({
             {t(`useCases.${useCase.id}.title`)}
           </h4>
           <ul className="space-y-3 list-none">
-            {[1, 2].map((i) => (
-              <li key={i} className="flex gap-3 items-start text-sm md:text-base leading-relaxed text-white/75">
-                <HexIcon className="w-3 h-3 mt-[6px] shrink-0 about-usecase-hex" />
-                <span>{t(`useCases.${useCase.id}.bullet${i}`)}</span>
-              </li>
-            ))}
+            {[1, 2, 3].map((i) => {
+              const text = t(`useCases.${useCase.id}.bullet${i}`);
+              if (!text) return null;
+              return (
+                <li key={i} className="flex gap-3 items-start text-sm md:text-base leading-relaxed text-white/75">
+                  <HexIcon className="w-3 h-3 mt-[6px] shrink-0 about-usecase-hex" />
+                  <span>{text}</span>
+                </li>
+              );
+            })}
           </ul>
         </div>
 
