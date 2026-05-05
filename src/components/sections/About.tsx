@@ -807,6 +807,7 @@ function TechQACarousel({ t }: { t: ReturnType<typeof useTranslations<"about">> 
       transition={{ duration: 0.5 }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
+      className="about-techqa-section"
     >
       {/* Section header */}
       <div className="text-center mb-8 md:mb-10">
