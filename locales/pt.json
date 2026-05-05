@@ -243,37 +243,49 @@
         "title": "Multi-tenant correto desde o dia 1",
         "bullet1": "Repository pattern injeta tenantId em toda query · zero leak em 6 meses de produção",
         "bullet2": "Auditor automático scaneia codebase · RLS backup em pgvector",
-        "bullet3": ""
+        "bullet3": "",
+        "bullet4": "",
+        "bullet5": ""
       },
       "aiGateway": {
         "title": "AI Gateway com cost intelligence",
         "bullet1": "Pipeline 5 camadas · validate · route · budget · call · log",
         "bullet2": "4 providers chain com fallback · Math.ceil em fração de centavo",
-        "bullet3": ""
+        "bullet3": "",
+        "bullet4": "",
+        "bullet5": ""
       },
       "antiHallucination": {
-        "title": "Anti-hallucination em 5 camadas",
-        "bullet1": "Regras invioáveis no system prompt · não em validação posterior",
-        "bullet2": "Schema · fact-check · tool whitelist · tenant boundary · semantic similarity",
-        "bullet3": ""
+        "title": "IA que nunca inventa dados em produção",
+        "bullet1": "Nunca inventa dados · \"Não tenho dados sobre X. Quer que eu busque?\" em vez de número fictício",
+        "bullet2": "Cita a fonte de cada número/nome/fato · tool, contexto do sistema ou conhecimento marcado",
+        "bullet3": "Diferencia fato · tendência · sugestão · nunca mistura sem sinalizar",
+        "bullet4": "Resultado vazio é informação · não inventa alternativa · diz \"não encontrei X · possíveis motivos\"",
+        "bullet5": "Nomes e IDs são sagrados · nunca cria leads, deals, empresas ou IDs fictícios"
       },
       "modular": {
         "title": "Arquitetura Modular Event-Driven",
         "bullet1": "Modular por domínio · modules/{nome}/ com routes/service/repository/types · imports via path absoluto · zero relative-hell",
         "bullet2": "Event Bus pub/sub · 1 evento → N listeners independentes · falhas isoladas · payload carrega tenantId",
-        "bullet3": "Tenant isolation em 1 camada · Repository injeta tenantId em toda query · auditor automático flagga violations"
+        "bullet3": "Tenant isolation em 1 camada · Repository injeta tenantId em toda query · auditor automático flagga violations",
+        "bullet4": "",
+        "bullet5": ""
       },
       "infra": {
         "title": "Boot-time auto-migration",
         "bullet1": "Nixpacks (Railway) não roda migrations · resolvido com SQL idempotente no boot",
         "bullet2": "30+ ALTERs separados com IF NOT EXISTS · evita Postgres erro 42601",
-        "bullet3": ""
+        "bullet3": "",
+        "bullet4": "",
+        "bullet5": ""
       },
       "idempotency": {
         "title": "Idempotency arquitetural",
         "bullet1": "Webhook Stripe pode disparar duas vezes · processedWebhook table + transaction",
         "bullet2": "Double-charge é arquiteturalmente impossível · não depende de logic retry",
-        "bullet3": ""
+        "bullet3": "",
+        "bullet4": "",
+        "bullet5": ""
       }
     },
     "highlights": {

@@ -138,18 +138,26 @@ export function tenantGuard(req: Req, res: Res, next: Next) {
   },
   {
     id: "antiHallucination",
-    file: "apps/api/src/modules/agents/anti-hallucination.ts",
+    file: "modules/agents/prompt-builder.ts",
     captionKey: "snippets.antiHallucination",
     render: () => (
       <>
-{`// Anti-hallucination · 5 layers before agent output reaches user
-export async function `}<span className="text-indigo-400">guardOutput</span>{`(out: AgentOutput, ctx: AgentCtx) {
-  await `}<span className="text-fuchsia-400">layer1.schemaValidation</span>{`(out);          `}<span className="text-white/40">{`// Zod shape`}</span>{`
-  await `}<span className="text-fuchsia-400">layer2.factCheckAgainstContext</span>{`(out, ctx); `}<span className="text-white/40">{`// no invented IDs`}</span>{`
-  await `}<span className="text-fuchsia-400">layer3.providerToolWhitelist</span>{`(out);    `}<span className="text-white/40">{`// only allowed tools`}</span>{`
-  await `}<span className="text-fuchsia-400">layer4.tenantBoundaryCheck</span>{`(out, ctx);  `}<span className="text-white/40">{`// no cross-tenant data`}</span>{`
-  await `}<span className="text-fuchsia-400">layer5.semanticConsistency</span>{`(out, ctx);  `}<span className="text-white/40">{`// embedding sim > 0.78`}</span>{`
-  return out;
+<span className="text-white/40">{`// Inviolable rules · system prompt level · NOT post-validation`}</span>{`
+`}<span className="text-indigo-400">export const</span>{` `}<span className="text-cyan-400">ANTI_HALLUCINATION_RULES</span>{` = `}<span className="text-fuchsia-400">{`\``}</span>{`
+`}<span className="text-fuchsia-400">{`RULES (inviolable):`}</span>{`
+
+`}<span className="text-fuchsia-400">{`1. NEVER invent data · if no data, say "Não tenho dados sobre X"`}</span>{`
+`}<span className="text-fuchsia-400">{`2. CITE THE SOURCE for every number, name, fact`}</span>{`
+`}<span className="text-fuchsia-400">{`3. DIFFERENTIATE fact (from source) · trend (pattern) · suggestion (opinion)`}</span>{`
+`}<span className="text-fuchsia-400">{`4. EMPTY RESULTS are information · don't invent alternatives`}</span>{`
+`}<span className="text-fuchsia-400">{`5. NAMES & IDs are sacred · never create fictional leads/deals/companies`}</span>{`
+`}<span className="text-fuchsia-400">{`\`;`}</span>{`
+
+`}<span className="text-white/40">{`// modules/agents/response-quality.engine.ts · safety net automático`}</span>{`
+`}<span className="text-indigo-400">export async function</span>{` `}<span className="text-cyan-400">scoreAndGate</span>{`(response: string) {
+  `}<span className="text-indigo-400">const</span>{` score = `}<span className="text-indigo-400">await</span>{` scoreQuality(response); `}<span className="text-white/40">{`// 0-100`}</span>{`
+  `}<span className="text-indigo-400">if</span>{` (score < `}<span className="text-yellow-300">70</span>{`) `}<span className="text-indigo-400">return</span>{` regenerate(); `}<span className="text-white/40">{`// regenera se baixo`}</span>{`
+  `}<span className="text-indigo-400">return</span>{` response;
 }`}
       </>
     ),
@@ -615,13 +623,13 @@ function UseCaseSlide({
           <h4 className="text-xl md:text-2xl lg:text-[28px] font-bold leading-[1.15] mb-5 md:mb-6 text-white">
             {t(`useCases.${useCase.id}.title`)}
           </h4>
-          <ul className="space-y-3 list-none">
-            {[1, 2, 3].map((i) => {
+          <ul className="space-y-2.5 list-none">
+            {[1, 2, 3, 4, 5].map((i) => {
               const text = t(`useCases.${useCase.id}.bullet${i}`);
               if (!text) return null;
               return (
-                <li key={i} className="flex gap-3 items-start text-sm md:text-base leading-relaxed text-white/75">
-                  <HexIcon className="w-3 h-3 mt-[6px] shrink-0 about-usecase-hex" />
+                <li key={i} className="flex gap-3 items-start text-[13px] md:text-sm leading-relaxed text-white/75">
+                  <HexIcon className="w-3 h-3 mt-[5px] shrink-0 about-usecase-hex" />
                   <span>{text}</span>
                 </li>
               );
