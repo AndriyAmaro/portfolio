@@ -50,7 +50,9 @@
   "about": {
     "title": "Sobre",
     "titleHighlight": "Mim",
-    "subtitle": "Construo SaaS multi-tenant com IA tratada como infraestrutura, não wrapper",
+    "subtitle": "Construo o que opero · opero o que construo. Cada decisão técnica vira responsabilidade quando algo quebra em produção.",
+    "personalOpener": "Não cheguei aqui por linha reta · cada SaaS que construí nasceu de uma dor que eu próprio senti primeiro. Aprendi que código que escala precisa de arquitetura, não só lógica · que quem projeta também tem que operar · que cada produto é só uma promessa até rodar em produção, com usuários reais reclamando ou amando.",
+    "personalDrives": "Construo pra durar · não pra apresentar. Cada decisão técnica que tomo é pensada pra rodar quando eu não estiver olhando. Isso significa observabilidade dentro do código (não depois), failure modes mapeados antes do happy path, e disciplina de schema antes de qualquer endpoint. Não terceirizo decisões arquiteturais · projeto, implemento, opero.",
     "heading": "Engenharia ponta a ponta · do design system ao",
     "headingHighlight": "orquestrador de IA",
     "paragraph1": "Desenvolvedor Full Stack focado em SaaS multi-tenant com IA nativa em produção. End-to-end ownership real: frontend, backend, banco com extensões vetoriais (pgvector + HNSW), cache distribuído (Redis), filas (BullMQ), real-time (Socket.io), observabilidade estruturada, segurança e CI/CD. Não terceirizo decisões arquiteturais · projeto, implemento e opero.",
@@ -60,6 +62,116 @@
     "paragraph3prefix": "Antes do Sellorex criei o",
     "paragraph3highlight": "Pulse Ecosystem",
     "paragraph3suffix": "· 4 apps production-ready compartilhando design system, 380+ testes, 740+ commits · Pulse Theme já publicado comercialmente. Cada app em produção e em uso · zero código abandonado em portfólio.",
+    "manifesto": "IA como infraestrutura · não como wrapper",
+    "manifestoQuote": "Construo o gateway, não o wrapper.",
+    "bioPrefix": "SaaS multi-tenant com IA tratada como infraestrutura · projeto sistemas que escalam.",
+    "bioHighlight1": "Sellorex",
+    "bioMiddle": "· 126 modelos, 1036 endpoints, 12 agentes orquestrados num gateway com fallback automático.",
+    "bioHighlight2": "Pulse Ecosystem",
+    "bioSuffix": "· 4 apps em produção, Pulse Theme publicado comercialmente. End-to-end ownership · projeto, implemento, opero.",
+    "tabs": {
+      "ariaLabel": "Sobre mim · navegação por seções",
+      "now": "Agora",
+      "how": "Como trabalho",
+      "off": "Histórico"
+    },
+    "techQA": {
+      "sectionCaption": "Como eu penso",
+      "sectionTitle": "9 decisões de senior · production-grade",
+      "dotsAriaLabel": "Navegar entre perguntas técnicas",
+      "categories": {
+        "system": "System Design · Distribuído",
+        "perf": "Performance · Web Vitals",
+        "security": "Security · Auth · Hash"
+      },
+      "idempotency": {
+        "question": "Idempotência em API · pra quê?",
+        "tldr": "Mesma operação repetida tem mesmo efeito · resolve retry safe sem duplicar",
+        "detail": "GET, PUT, DELETE são idempotentes por design · POST não é. Risco real: cliente faz retry após timeout, paga duas vezes. Solução: header Idempotency-Key (UUID gerado pelo cliente), servidor armazena resposta da primeira chamada e retorna a mesma sem reexecutar. Stripe e PayPal usam exatamente esse pattern. Em workers de fila (at least once delivery): UPSERT em vez de INSERT, ou checa job_id em DB antes de processar.",
+        "proof": "Sellorex /charge usa Idempotency-Key · webhook Stripe pode disparar 2× sem double-charge"
+      },
+      "cap": {
+        "question": "CAP theorem · como decidir?",
+        "tldr": "Sistema distribuído escolhe 2 de 3 · Consistency, Availability, Partition tolerance",
+        "detail": "Em prática, partição de rede vai acontecer · escolha real é CP ou AP. CP (Postgres, MongoDB com majority): sacrifica disponibilidade durante partição · recusa writes pra manter consistência. AP (DynamoDB, Cassandra): aceita writes em qualquer node, resolve conflitos depois. BASE = Basically Available, Soft state, Eventual consistency. Critério: dado financeiro → CP · feed/timeline → AP.",
+        "proof": "Sellorex DB → CP (consistência multi-tenant crítica) · cache Redis → AP (disponível mesmo em split-brain)"
+      },
+      "saga": {
+        "question": "Saga pattern · transação distribuída?",
+        "tldr": "Sequência de steps locais com compensações · resolve ACID cross-service",
+        "detail": "Em microsserviços não dá pra ter ACID cross-DB. Saga: cada serviço executa step local + emite evento. Se falhar no meio, executa compensating actions (undo) dos steps anteriores. Dois estilos: choreography (services se coordenam via eventos · acoplamento baixo, debug difícil) ou orchestration (orquestrador central comanda · debug fácil, single point of failure).",
+        "proof": "Sellorex onboarding · cria tenant → reserva quota → cobra cartão → ativa worlds · falha em qualquer step aciona rollback completo"
+      },
+      "coreWebVitals": {
+        "question": "Core Web Vitals · o que medir?",
+        "tldr": "LCP (loading), INP (interactivity), CLS (visual stability) · alvos do Google",
+        "detail": "LCP: tempo até maior elemento visível · alvo <2.5s. INP (substituiu FID em 2024): pior latência de interação · alvo <200ms. CLS: shift de layout durante load · alvo <0.1. Google usa em SEO ranking. Lighthouse mede em lab (sintético) · RUM (Real User Monitoring) mede usuários reais com web-vitals.js. Diferença é grande · sempre validar com RUM antes de declarar otimizado.",
+        "proof": "Toda PR frontend Sellorex · checa Lighthouse antes de merge · LCP <1.8s, CLS <0.05 em prod"
+      },
+      "codeSplitting": {
+        "question": "Code splitting · como aplicar?",
+        "tldr": "Quebra bundle em chunks menores · carrega sob demanda · primeira load 5× menor",
+        "detail": "Por rota: const Page = lazy(() => import('./Page')) + Suspense fallback. Por componente: Modal pesado vira lazy. Por library: charts (Recharts), editor (Monaco), markdown · só carrega quando user usa. Webpack/Vite/Turbopack faz split automático em dynamic imports. Cuidado com waterfall: lazy dentro de lazy aumenta TTI · prefetch em hover ajuda.",
+        "proof": "Pulse Finance Dashboard com 50 charts · code split por aba reduziu bundle inicial em 60%"
+      },
+      "memoization": {
+        "question": "Memoização · quando vale?",
+        "tldr": "Quando recálculo é caro E roda muitas vezes · senão é overhead",
+        "detail": "useMemo: cálculo derivado de props/state caro (filtro de 10k items, cálculo de gráfico). useCallback: referência estável de função (deps de child memoizado, ou effect deps). React.memo: componente puro com props estáveis (lista de cards, ItemRow). Anti-pattern: memoizar tudo \"por garantia\" · custa CPU pra comparar deps a cada render. Mede primeiro com Profiler, otimize depois.",
+        "proof": "Sellorex Sentinel dashboard · useMemo no chart aggregator (200k events) · render time 320ms → 18ms"
+      },
+      "jwtStateless": {
+        "question": "JWT stateless · ok pra produção?",
+        "tldr": "Sim, mas com trade-off · token roubado vale até expirar",
+        "detail": "JWT = Header.Payload.Signature em base64. Servidor só verifica signature · não precisa hit no DB a cada request (stateless real). Pegadinhas: token longo (1h+) é risco se vazar · use short-lived (15min) + refresh token. Refresh token: stored em httpOnly+SameSite cookie + rotação a cada uso + invalidação por blacklist (precisa estado · trade-off honesto). Logout instantâneo cross-device exige session em DB.",
+        "proof": "Sellorex API · access token 15min em memory + refresh em httpOnly cookie · logout invalida refresh blacklist Redis"
+      },
+      "oauth2": {
+        "question": "OAuth2 · 4 grant types · qual usar?",
+        "tldr": "Authorization Code + PKCE (web/mobile), Client Credentials (server-server), Device, Refresh",
+        "detail": "Authorization Code + PKCE: padrão atual pra apps web e mobile · proteção contra interception sem precisar client secret. Client Credentials: backend chamando backend (sem user · sem browser). Device: TVs, IoT (mostra código pra logar no celular). Refresh Token: renova access token sem re-login. Implicit grant e Resource Owner Password grants estão deprecated · não use.",
+        "proof": "Sellorex login com Google/GitHub · Authorization Code + PKCE · Sentinel chama API externa via Client Credentials"
+      },
+      "passwordStorage": {
+        "question": "Senha · como armazenar em 2026?",
+        "tldr": "argon2id (preferência) ou bcrypt cost 12+ · NUNCA MD5/SHA",
+        "detail": "argon2id: vencedor da Password Hashing Competition · resistente a GPU/ASIC · padrão moderno. bcrypt: ainda sólido com work factor 12+ (rotaciona a cada upgrade de hardware). Salt automático incluído no hash final. Pegadinhas críticas: NUNCA SHA/MD5 (rápido demais · brute force trivial), NUNCA registre senha em log/audit, sempre HTTPS no transport, sempre rate limit no /login pra evitar credential stuffing.",
+        "proof": "Sellorex signup · argon2id com memory=64MB, iterations=3, parallelism=4 · armazena só o hash · zero senha em log"
+      }
+    },
+    "process": {
+      "understand": {
+        "title": "Failure modes antes do happy path",
+        "description": "O que pode quebrar em 100x scale, em cross-tenant, em deploy parcial · constraints reais antes de qualquer linha de código."
+      },
+      "architect": {
+        "title": "Schema antes do código",
+        "description": "Invariantes, índices compostos (tenantId, createdAt) · isolation enforced em uma camada · pub/sub e replaceability desde commit 1."
+      },
+      "ship": {
+        "title": "Production-ready desde commit 1",
+        "description": "Testes em failure paths, não só happy · structured logs com tenantId/requestId · p95 measurable · rollback plan documentado."
+      },
+      "iterate": {
+        "title": "Operar é parte do build",
+        "description": "Sentinel detecta anomalias · P95 baseline por endpoint · refactor cirúrgico quando custo de mudança fica alto · zero feature deixada à deriva."
+      }
+    },
+    "trackRecord": {
+      "intro": "Antes de Sellorex já tinha pipeline production-ready. Cada projeto live, em uso, com métricas reais.",
+      "pulseEcosystem": {
+        "title": "Pulse Ecosystem",
+        "description": "4 SaaS em produção compartilhando design system · 100+ componentes shared · 380+ testes automatizados · 740+ commits com conventional commits."
+      },
+      "pulseTheme": {
+        "title": "Pulse Theme · publicado comercialmente",
+        "description": "Design system que virou produto · vendido como tema premium · case real de SaaS B2B saindo da minha mão pro mercado."
+      },
+      "sellorex": {
+        "title": "Sellorex em produção",
+        "description": "Plataforma viva em sellorex.com · ~50 tenants em uso · zero leak entre tenants em 6 meses · sub-50ms p95 em queries hot."
+      }
+    },
     "metrics": {
       "modules": "Módulos backend",
       "worlds": "Worlds (domínios)",
@@ -71,37 +183,98 @@
     "codeSnippet": {
       "caption": "Pipeline de 5 camadas com tenant isolation, budget enforcement em 3 níveis, fallback automático multi-provider e observabilidade estruturada · código real do Sellorex em produção."
     },
+    "snippets": {
+      "gateway": "Pipeline de 5 camadas · validação Zod, roteamento por complexidade e plano, budget enforcement em 3 níveis, fallback multi-provider e observabilidade estruturada de cada chamada.",
+      "tenant": "Multi-tenant isolation no middleware · Prisma extension injeta tenantId em toda query automaticamente. Vazamento entre tenants é arquiteturalmente impossível.",
+      "antiHallucination": "Anti-hallucination · 5 camadas obrigatórias antes da resposta do agente chegar ao usuário. Schema, fact-check, whitelist de tools, boundary tenant e similaridade semântica.",
+      "fallback": "Resilience real · 4 providers em chain (Claude → OpenAI → Qwen → DeepSeek) com circuit breaker e exponential backoff. Provider down não derruba o sistema.",
+      "eventBus": "Event Bus pub/sub tipado · 9 worlds coordenam por eventos sem acoplamento. Adicionar capacidade nova é só assinar evento · zero refactor cross-world.",
+      "ensureSchemaSync": "Auto-migration no boot · Nixpacks (Railway) não roda migrations. Cada SQL idempotente com IF NOT EXISTS · 30+ ALTERs separados pra evitar Postgres erro 42601.",
+      "idempotency": "Idempotency real · webhook Stripe pode disparar duas vezes. Tabela processedWebhook + transaction garantem que double-charge é arquiteturalmente impossível.",
+      "controls": {
+        "prev": "Exemplo anterior",
+        "next": "Próximo exemplo",
+        "pause": "Pausar auto-avanço",
+        "play": "Retomar auto-avanço",
+        "ariaLabel": "Navegar entre exemplos de código"
+      }
+    },
+    "useCases": {
+      "sectionCaption": "Production proof",
+      "sectionTitle": "Decisões arquiteturais que viraram código",
+      "dotsAriaLabel": "Navegar entre use cases",
+      "multitenant": {
+        "title": "Multi-tenant correto desde o dia 1",
+        "bullet1": "Repository pattern injeta tenantId em toda query · zero leak em 6 meses de produção",
+        "bullet2": "Auditor automático scaneia codebase · RLS backup em pgvector"
+      },
+      "aiGateway": {
+        "title": "AI Gateway com cost intelligence",
+        "bullet1": "Pipeline 5 camadas · validate · route · budget · call · log",
+        "bullet2": "4 providers chain com fallback · Math.ceil em fração de centavo"
+      },
+      "antiHallucination": {
+        "title": "Anti-hallucination em 5 camadas",
+        "bullet1": "Regras invioáveis no system prompt · não em validação posterior",
+        "bullet2": "Schema · fact-check · tool whitelist · tenant boundary · semantic similarity"
+      },
+      "modular": {
+        "title": "Modular event-driven · 9 Worlds",
+        "bullet1": "Business Event Bus tipado · pub/sub in-process com tenantId no payload",
+        "bullet2": "Adicionar capacidade nova é só assinar evento · zero refactor cross-world"
+      },
+      "infra": {
+        "title": "Boot-time auto-migration",
+        "bullet1": "Nixpacks (Railway) não roda migrations · resolvido com SQL idempotente no boot",
+        "bullet2": "30+ ALTERs separados com IF NOT EXISTS · evita Postgres erro 42601"
+      },
+      "idempotency": {
+        "title": "Idempotency arquitetural",
+        "bullet1": "Webhook Stripe pode disparar duas vezes · processedWebhook table + transaction",
+        "bullet2": "Double-charge é arquiteturalmente impossível · não depende de logic retry"
+      }
+    },
     "highlights": {
-      "ai": {
-        "title": "IA como infraestrutura",
-        "description": "Gateway LLM multi-provider com fallback automático · framework de resposta estruturada em 4 camadas (Resultado · Insight · Ação · Próximo Passo) · anti-alucinação 5 layers · Budget Enforcement em 3 níveis · Memory System hierárquico com deduplicação semântica · embeddings com pgvector + HNSW para busca semântica."
+      "multitenant": {
+        "title": "Multi-tenant correto desde o dia 1",
+        "description": "Repository pattern injeta tenantId em toda query · auditor automático scaneia codebase · Row-Level Security backup em pgvector · zero leak entre tenants em 6 meses de produção."
       },
-      "production": {
-        "title": "Production-ready desde o dia 1",
-        "description": "Multi-tenancy com Row-Level Security correto desde a primeira migration · não retrofitting depois. Race conditions resolvidas, retry com exponential backoff, dead letter queue, cursor pagination, RBAC granular, audit logs, webhooks com HMAC verification, idempotency keys."
+      "aiGateway": {
+        "title": "AI Gateway com cost intelligence",
+        "description": "Pipeline de 5 camadas · 4 providers em chain (Claude/OpenAI/Qwen/DeepSeek) com fallback automático · budget enforcement em 3 níveis · Math.ceil em fração de centavo evita perda em escala."
       },
-      "quality": {
-        "title": "Quality como padrão, não feature",
-        "description": "TypeScript strict mode, validação runtime em toda entrada (Zod), 380+ testes automatizados (unit + integration + E2E), CI/CD obrigatório, ADRs em cada decisão arquitetural, conventional commits em todos os repos."
+      "sentinel": {
+        "title": "Sentinel · self-monitoring SaaS",
+        "description": "263 admin tools em 43 categorias · detecta anomalias, queries lentas, regressões e churn risk · propõe fixes via PowerRequest · auto-tuning de thresholds via P95 baseline."
+      },
+      "sellMode": {
+        "title": "Sell Mode · self-selling SaaS",
+        "description": "12 growth engines coordenados · outbound, closer, demo-gen, nurture, content, capture · plataforma roda marketing/sales 24/7 sem intervenção humana."
       },
       "modular": {
         "title": "Arquitetura modular event-driven",
-        "description": "10 Worlds independentes coordenados via Event Bus pub/sub · 33 módulos de API com barrel index · cada feature nova = uma pasta nova. Controller → Service → Repository com tenant isolation enforced em uma camada. Adicionar capability sem tocar no resto do sistema."
+        "description": "9 Worlds independentes coordenados via Business Event Bus tipado · 32 módulos com barrel index · feature nova = pasta nova · adicionar capability sem tocar no resto."
+      },
+      "quality": {
+        "title": "Quality como padrão, não feature",
+        "description": "TypeScript strict mode (zero any injustificado em ~330k LOC) · Zod runtime em toda entrada · ADRs em cada decisão · conventional commits · CI/CD obrigatório."
       }
     }
   },
   "skills": {
-    "badge": "tecnologias no stack",
-    "title": "Minhas",
-    "titleHighlight": "Habilidades",
-    "subtitle": "Tecnologias que uso para criar produtos digitais de alta qualidade",
+    "badge": "stack production-ready",
+    "title": "Domínios de",
+    "titleHighlight": "Engenharia",
+    "subtitle": "Quatro áreas de atuação que se conectam em sistemas reais · do schema do banco à orquestração de IA, do design system ao deploy edge",
     "categories": {
-      "frontend": "Frontend",
-      "frontendDesc": "Interfaces modernas e responsivas",
-      "backend": "Backend",
-      "backendDesc": "APIs robustas e escaláveis",
-      "devops": "DevOps e Ferramentas",
-      "devopsDesc": "Ferramentas e workflows modernos"
+      "frontend": "Frontend Engineering",
+      "frontendDesc": "Design systems escaláveis · animações performantes · A11y WCAG AA",
+      "backend": "System Architecture",
+      "backendDesc": "APIs multi-tenant · event-driven · sub-50ms p95 latency",
+      "ai": "AI Systems",
+      "aiDesc": "Multi-provider LLM gateway · prompt engineering · anti-hallucination guardrails",
+      "devops": "DevOps & Quality",
+      "devopsDesc": "Container builds · edge deploys · CI/CD · type-safe end-to-end"
     },
     "levels": {
       "expert": "Expert",

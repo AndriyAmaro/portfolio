@@ -1,18 +1,28 @@
 "use client";
 
 import { motion, AnimatePresence, useInView } from "framer-motion";
-import { Cpu, ShieldCheck, BadgeCheck, Network, Terminal } from "lucide-react";
+import { Cpu, ShieldCheck, BadgeCheck, Network, Terminal, Compass, Layers3, Rocket, RefreshCw, ChevronLeft, ChevronRight, Pause, Play, Lock, Gauge, Eye, Megaphone, Boxes, ScrollText, Sparkles, Layers, Trophy, Activity, Workflow } from "lucide-react";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
-import Image from "next/image";
 
 const highlights = [
-  { icon: Cpu, key: "ai" },
-  { icon: ShieldCheck, key: "production" },
-  { icon: BadgeCheck, key: "quality" },
-  { icon: Network, key: "modular" },
+  { icon: Lock, key: "multitenant", caption: "Architecture" },
+  { icon: Cpu, key: "aiGateway", caption: "AI Layer" },
+  { icon: Eye, key: "sentinel", caption: "Operations" },
+  { icon: Megaphone, key: "sellMode", caption: "Growth" },
+  { icon: Network, key: "modular", caption: "Architecture" },
+  { icon: BadgeCheck, key: "quality", caption: "Engineering" },
 ] as const;
+
+// Devin-inspired hexagonal bullet icon (6-sided polygon)
+function HexIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 16 16" className={className} fill="currentColor" aria-hidden="true">
+      <path d="M7.007,0.63c0.614-0.355,1.371-0.355,1.986,0l4.893,2.825c0.614,0.355,0.993,1.01,0.993,1.72v5.65 c0,0.709-0.378,1.365-0.993,1.72L8.993,15.37c-0.614,0.355-1.371,0.355-1.986,0l-4.893-2.825c-0.614-0.355-0.993-1.01-0.993-1.72 v-5.65c0-0.709,0.378-1.365,0.993-1.72L7.007,0.63z"/>
+    </svg>
+  );
+}
 
 // ─── Stats data ──────────────────────────────────────────
 type StatItem = { value: number; suffix: string; labelKey: string };
@@ -78,7 +88,184 @@ function AboutStatsRow({ t }: { t: ReturnType<typeof useTranslations<"about">> }
 }
 
 // ─── Code snippet card · real production code ────────────
-function CodeSnippetCard({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
+/* ── Code Snippets · 5 production proofs in carousel ── */
+type CodeSnippet = {
+  id: string;
+  file: string;
+  captionKey: string;
+  render: () => React.ReactNode;
+};
+
+const CODE_SNIPPETS: CodeSnippet[] = [
+  {
+    id: "gateway",
+    file: "apps/api/src/modules/ai-gateway/gateway.service.ts",
+    captionKey: "snippets.gateway",
+    render: () => (
+      <>
+{`// AI Gateway · single entry point for ALL LLM calls
+async gatewayCall(req: GatewayCallRequest, ctx: TenantContext) {
+  await `}<span className="text-indigo-400">validateSchema</span>{`(req);                      `}<span className="text-white/40">{`// Zod runtime validation`}</span>{`
+  const model = `}<span className="text-indigo-400">routeModel</span>{`(req, ctx.plan);        `}<span className="text-white/40">{`// complexity + plan routing`}</span>{`
+  await `}<span className="text-indigo-400">creditEnforcer.check</span>{`(ctx.tenantId, model); `}<span className="text-white/40">{`// 3-tier budget`}</span>{`
+  const res = await `}<span className="text-indigo-400">callWithFallback</span>{`(model, req); `}<span className="text-white/40">{`// circuit breaker`}</span>{`
+  await `}<span className="text-indigo-400">logUsage</span>{`(ctx, model, res);                `}<span className="text-white/40">{`// AiUsageLog persisted`}</span>{`
+  return res;
+}`}
+      </>
+    ),
+  },
+  {
+    id: "tenant",
+    file: "apps/api/src/shared/middleware/tenant-guard.ts",
+    captionKey: "snippets.tenant",
+    render: () => (
+      <>
+{`// Tenant isolation · enforced at middleware, never bypassed
+export function tenantGuard(req: Req, res: Res, next: Next) {
+  const ctx = `}<span className="text-fuchsia-400">extractTenantContext</span>{`(req);
+  if (!ctx.tenantId) `}<span className="text-fuchsia-400">throw</span>{` new `}<span className="text-indigo-400">UnauthorizedError</span>{`();
+
+  `}<span className="text-white/40">{`// Prisma extension auto-injects tenantId in EVERY query`}</span>{`
+  req.prisma = prisma.$extends(`}<span className="text-indigo-400">withTenantScope</span>{`(ctx.tenantId));
+  req.tenant = ctx;
+  next();
+}
+
+`}<span className="text-white/40">{`// Result: zero queries can leak across tenants. By design.`}</span>
+      </>
+    ),
+  },
+  {
+    id: "antiHallucination",
+    file: "apps/api/src/modules/agents/anti-hallucination.ts",
+    captionKey: "snippets.antiHallucination",
+    render: () => (
+      <>
+{`// Anti-hallucination · 5 layers before agent output reaches user
+export async function `}<span className="text-indigo-400">guardOutput</span>{`(out: AgentOutput, ctx: AgentCtx) {
+  await `}<span className="text-fuchsia-400">layer1.schemaValidation</span>{`(out);          `}<span className="text-white/40">{`// Zod shape`}</span>{`
+  await `}<span className="text-fuchsia-400">layer2.factCheckAgainstContext</span>{`(out, ctx); `}<span className="text-white/40">{`// no invented IDs`}</span>{`
+  await `}<span className="text-fuchsia-400">layer3.providerToolWhitelist</span>{`(out);    `}<span className="text-white/40">{`// only allowed tools`}</span>{`
+  await `}<span className="text-fuchsia-400">layer4.tenantBoundaryCheck</span>{`(out, ctx);  `}<span className="text-white/40">{`// no cross-tenant data`}</span>{`
+  await `}<span className="text-fuchsia-400">layer5.semanticConsistency</span>{`(out, ctx);  `}<span className="text-white/40">{`// embedding sim > 0.78`}</span>{`
+  return out;
+}`}
+      </>
+    ),
+  },
+  {
+    id: "fallback",
+    file: "apps/api/src/modules/ai-gateway/call-with-fallback.ts",
+    captionKey: "snippets.fallback",
+    render: () => (
+      <>
+{`// Fallback chain · 4 providers, circuit breaker, exp backoff
+const CHAIN = [`}<span className="text-indigo-400">'claude'</span>{`, `}<span className="text-indigo-400">'openai'</span>{`, `}<span className="text-indigo-400">'qwen'</span>{`, `}<span className="text-indigo-400">'deepseek'</span>{`];
+
+export async function callWithFallback(model: Model, req: Req) {
+  for (const provider of CHAIN) {
+    if (`}<span className="text-fuchsia-400">circuit.isOpen</span>{`(provider)) continue;
+    try {
+      return await `}<span className="text-indigo-400">providers[provider].call</span>{`(model, req);
+    } catch (err) {
+      `}<span className="text-fuchsia-400">circuit.recordFailure</span>{`(provider, err);
+      `}<span className="text-fuchsia-400">await sleep</span>{`(`}<span className="text-indigo-400">backoff</span>{`(attempt++));      `}<span className="text-white/40">{`// 1s, 2s, 4s, 8s`}</span>{`
+    }
+  }
+  throw new `}<span className="text-fuchsia-400">AllProvidersDownError</span>{`();
+}`}
+      </>
+    ),
+  },
+  {
+    id: "eventBus",
+    file: "apps/api/src/shared/services/business-event-bus.ts",
+    captionKey: "snippets.eventBus",
+    render: () => (
+      <>
+{`// Event Bus · 9 worlds coordinate via typed pub/sub, in-process
+bus.`}<span className="text-indigo-400">on</span>{`<`}<span className="text-fuchsia-400">'lead.qualified'</span>{`>(`}<span className="text-fuchsia-400">'lead.qualified'</span>{`, async (e) => {
+  `}<span className="text-white/40">{`// every handler receives tenantId in payload`}</span>{`
+  await `}<span className="text-indigo-400">crmWorld.scheduleFollowup</span>{`(e.tenantId, e.leadId);
+  await `}<span className="text-indigo-400">contentWorld.draftWelcome</span>{`(e.tenantId, e.leadId);
+  await `}<span className="text-indigo-400">analyticsWorld.trackEvent</span>{`(`}<span className="text-fuchsia-400">'lead_qualified'</span>{`, e);
+});
+
+`}<span className="text-white/40">{`// Add a new World? Subscribe. No coordination meeting required.`}</span>
+      </>
+    ),
+  },
+  {
+    id: "ensureSchemaSync",
+    file: "apps/api/src/app.ts",
+    captionKey: "snippets.ensureSchemaSync",
+    render: () => (
+      <>
+{`// Boot-time idempotent migrations · Nixpacks doesn't run them
+async function `}<span className="text-indigo-400">ensureSchemaSync</span>{`() {
+  `}<span className="text-white/40">{`// Each SQL · individual call · IF NOT EXISTS · .catch noop`}</span>{`
+  await prisma.`}<span className="text-fuchsia-400">$executeRawUnsafe</span>{`(`}<span className="text-fuchsia-400">{`\`ALTER TABLE "ContentAsset" ADD COLUMN IF NOT EXISTS "blocks" JSONB\``}</span>{`).`}<span className="text-indigo-400">catch</span>{`(() =&gt; {});
+  await prisma.`}<span className="text-fuchsia-400">$executeRawUnsafe</span>{`(`}<span className="text-fuchsia-400">{`\`ALTER TYPE "AdminTaskStatus" ADD VALUE IF NOT EXISTS 'APPROVED'\``}</span>{`).`}<span className="text-indigo-400">catch</span>{`(() =&gt; {});
+  `}<span className="text-white/40">{`// ... 30+ ALTERs idempotentes`}</span>{`
+}
+`}<span className="text-indigo-400">ensureSchemaSync</span>{`();
+
+`}<span className="text-white/40">{`// Postgres erro 42601 (multi-statements) é o motivo de cada SQL separado.`}</span>
+      </>
+    ),
+  },
+  {
+    id: "idempotency",
+    file: "apps/api/src/modules/billing/stripe-webhook.ts",
+    captionKey: "snippets.idempotency",
+    render: () => (
+      <>
+{`// Idempotency · Stripe webhook can fire same event twice
+const idempotencyKey = req.headers[`}<span className="text-fuchsia-400">'stripe-idempotency-key'</span>{`];
+const seen = await prisma.processedWebhook.`}<span className="text-indigo-400">findUnique</span>{`({
+  where: { idempotencyKey }
+});
+if (seen) return `}<span className="text-indigo-400">sendSuccess</span>{`(res, { duplicate: `}<span className="text-fuchsia-400">true</span>{` });
+
+await prisma.`}<span className="text-fuchsia-400">$transaction</span>{`(async (tx) =&gt; {
+  await tx.processedWebhook.`}<span className="text-indigo-400">create</span>{`({ data: { idempotencyKey } });
+  `}<span className="text-white/40">{`// ... handler real do evento dentro da transaction`}</span>{`
+});`}
+      </>
+    ),
+  },
+];
+
+export function CodeSnippetsCarousel({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
+  const [active, setActive] = useState(0);
+  const [direction, setDirection] = useState(1);
+  const [paused, setPaused] = useState(false);
+  const total = CODE_SNIPPETS.length;
+  const current = CODE_SNIPPETS[active];
+
+  // Auto-advance · 7s · pause on hover/focus or manual paused
+  useEffect(() => {
+    if (paused) return;
+    const id = setInterval(() => {
+      setDirection(1);
+      setActive((p) => (p + 1) % total);
+    }, 7000);
+    return () => clearInterval(id);
+  }, [paused, total]);
+
+  const goTo = useCallback((idx: number) => {
+    setDirection(idx > active ? 1 : -1);
+    setActive(idx);
+  }, [active]);
+  const next = useCallback(() => goTo((active + 1) % total), [active, total, goTo]);
+  const prev = useCallback(() => goTo((active - 1 + total) % total), [active, total, goTo]);
+
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowRight") { e.preventDefault(); next(); }
+    if (e.key === "ArrowLeft") { e.preventDefault(); prev(); }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -86,9 +273,25 @@ function CodeSnippetCard({ t }: { t: ReturnType<typeof useTranslations<"about">>
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.6 }}
       className="mt-16 md:mt-20"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
     >
-      <div className="about-code-card relative rounded-2xl overflow-hidden">
-        {/* Header bar */}
+      <div className="about-code-card relative rounded-2xl overflow-hidden" onKeyDown={onKeyDown}>
+        {/* Top progress bar · indigo→fuchsia · animates per slide */}
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-white/[0.04] z-10">
+          <motion.div
+            key={`bar-${active}-${paused ? "p" : "r"}`}
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: paused ? 0 : 1 }}
+            transition={{ duration: paused ? 0 : 7, ease: "linear" }}
+            className="h-full origin-left bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500"
+            style={{ transformOrigin: "left center" }}
+          />
+        </div>
+
+        {/* Header · macOS dots + filepath + counter */}
         <div className="flex items-center gap-2.5 px-5 py-3 about-code-header border-b border-white/[0.06]">
           <div className="flex gap-1.5">
             <span className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
@@ -96,29 +299,85 @@ function CodeSnippetCard({ t }: { t: ReturnType<typeof useTranslations<"about">>
             <span className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
           </div>
           <Terminal className="w-3.5 h-3.5 text-indigo-400 ml-2" />
-          <span className="text-xs font-mono text-white/60">
-            apps/api/src/modules/ai-gateway/gateway.service.ts
+          <span className="text-xs font-mono text-white/60 truncate flex-1">
+            {current.file}
+          </span>
+          <span className="text-[10px] font-mono text-white/40 tabular-nums">
+            {String(active + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
           </span>
         </div>
 
-        {/* Code body */}
-        <pre className="about-code-body p-5 md:p-6 text-xs md:text-sm font-mono leading-relaxed overflow-x-auto">
-{`// AI Gateway · single entry point for ALL LLM calls
-async gatewayCall(req: GatewayCallRequest, ctx: TenantContext) {
-  await `}<span className="text-indigo-400">{`validateSchema`}</span>{`(req);                      `}<span className="text-white/40">{`// Zod runtime validation`}</span>{`
-  const model = `}<span className="text-indigo-400">{`routeModel`}</span>{`(req, ctx.plan);        `}<span className="text-white/40">{`// complexity + plan routing`}</span>{`
-  await `}<span className="text-indigo-400">{`creditEnforcer.check`}</span>{`(ctx.tenantId, model); `}<span className="text-white/40">{`// 3-tier budget`}</span>{`
-  const res = await `}<span className="text-indigo-400">{`callWithFallback`}</span>{`(model, req); `}<span className="text-white/40">{`// circuit breaker`}</span>{`
-  await `}<span className="text-indigo-400">{`logUsage`}</span>{`(ctx, model, res);                `}<span className="text-white/40">{`// AiUsageLog persisted`}</span>{`
-  return res;
-}`}
-        </pre>
+        {/* Code body · slides between snippets */}
+        <div className="relative overflow-hidden">
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.pre
+              key={current.id}
+              custom={direction}
+              initial={{ opacity: 0, x: direction > 0 ? 28 : -28 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: direction > 0 ? -28 : 28 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="about-code-body p-5 md:p-6 text-xs md:text-sm font-mono leading-relaxed overflow-x-auto"
+            >
+              {current.render()}
+            </motion.pre>
+          </AnimatePresence>
+        </div>
 
-        {/* Caption */}
-        <div className="px-5 md:px-6 py-3 about-code-caption border-t border-white/[0.06]">
-          <p className="text-xs md:text-sm text-white/60 leading-relaxed">
-            {t("codeSnippet.caption")}
+        {/* Footer · caption + nav controls */}
+        <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-5 px-5 md:px-6 py-3 about-code-caption border-t border-white/[0.06]">
+          <p className="text-xs md:text-sm text-white/65 leading-relaxed flex-1">
+            {t(current.captionKey)}
           </p>
+
+          <div className="flex items-center gap-1 shrink-0">
+            {/* Pause toggle */}
+            <button
+              type="button"
+              onClick={() => setPaused((p) => !p)}
+              aria-label={paused ? t("snippets.controls.play") : t("snippets.controls.pause")}
+              className="about-snippet-ctrl w-7 h-7 rounded-md flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400"
+            >
+              {paused ? <Play className="w-3.5 h-3.5" /> : <Pause className="w-3.5 h-3.5" />}
+            </button>
+
+            {/* Prev */}
+            <button
+              type="button"
+              onClick={prev}
+              aria-label={t("snippets.controls.prev")}
+              className="about-snippet-ctrl w-7 h-7 rounded-md flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+
+            {/* Dots */}
+            <div className="flex items-center gap-1.5 mx-2" role="tablist" aria-label={t("snippets.controls.ariaLabel")}>
+              {CODE_SNIPPETS.map((s, i) => (
+                <button
+                  key={s.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={i === active}
+                  aria-label={`${i + 1} / ${total}`}
+                  onClick={() => goTo(i)}
+                  className={`about-snippet-dot h-1.5 rounded-full transition-all duration-300 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400 ${
+                    i === active ? "w-6" : "w-1.5"
+                  }`}
+                />
+              ))}
+            </div>
+
+            {/* Next */}
+            <button
+              type="button"
+              onClick={next}
+              aria-label={t("snippets.controls.next")}
+              className="about-snippet-ctrl w-7 h-7 rounded-md flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </div>
     </motion.div>
@@ -253,6 +512,516 @@ function MobileCarousel({ t }: { t: ReturnType<typeof useTranslations<"about">> 
 }
 
 
+/* ── Use Case Cards · Devin Enterprise-style split carousel ── */
+type UseCase = { id: string; caption: string; codeId: string };
+
+const USE_CASES: UseCase[] = [
+  { id: "multitenant", caption: "ARCHITECTURE", codeId: "tenant" },
+  { id: "aiGateway", caption: "AI LAYER", codeId: "gateway" },
+  { id: "antiHallucination", caption: "RESILIENCE", codeId: "antiHallucination" },
+  { id: "modular", caption: "ARCHITECTURE", codeId: "eventBus" },
+  { id: "infra", caption: "INFRA", codeId: "ensureSchemaSync" },
+  { id: "idempotency", caption: "OPERATIONS", codeId: "idempotency" },
+];
+
+function UseCaseCardsCarousel({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
+  const [active, setActive] = useState(0);
+  const [direction, setDirection] = useState(1);
+  const [paused, setPaused] = useState(false);
+  const total = USE_CASES.length;
+  const current = USE_CASES[active];
+  const code = CODE_SNIPPETS.find((c) => c.id === current.codeId);
+
+  useEffect(() => {
+    if (paused) return;
+    const id = setInterval(() => {
+      setDirection(1);
+      setActive((p) => (p + 1) % total);
+    }, 8000);
+    return () => clearInterval(id);
+  }, [paused, total]);
+
+  const goTo = useCallback((idx: number) => {
+    setDirection(idx > active ? 1 : -1);
+    setActive(idx);
+  }, [active]);
+  const next = useCallback(() => goTo((active + 1) % total), [active, total, goTo]);
+  const prev = useCallback(() => goTo((active - 1 + total) % total), [active, total, goTo]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.6 }}
+      className="mt-20 md:mt-28"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      {/* Section header */}
+      <div className="text-center mb-10 md:mb-14">
+        <span className="about-usecase-section-caption text-xs font-semibold tracking-[0.2em] uppercase mb-3 inline-block">
+          {t("useCases.sectionCaption")}
+        </span>
+        <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight">
+          {t("useCases.sectionTitle")}
+        </h3>
+      </div>
+
+      <div className="about-usecase-card relative rounded-3xl overflow-hidden">
+        {/* Top progress bar */}
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-white/[0.04] z-10">
+          <motion.div
+            key={`bar-${active}-${paused ? "p" : "r"}`}
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: paused ? 0 : 1 }}
+            transition={{ duration: paused ? 0 : 8, ease: "linear" }}
+            className="h-full origin-left bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500"
+            style={{ transformOrigin: "left center" }}
+          />
+        </div>
+
+        <div className="grid lg:grid-cols-[1fr_1.25fr] gap-0">
+          {/* LEFT · text content */}
+          <div className="about-usecase-left p-7 md:p-10 lg:p-12 flex flex-col justify-between min-h-[420px] md:min-h-[480px]">
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={current.id}
+                custom={direction}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <span className="about-usecase-caption text-[11px] font-semibold tracking-[0.2em] uppercase mb-4 inline-block">
+                  {current.caption}
+                </span>
+                <h4 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight mb-6 md:mb-8 text-white">
+                  {t(`useCases.${current.id}.title`)}
+                </h4>
+                <ul className="space-y-3 list-none">
+                  {[1, 2].map((i) => (
+                    <li key={i} className="flex gap-3 items-start text-base md:text-lg leading-relaxed text-white/75">
+                      <HexIcon className="w-3.5 h-3.5 mt-[7px] shrink-0 about-usecase-hex" />
+                      <span>{t(`useCases.${current.id}.bullet${i}`)}</span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Bottom · pagination dots + nav + counter */}
+            <div className="flex items-center justify-between mt-10 md:mt-12">
+              <div className="flex items-center gap-2" role="tablist" aria-label={t("useCases.dotsAriaLabel")}>
+                {USE_CASES.map((uc, i) => (
+                  <button
+                    key={uc.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={i === active}
+                    aria-label={`${i + 1} / ${total}`}
+                    onClick={() => goTo(i)}
+                    className={`about-usecase-dot h-1.5 rounded-full transition-all duration-300 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400 ${
+                      i === active ? "w-8" : "w-1.5"
+                    }`}
+                  />
+                ))}
+              </div>
+
+              <div className="flex items-center gap-3">
+                <span className="text-xs font-mono tabular-nums text-white/45">
+                  {String(active + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+                </span>
+                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={prev}
+                    aria-label={t("snippets.controls.prev")}
+                    className="about-snippet-ctrl w-8 h-8 rounded-md flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={next}
+                    aria-label={t("snippets.controls.next")}
+                    className="about-snippet-ctrl w-8 h-8 rounded-md flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* RIGHT · code mockup (Devin-style cream/contrast bg) */}
+          <div className="about-usecase-right relative">
+            {/* Header with filename */}
+            <div className="flex items-center gap-2.5 px-5 py-3 border-b about-usecase-code-header">
+              <div className="flex gap-1.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
+                <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
+                <span className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
+              </div>
+              <Terminal className="w-3.5 h-3.5 text-indigo-400 ml-2" />
+              <span className="text-xs font-mono text-white/60 truncate">
+                {code?.file}
+              </span>
+            </div>
+
+            {/* Code body · slides between snippets */}
+            <div className="relative overflow-hidden">
+              <AnimatePresence mode="wait" custom={direction}>
+                <motion.pre
+                  key={current.id}
+                  custom={direction}
+                  initial={{ opacity: 0, x: direction > 0 ? 28 : -28 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: direction > 0 ? -28 : 28 }}
+                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  className="about-code-body p-5 md:p-6 text-xs md:text-sm font-mono leading-relaxed overflow-x-auto"
+                >
+                  {code?.render()}
+                </motion.pre>
+              </AnimatePresence>
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ── Tech Q&A Carousel · senior tech-lead interview prep ── */
+type QACategory = "SYSTEM" | "PERF" | "SECURITY";
+type TechQA = { id: string; category: QACategory };
+
+const TECH_QAS: TechQA[] = [
+  // System Design (3)
+  { id: "idempotency", category: "SYSTEM" },
+  { id: "cap", category: "SYSTEM" },
+  { id: "saga", category: "SYSTEM" },
+  // Performance (3)
+  { id: "coreWebVitals", category: "PERF" },
+  { id: "codeSplitting", category: "PERF" },
+  { id: "memoization", category: "PERF" },
+  // Security (3)
+  { id: "jwtStateless", category: "SECURITY" },
+  { id: "oauth2", category: "SECURITY" },
+  { id: "passwordStorage", category: "SECURITY" },
+];
+
+function TechQACarousel({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
+  const [active, setActive] = useState(0);
+  const [direction, setDirection] = useState(1);
+  const [paused, setPaused] = useState(false);
+  const total = TECH_QAS.length;
+  const current = TECH_QAS[active];
+
+  useEffect(() => {
+    if (paused) return;
+    const id = setInterval(() => {
+      setDirection(1);
+      setActive((p) => (p + 1) % total);
+    }, 10000);
+    return () => clearInterval(id);
+  }, [paused, total]);
+
+  const goTo = useCallback((idx: number) => {
+    setDirection(idx > active ? 1 : -1);
+    setActive(idx);
+  }, [active]);
+  const next = useCallback(() => goTo((active + 1) % total), [active, total, goTo]);
+  const prev = useCallback(() => goTo((active - 1 + total) % total), [active, total, goTo]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      {/* Section header */}
+      <div className="text-center mb-8 md:mb-10">
+        <span className="about-usecase-section-caption text-xs font-semibold tracking-[0.2em] uppercase mb-3 inline-block">
+          {t("techQA.sectionCaption")}
+        </span>
+        <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight leading-tight">
+          {t("techQA.sectionTitle")}
+        </h3>
+      </div>
+
+      <div className="about-usecase-card relative rounded-3xl overflow-hidden">
+        {/* Progress bar */}
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-white/[0.04] z-10">
+          <motion.div
+            key={`qa-bar-${active}-${paused ? "p" : "r"}`}
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: paused ? 0 : 1 }}
+            transition={{ duration: paused ? 0 : 10, ease: "linear" }}
+            className="h-full origin-left bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500"
+            style={{ transformOrigin: "left center" }}
+          />
+        </div>
+
+        <div className="p-7 md:p-10 lg:p-12 min-h-[460px] flex flex-col">
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div
+              key={current.id}
+              custom={direction}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="flex-1"
+            >
+              {/* Category badge */}
+              <span className={`about-techqa-category about-techqa-category-${current.category.toLowerCase()} text-[11px] font-semibold tracking-[0.2em] uppercase mb-5 inline-flex items-center gap-2 px-3 py-1 rounded-full`}>
+                <span className="w-1 h-1 rounded-full bg-current" />
+                {t(`techQA.categories.${current.category.toLowerCase()}`)}
+              </span>
+
+              {/* Question (title) */}
+              <h4 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight mb-5 text-white">
+                {t(`techQA.${current.id}.question`)}
+              </h4>
+
+              {/* TL;DR · pull-quote style */}
+              <p className="about-techqa-tldr text-base md:text-lg italic leading-relaxed mb-6 pl-4 border-l-2">
+                💡 {t(`techQA.${current.id}.tldr`)}
+              </p>
+
+              {/* Detail · paragraph */}
+              <p className="text-sm md:text-base leading-relaxed text-white/75 mb-6">
+                {t(`techQA.${current.id}.detail`)}
+              </p>
+
+              {/* Proof · production evidence */}
+              <div className="about-techqa-proof flex items-start gap-3 p-4 rounded-xl">
+                <span className="text-lg shrink-0 leading-none about-techqa-proof-check">✓</span>
+                <span className="text-sm md:text-base leading-relaxed text-white/80">
+                  {t(`techQA.${current.id}.proof`)}
+                </span>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Bottom · pagination dots + nav + counter */}
+          <div className="flex items-center justify-between mt-8 md:mt-10 pt-6 border-t border-white/[0.06]">
+            <div className="flex items-center gap-1.5 flex-wrap" role="tablist" aria-label={t("techQA.dotsAriaLabel")}>
+              {TECH_QAS.map((qa, i) => (
+                <button
+                  key={qa.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={i === active}
+                  aria-label={`${i + 1} / ${total}`}
+                  onClick={() => goTo(i)}
+                  className={`about-techqa-dot about-techqa-dot-${qa.category.toLowerCase()} h-1.5 rounded-full transition-all duration-300 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400 ${
+                    i === active ? "w-8" : "w-1.5"
+                  }`}
+                />
+              ))}
+            </div>
+
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-mono tabular-nums text-white/45">
+                {String(active + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+              </span>
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={prev}
+                  aria-label={t("snippets.controls.prev")}
+                  className="about-snippet-ctrl w-8 h-8 rounded-md flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={next}
+                  aria-label={t("snippets.controls.next")}
+                  className="about-snippet-ctrl w-8 h-8 rounded-md flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ── About Tabs · Agora / Como / Off-screen ── */
+type TabId = "now" | "how" | "off";
+
+const PROCESS_STEPS = [
+  { icon: Compass, key: "understand" },
+  { icon: Layers3, key: "architect" },
+  { icon: Rocket, key: "ship" },
+  { icon: RefreshCw, key: "iterate" },
+] as const;
+
+const TRACK_RECORD = [
+  { icon: Boxes, key: "pulseEcosystem" },
+  { icon: Trophy, key: "pulseTheme" },
+  { icon: Sparkles, key: "sellorex" },
+] as const;
+
+function AboutTabs({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
+  const [active, setActive] = useState<TabId>("now");
+  const tabs: { id: TabId; labelKey: string; icon: typeof Activity }[] = [
+    { id: "now", labelKey: "tabs.now", icon: Activity },
+    { id: "how", labelKey: "tabs.how", icon: Workflow },
+    { id: "off", labelKey: "tabs.off", icon: Trophy },
+  ];
+
+  // Keyboard nav · ArrowLeft/Right
+  const onKeyDown = (e: React.KeyboardEvent, idx: number) => {
+    if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+      e.preventDefault();
+      const dir = e.key === "ArrowRight" ? 1 : -1;
+      const next = (idx + dir + tabs.length) % tabs.length;
+      setActive(tabs[next].id);
+      const btn = document.getElementById(`tab-${tabs[next].id}`);
+      btn?.focus();
+    }
+  };
+
+  return (
+    <div className="mt-16">
+      {/* Pills · Linear/Apple style with sliding active indicator */}
+      <div
+        role="tablist"
+        aria-label={t("tabs.ariaLabel")}
+        className="about-tabs-pills relative flex gap-1 p-1 rounded-full w-fit mx-auto mb-10"
+      >
+        {tabs.map((tab, idx) => (
+          <button
+            key={tab.id}
+            id={`tab-${tab.id}`}
+            role="tab"
+            aria-selected={active === tab.id}
+            aria-controls={`panel-${tab.id}`}
+            tabIndex={active === tab.id ? 0 : -1}
+            onClick={() => setActive(tab.id)}
+            onKeyDown={(e) => onKeyDown(e, idx)}
+            className="about-tab-trigger relative inline-flex items-center gap-2 px-4 md:px-5 py-2.5 text-sm font-medium rounded-full transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
+          >
+            {active === tab.id && (
+              <motion.span
+                layoutId="about-tab-active-pill"
+                className="about-tab-active-pill absolute inset-0 rounded-full -z-[1]"
+                transition={{ type: "spring", stiffness: 380, damping: 32 }}
+              />
+            )}
+            <tab.icon className={`w-4 h-4 relative shrink-0 ${active === tab.id ? "text-white" : "about-tab-icon-inactive"}`} aria-hidden="true" />
+            <span className={active === tab.id ? "text-white relative" : "about-tab-label-inactive relative"}>
+              {t(tab.labelKey)}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      {/* Content panels · AnimatePresence fade + slide */}
+      <div className="relative">
+        <AnimatePresence mode="wait">
+          {active === "now" && (
+            <motion.div
+              key="now"
+              role="tabpanel"
+              id="panel-now"
+              aria-labelledby="tab-now"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            >
+              {/* Bio · static · centered · readable type */}
+              <div className="max-w-3xl mx-auto mb-12 md:mb-16 text-center">
+                <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-5">
+                  <span className="gradient-text">{t("manifesto")}</span>
+                </h3>
+                <p className="about-quote-centered text-base md:text-lg italic leading-relaxed mb-10 inline-block">
+                  “{t("manifestoQuote")}”
+                </p>
+                <div className="about-description-text-centered space-y-5 text-left md:text-base lg:text-lg leading-relaxed">
+                  <p>{t("personalOpener")}</p>
+                  <p>{t("personalDrives")}</p>
+                  <p className="pt-5 border-t border-white/[0.06]">
+                    {t("bioPrefix")} <span className="font-semibold text-indigo-400">{t("bioHighlight1")}</span> {t("bioMiddle")} <span className="font-semibold text-fuchsia-400">{t("bioHighlight2")}</span> {t("bioSuffix")}
+                  </p>
+                </div>
+              </div>
+
+              {/* Use Case Cards Carousel · 6 architectural cards with code right */}
+              <UseCaseCardsCarousel t={t} />
+            </motion.div>
+          )}
+
+          {active === "how" && (
+            <motion.div
+              key="how"
+              role="tabpanel"
+              id="panel-how"
+              aria-labelledby="tab-how"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <TechQACarousel t={t} />
+            </motion.div>
+          )}
+
+          {active === "off" && (
+            <motion.div
+              key="off"
+              role="tabpanel"
+              id="panel-off"
+              aria-labelledby="tab-off"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <div className="max-w-3xl mx-auto text-center mb-10">
+                <p className="about-description-text text-lg leading-relaxed">
+                  {t("trackRecord.intro")}
+                </p>
+              </div>
+              <div className="grid sm:grid-cols-3 gap-4 md:gap-5 max-w-4xl mx-auto">
+                {TRACK_RECORD.map((item, index) => (
+                  <motion.div
+                    key={item.key}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.05 + index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                    className="about-offscreen-card relative p-6 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1"
+                  >
+                    <div className="about-offscreen-icon w-11 h-11 rounded-xl flex items-center justify-center mb-4">
+                      <item.icon className="w-5 h-5" />
+                    </div>
+                    <h4 className="text-base font-semibold mb-2 text-white/95 about-card-title">
+                      {t(`trackRecord.${item.key}.title`)}
+                    </h4>
+                    <p className="text-sm text-white/70 leading-relaxed about-card-description">
+                      {t(`trackRecord.${item.key}.description`)}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
+
 export function About() {
   const t = useTranslations("about");
   const [isLightMode, setIsLightMode] = useState(false);
@@ -275,67 +1044,10 @@ export function About() {
   return (
     <section id="about" className="relative pt-36 md:pt-44 pb-24 md:pb-32 overflow-hidden">
       {isLightMode ? <AbstractBackgroundLight /> : <AbstractBackground />}
+      {/* Converge-style dotted grid · sutil · senior signal */}
+      <div className="about-dotted-grid absolute inset-0 pointer-events-none opacity-40" aria-hidden="true" />
 
       {/* Stack illustration - desktop only */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.4, filter: "blur(24px)" }}
-        whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        className="hidden md:block absolute -top-4 -left-36 lg:-left-24 z-10 pointer-events-none"
-      >
-        <motion.div
-          animate={{
-            y: [0, -12, 5, -18, 3, -8, -14, 0],
-            x: [0, 4, -2, 6, -4, 2, -1, 0],
-          }}
-          transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <div className="relative">
-            <div className="absolute inset-0 bg-indigo-500/5 rounded-full blur-3xl scale-75" />
-            <Image
-              src="/about-stack.png"
-              alt=""
-              width={720}
-              height={440}
-              className="w-[720px] h-[440px] opacity-[0.12] dark:opacity-[0.22] select-none hue-rotate-[40deg] saturate-[1.8] brightness-[0.9]"
-              draggable={false}
-              priority={false}
-            />
-          </div>
-        </motion.div>
-      </motion.div>
-
-      {/* Tools illustration - desktop only */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.4, filter: "blur(24px)" }}
-        whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.4, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="hidden md:block absolute top-4 -right-32 lg:-right-20 z-10 pointer-events-none"
-      >
-        <motion.div
-          animate={{
-            y: [0, -16, 4, -22, 6, -10, -18, 0],
-            x: [0, -3, 2, -5, 4, -2, 1, 0],
-          }}
-          transition={{ duration: 32, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <div className="relative">
-            <div className="absolute inset-0 bg-indigo-500/5 rounded-full blur-3xl scale-75" />
-            <Image
-              src="/about-tools.png"
-              alt=""
-              width={640}
-              height={420}
-              className="w-[640px] h-[420px] opacity-[0.12] dark:opacity-[0.22] select-none hue-rotate-[40deg] saturate-[1.8] brightness-[0.9]"
-              draggable={false}
-              priority={false}
-            />
-          </div>
-        </motion.div>
-      </motion.div>
-
       <div className="container-custom relative z-10">
         {/* Section header */}
         <motion.div
@@ -345,10 +1057,10 @@ export function About() {
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+          <h2 className="about-section-title text-5xl md:text-7xl lg:text-8xl font-extrabold mb-6 tracking-tight leading-none">
             {t("title")} <span className="gradient-text">{t("titleHighlight")}</span>
           </h2>
-          <p className="about-subtitle max-w-2xl mx-auto">
+          <p className="about-subtitle max-w-2xl mx-auto text-base md:text-lg">
             {t("subtitle")}
           </p>
         </motion.div>
@@ -356,72 +1068,10 @@ export function About() {
         {/* Stats row · 6 senior depth metrics with count-up */}
         <AboutStatsRow t={t} />
 
-        <div className="grid lg:grid-cols-[1fr_1.2fr] gap-10 items-center">
-          {/* Text content */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="space-y-6"
-          >
-            <h3 className="text-2xl md:text-3xl font-semibold">
-              {t("heading")}{" "}
-              <span className="gradient-text">{t("headingHighlight")}</span>
-            </h3>
-
-            <div className="space-y-4 about-description-text">
-              <p>
-                {t("paragraph1")}
-              </p>
-
-              <p>
-                {t("paragraph2prefix")} <span className="font-semibold text-indigo-400">{t("paragraph2highlight")}</span> {t("paragraph2suffix")}
-              </p>
-
-              <p>
-                {t("paragraph3prefix")} <span className="font-semibold text-indigo-400">{t("paragraph3highlight")}</span> {t("paragraph3suffix")}
-              </p>
-            </div>
-          </motion.div>
-
-          {/* Highlights - Desktop grid / Mobile carousel */}
-          <div className="hidden md:grid sm:grid-cols-2 gap-5">
-            {highlights.map((item, index) => (
-              <motion.div
-                key={item.key}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group h-full about-glow-wrap"
-              >
-                <div className="about-highlight-card relative p-6 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 h-full z-[1]">
-                  <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="relative mb-4">
-                    <div className="about-icon-container w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300">
-                      <item.icon className="w-6 h-6 text-indigo-400" />
-                    </div>
-                  </div>
-                  <h4 className="text-lg font-semibold mb-2 text-white/95 about-card-title">
-                    {t(`highlights.${item.key}.title`)}
-                  </h4>
-                  <p className="text-sm text-white/70 leading-relaxed about-card-description">
-                    {t(`highlights.${item.key}.description`)}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Mobile carousel */}
-          <div className="md:hidden">
-            <MobileCarousel t={t} />
-          </div>
-        </div>
+        {/* Tabs · Agora (bio + use case carousel) / Como trabalho (tech Q&A) / Histórico */}
+        <AboutTabs t={t} />
 
         {/* Code snippet card · real production code from Sellorex */}
-        <CodeSnippetCard t={t} />
 
         {/* Tech stack marquee - full width on mobile */}
         <motion.div

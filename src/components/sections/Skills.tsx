@@ -8,6 +8,7 @@ import {
   FlaskConical,
   Layers,
   AppWindow,
+  Brain,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
@@ -15,6 +16,7 @@ import { useTranslations } from "next-intl";
 import { skillCategories as importedSkills } from "@/data/skills";
 import { SkillsBackground, SkillsBackgroundLight } from "../ui/SkillsBackground";
 import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
+import { CodeSnippetsCarousel } from "./About";
 
 // ---------------------------------------------------------------------------
 // SVG Tech Icons
@@ -143,21 +145,28 @@ const categoryAccents: Record<string, {
   lightGradient: string;
   lightIconBg: string;
 }> = {
-  Frontend: {
-    gradient: "from-indigo-500/20 via-indigo-500/5 to-transparent",
-    iconBg: "from-indigo-500 to-violet-600",
-    barColor: "from-indigo-500 to-violet-500",
-    lightGradient: "from-indigo-500/10 via-indigo-500/5 to-transparent",
-    lightIconBg: "from-indigo-500 to-violet-600",
-  },
-  Backend: {
+  "System Architecture": {
     gradient: "from-emerald-500/20 via-emerald-500/5 to-transparent",
     iconBg: "from-emerald-500 to-teal-600",
     barColor: "from-emerald-500 to-teal-500",
     lightGradient: "from-emerald-500/10 via-emerald-500/5 to-transparent",
     lightIconBg: "from-emerald-500 to-teal-600",
   },
-  "DevOps e Ferramentas": {
+  "Frontend Engineering": {
+    gradient: "from-indigo-500/20 via-indigo-500/5 to-transparent",
+    iconBg: "from-indigo-500 to-violet-600",
+    barColor: "from-indigo-500 to-violet-500",
+    lightGradient: "from-indigo-500/10 via-indigo-500/5 to-transparent",
+    lightIconBg: "from-indigo-500 to-violet-600",
+  },
+  "AI Systems": {
+    gradient: "from-fuchsia-500/20 via-fuchsia-500/5 to-transparent",
+    iconBg: "from-fuchsia-500 to-pink-600",
+    barColor: "from-fuchsia-500 to-pink-500",
+    lightGradient: "from-fuchsia-500/10 via-fuchsia-500/5 to-transparent",
+    lightIconBg: "from-fuchsia-500 to-pink-600",
+  },
+  "DevOps & Quality": {
     gradient: "from-cyan-500/20 via-cyan-500/5 to-transparent",
     iconBg: "from-cyan-500 to-blue-600",
     barColor: "from-cyan-500 to-blue-500",
@@ -168,21 +177,24 @@ const categoryAccents: Record<string, {
 
 // Category metadata (descriptions come from translations)
 const categoryMeta: Record<string, { icon: React.FC<{ className?: string }> }> = {
-  Frontend: { icon: Code2 },
-  Backend: { icon: Server },
-  "DevOps e Ferramentas": { icon: Wrench },
+  "System Architecture": { icon: Server },
+  "Frontend Engineering": { icon: Code2 },
+  "AI Systems": { icon: Brain },
+  "DevOps & Quality": { icon: Wrench },
 };
 
 // Maps from data title to translation keys
 const categoryTitleKeys: Record<string, string> = {
-  "Frontend": "categories.frontend",
-  "Backend": "categories.backend",
-  "DevOps e Ferramentas": "categories.devops",
+  "System Architecture": "categories.backend",
+  "Frontend Engineering": "categories.frontend",
+  "AI Systems": "categories.ai",
+  "DevOps & Quality": "categories.devops",
 };
 const categoryDescKeys: Record<string, string> = {
-  "Frontend": "categories.frontendDesc",
-  "Backend": "categories.backendDesc",
-  "DevOps e Ferramentas": "categories.devopsDesc",
+  "System Architecture": "categories.backendDesc",
+  "Frontend Engineering": "categories.frontendDesc",
+  "AI Systems": "categories.aiDesc",
+  "DevOps & Quality": "categories.devopsDesc",
 };
 
 // Build skill categories from imported data
@@ -398,6 +410,7 @@ function TitleBurst() {
 // ---------------------------------------------------------------------------
 export function Skills() {
   const t = useTranslations("skills");
+  const tAbout = useTranslations("about");
   const [isLightMode, setIsLightMode] = useState(false);
 
   useEffect(() => {
@@ -520,7 +533,7 @@ export function Skills() {
         {/* Category cards */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {skillCategories.map((category, categoryIndex) => {
-            const accent = categoryAccents[category.title] ?? categoryAccents.Frontend;
+            const accent = categoryAccents[category.title] ?? categoryAccents["Frontend Engineering"];
             return (
               <motion.div
                 key={category.title}
@@ -578,6 +591,9 @@ export function Skills() {
             );
           })}
         </div>
+
+        {/* Code Snippets Carousel · 7 production proofs */}
+        <CodeSnippetsCarousel t={tAbout} />
 
         {/* AI badge */}
         <motion.div
