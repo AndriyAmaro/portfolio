@@ -252,20 +252,29 @@ import { CrmRepository } from `}<span className="text-fuchsia-400">{`'./crm.repo
   },
   {
     id: "ensureSchemaSync",
-    file: "apps/api/src/app.ts",
+    file: "apps/api/src/app.ts · executado no boot",
     captionKey: "snippets.ensureSchemaSync",
     render: () => (
       <>
-{`// Boot-time idempotent migrations · Nixpacks doesn't run them
-async function `}<span className="text-indigo-400">ensureSchemaSync</span>{`() {
-  `}<span className="text-white/40">{`// Each SQL · individual call · IF NOT EXISTS · .catch noop`}</span>{`
-  await prisma.`}<span className="text-fuchsia-400">$executeRawUnsafe</span>{`(`}<span className="text-fuchsia-400">{`\`ALTER TABLE "ContentAsset" ADD COLUMN IF NOT EXISTS "blocks" JSONB\``}</span>{`).`}<span className="text-indigo-400">catch</span>{`(() =&gt; {});
-  await prisma.`}<span className="text-fuchsia-400">$executeRawUnsafe</span>{`(`}<span className="text-fuchsia-400">{`\`ALTER TYPE "AdminTaskStatus" ADD VALUE IF NOT EXISTS 'APPROVED'\``}</span>{`).`}<span className="text-indigo-400">catch</span>{`(() =&gt; {});
-  `}<span className="text-white/40">{`// ... 30+ ALTERs idempotentes`}</span>{`
-}
-`}<span className="text-indigo-400">ensureSchemaSync</span>{`();
+<span className="text-white/40">{`// Boot-time idempotent migrations · Nixpacks (Railway) NÃO roda prisma migrate deploy`}</span>{`
+`}<span className="text-indigo-400">async function</span>{` `}<span className="text-cyan-400">ensureSchemaSync</span>{`() {
+  `}<span className="text-white/40">{`// Cada SQL como $executeRawUnsafe individual · múltiplos = erro 42601`}</span>{`
+  `}<span className="text-indigo-400">await</span>{` prisma.`}<span className="text-fuchsia-400">$executeRawUnsafe</span>{`(`}<span className="text-fuchsia-400">{`\``}</span>{`
+    `}<span className="text-fuchsia-400">{`ALTER TABLE "ContentAsset" ADD COLUMN IF NOT EXISTS "blocks" JSONB;`}</span>{`
+  `}<span className="text-fuchsia-400">{`\``}</span>{`).`}<span className="text-indigo-400">catch</span>{`(() =&gt; {});
 
-`}<span className="text-white/40">{`// Postgres erro 42601 (multi-statements) é o motivo de cada SQL separado.`}</span>
+  `}<span className="text-indigo-400">await</span>{` prisma.`}<span className="text-fuchsia-400">$executeRawUnsafe</span>{`(`}<span className="text-fuchsia-400">{`\``}</span>{`
+    `}<span className="text-fuchsia-400">{`ALTER TYPE "AdminTaskStatus" ADD VALUE IF NOT EXISTS 'APPROVED';`}</span>{`
+  `}<span className="text-fuchsia-400">{`\``}</span>{`).`}<span className="text-indigo-400">catch</span>{`(() =&gt; {});
+
+  `}<span className="text-indigo-400">await</span>{` prisma.`}<span className="text-fuchsia-400">$executeRawUnsafe</span>{`(`}<span className="text-fuchsia-400">{`\``}</span>{`
+    `}<span className="text-fuchsia-400">{`ALTER TABLE "GrowthContent" ADD COLUMN IF NOT EXISTS "blogHtml" TEXT;`}</span>{`
+  `}<span className="text-fuchsia-400">{`\``}</span>{`).`}<span className="text-indigo-400">catch</span>{`(() =&gt; {});
+
+  `}<span className="text-white/40">{`// ... 90 statements idempotentes (ALTER TABLE / ADD COLUMN / ALTER TYPE / DROP NOT NULL)`}</span>{`
+  `}<span className="text-white/40">{`// IF NOT EXISTS = NOOP se já existe · .catch = não bloqueia boot da API`}</span>{`
+}
+`}<span className="text-cyan-400">ensureSchemaSync</span>{`();`}
       </>
     ),
   },

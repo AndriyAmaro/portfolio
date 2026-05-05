@@ -272,12 +272,12 @@
         "bullet5": ""
       },
       "infra": {
-        "title": "Auto-migration en el boot",
-        "bullet1": "Nixpacks (Railway) no corre migrations · resuelto con SQL idempotente al boot",
-        "bullet2": "30+ ALTERs separados con IF NOT EXISTS · evita Postgres error 42601",
-        "bullet3": "",
-        "bullet4": "",
-        "bullet5": ""
+        "title": "ensureSchemaSync() · idempotent boot migrations",
+        "bullet1": "Nixpacks (Railway) NO corre prisma migrate deploy · cada cambio de schema se vuelve SQL idempotente al boot de la API · cero migration manual en deploy",
+        "bullet2": "IF NOT EXISTS en todo · corre en TODO boot · si columna/tipo ya existe NOOP, si no aplica · cero downtime, idempotente real",
+        "bullet3": "Cada SQL como $executeRawUnsafe individual · múltiples statements en un call causan Postgres error 42601 · patrón aprendido en producción",
+        "bullet4": ".catch(() =>  {}) en cada call · algunas ops fallan silenciosamente (enum value en otra forma, drop sobre constraint inexistente) · no puede bloquear boot",
+        "bullet5": "90 statements idempotentes corriendo hoy · ALTER TABLE / ADD COLUMN / ALTER TYPE / DROP NOT NULL · cada feature nueva que toca schema agrega uno"
       },
       "idempotency": {
         "title": "Idempotency arquitectónica",
