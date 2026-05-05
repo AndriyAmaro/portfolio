@@ -590,19 +590,19 @@ function UseCaseSlide({
   // Active mode · full split card (text + code)
   return (
     <div className={`about-usecase-card about-usecase-slide ${positionClass}`}>
-      <div className="grid lg:grid-cols-[1fr_1.25fr] h-full">
+      <div className="grid lg:grid-cols-[0.85fr_1.15fr] h-full">
         {/* LEFT · text */}
-        <div className="about-usecase-left p-7 md:p-10 lg:p-12 flex flex-col">
+        <div className="about-usecase-left p-6 md:p-8 lg:p-10 flex flex-col overflow-y-auto">
           <span className="about-usecase-caption text-[11px] font-semibold tracking-[0.2em] uppercase mb-4 inline-block">
             {useCase.caption}
           </span>
-          <h4 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight mb-6 md:mb-8 text-white">
+          <h4 className="text-xl md:text-2xl lg:text-[28px] font-bold leading-[1.15] mb-5 md:mb-6 text-white">
             {t(`useCases.${useCase.id}.title`)}
           </h4>
           <ul className="space-y-3 list-none">
             {[1, 2].map((i) => (
-              <li key={i} className="flex gap-3 items-start text-base md:text-lg leading-relaxed text-white/75">
-                <HexIcon className="w-3.5 h-3.5 mt-[7px] shrink-0 about-usecase-hex" />
+              <li key={i} className="flex gap-3 items-start text-sm md:text-base leading-relaxed text-white/75">
+                <HexIcon className="w-3 h-3 mt-[6px] shrink-0 about-usecase-hex" />
                 <span>{t(`useCases.${useCase.id}.bullet${i}`)}</span>
               </li>
             ))}
@@ -610,8 +610,8 @@ function UseCaseSlide({
         </div>
 
         {/* RIGHT · code mockup */}
-        <div className="about-usecase-right relative flex flex-col">
-          <div className="flex items-center gap-2.5 px-5 py-3 border-b about-usecase-code-header">
+        <div className="about-usecase-right relative flex flex-col min-h-0">
+          <div className="flex items-center gap-2.5 px-5 py-3 border-b about-usecase-code-header shrink-0">
             <div className="flex gap-1.5">
               <span className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
               <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
@@ -620,7 +620,7 @@ function UseCaseSlide({
             <Terminal className="w-3.5 h-3.5 text-indigo-400 ml-2" />
             <span className="text-xs font-mono text-white/60 truncate">{code?.file}</span>
           </div>
-          <pre className="about-code-body flex-1 p-5 md:p-6 text-xs md:text-sm font-mono leading-relaxed overflow-x-auto overflow-y-auto">
+          <pre className="about-code-body flex-1 min-h-0 p-5 md:p-6 text-[11px] md:text-xs font-mono leading-relaxed overflow-auto whitespace-pre">
             {code?.render()}
           </pre>
         </div>
