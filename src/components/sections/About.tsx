@@ -117,22 +117,32 @@ async gatewayCall(req: GatewayCallRequest, ctx: TenantContext) {
   },
   {
     id: "tenant",
-    file: "apps/api/src/shared/middleware/tenant-guard.ts",
+    file: "shared/tenant-context.ts + prisma.service.ts",
     captionKey: "snippets.tenant",
     render: () => (
       <>
-{`// Tenant isolation · enforced at middleware, never bypassed
-export function tenantGuard(req: Req, res: Res, next: Next) {
-  const ctx = `}<span className="text-fuchsia-400">extractTenantContext</span>{`(req);
-  if (!ctx.tenantId) `}<span className="text-fuchsia-400">throw</span>{` new `}<span className="text-indigo-400">UnauthorizedError</span>{`();
+<span className="text-white/40">{`// AsyncLocalStorage · context propagation cross-async · zero prop drilling`}</span>{`
+`}<span className="text-indigo-400">import</span>{` { AsyncLocalStorage } `}<span className="text-indigo-400">from</span>{` `}<span className="text-fuchsia-400">{`'async_hooks'`}</span>{`;
+`}<span className="text-indigo-400">export const</span>{` tenantContext = `}<span className="text-indigo-400">new</span>{` `}<span className="text-cyan-400">AsyncLocalStorage</span>{`<{ tenantId: `}<span className="text-emerald-400">string</span>{` }>();
 
-  `}<span className="text-white/40">{`// Prisma extension auto-injects tenantId in EVERY query`}</span>{`
-  req.prisma = prisma.$extends(`}<span className="text-indigo-400">withTenantScope</span>{`(ctx.tenantId));
-  req.tenant = ctx;
-  next();
-}
+`}<span className="text-white/40">{`// Prisma extension · auto-injeta tenantId em TODA query · 1 ponto · 0 boilerplate`}</span>{`
+`}<span className="text-indigo-400">export const</span>{` prisma = `}<span className="text-indigo-400">new</span>{` `}<span className="text-cyan-400">PrismaClient</span>{`().$extends({
+  query: {
+    $allModels: {
+      `}<span className="text-indigo-400">async</span>{` `}<span className="text-cyan-400">$allOperations</span>{`({ args, query }) {
+        `}<span className="text-indigo-400">const</span>{` ctx = tenantContext.`}<span className="text-cyan-400">getStore</span>{`();
+        `}<span className="text-indigo-400">if</span>{` (!ctx?.tenantId) `}<span className="text-indigo-400">throw new</span>{` `}<span className="text-cyan-400">Error</span>{`(`}<span className="text-fuchsia-400">{`'Missing tenant context'`}</span>{`);
+        args.where = { ...args.where, tenantId: ctx.tenantId };
+        `}<span className="text-indigo-400">return</span>{` query(args);
+      },
+    },
+  },
+});
 
-`}<span className="text-white/40">{`// Result: zero queries can leak across tenants. By design.`}</span>
+`}<span className="text-white/40">{`// Middleware seta context por request · prisma propaga sozinho`}</span>{`
+app.`}<span className="text-cyan-400">use</span>{`((req, _res, next) =&gt; {
+  tenantContext.`}<span className="text-cyan-400">run</span>{`({ tenantId: req.user.tenantId }, next);
+});`}
       </>
     ),
   },

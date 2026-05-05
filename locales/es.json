@@ -240,12 +240,12 @@
       "sectionTitle": "Decisiones arquitectónicas que se convirtieron en código",
       "dotsAriaLabel": "Navegar entre use cases",
       "multitenant": {
-        "title": "Multi-tenant correcto desde el día 1",
-        "bullet1": "Repository pattern inyecta tenantId en toda query · cero leaks en 6 meses de producción",
-        "bullet2": "Auditor automático escanea el codebase · RLS backup en pgvector",
-        "bullet3": "",
-        "bullet4": "",
-        "bullet5": ""
+        "title": "Multi-tenant SaaS correcto desde el día 1",
+        "bullet1": "Schema-level enforcement · tenantId en 95 de 126 models · 3 nullable son system-level por design (audit logs cross-tenant)",
+        "bullet2": "JWT es source of truth · request body NUNCA decide isolation · attack surface clásico de parameter pollution",
+        "bullet3": "Prisma extension $extends({query}) auto-inyecta tenantId en toda query · 1 punto de enforcement · cero boilerplate por endpoint",
+        "bullet4": "AsyncLocalStorage para context propagation · tenantId disponible en cualquier función async sin prop drilling",
+        "bullet5": "152 indexes compuestos con tenantId · 22 son (tenantId, createdAt) en hot-path · auditor agente Claude escanea queries sin filtro"
       },
       "aiGateway": {
         "title": "AI Gateway con cost intelligence",
