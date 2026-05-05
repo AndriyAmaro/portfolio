@@ -1047,6 +1047,135 @@ section {
 .light-mode .about-usecase-hex { color: rgba(79, 70, 229, 0.8); }
 .light-mode .about-usecase-dot { background: rgba(15, 23, 42, 0.2); }
 
+/* ── Use Case · Peek-on-hover (Devin Enterprise-style) ── */
+.about-usecase-shell {
+  /* container exterior · permite peeks vazarem fora do track central */
+  position: relative;
+  overflow: visible;
+}
+.about-usecase-track {
+  /* track central · centraliza o slide ativo */
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+  height: 520px;
+}
+.about-usecase-slide {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: 24px;
+  overflow: hidden;
+  transition:
+    left 700ms cubic-bezier(0.16, 1, 0.3, 1),
+    width 700ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 600ms ease,
+    filter 500ms ease;
+  will-change: left, width, opacity;
+}
+.about-usecase-slide.is-active {
+  left: 0;
+  width: 100%;
+  opacity: 1;
+  filter: blur(0);
+  z-index: 3;
+}
+.about-usecase-slide.is-peek-left {
+  left: -120px;
+  width: 80px;
+  opacity: 0.55;
+  filter: blur(1.5px);
+  cursor: pointer;
+  z-index: 2;
+}
+.about-usecase-slide.is-peek-left:hover {
+  left: -180px;
+  width: 140px;
+  opacity: 1;
+  filter: blur(0);
+  transition: left 280ms ease, width 280ms ease, opacity 200ms ease, filter 200ms ease;
+}
+.about-usecase-slide.is-peek-right {
+  left: calc(100% + 40px);
+  width: 80px;
+  opacity: 0.55;
+  filter: blur(1.5px);
+  cursor: pointer;
+  z-index: 2;
+}
+.about-usecase-slide.is-peek-right:hover {
+  left: calc(100% + 40px);
+  width: 140px;
+  opacity: 1;
+  filter: blur(0);
+  transition: left 280ms ease, width 280ms ease, opacity 200ms ease, filter 200ms ease;
+}
+.about-usecase-slide.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  left: 50%;
+  z-index: 0;
+}
+
+/* Peek hint · vertical content (number + arrow + label) */
+.about-usecase-peek-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 32px 8px;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(15, 12, 41, 0.95) 0%, rgba(30, 27, 75, 0.85) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  user-select: none;
+}
+.about-usecase-peek-hint .peek-num {
+  font-family: ui-monospace, "JetBrains Mono", "SF Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.45);
+}
+.about-usecase-peek-hint .peek-arrow {
+  font-size: 16px;
+  color: rgba(165, 180, 252, 0.7);
+  letter-spacing: 0.1em;
+}
+.about-usecase-peek-hint .peek-title {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-height: 60%;
+}
+
+/* Mobile · sem peeks · slide ativo full-width como antes */
+@media (max-width: 1023px) {
+  .about-usecase-track { height: auto; min-height: 480px; }
+  .about-usecase-slide { position: relative; height: auto; transition: opacity 400ms ease; }
+  .about-usecase-slide.is-active { width: 100%; }
+  .about-usecase-slide.is-peek-left,
+  .about-usecase-slide.is-peek-right,
+  .about-usecase-slide.is-hidden { display: none; }
+}
+
+/* Light-mode peek */
+.light-mode .about-usecase-peek-hint {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.92) 100%);
+  border-color: rgba(99, 102, 241, 0.18);
+}
+.light-mode .about-usecase-peek-hint .peek-num { color: rgba(51, 65, 85, 0.55); }
+.light-mode .about-usecase-peek-hint .peek-arrow { color: rgba(79, 70, 229, 0.85); }
+.light-mode .about-usecase-peek-hint .peek-title { color: rgba(51, 65, 85, 0.75); }
+
 /* ── Tech Q&A Carousel ── */
 .about-techqa-category {
   background: rgba(255, 255, 255, 0.06);

@@ -512,7 +512,7 @@ function MobileCarousel({ t }: { t: ReturnType<typeof useTranslations<"about">> 
 }
 
 
-/* ── Use Case Cards · Devin Enterprise-style split carousel ── */
+/* ── Use Case Cards · Devin Enterprise-style peek-on-hover carousel ── */
 type UseCase = { id: string; caption: string; codeId: string };
 
 const USE_CASES: UseCase[] = [
@@ -524,29 +524,145 @@ const USE_CASES: UseCase[] = [
   { id: "idempotency", caption: "OPERATIONS", codeId: "idempotency" },
 ];
 
+type SlidePosition = "active" | "peek-left" | "peek-right" | "hidden";
+
+function UseCaseSlide({
+  useCase,
+  idx,
+  position,
+  onActivate,
+  t,
+}: {
+  useCase: UseCase;
+  idx: number;
+  position: SlidePosition;
+  onActivate: () => void;
+  t: ReturnType<typeof useTranslations<"about">>;
+}) {
+  const code = CODE_SNIPPETS.find((c) => c.id === useCase.codeId);
+  const intentRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const isPeek = position === "peek-left" || position === "peek-right";
+
+  const handleEnter = () => {
+    if (!isPeek) return;
+    if (intentRef.current) clearTimeout(intentRef.current);
+    intentRef.current = setTimeout(onActivate, 450);
+  };
+  const handleLeave = () => {
+    if (intentRef.current) clearTimeout(intentRef.current);
+  };
+  const handleClick = () => {
+    if (!isPeek) return;
+    if (intentRef.current) clearTimeout(intentRef.current);
+    onActivate();
+  };
+
+  const positionClass =
+    position === "active"
+      ? "is-active"
+      : position === "peek-left"
+      ? "is-peek-left"
+      : position === "peek-right"
+      ? "is-peek-right"
+      : "is-hidden";
+
+  // Peek mode · vertical hint with number + arrow + title
+  if (isPeek) {
+    return (
+      <div
+        className={`about-usecase-slide ${positionClass}`}
+        aria-hidden="true"
+        onMouseEnter={handleEnter}
+        onMouseLeave={handleLeave}
+        onClick={handleClick}
+      >
+        <div className="about-usecase-peek-hint">
+          <span className="peek-num">
+            {String(idx + 1).padStart(2, "0")}
+          </span>
+          <span className="peek-arrow">{position === "peek-left" ? "←" : "→"}</span>
+          <span className="peek-title">{useCase.caption}</span>
+        </div>
+      </div>
+    );
+  }
+
+  // Active mode · full split card (text + code)
+  return (
+    <div className={`about-usecase-card about-usecase-slide ${positionClass}`}>
+      <div className="grid lg:grid-cols-[1fr_1.25fr] h-full">
+        {/* LEFT · text */}
+        <div className="about-usecase-left p-7 md:p-10 lg:p-12 flex flex-col">
+          <span className="about-usecase-caption text-[11px] font-semibold tracking-[0.2em] uppercase mb-4 inline-block">
+            {useCase.caption}
+          </span>
+          <h4 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight mb-6 md:mb-8 text-white">
+            {t(`useCases.${useCase.id}.title`)}
+          </h4>
+          <ul className="space-y-3 list-none">
+            {[1, 2].map((i) => (
+              <li key={i} className="flex gap-3 items-start text-base md:text-lg leading-relaxed text-white/75">
+                <HexIcon className="w-3.5 h-3.5 mt-[7px] shrink-0 about-usecase-hex" />
+                <span>{t(`useCases.${useCase.id}.bullet${i}`)}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* RIGHT · code mockup */}
+        <div className="about-usecase-right relative flex flex-col">
+          <div className="flex items-center gap-2.5 px-5 py-3 border-b about-usecase-code-header">
+            <div className="flex gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
+              <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
+              <span className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
+            </div>
+            <Terminal className="w-3.5 h-3.5 text-indigo-400 ml-2" />
+            <span className="text-xs font-mono text-white/60 truncate">{code?.file}</span>
+          </div>
+          <pre className="about-code-body flex-1 p-5 md:p-6 text-xs md:text-sm font-mono leading-relaxed overflow-x-auto overflow-y-auto">
+            {code?.render()}
+          </pre>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function UseCaseCardsCarousel({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
   const [active, setActive] = useState(0);
-  const [direction, setDirection] = useState(1);
   const [paused, setPaused] = useState(false);
+  const pauseTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const total = USE_CASES.length;
-  const current = USE_CASES[active];
-  const code = CODE_SNIPPETS.find((c) => c.id === current.codeId);
 
   useEffect(() => {
     if (paused) return;
-    const id = setInterval(() => {
-      setDirection(1);
-      setActive((p) => (p + 1) % total);
-    }, 8000);
+    const id = setInterval(() => setActive((p) => (p + 1) % total), 10000);
     return () => clearInterval(id);
   }, [paused, total]);
 
+  const pauseAutoFor = useCallback((ms = 9000) => {
+    setPaused(true);
+    if (pauseTimerRef.current) clearTimeout(pauseTimerRef.current);
+    pauseTimerRef.current = setTimeout(() => setPaused(false), ms);
+  }, []);
+
   const goTo = useCallback((idx: number) => {
-    setDirection(idx > active ? 1 : -1);
-    setActive(idx);
-  }, [active]);
-  const next = useCallback(() => goTo((active + 1) % total), [active, total, goTo]);
-  const prev = useCallback(() => goTo((active - 1 + total) % total), [active, total, goTo]);
+    setActive(((idx % total) + total) % total);
+  }, [total]);
+
+  const next = useCallback(() => { goTo(active + 1); pauseAutoFor(); }, [active, goTo, pauseAutoFor]);
+  const prev = useCallback(() => { goTo(active - 1); pauseAutoFor(); }, [active, goTo, pauseAutoFor]);
+
+  const leftIdx = (active - 1 + total) % total;
+  const rightIdx = (active + 1) % total;
+
+  const getPos = (i: number): SlidePosition => {
+    if (i === active) return "active";
+    if (i === leftIdx) return "peek-left";
+    if (i === rightIdx) return "peek-right";
+    return "hidden";
+  };
 
   return (
     <motion.div
@@ -568,122 +684,72 @@ function UseCaseCardsCarousel({ t }: { t: ReturnType<typeof useTranslations<"abo
         </h3>
       </div>
 
-      <div className="about-usecase-card relative rounded-3xl overflow-hidden">
-        {/* Top progress bar */}
-        <div className="absolute top-0 left-0 right-0 h-[2px] bg-white/[0.04] z-10">
+      {/* Peek carousel · all 6 slides absolutely positioned */}
+      <div className="about-usecase-shell">
+        <div className="about-usecase-track">
+          {USE_CASES.map((uc, i) => (
+            <UseCaseSlide
+              key={uc.id}
+              useCase={uc}
+              idx={i}
+              position={getPos(i)}
+              onActivate={() => { goTo(i); pauseAutoFor(); }}
+              t={t}
+            />
+          ))}
+        </div>
+
+        {/* Top progress bar · fixed above active card */}
+        <div className="max-w-[1100px] mx-auto mt-2 h-[2px] bg-white/[0.04] rounded-full overflow-hidden relative z-10">
           <motion.div
             key={`bar-${active}-${paused ? "p" : "r"}`}
             initial={{ scaleX: 0 }}
             animate={{ scaleX: paused ? 0 : 1 }}
-            transition={{ duration: paused ? 0 : 8, ease: "linear" }}
+            transition={{ duration: paused ? 0 : 10, ease: "linear" }}
             className="h-full origin-left bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500"
             style={{ transformOrigin: "left center" }}
           />
         </div>
 
-        <div className="grid lg:grid-cols-[1fr_1.25fr] gap-0">
-          {/* LEFT · text content */}
-          <div className="about-usecase-left p-7 md:p-10 lg:p-12 flex flex-col justify-between min-h-[420px] md:min-h-[480px]">
-            <AnimatePresence mode="wait" custom={direction}>
-              <motion.div
-                key={current.id}
-                custom={direction}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <span className="about-usecase-caption text-[11px] font-semibold tracking-[0.2em] uppercase mb-4 inline-block">
-                  {current.caption}
-                </span>
-                <h4 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight mb-6 md:mb-8 text-white">
-                  {t(`useCases.${current.id}.title`)}
-                </h4>
-                <ul className="space-y-3 list-none">
-                  {[1, 2].map((i) => (
-                    <li key={i} className="flex gap-3 items-start text-base md:text-lg leading-relaxed text-white/75">
-                      <HexIcon className="w-3.5 h-3.5 mt-[7px] shrink-0 about-usecase-hex" />
-                      <span>{t(`useCases.${current.id}.bullet${i}`)}</span>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Bottom · pagination dots + nav + counter */}
-            <div className="flex items-center justify-between mt-10 md:mt-12">
-              <div className="flex items-center gap-2" role="tablist" aria-label={t("useCases.dotsAriaLabel")}>
-                {USE_CASES.map((uc, i) => (
-                  <button
-                    key={uc.id}
-                    type="button"
-                    role="tab"
-                    aria-selected={i === active}
-                    aria-label={`${i + 1} / ${total}`}
-                    onClick={() => goTo(i)}
-                    className={`about-usecase-dot h-1.5 rounded-full transition-all duration-300 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400 ${
-                      i === active ? "w-8" : "w-1.5"
-                    }`}
-                  />
-                ))}
-              </div>
-
-              <div className="flex items-center gap-3">
-                <span className="text-xs font-mono tabular-nums text-white/45">
-                  {String(active + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-                </span>
-                <div className="flex items-center gap-1">
-                  <button
-                    type="button"
-                    onClick={prev}
-                    aria-label={t("snippets.controls.prev")}
-                    className="about-snippet-ctrl w-8 h-8 rounded-md flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400"
-                  >
-                    <ChevronLeft className="w-4 h-4" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={next}
-                    aria-label={t("snippets.controls.next")}
-                    className="about-snippet-ctrl w-8 h-8 rounded-md flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400"
-                  >
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            </div>
+        {/* External controls · dots + counter + prev/next */}
+        <div className="max-w-[1100px] mx-auto mt-5 flex items-center justify-between px-2">
+          <div className="flex items-center gap-2" role="tablist" aria-label={t("useCases.dotsAriaLabel")}>
+            {USE_CASES.map((uc, i) => (
+              <button
+                key={uc.id}
+                type="button"
+                role="tab"
+                aria-selected={i === active}
+                aria-label={`${i + 1} / ${total}`}
+                onClick={() => { goTo(i); pauseAutoFor(); }}
+                className={`about-usecase-dot h-1.5 rounded-full transition-all duration-300 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400 ${
+                  i === active ? "w-8" : "w-1.5"
+                }`}
+              />
+            ))}
           </div>
 
-          {/* RIGHT · code mockup (Devin-style cream/contrast bg) */}
-          <div className="about-usecase-right relative">
-            {/* Header with filename */}
-            <div className="flex items-center gap-2.5 px-5 py-3 border-b about-usecase-code-header">
-              <div className="flex gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
-                <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
-                <span className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
-              </div>
-              <Terminal className="w-3.5 h-3.5 text-indigo-400 ml-2" />
-              <span className="text-xs font-mono text-white/60 truncate">
-                {code?.file}
-              </span>
-            </div>
-
-            {/* Code body · slides between snippets */}
-            <div className="relative overflow-hidden">
-              <AnimatePresence mode="wait" custom={direction}>
-                <motion.pre
-                  key={current.id}
-                  custom={direction}
-                  initial={{ opacity: 0, x: direction > 0 ? 28 : -28 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: direction > 0 ? -28 : 28 }}
-                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                  className="about-code-body p-5 md:p-6 text-xs md:text-sm font-mono leading-relaxed overflow-x-auto"
-                >
-                  {code?.render()}
-                </motion.pre>
-              </AnimatePresence>
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-mono tabular-nums text-white/45">
+              {String(active + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+            </span>
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={prev}
+                aria-label={t("snippets.controls.prev")}
+                className="about-snippet-ctrl w-8 h-8 rounded-md flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={next}
+                aria-label={t("snippets.controls.next")}
+                className="about-snippet-ctrl w-8 h-8 rounded-md flex items-center justify-center transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
             </div>
           </div>
         </div>
