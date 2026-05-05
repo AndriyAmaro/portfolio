@@ -1195,6 +1195,83 @@ section {
 .light-mode .about-techqa-section .text-white\/80 { color: rgba(51, 65, 85, 0.9); }
 .light-mode .about-techqa-section .text-white\/45 { color: rgba(71, 85, 105, 0.7); }
 
+/* ── Force light section · About sempre branco · sobrescreve dark mode ── */
+.about-force-light {
+  background: #ffffff !important;
+  color: rgba(15, 23, 42, 0.95);
+}
+.about-force-light .text-white { color: rgba(15, 23, 42, 0.95) !important; }
+.about-force-light .text-white\/95 { color: rgba(15, 23, 42, 0.97) !important; }
+.about-force-light .text-white\/90 { color: rgba(15, 23, 42, 0.92) !important; }
+.about-force-light .text-white\/80 { color: rgba(51, 65, 85, 0.9) !important; }
+.about-force-light .text-white\/75 { color: rgba(51, 65, 85, 0.85) !important; }
+.about-force-light .text-white\/70 { color: rgba(51, 65, 85, 0.82) !important; }
+.about-force-light .text-white\/60 { color: rgba(71, 85, 105, 0.78) !important; }
+.about-force-light .text-white\/45 { color: rgba(71, 85, 105, 0.7) !important; }
+.about-force-light .text-white\/40 { color: rgba(100, 116, 139, 0.7) !important; }
+
+/* Cards on white · invertem a paleta dark do gradient */
+.about-force-light .about-usecase-card {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.96) 0%, rgba(248, 250, 252, 0.92) 100%) !important;
+  border-color: rgba(99, 102, 241, 0.18) !important;
+  box-shadow: 0 8px 40px rgba(99, 102, 241, 0.08) !important;
+}
+.about-force-light .about-usecase-left { background: rgba(248, 250, 252, 0.7) !important; }
+.about-force-light .about-usecase-right {
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.96) 0%, rgba(30, 27, 75, 0.96) 100%) !important;
+  border-left-color: rgba(99, 102, 241, 0.15) !important;
+}
+
+/* Highlight cards (stats row) on white */
+.about-force-light .about-highlight-card {
+  background: rgba(255, 255, 255, 0.7) !important;
+  border-color: rgba(99, 102, 241, 0.15) !important;
+  box-shadow: 0 1px 2px rgba(99, 102, 241, 0.06), 0 4px 12px rgba(99, 102, 241, 0.04) !important;
+}
+
+/* Off-screen card (Practices tab) on white */
+.about-force-light .about-offscreen-card {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border-color: rgba(99, 102, 241, 0.15) !important;
+}
+.about-force-light .about-offscreen-icon {
+  background: rgba(99, 102, 241, 0.08) !important;
+  color: rgba(79, 70, 229, 0.95) !important;
+}
+
+/* Tab list pill bg on white */
+.about-force-light .about-tabs-list { background: rgba(15, 23, 42, 0.04) !important; border-color: rgba(15, 23, 42, 0.08) !important; }
+.about-force-light .about-tab-btn { color: rgba(71, 85, 105, 0.85) !important; }
+.about-force-light .about-tab-btn[aria-selected="true"] { color: rgba(15, 23, 42, 0.97) !important; }
+
+/* Peek bars stay subtle on white */
+.about-force-light .about-usecase-peek-hint {
+  background: rgba(15, 23, 42, 0.06) !important;
+  border-color: rgba(15, 23, 42, 0.1) !important;
+}
+.about-force-light .about-usecase-peek-hint .peek-num { color: rgba(15, 23, 42, 0.55) !important; }
+.about-force-light .about-usecase-peek-hint .peek-arrow { color: rgba(79, 70, 229, 0.8) !important; }
+.about-force-light .about-usecase-peek-hint .peek-title { color: rgba(15, 23, 42, 0.7) !important; }
+
+/* Tech Q&A category badges on white */
+.about-force-light .about-techqa-category-system { background: rgba(99, 102, 241, 0.1) !important; border-color: rgba(99, 102, 241, 0.4) !important; color: rgba(67, 56, 202, 0.95) !important; }
+.about-force-light .about-techqa-category-perf { background: rgba(245, 158, 11, 0.1) !important; border-color: rgba(245, 158, 11, 0.4) !important; color: rgba(180, 83, 9, 0.95) !important; }
+.about-force-light .about-techqa-category-security { background: rgba(244, 63, 94, 0.1) !important; border-color: rgba(244, 63, 94, 0.4) !important; color: rgba(190, 18, 60, 0.95) !important; }
+.about-force-light .about-techqa-tldr { color: rgba(51, 65, 85, 0.88) !important; }
+.about-force-light .about-techqa-proof { background: rgba(16, 185, 129, 0.06) !important; border-color: rgba(16, 185, 129, 0.25) !important; }
+.about-force-light .about-techqa-proof-check { color: rgba(5, 150, 105, 0.95) !important; }
+
+/* Section title gradient & captions inherit from light-mode */
+.about-force-light .about-section-title { color: rgba(15, 23, 42, 0.97) !important; }
+.about-force-light .about-description-text { color: rgba(51, 65, 85, 0.86) !important; }
+.about-force-light .about-description-text-centered { color: rgba(51, 65, 85, 0.86) !important; }
+.about-force-light .about-card-title { color: rgba(15, 23, 42, 0.97) !important; }
+.about-force-light .about-card-description { color: rgba(51, 65, 85, 0.85) !important; }
+
+/* Code mockup keeps dark theme on right (terminal aesthetic) */
+.about-force-light .about-code-body { color: rgba(255, 255, 255, 0.92) !important; }
+.about-force-light .about-usecase-code-header { background: rgba(8, 6, 24, 0.95) !important; border-color: rgba(255, 255, 255, 0.06) !important; }
+
 /* ── Tech Q&A Carousel ── */
 .about-techqa-category {
   background: rgba(255, 255, 255, 0.06);

@@ -1120,8 +1120,8 @@ export function About() {
   }, []);
 
   return (
-    <section id="about" className="relative pt-36 md:pt-44 pb-24 md:pb-32 overflow-hidden">
-      {isLightMode ? <AbstractBackgroundLight /> : <AbstractBackground />}
+    <section id="about" className="about-force-light relative pt-36 md:pt-44 pb-24 md:pb-32 overflow-hidden">
+      {/* AbstractBackground removido · fundo branco sólido + sem animação lateral */}
       {/* Converge-style dotted grid · sutil · senior signal */}
       <div className="about-dotted-grid absolute inset-0 pointer-events-none opacity-40" aria-hidden="true" />
 
