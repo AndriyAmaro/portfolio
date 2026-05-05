@@ -1133,10 +1133,20 @@ section {
 }
 .about-usecase-slide.is-peek-left:hover .about-usecase-peek-hint,
 .about-usecase-slide.is-peek-right:hover .about-usecase-peek-hint {
-  background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.18);
-  backdrop-filter: blur(18px) saturate(160%);
-  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  background: rgba(226, 226, 226, 0.92);
+  border-color: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+}
+/* Invert peek text color on hover · light bg needs dark text */
+.about-usecase-slide.is-peek-left:hover .peek-num,
+.about-usecase-slide.is-peek-right:hover .peek-num,
+.about-usecase-slide.is-peek-left:hover .peek-arrow,
+.about-usecase-slide.is-peek-right:hover .peek-arrow,
+.about-usecase-slide.is-peek-left:hover .peek-title,
+.about-usecase-slide.is-peek-right:hover .peek-title {
+  color: rgba(15, 23, 42, 0.85);
+  transition: color 200ms ease;
 }
 .about-usecase-peek-hint .peek-num {
   font-family: ui-monospace, "JetBrains Mono", "SF Mono", monospace;
