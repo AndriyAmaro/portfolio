@@ -281,11 +281,11 @@
       },
       "idempotency": {
         "title": "Idempotency arquitectónica",
-        "bullet1": "GET/PUT/DELETE son idempotent por HTTP spec · POST nunca · solución: header Idempotency-Key con UUID del cliente · servidor cachea primera respuesta",
-        "bullet2": "Race condition de 2 requests con misma key llegando simultáneo · INSERT ON CONFLICT DO NOTHING + advisory lock garantizan que solo 1 gana · el otro retorna respuesta cacheada",
-        "bullet3": "TTL de 24h en idempotency keys (patrón Stripe/PayPal) · si no la tabla crece infinito · cron limpia keys expiradas · trade-off: retry después de 24h no es idempotent",
-        "bullet4": "Saga pattern en ops distribuidas · pedido → reserva stock → cobra tarjeta → confirma envío · falla en cualquier step dispara compensating actions (undo) · sin rollback global",
-        "bullet5": "Outbox pattern para eventos · publish evento + persist DB en MISMA transaction · cron poll outbox y publica · garantiza exactly-once incluso con network partition"
+        "bullet1": "GET/PUT/DELETE son idempotent por HTTP spec · POST nunca · solución: header Idempotency-Key (UUID del cliente)",
+        "bullet2": "Race condition de 2 requests simultáneos · INSERT ON CONFLICT + advisory lock · solo 1 gana, el otro retorna respuesta cacheada",
+        "bullet3": "TTL 24h en las keys (patrón Stripe/PayPal) · cron limpia expiradas · retry después de 24h no es idempotent",
+        "bullet4": "Saga pattern · pedido → stock → tarjeta → envío · falla dispara compensating actions (undo) · sin rollback global",
+        "bullet5": "Outbox pattern · publish evento + persist DB en MISMA transaction · exactly-once incluso con network partition"
       }
     },
     "highlights": {
