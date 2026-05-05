@@ -275,21 +275,38 @@ import { CrmRepository } from `}<span className="text-fuchsia-400">{`'./crm.repo
   },
   {
     id: "idempotency",
-    file: "apps/api/src/modules/billing/stripe-webhook.ts",
+    file: "modules/billing/stripe-webhook.ts",
     captionKey: "snippets.idempotency",
     render: () => (
       <>
-{`// Idempotency · Stripe webhook can fire same event twice
-const idempotencyKey = req.headers[`}<span className="text-fuchsia-400">'stripe-idempotency-key'</span>{`];
-const seen = await prisma.processedWebhook.`}<span className="text-indigo-400">findUnique</span>{`({
-  where: { idempotencyKey }
-});
-if (seen) return `}<span className="text-indigo-400">sendSuccess</span>{`(res, { duplicate: `}<span className="text-fuchsia-400">true</span>{` });
+<span className="text-white/40">{`// 1️⃣ HMAC-SHA256 validation · evento inválido = 400 sem side effect`}</span>{`
+`}<span className="text-indigo-400">const</span>{` event = stripe.webhooks.`}<span className="text-cyan-400">constructEvent</span>{`(
+  req.rawBody,
+  req.headers[`}<span className="text-fuchsia-400">{`'stripe-signature'`}</span>{`],
+  env.STRIPE_WEBHOOK_SECRET
+);
 
-await prisma.`}<span className="text-fuchsia-400">$transaction</span>{`(async (tx) =&gt; {
-  await tx.processedWebhook.`}<span className="text-indigo-400">create</span>{`({ data: { idempotencyKey } });
-  `}<span className="text-white/40">{`// ... handler real do evento dentro da transaction`}</span>{`
-});`}
+`}<span className="text-white/40">{`// 2️⃣ Advisory lock · 2 requests simultâneos com mesma key · só 1 ganha`}</span>{`
+`}<span className="text-indigo-400">const</span>{` result = `}<span className="text-indigo-400">await</span>{` prisma.`}<span className="text-fuchsia-400">$transaction</span>{`(`}<span className="text-indigo-400">async</span>{` (tx) =&gt; {
+  `}<span className="text-indigo-400">await</span>{` tx.`}<span className="text-fuchsia-400">$executeRawUnsafe</span>{`(`}<span className="text-fuchsia-400">{`\`SELECT pg_advisory_xact_lock(hashtext('\${event.id}'))\``}</span>{`);
+
+  `}<span className="text-white/40">{`// 3️⃣ Cache de resposta · retorna resposta original se já processado`}</span>{`
+  `}<span className="text-indigo-400">const</span>{` seen = `}<span className="text-indigo-400">await</span>{` tx.processedWebhook.`}<span className="text-cyan-400">findUnique</span>{`({
+    where: { idempotencyKey: event.id }
+  });
+  `}<span className="text-indigo-400">if</span>{` (seen) `}<span className="text-indigo-400">return</span>{` { duplicate: `}<span className="text-fuchsia-400">true</span>{`, response: seen.response };
+
+  `}<span className="text-indigo-400">await</span>{` tx.processedWebhook.`}<span className="text-cyan-400">create</span>{`({
+    data: { idempotencyKey: event.id, eventType: event.type }
+  });
+
+  `}<span className="text-white/40">{`// 4️⃣ Side effect na MESMA transaction · falha = rollback · retry re-processa`}</span>{`
+  `}<span className="text-indigo-400">return await</span>{` `}<span className="text-cyan-400">processEvent</span>{`(tx, event);
+});
+
+`}<span className="text-white/40">{`// 5️⃣ Cron cleanup · TTL 24h (Stripe/PayPal pattern):`}</span>{`
+`}<span className="text-white/40">{`//    DELETE FROM "ProcessedWebhook" WHERE "createdAt" < NOW() - INTERVAL '24 hours'`}</span>{`
+`}<span className="text-indigo-400">return</span>{` `}<span className="text-cyan-400">sendSuccess</span>{`(res, result);`}
       </>
     ),
   },
