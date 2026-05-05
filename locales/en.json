@@ -273,11 +273,11 @@
       },
       "infra": {
         "title": "EnsureSchemaSync() · idempotent boot migrations",
-        "bullet1": "Nixpacks (Railway) does NOT run prisma migrate deploy · every schema change becomes idempotent SQL at API boot · zero manual migration on deploy",
-        "bullet2": "IF NOT EXISTS on everything · runs on EVERY boot · if column/type exists NOOP, otherwise applies · zero downtime, truly idempotent",
-        "bullet3": "Each SQL as individual $executeRawUnsafe · multiple statements in one call trigger Postgres error 42601 · pattern learned in production",
-        "bullet4": ".catch(() =>  {}) on each call · some ops fail silently (enum value in another form, drop on non-existent constraint) · can't block boot",
-        "bullet5": "90 idempotent statements running today · ALTER TABLE / ADD COLUMN / ALTER TYPE / DROP NOT NULL · every new feature touching schema adds one"
+        "bullet1": "Nixpacks (Railway) doesn't run prisma migrate deploy · every schema change becomes idempotent SQL at boot",
+        "bullet2": "IF NOT EXISTS on everything · runs on EVERY boot · NOOP if exists, applies if not · zero downtime",
+        "bullet3": "Each SQL as individual $executeRawUnsafe · multiple in one call = Postgres error 42601",
+        "bullet4": ".catch(() => {}) on each call · silent failures don't block API boot",
+        "bullet5": "90 idempotent statements running today · ALTER TABLE / ADD COLUMN / ALTER TYPE / DROP NOT NULL"
       },
       "idempotency": {
         "title": "Architectural idempotency",
