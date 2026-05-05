@@ -1005,10 +1005,10 @@ const PATTERNS = [
 
 function AboutTabs({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
   const [active, setActive] = useState<TabId>("now");
-  const tabs: { id: TabId; labelKey: string; icon: typeof Activity }[] = [
-    { id: "now", labelKey: "tabs.now", icon: Activity },
-    { id: "how", labelKey: "tabs.how", icon: Workflow },
-    { id: "off", labelKey: "tabs.off", icon: Trophy },
+  const tabs: { id: TabId; labelKey: string; descKey: string; icon: typeof Activity }[] = [
+    { id: "now", labelKey: "tabs.now", descKey: "tabs.nowDesc", icon: Activity },
+    { id: "how", labelKey: "tabs.how", descKey: "tabs.howDesc", icon: Workflow },
+    { id: "off", labelKey: "tabs.off", descKey: "tabs.offDesc", icon: Trophy },
   ];
 
   // Keyboard nav · ArrowLeft/Right
@@ -1025,37 +1025,64 @@ function AboutTabs({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
 
   return (
     <div className="mt-16">
-      {/* Pills · Linear/Apple style with sliding active indicator */}
+      {/* Sellorex-style tab cards · icon + label + description + border indicator */}
       <div
         role="tablist"
         aria-label={t("tabs.ariaLabel")}
-        className="about-tabs-pills relative flex gap-1 p-1 rounded-full w-fit mx-auto mb-10"
+        className="about-tabs-cards rounded-2xl border p-2 mb-10 max-w-5xl mx-auto"
       >
-        {tabs.map((tab, idx) => (
-          <button
-            key={tab.id}
-            id={`tab-${tab.id}`}
-            role="tab"
-            aria-selected={active === tab.id}
-            aria-controls={`panel-${tab.id}`}
-            tabIndex={active === tab.id ? 0 : -1}
-            onClick={() => setActive(tab.id)}
-            onKeyDown={(e) => onKeyDown(e, idx)}
-            className="about-tab-trigger relative inline-flex items-center gap-2 px-4 md:px-5 py-2.5 text-sm font-medium rounded-full transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
-          >
-            {active === tab.id && (
-              <motion.span
-                layoutId="about-tab-active-pill"
-                className="about-tab-active-pill absolute inset-0 rounded-full -z-[1]"
-                transition={{ type: "spring", stiffness: 380, damping: 32 }}
-              />
-            )}
-            <tab.icon className={`w-4 h-4 relative shrink-0 ${active === tab.id ? "text-white" : "about-tab-icon-inactive"}`} aria-hidden="true" />
-            <span className={active === tab.id ? "text-white relative" : "about-tab-label-inactive relative"}>
-              {t(tab.labelKey)}
-            </span>
-          </button>
-        ))}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+          {tabs.map((tab, idx) => {
+            const Icon = tab.icon;
+            const isActive = active === tab.id;
+            return (
+              <button
+                key={tab.id}
+                id={`tab-${tab.id}`}
+                role="tab"
+                aria-selected={isActive}
+                aria-controls={`panel-${tab.id}`}
+                tabIndex={isActive ? 0 : -1}
+                onClick={() => setActive(tab.id)}
+                onKeyDown={(e) => onKeyDown(e, idx)}
+                className={`about-tab-card relative rounded-xl px-5 py-4 text-left transition-colors duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400 ${
+                  isActive ? "about-tab-card-active" : "hover:about-tab-card-hover"
+                }`}
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="about-tab-card-indicator"
+                    className="about-tab-card-border absolute inset-0 rounded-xl border-2 pointer-events-none"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+                <div className="relative flex items-center gap-3">
+                  <div
+                    className={`flex h-11 w-11 items-center justify-center rounded-xl shrink-0 transition-colors duration-150 ${
+                      isActive
+                        ? "about-tab-icon-active text-white shadow-lg"
+                        : "about-tab-icon-bg about-tab-icon-inactive"
+                    }`}
+                  >
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div
+                      className={`text-sm font-bold ${
+                        isActive ? "about-tab-label-active" : "about-tab-label-inactive"
+                      }`}
+                    >
+                      {t(tab.labelKey)}
+                    </div>
+                    <p className="mt-0.5 text-[11px] leading-snug line-clamp-1 about-tab-desc">
+                      {t(tab.descKey)}
+                    </p>
+                  </div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Content panels · AnimatePresence fade + slide */}

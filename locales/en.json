@@ -72,8 +72,11 @@
     "tabs": {
       "ariaLabel": "About me · section navigation",
       "now": "Now",
+      "nowDesc": "6 use cases · architecture in real code",
       "how": "How I work",
-      "off": "Practices"
+      "howDesc": "9 senior decisions · system / perf / security",
+      "off": "Practices",
+      "offDesc": "30 auditable patterns in the codebase"
     },
     "techQA": {
       "sectionCaption": "How I work",
