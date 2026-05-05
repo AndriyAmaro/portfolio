@@ -99,18 +99,38 @@ type CodeSnippet = {
 const CODE_SNIPPETS: CodeSnippet[] = [
   {
     id: "gateway",
-    file: "apps/api/src/modules/ai-gateway/gateway.service.ts",
+    file: "modules/ai-gateway/gateway.service.ts",
     captionKey: "snippets.gateway",
     render: () => (
       <>
-{`// AI Gateway · single entry point for ALL LLM calls
-async gatewayCall(req: GatewayCallRequest, ctx: TenantContext) {
-  await `}<span className="text-indigo-400">validateSchema</span>{`(req);                      `}<span className="text-white/40">{`// Zod runtime validation`}</span>{`
-  const model = `}<span className="text-indigo-400">routeModel</span>{`(req, ctx.plan);        `}<span className="text-white/40">{`// complexity + plan routing`}</span>{`
-  await `}<span className="text-indigo-400">creditEnforcer.check</span>{`(ctx.tenantId, model); `}<span className="text-white/40">{`// 3-tier budget`}</span>{`
-  const res = await `}<span className="text-indigo-400">callWithFallback</span>{`(model, req); `}<span className="text-white/40">{`// circuit breaker`}</span>{`
-  await `}<span className="text-indigo-400">logUsage</span>{`(ctx, model, res);                `}<span className="text-white/40">{`// AiUsageLog persisted`}</span>{`
-  return res;
+<span className="text-white/40">{`// Single entry point · todo LLM call passa por aqui`}</span>{`
+`}<span className="text-indigo-400">export async function</span>{` `}<span className="text-cyan-400">gatewayCall</span>{`(req: GatewayCallRequest, ctx: TenantContext) {
+  `}<span className="text-indigo-400">await</span>{` validateSchema(req);                                   `}<span className="text-white/40">{`// Zod runtime`}</span>{`
+
+  `}<span className="text-white/40">{`// Routing inteligente · complexity + tenant plan · não é fallback dumb`}</span>{`
+  `}<span className="text-indigo-400">const</span>{` { model, routingReason, complexityScore } = resolveModel(req, ctx);
+  `}<span className="text-indigo-400">await</span>{` creditEnforcer.check(ctx.tenantId, model);              `}<span className="text-white/40">{`// 3-tier budget`}</span>{`
+
+  `}<span className="text-white/40">{`// Claude com circuit breaker · uptime mesmo se Anthropic falhar`}</span>{`
+  `}<span className="text-indigo-400">const</span>{` res = `}<span className="text-indigo-400">await</span>{` gracefulDegradation.execute(`}<span className="text-fuchsia-400">{`'CLAUDE'`}</span>{`, () =&gt;
+    callClaude(model, req)                                   `}<span className="text-white/40">{`// streaming + tool use`}</span>{`
+  );
+
+  `}<span className="text-white/40">{`// Feedback loop · router se auto-melhora com sinais reais de prod`}</span>{`
+  `}<span className="text-indigo-400">await</span>{` prisma.aiUsageLog.create({ data: {
+    tenantId: ctx.tenantId, model, routingReason, complexityScore,
+    inputTokens: res.usage.inputTokens, outputTokens: res.usage.outputTokens,
+    cost: calculateCost(model, res.usage.inputTokens, res.usage.outputTokens),
+    latencyMs: res.latency, confidenceScore: scoreResponseConfidence(res),
+  }});
+  `}<span className="text-indigo-400">return</span>{` res;
+}
+
+`}<span className="text-white/40">{`// 10M calls × $0.0000005 = $5 perdido se truncar · ceil em micro-USD`}</span>{`
+`}<span className="text-indigo-400">function</span>{` `}<span className="text-cyan-400">calculateCost</span>{`(model: `}<span className="text-emerald-400">string</span>{`, ti: `}<span className="text-emerald-400">number</span>{`, to: `}<span className="text-emerald-400">number</span>{`) {
+  `}<span className="text-indigo-400">const</span>{` c = MODEL_COSTS[model] ?? MODEL_COSTS.SONNET;
+  `}<span className="text-indigo-400">const</span>{` total = (ti / `}<span className="text-yellow-300">1e6</span>{`) * c.inputPer1M + (to / `}<span className="text-yellow-300">1e6</span>{`) * c.outputPer1M;
+  `}<span className="text-indigo-400">return</span>{` Math.ceil(total * `}<span className="text-yellow-300">1e6</span>{`) / `}<span className="text-yellow-300">1e6</span>{`;
 }`}
       </>
     ),

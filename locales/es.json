@@ -249,11 +249,11 @@
       },
       "aiGateway": {
         "title": "AI Gateway con cost intelligence",
-        "bullet1": "Pipeline de 5 capas · validate · route · budget · call · log",
-        "bullet2": "4 providers en cadena con fallback · Math.ceil en fracción de centavo",
-        "bullet3": "",
-        "bullet4": "",
-        "bullet5": ""
+        "bullet1": "Single entry point · todo LLM call pasa por gatewayCall() · cero SDK llamado directo · audit, cost y rate-limit en 1 lugar",
+        "bullet2": "Cost calculator con Math.ceil en micro-USD · 10M calls × fracción de centavo = $5 perdido si trunca · evita drift contable en scale",
+        "bullet3": "Routing inteligente · analyzeComplexity() + tenantPlan deciden entre Claude Sonnet 4.5 / Haiku 4.5 / Opus 4.7 · routingReason persistido para audit",
+        "bullet4": "Claude API con streaming first-class + tool use nativo + extended thinking · graceful degradation engine garantiza uptime incluso si Anthropic falla",
+        "bullet5": "AiUsageLog feedback loop · persiste tokens, cost, latencia, complexityScore + confidenceScore + feedbackScore · router se auto-mejora con señales reales"
       },
       "antiHallucination": {
         "title": "IA que nunca inventa datos en producción",
