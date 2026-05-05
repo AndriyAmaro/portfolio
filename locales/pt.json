@@ -73,7 +73,7 @@
       "ariaLabel": "Sobre mim · navegação por seções",
       "now": "Agora",
       "how": "Como trabalho",
-      "off": "Histórico"
+      "off": "Patterns"
     },
     "techQA": {
       "sectionCaption": "Como eu trabalho",
@@ -157,19 +157,55 @@
         "description": "Sentinel detecta anomalias · P95 baseline por endpoint · refactor cirúrgico quando custo de mudança fica alto · zero feature deixada à deriva."
       }
     },
-    "trackRecord": {
-      "intro": "Antes de Sellorex já tinha pipeline production-ready. Cada projeto live, em uso, com métricas reais.",
-      "pulseEcosystem": {
-        "title": "Pulse Ecosystem",
-        "description": "4 SaaS em produção compartilhando design system · 100+ componentes shared · 380+ testes automatizados · 740+ commits com conventional commits."
+    "patterns": {
+      "intro": "30 patterns auditáveis no código do Sellorex · cada um implementado e em produção. Recrutador pode pedir o arquivo e a linha · está tudo lá.",
+      "multitenancy": {
+        "title": "Multi-tenancy",
+        "item1": "tenantId filter em toda query (Prisma extension automática)",
+        "item2": "JWT carrega tenantId · NUNCA confiar em request body",
+        "item3": "152 índices compostos com tenantId em models críticos",
+        "item4": "Middleware chain: cors → helmet → auth → tenant → rateLimit → handler",
+        "item5": "INTERNAL_ADMIN role pra cross-tenant ops com auditoria"
       },
-      "pulseTheme": {
-        "title": "Pulse Theme · publicado comercialmente",
-        "description": "Design system que virou produto · vendido como tema premium · case real de SaaS B2B saindo da minha mão pro mercado."
+      "resilience": {
+        "title": "Resilience",
+        "item1": "Circuit breaker no AI Gateway (graceful-degradation.engine)",
+        "item2": "Multi-provider fallback chain (Claude → OpenAI → Qwen → DeepSeek)",
+        "item3": "BullMQ retry com exponential backoff + dead letter queue",
+        "item4": "Idempotency em mutations críticas (Stripe webhook)",
+        "item5": "Timeout + abort controllers em toda chamada externa"
       },
-      "sellorex": {
-        "title": "Sellorex em produção",
-        "description": "Plataforma viva em sellorex.com · ~50 tenants em uso · zero leak entre tenants em 6 meses · sub-50ms p95 em queries hot."
+      "security": {
+        "title": "Security",
+        "item1": "Helmet headers + CORS whitelist (origins env-driven)",
+        "item2": "JWT access (1h) + refresh (7d, httpOnly cookie)",
+        "item3": "RBAC: OWNER, ADMIN, MANAGER, MEMBER, VIEWER, INTERNAL_ADMIN",
+        "item4": "Bcrypt saltRounds: 10 + senha nunca em log/audit",
+        "item5": "Webhook signature HMAC-SHA256 (Stripe SDK + HeyGen + BytePlus)"
+      },
+      "observability": {
+        "title": "Observability",
+        "item1": "Sentry SDK (error tracking + profiling)",
+        "item2": "Structured logging Winston · level/message/tenantId/userId/requestId",
+        "item3": "AiUsageLog · custo por request, tokens, modelo, latência",
+        "item4": "ApiPerformanceLog · p50/p95/p99 por endpoint",
+        "item5": "ErrorLog persistido em DB pra alerting + retrospectiva"
+      },
+      "dataLayer": {
+        "title": "Data Layer",
+        "item1": "126 Prisma models · multi-tenant by design",
+        "item2": "PostgreSQL 18.3 + pgvector v0.8.2 + HNSW pra semantic search",
+        "item3": "Transactions com prisma.$transaction() em operações atômicas",
+        "item4": "Auto-migration via ensureSchemaSync() no boot (Nixpacks Railway)",
+        "item5": "Cada SQL idempotente com IF NOT EXISTS (Postgres erro 42601)"
+      },
+      "cacheStrategy": {
+        "title": "Cache Strategy",
+        "item1": "L1 in-memory cache (credential vault: memory → DB → env)",
+        "item2": "L2 Redis (ioredis) pra sessões + dashboards + queues",
+        "item3": "BullMQ queues Redis-backed com workers concorrentes",
+        "item4": "Cache keys namespaced por tenantId · zero cross-tenant leak",
+        "item5": "Auto-invalidation em mutations relevantes"
       }
     },
     "metrics": {

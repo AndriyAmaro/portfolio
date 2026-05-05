@@ -73,7 +73,7 @@
       "ariaLabel": "Sobre mí · navegación por secciones",
       "now": "Ahora",
       "how": "Cómo trabajo",
-      "off": "Histórico"
+      "off": "Patterns"
     },
     "techQA": {
       "sectionCaption": "Cómo trabajo",
@@ -157,19 +157,55 @@
         "description": "Sentinel detecta anomalías · P95 baseline por endpoint · refactor quirúrgico cuando el costo de cambio sube · cero feature dejada a la deriva."
       }
     },
-    "trackRecord": {
-      "intro": "Antes de Sellorex ya tenía pipeline production-ready. Cada proyecto live, en uso, con métricas reales.",
-      "pulseEcosystem": {
-        "title": "Pulse Ecosystem",
-        "description": "4 SaaS en producción compartiendo design system · 100+ componentes shared · 380+ tests automatizados · 740+ commits con conventional commits."
+    "patterns": {
+      "intro": "30 patterns auditables en el código de Sellorex · cada uno implementado y en producción. El reclutador puede pedir el archivo y la línea · está todo ahí.",
+      "multitenancy": {
+        "title": "Multi-tenancy",
+        "item1": "Filtro tenantId en toda query (Prisma extension automática)",
+        "item2": "JWT lleva tenantId · NUNCA confiar en el request body",
+        "item3": "152 índices compuestos con tenantId en models críticos",
+        "item4": "Middleware chain: cors → helmet → auth → tenant → rateLimit → handler",
+        "item5": "INTERNAL_ADMIN role para cross-tenant ops con auditoría"
       },
-      "pulseTheme": {
-        "title": "Pulse Theme · publicado comercialmente",
-        "description": "Design system que se convirtió en producto · vendido como tema premium · caso real de SaaS B2B saliendo de mis manos al mercado."
+      "resilience": {
+        "title": "Resilience",
+        "item1": "Circuit breaker en AI Gateway (graceful-degradation.engine)",
+        "item2": "Multi-provider fallback chain (Claude → OpenAI → Qwen → DeepSeek)",
+        "item3": "BullMQ retry con exponential backoff + dead letter queue",
+        "item4": "Idempotencia en mutations críticas (Stripe webhook)",
+        "item5": "Timeouts + abort controllers en cada llamada externa"
       },
-      "sellorex": {
-        "title": "Sellorex en producción",
-        "description": "Plataforma viva en sellorex.com · ~50 tenants en uso · cero leak entre tenants en 6 meses · sub-50ms p95 en queries hot."
+      "security": {
+        "title": "Security",
+        "item1": "Helmet headers + CORS whitelist (origins por env)",
+        "item2": "JWT access (1h) + refresh (7d, httpOnly cookie)",
+        "item3": "RBAC: OWNER, ADMIN, MANAGER, MEMBER, VIEWER, INTERNAL_ADMIN",
+        "item4": "Bcrypt saltRounds: 10 + contraseña nunca en log/audit",
+        "item5": "Webhook signature HMAC-SHA256 (Stripe SDK + HeyGen + BytePlus)"
+      },
+      "observability": {
+        "title": "Observability",
+        "item1": "Sentry SDK (error tracking + profiling)",
+        "item2": "Structured logging Winston · level/message/tenantId/userId/requestId",
+        "item3": "AiUsageLog · costo por request, tokens, modelo, latencia",
+        "item4": "ApiPerformanceLog · p50/p95/p99 por endpoint",
+        "item5": "ErrorLog persistido en DB para alerting + retrospectiva"
+      },
+      "dataLayer": {
+        "title": "Data Layer",
+        "item1": "126 Prisma models · multi-tenant by design",
+        "item2": "PostgreSQL 18.3 + pgvector v0.8.2 + HNSW para semantic search",
+        "item3": "Transactions con prisma.$transaction() en operaciones atómicas",
+        "item4": "Auto-migration vía ensureSchemaSync() en el boot (Nixpacks Railway)",
+        "item5": "Cada SQL idempotente con IF NOT EXISTS (Postgres error 42601)"
+      },
+      "cacheStrategy": {
+        "title": "Cache Strategy",
+        "item1": "L1 in-memory cache (credential vault: memory → DB → env)",
+        "item2": "L2 Redis (ioredis) para sesiones + dashboards + queues",
+        "item3": "BullMQ queues Redis-backed con workers concurrentes",
+        "item4": "Cache keys namespaced por tenantId · cero cross-tenant leak",
+        "item5": "Auto-invalidation en mutations relevantes"
       }
     },
     "metrics": {

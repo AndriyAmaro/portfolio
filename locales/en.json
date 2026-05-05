@@ -73,7 +73,7 @@
       "ariaLabel": "About me · section navigation",
       "now": "Now",
       "how": "How I work",
-      "off": "Track Record"
+      "off": "Patterns"
     },
     "techQA": {
       "sectionCaption": "How I work",
@@ -157,19 +157,55 @@
         "description": "Sentinel detects anomalies · per-endpoint P95 baseline · surgical refactor when change cost rises · zero feature left adrift."
       }
     },
-    "trackRecord": {
-      "intro": "Before Sellorex I already had a production-ready pipeline. Each project live, in use, with real metrics.",
-      "pulseEcosystem": {
-        "title": "Pulse Ecosystem",
-        "description": "4 SaaS in production sharing one design system · 100+ shared components · 380+ automated tests · 740+ commits with conventional commits."
+    "patterns": {
+      "intro": "30 patterns auditable in the Sellorex codebase · each one implemented and in production. A recruiter can request file and line number · it's all there.",
+      "multitenancy": {
+        "title": "Multi-tenancy",
+        "item1": "tenantId filter on every query (auto-injected via Prisma extension)",
+        "item2": "JWT carries tenantId · NEVER trust the request body",
+        "item3": "152 composite indexes with tenantId on critical models",
+        "item4": "Middleware chain: cors → helmet → auth → tenant → rateLimit → handler",
+        "item5": "INTERNAL_ADMIN role for cross-tenant ops with audit trail"
       },
-      "pulseTheme": {
-        "title": "Pulse Theme · commercially published",
-        "description": "Design system that became a product · sold as a premium theme · real case of B2B SaaS shipped from my hands to the market."
+      "resilience": {
+        "title": "Resilience",
+        "item1": "Circuit breaker on AI Gateway (graceful-degradation.engine)",
+        "item2": "Multi-provider fallback chain (Claude → OpenAI → Qwen → DeepSeek)",
+        "item3": "BullMQ retry with exponential backoff + dead letter queue",
+        "item4": "Idempotency on critical mutations (Stripe webhook)",
+        "item5": "Timeouts + abort controllers on every external call"
       },
-      "sellorex": {
-        "title": "Sellorex in production",
-        "description": "Live platform at sellorex.com · ~50 tenants in use · zero cross-tenant leaks in 6 months · sub-50ms p95 on hot queries."
+      "security": {
+        "title": "Security",
+        "item1": "Helmet headers + CORS whitelist (env-driven origins)",
+        "item2": "JWT access (1h) + refresh (7d, httpOnly cookie)",
+        "item3": "RBAC: OWNER, ADMIN, MANAGER, MEMBER, VIEWER, INTERNAL_ADMIN",
+        "item4": "Bcrypt saltRounds: 10 + password never logged or audited",
+        "item5": "Webhook signature HMAC-SHA256 (Stripe SDK + HeyGen + BytePlus)"
+      },
+      "observability": {
+        "title": "Observability",
+        "item1": "Sentry SDK (error tracking + profiling)",
+        "item2": "Structured Winston logging · level/message/tenantId/userId/requestId",
+        "item3": "AiUsageLog · cost per request, tokens, model, latency",
+        "item4": "ApiPerformanceLog · p50/p95/p99 per endpoint",
+        "item5": "ErrorLog persisted in DB for alerting + retrospectives"
+      },
+      "dataLayer": {
+        "title": "Data Layer",
+        "item1": "126 Prisma models · multi-tenant by design",
+        "item2": "PostgreSQL 18.3 + pgvector v0.8.2 + HNSW for semantic search",
+        "item3": "Transactions via prisma.$transaction() on atomic operations",
+        "item4": "Auto-migration via ensureSchemaSync() at boot (Nixpacks Railway)",
+        "item5": "Each SQL idempotent with IF NOT EXISTS (Postgres error 42601)"
+      },
+      "cacheStrategy": {
+        "title": "Cache Strategy",
+        "item1": "L1 in-memory cache (credential vault: memory → DB → env)",
+        "item2": "L2 Redis (ioredis) for sessions + dashboards + queues",
+        "item3": "BullMQ Redis-backed queues with concurrent workers",
+        "item4": "Cache keys namespaced by tenantId · zero cross-tenant leak",
+        "item5": "Auto-invalidation on relevant mutations"
       }
     },
     "metrics": {

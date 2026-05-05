@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence, useInView } from "framer-motion";
-import { Cpu, ShieldCheck, BadgeCheck, Network, Terminal, Compass, Layers3, Rocket, RefreshCw, ChevronLeft, ChevronRight, Pause, Play, Lock, Gauge, Eye, Megaphone, Boxes, ScrollText, Sparkles, Layers, Trophy, Activity, Workflow } from "lucide-react";
+import { Cpu, ShieldCheck, BadgeCheck, Network, Terminal, Compass, Layers3, Rocket, RefreshCw, ChevronLeft, ChevronRight, Pause, Play, Lock, Gauge, Eye, Megaphone, Boxes, ScrollText, Sparkles, Layers, Trophy, Activity, Workflow, Database } from "lucide-react";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
@@ -932,10 +932,13 @@ const PROCESS_STEPS = [
   { icon: RefreshCw, key: "iterate" },
 ] as const;
 
-const TRACK_RECORD = [
-  { icon: Boxes, key: "pulseEcosystem" },
-  { icon: Trophy, key: "pulseTheme" },
-  { icon: Sparkles, key: "sellorex" },
+const PATTERNS = [
+  { icon: Lock, key: "multitenancy" },
+  { icon: RefreshCw, key: "resilience" },
+  { icon: ShieldCheck, key: "security" },
+  { icon: Eye, key: "observability" },
+  { icon: Database, key: "dataLayer" },
+  { icon: Layers, key: "cacheStrategy" },
 ] as const;
 
 function AboutTabs({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
@@ -1057,27 +1060,35 @@ function AboutTabs({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
             >
               <div className="max-w-3xl mx-auto text-center mb-10">
                 <p className="about-description-text text-lg leading-relaxed">
-                  {t("trackRecord.intro")}
+                  {t("patterns.intro")}
                 </p>
               </div>
-              <div className="grid sm:grid-cols-3 gap-4 md:gap-5 max-w-4xl mx-auto">
-                {TRACK_RECORD.map((item, index) => (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 max-w-6xl mx-auto">
+                {PATTERNS.map((pattern, index) => (
                   <motion.div
-                    key={item.key}
+                    key={pattern.key}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: 0.05 + index * 0.08, ease: [0.16, 1, 0.3, 1] }}
-                    className="about-offscreen-card relative p-6 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1"
+                    transition={{ duration: 0.4, delay: 0.05 + index * 0.06, ease: [0.16, 1, 0.3, 1] }}
+                    className="about-offscreen-card relative p-6 md:p-7 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1"
                   >
                     <div className="about-offscreen-icon w-11 h-11 rounded-xl flex items-center justify-center mb-4">
-                      <item.icon className="w-5 h-5" />
+                      <pattern.icon className="w-5 h-5" />
                     </div>
-                    <h4 className="text-base font-semibold mb-2 text-white/95 about-card-title">
-                      {t(`trackRecord.${item.key}.title`)}
+                    <h4 className="text-base md:text-lg font-semibold mb-4 text-white/95 about-card-title">
+                      {t(`patterns.${pattern.key}.title`)}
                     </h4>
-                    <p className="text-sm text-white/70 leading-relaxed about-card-description">
-                      {t(`trackRecord.${item.key}.description`)}
-                    </p>
+                    <ul className="space-y-2 list-none">
+                      {[1, 2, 3, 4, 5].map((i) => (
+                        <li
+                          key={i}
+                          className="flex gap-2.5 items-start text-[13px] md:text-sm leading-relaxed text-white/75 about-card-description"
+                        >
+                          <span className="text-emerald-400/90 shrink-0 mt-[2px] font-mono text-xs">✓</span>
+                          <span>{t(`patterns.${pattern.key}.item${i}`)}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </motion.div>
                 ))}
               </div>
