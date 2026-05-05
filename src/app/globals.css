@@ -1007,9 +1007,18 @@ section {
   background: linear-gradient(180deg, rgba(15, 12, 41, 0.4) 0%, rgba(30, 27, 75, 0.2) 100%);
 }
 .about-usecase-right {
-  background: linear-gradient(180deg, rgba(8, 6, 24, 0.95) 0%, rgba(15, 12, 41, 0.95) 100%);
-  border-left: 1px solid rgba(255, 255, 255, 0.06);
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  border-left: 1px solid rgba(15, 23, 42, 0.08);
 }
+/* Dark mode global · code panel is WHITE · invert Tailwind tokens to dark variants */
+.about-usecase-right .about-code-body { color: rgba(15, 23, 42, 0.88); }
+.about-usecase-right .about-code-body .text-indigo-400 { color: rgba(67, 56, 202, 0.95); }
+.about-usecase-right .about-code-body .text-fuchsia-400 { color: rgba(162, 28, 175, 0.95); }
+.about-usecase-right .about-code-body .text-cyan-400 { color: rgba(14, 116, 144, 0.95); }
+.about-usecase-right .about-code-body .text-emerald-400 { color: rgba(4, 120, 87, 0.95); }
+.about-usecase-right .about-code-body .text-yellow-300 { color: rgba(180, 83, 9, 0.95); }
+.about-usecase-right .about-code-body .text-white\/40 { color: rgba(100, 116, 139, 0.78); }
+.about-usecase-right .about-code-body .text-white\/60 { color: rgba(71, 85, 105, 0.85); }
 @media (max-width: 1023px) {
   .about-usecase-right { border-left: none; border-top: 1px solid rgba(255, 255, 255, 0.06); }
 }
@@ -1020,9 +1029,10 @@ section {
   color: rgba(165, 180, 252, 0.8);
 }
 .about-usecase-code-header {
-  background: rgba(8, 6, 24, 0.95);
-  border-color: rgba(255, 255, 255, 0.06);
+  background: rgba(15, 23, 42, 0.04);
+  border-color: rgba(15, 23, 42, 0.08);
 }
+.about-usecase-code-header .text-white\/60 { color: rgba(71, 85, 105, 0.85); }
 .about-usecase-dot {
   background: rgba(255, 255, 255, 0.18);
 }
@@ -1043,6 +1053,20 @@ section {
   background: linear-gradient(180deg, rgba(15, 23, 42, 0.96) 0%, rgba(30, 27, 75, 0.96) 100%);
   border-left-color: rgba(99, 102, 241, 0.15);
 }
+/* Light mode global · code panel stays DARK · restore original Tailwind tokens */
+.light-mode .about-usecase-right .about-code-body { color: rgba(255, 255, 255, 0.92); }
+.light-mode .about-usecase-right .about-code-body .text-indigo-400 { color: #818cf8; }
+.light-mode .about-usecase-right .about-code-body .text-fuchsia-400 { color: #e879f9; }
+.light-mode .about-usecase-right .about-code-body .text-cyan-400 { color: #22d3ee; }
+.light-mode .about-usecase-right .about-code-body .text-emerald-400 { color: #34d399; }
+.light-mode .about-usecase-right .about-code-body .text-yellow-300 { color: #fde047; }
+.light-mode .about-usecase-right .about-code-body .text-white\/40 { color: rgba(255, 255, 255, 0.4); }
+.light-mode .about-usecase-right .about-code-body .text-white\/60 { color: rgba(255, 255, 255, 0.6); }
+.light-mode .about-usecase-code-header {
+  background: rgba(8, 6, 24, 0.95);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+.light-mode .about-usecase-code-header .text-white\/60 { color: rgba(255, 255, 255, 0.6); }
 .light-mode .about-usecase-caption { color: rgba(79, 70, 229, 0.7); }
 .light-mode .about-usecase-hex { color: rgba(79, 70, 229, 0.8); }
 .light-mode .about-usecase-dot { background: rgba(15, 23, 42, 0.2); }
