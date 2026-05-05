@@ -265,14 +265,14 @@
       },
       "modular": {
         "title": "Arquitectura Modular Event-Driven",
-        "bullet1": "Modular por dominio · modules/{nombre}/ con routes/service/repository/types · imports vía path absoluto · cero relative-hell",
-        "bullet2": "Event Bus pub/sub · 1 evento → N listeners independientes · fallas aisladas · payload lleva tenantId",
-        "bullet3": "Tenant isolation en 1 capa · Repository inyecta tenantId en toda query · auditor automático flagga violations",
-        "bullet4": "",
-        "bullet5": ""
+        "bullet1": "Modular por dominio · modules/{nombre}/ con routes/service/repository/types · cada módulo replaceable · feature nueva = carpeta nueva",
+        "bullet2": "Imports siempre vía path absoluto (@/) · cero relative-hell · refactor cross-module trivial · IDE goto-definition consistente",
+        "bullet3": "Event Bus pub/sub tipado · 1 evento → N listeners independientes · fallas aisladas · payload lleva tenantId",
+        "bullet4": "Agregar capacidad nueva = solo suscribir evento · cero coordinación cross-team · nuevo módulo lee eventos existentes sin pedir refactor",
+        "bullet5": "Tenant isolation en 1 capa · Repository inyecta tenantId en toda query · auditor agente Claude flagga violations antes del security review"
       },
       "infra": {
-        "title": "ensureSchemaSync() · idempotent boot migrations",
+        "title": "EnsureSchemaSync() · idempotent boot migrations",
         "bullet1": "Nixpacks (Railway) NO corre prisma migrate deploy · cada cambio de schema se vuelve SQL idempotente al boot de la API · cero migration manual en deploy",
         "bullet2": "IF NOT EXISTS en todo · corre en TODO boot · si columna/tipo ya existe NOOP, si no aplica · cero downtime, idempotente real",
         "bullet3": "Cada SQL como $executeRawUnsafe individual · múltiples statements en un call causan Postgres error 42601 · patrón aprendido en producción",
@@ -281,11 +281,11 @@
       },
       "idempotency": {
         "title": "Idempotency arquitectónica",
-        "bullet1": "El webhook Stripe puede disparar dos veces · processedWebhook + transaction",
-        "bullet2": "Double-charge es arquitectónicamente imposible · no depende de lógica de retry",
-        "bullet3": "",
-        "bullet4": "",
-        "bullet5": ""
+        "bullet1": "El webhook Stripe puede disparar 2× por retry · processedWebhook table + transaction garantizan at-most-once en side effects",
+        "bullet2": "stripe.webhooks.constructEvent() valida HMAC-SHA256 antes de procesar · evento inválido = 400 sin efecto",
+        "bullet3": "Idempotency-Key header en mutations críticas · UUID enviado por el cliente · servidor cachea respuesta · retry seguro del client side",
+        "bullet4": "Double-charge arquitectónicamente imposible · no depende de lógica de retry en el cliente · checa 1ª vez en DB, procesa, marca como done",
+        "bullet5": "Workers BullMQ \"at least once delivery\" · UPSERT en vez de INSERT, o job_id check en DB antes de procesar · sin efecto duplicado"
       }
     },
     "highlights": {
