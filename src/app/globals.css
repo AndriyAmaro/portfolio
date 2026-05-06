@@ -1512,6 +1512,71 @@ section {
   color: #f0abfc;
 }
 
+/* ── About Practices cards · Alibaba-style 3D image banner + 5 bullets ── */
+.about-practices-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 350ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 350ms ease, border-color 350ms ease;
+}
+.about-practices-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(99, 102, 241, 0.35);
+  box-shadow: 0 24px 60px rgba(99, 102, 241, 0.18), 0 4px 12px rgba(15, 23, 42, 0.10);
+}
+.about-practices-banner {
+  height: 200px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.06), rgba(217, 70, 239, 0.04));
+}
+@media (min-width: 768px) {
+  .about-practices-banner { height: 220px; }
+}
+
+/* Ken Burns idle zoom · cada card com delay diferente · não sincronizam */
+@keyframes practicesKenBurns {
+  0%   { transform: scale(1) translate(0, 0); }
+  50%  { transform: scale(1.07) translate(-1.5%, -1%); }
+  100% { transform: scale(1) translate(0, 0); }
+}
+.about-practices-image {
+  animation: practicesKenBurns 14s ease-in-out infinite;
+  will-change: transform;
+}
+.about-practices-card:hover .about-practices-image {
+  animation: none;
+  transform: scale(1.10);
+  transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-practices-image { animation: none; }
+}
+
+.about-practices-eyebrow {
+  color: rgba(165, 180, 252, 0.85);
+}
+.about-practices-bullet {
+  color: rgba(229, 231, 235, 0.78);
+}
+.about-practices-check {
+  color: rgba(110, 231, 183, 0.95);
+}
+
+/* Light mode · practices cards */
+.light-mode .about-practices-card {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(99, 102, 241, 0.15);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.06);
+}
+.light-mode .about-practices-card:hover {
+  border-color: rgba(99, 102, 241, 0.35);
+  box-shadow: 0 24px 50px rgba(99, 102, 241, 0.18);
+}
+.light-mode .about-practices-banner {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.04), rgba(217, 70, 239, 0.03));
+}
+.light-mode .about-practices-eyebrow { color: rgba(67, 56, 202, 0.95); }
+.light-mode .about-practices-bullet { color: rgba(51, 65, 85, 0.85); }
+.light-mode .about-practices-check { color: rgba(5, 150, 105, 0.95); }
+
 /* Light mode process + offscreen cards */
 .light-mode .about-process-card {
   background: rgba(255, 255, 255, 0.92);

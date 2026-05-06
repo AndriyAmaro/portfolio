@@ -1083,12 +1083,12 @@ const PROCESS_STEPS = [
 ] as const;
 
 const PATTERNS = [
-  { icon: Lock, key: "multitenancy" },
-  { icon: RefreshCw, key: "resilience" },
-  { icon: ShieldCheck, key: "security" },
-  { icon: Eye, key: "observability" },
-  { icon: Database, key: "dataLayer" },
-  { icon: Layers, key: "cacheStrategy" },
+  { key: "multitenancy", image: "/practices/01-multitenancy.png", eyebrow: "ARCHITECTURE" },
+  { key: "resilience", image: "/practices/02-resilience.png", eyebrow: "OPERATIONS" },
+  { key: "security", image: "/practices/03-security.png", eyebrow: "SECURITY" },
+  { key: "observability", image: "/practices/04-observability.png", eyebrow: "OBSERVABILITY" },
+  { key: "dataLayer", image: "/practices/05-datalayer.png", eyebrow: "DATA LAYER" },
+  { key: "cacheStrategy", image: "/practices/06-cache.png", eyebrow: "CACHE" },
 ] as const;
 
 function AboutTabs({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
@@ -1240,32 +1240,43 @@ function AboutTabs({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
                   {t("patterns.intro")}
                 </p>
               </div>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 max-w-6xl mx-auto">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 max-w-6xl mx-auto">
                 {PATTERNS.map((pattern, index) => (
                   <motion.div
                     key={pattern.key}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: 0.05 + index * 0.06, ease: [0.16, 1, 0.3, 1] }}
-                    className="about-offscreen-card relative p-6 md:p-7 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1"
+                    className="about-practices-card relative rounded-2xl overflow-hidden flex flex-col"
                   >
-                    <div className="about-offscreen-icon w-11 h-11 rounded-xl flex items-center justify-center mb-4">
-                      <pattern.icon className="w-5 h-5" />
+                    <div className="about-practices-banner relative overflow-hidden">
+                      <img
+                        src={pattern.image}
+                        alt={t(`patterns.${pattern.key}.title`)}
+                        loading="lazy"
+                        className="about-practices-image w-full h-full object-cover"
+                        style={{ animationDelay: `${index * 1.5}s` }}
+                      />
                     </div>
-                    <h4 className="text-base md:text-lg font-semibold mb-4 text-white/95 about-card-title">
-                      {t(`patterns.${pattern.key}.title`)}
-                    </h4>
-                    <ul className="space-y-2 list-none">
-                      {[1, 2, 3, 4, 5].map((i) => (
-                        <li
-                          key={i}
-                          className="flex gap-2.5 items-start text-[13px] md:text-sm leading-relaxed text-white/75 about-card-description"
-                        >
-                          <span className="text-emerald-400/90 shrink-0 mt-[2px] font-mono text-xs">✓</span>
-                          <span>{t(`patterns.${pattern.key}.item${i}`)}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <div className="about-practices-body p-6 md:p-7 flex-1 flex flex-col">
+                      <span className="about-practices-eyebrow text-[11px] font-semibold tracking-[0.2em] uppercase mb-2 inline-block">
+                        {pattern.eyebrow}
+                      </span>
+                      <h4 className="text-lg md:text-xl font-bold mb-4 leading-tight about-card-title">
+                        {t(`patterns.${pattern.key}.title`)}
+                      </h4>
+                      <ul className="space-y-2.5 list-none">
+                        {[1, 2, 3, 4, 5].map((i) => (
+                          <li
+                            key={i}
+                            className="flex gap-2.5 items-start text-[12.5px] md:text-[13px] leading-relaxed about-practices-bullet"
+                          >
+                            <span className="about-practices-check shrink-0 mt-[1px] font-bold text-sm">✓</span>
+                            <span>{t(`patterns.${pattern.key}.item${i}`)}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </motion.div>
                 ))}
               </div>
