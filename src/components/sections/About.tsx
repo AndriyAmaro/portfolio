@@ -1083,12 +1083,12 @@ const PROCESS_STEPS = [
 ] as const;
 
 const PATTERNS = [
-  { key: "multitenancy", image: "/practices/01-multitenancy.png", eyebrow: "ARCHITECTURE" },
-  { key: "resilience", image: "/practices/02-resilience.png", eyebrow: "OPERATIONS" },
-  { key: "security", image: "/practices/03-security.png", eyebrow: "SECURITY" },
-  { key: "observability", image: "/practices/04-observability.png", eyebrow: "OBSERVABILITY" },
-  { key: "dataLayer", image: "/practices/05-datalayer.png", eyebrow: "DATA LAYER" },
-  { key: "cacheStrategy", image: "/practices/06-cache.png", eyebrow: "CACHE" },
+  { key: "multitenancy", image: "/practices/01-multitenancy.png" },
+  { key: "resilience", image: "/practices/02-resilience.png" },
+  { key: "security", image: "/practices/03-security.png" },
+  { key: "observability", image: "/practices/04-observability.png" },
+  { key: "dataLayer", image: "/practices/05-datalayer.png" },
+  { key: "cacheStrategy", image: "/practices/06-cache.png" },
 ] as const;
 
 function AboutTabs({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
@@ -1260,7 +1260,7 @@ function AboutTabs({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
                     </div>
                     <div className="about-practices-body p-6 md:p-7 flex-1 flex flex-col">
                       <span className="about-practices-eyebrow text-[11px] font-semibold tracking-[0.2em] uppercase mb-2 inline-block">
-                        {pattern.eyebrow}
+                        {t(`patterns.${pattern.key}.eyebrow`)}
                       </span>
                       <h4 className="text-lg md:text-xl font-bold mb-4 leading-tight about-card-title">
                         {t(`patterns.${pattern.key}.title`)}

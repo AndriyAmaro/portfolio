@@ -163,6 +163,7 @@
     "patterns": {
       "intro": "30 patterns implementados en producción · 6 disciplinas auditables en el código.",
       "multitenancy": {
+        "eyebrow": "ARQUITECTURA",
         "title": "Multi-tenancy",
         "item1": "Filtro tenantId en toda query (Prisma extension automática)",
         "item2": "JWT lleva tenantId · NUNCA confiar en el request body",
@@ -171,7 +172,8 @@
         "item5": "INTERNAL_ADMIN role para cross-tenant ops con auditoría"
       },
       "resilience": {
-        "title": "Resilience",
+        "eyebrow": "OPERACIONES",
+        "title": "Resiliencia",
         "item1": "Circuit breaker en AI Gateway (graceful-degradation.engine)",
         "item2": "Multi-provider fallback chain (Claude → OpenAI → Qwen → DeepSeek)",
         "item3": "BullMQ retry con exponential backoff + dead letter queue",
@@ -179,7 +181,8 @@
         "item5": "Timeouts + abort controllers en cada llamada externa"
       },
       "security": {
-        "title": "Security",
+        "eyebrow": "SEGURIDAD",
+        "title": "Seguridad",
         "item1": "Helmet headers + CORS whitelist (origins por env)",
         "item2": "JWT access (1h) + refresh (7d, httpOnly cookie)",
         "item3": "RBAC: OWNER, ADMIN, MANAGER, MEMBER, VIEWER, INTERNAL_ADMIN",
@@ -187,7 +190,8 @@
         "item5": "Webhook signature HMAC-SHA256 (Stripe SDK + HeyGen + BytePlus)"
       },
       "observability": {
-        "title": "Observability",
+        "eyebrow": "OBSERVABILIDAD",
+        "title": "Observabilidad",
         "item1": "Sentry SDK (error tracking + profiling)",
         "item2": "Structured logging Winston · level/message/tenantId/userId/requestId",
         "item3": "AiUsageLog · costo por request, tokens, modelo, latencia",
@@ -195,7 +199,8 @@
         "item5": "ErrorLog persistido en DB para alerting + retrospectiva"
       },
       "dataLayer": {
-        "title": "Data Layer",
+        "eyebrow": "CAPA DE DATOS",
+        "title": "Capa de Datos",
         "item1": "126 Prisma models · multi-tenant by design",
         "item2": "PostgreSQL 18.3 + pgvector v0.8.2 + HNSW para semantic search",
         "item3": "Transactions con prisma.$transaction() en operaciones atómicas",
@@ -203,7 +208,8 @@
         "item5": "Cada SQL idempotente con IF NOT EXISTS (Postgres error 42601)"
       },
       "cacheStrategy": {
-        "title": "Cache Strategy",
+        "eyebrow": "CACHE",
+        "title": "Estrategia de Cache",
         "item1": "L1 in-memory cache (credential vault: memory → DB → env)",
         "item2": "L2 Redis (ioredis) para sesiones + dashboards + queues",
         "item3": "BullMQ queues Redis-backed con workers concurrentes",

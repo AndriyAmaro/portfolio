@@ -163,6 +163,7 @@
     "patterns": {
       "intro": "30 patterns implemented in production · 6 disciplines auditable in the codebase.",
       "multitenancy": {
+        "eyebrow": "ARCHITECTURE",
         "title": "Multi-tenancy",
         "item1": "tenantId filter on every query (auto-injected via Prisma extension)",
         "item2": "JWT carries tenantId · NEVER trust the request body",
@@ -171,6 +172,7 @@
         "item5": "INTERNAL_ADMIN role for cross-tenant ops with audit trail"
       },
       "resilience": {
+        "eyebrow": "OPERATIONS",
         "title": "Resilience",
         "item1": "Circuit breaker on AI Gateway (graceful-degradation.engine)",
         "item2": "Multi-provider fallback chain (Claude → OpenAI → Qwen → DeepSeek)",
@@ -179,6 +181,7 @@
         "item5": "Timeouts + abort controllers on every external call"
       },
       "security": {
+        "eyebrow": "SECURITY",
         "title": "Security",
         "item1": "Helmet headers + CORS whitelist (env-driven origins)",
         "item2": "JWT access (1h) + refresh (7d, httpOnly cookie)",
@@ -187,6 +190,7 @@
         "item5": "Webhook signature HMAC-SHA256 (Stripe SDK + HeyGen + BytePlus)"
       },
       "observability": {
+        "eyebrow": "OBSERVABILITY",
         "title": "Observability",
         "item1": "Sentry SDK (error tracking + profiling)",
         "item2": "Structured Winston logging · level/message/tenantId/userId/requestId",
@@ -195,6 +199,7 @@
         "item5": "ErrorLog persisted in DB for alerting + retrospectives"
       },
       "dataLayer": {
+        "eyebrow": "DATA LAYER",
         "title": "Data Layer",
         "item1": "126 Prisma models · multi-tenant by design",
         "item2": "PostgreSQL 18.3 + pgvector v0.8.2 + HNSW for semantic search",
@@ -203,6 +208,7 @@
         "item5": "Each SQL idempotent with IF NOT EXISTS (Postgres error 42601)"
       },
       "cacheStrategy": {
+        "eyebrow": "CACHE",
         "title": "Cache Strategy",
         "item1": "L1 in-memory cache (credential vault: memory → DB → env)",
         "item2": "L2 Redis (ioredis) for sessions + dashboards + queues",
