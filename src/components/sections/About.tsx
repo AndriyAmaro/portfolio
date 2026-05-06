@@ -1094,9 +1094,9 @@ const PATTERNS = [
 function AboutTabs({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
   const [active, setActive] = useState<TabId>("now");
   const tabs: { id: TabId; labelKey: string; descKey: string; icon: typeof Activity }[] = [
-    { id: "now", labelKey: "tabs.now", descKey: "tabs.nowDesc", icon: Activity },
-    { id: "how", labelKey: "tabs.how", descKey: "tabs.howDesc", icon: Workflow },
-    { id: "off", labelKey: "tabs.off", descKey: "tabs.offDesc", icon: Trophy },
+    { id: "now", labelKey: "tabs.now", descKey: "tabs.nowDesc", icon: Sparkles },
+    { id: "how", labelKey: "tabs.how", descKey: "tabs.howDesc", icon: Compass },
+    { id: "off", labelKey: "tabs.off", descKey: "tabs.offDesc", icon: BadgeCheck },
   ];
 
   // Keyboard nav · ArrowLeft/Right
@@ -1331,10 +1331,7 @@ export function About() {
           </p>
         </motion.div>
 
-        {/* Stats row · 6 senior depth metrics with count-up */}
-        <AboutStatsRow t={t} />
-
-        {/* Tabs · Agora (bio + use case carousel) / Como trabalho (tech Q&A) / Histórico */}
+        {/* Tabs · Agora (bio + use case carousel) / Como trabalho (tech Q&A) / Práticas */}
         <AboutTabs t={t} />
 
         {/* Code snippet card · real production code from Sellorex */}
