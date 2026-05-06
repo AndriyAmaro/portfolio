@@ -161,7 +161,7 @@
       }
     },
     "patterns": {
-      "intro": "30 patterns auditable in the Sellorex codebase · each one implemented and in production. A recruiter can request file and line number · it's all there.",
+      "intro": "30 patterns implemented in production · 6 disciplines auditable in the codebase.",
       "multitenancy": {
         "title": "Multi-tenancy",
         "item1": "tenantId filter on every query (auto-injected via Prisma extension)",

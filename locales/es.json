@@ -161,7 +161,7 @@
       }
     },
     "patterns": {
-      "intro": "30 patterns auditables en el código de Sellorex · cada uno implementado y en producción. El reclutador puede pedir el archivo y la línea · está todo ahí.",
+      "intro": "30 patterns implementados en producción · 6 disciplinas auditables en el código.",
       "multitenancy": {
         "title": "Multi-tenancy",
         "item1": "Filtro tenantId en toda query (Prisma extension automática)",
