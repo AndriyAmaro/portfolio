@@ -74,7 +74,7 @@
       "now": "Now",
       "nowDesc": "6 use cases · architecture in real code",
       "how": "How I work",
-      "howDesc": "9 senior decisions · system / perf / security",
+      "howDesc": "9 decisions · system / perf / security",
       "off": "Practices",
       "offDesc": "30 auditable patterns in the codebase"
     },

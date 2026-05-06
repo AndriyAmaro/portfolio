@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence, useInView } from "framer-motion";
-import { Cpu, ShieldCheck, BadgeCheck, Network, Terminal, Compass, Layers3, Rocket, RefreshCw, ChevronLeft, ChevronRight, Pause, Play, Lock, Gauge, Eye, Megaphone, Boxes, ScrollText, Sparkles, Layers, Trophy, Activity, Workflow, Database } from "lucide-react";
+import { Cpu, ShieldCheck, BadgeCheck, Network, Terminal, Compass, Layers3, Rocket, RefreshCw, ChevronLeft, ChevronRight, Pause, Play, Lock, Gauge, Eye, Megaphone, Boxes, ScrollText, Layers, Trophy, Activity, Workflow, Database } from "lucide-react";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
@@ -20,6 +20,45 @@ function HexIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 16 16" className={className} fill="currentColor" aria-hidden="true">
       <path d="M7.007,0.63c0.614-0.355,1.371-0.355,1.986,0l4.893,2.825c0.614,0.355,0.993,1.01,0.993,1.72v5.65 c0,0.709-0.378,1.365-0.993,1.72L8.993,15.37c-0.614,0.355-1.371,0.355-1.986,0l-4.893-2.825c-0.614-0.355-0.993-1.01-0.993-1.72 v-5.65c0-0.709,0.378-1.365,0.993-1.72L7.007,0.63z"/>
+    </svg>
+  );
+}
+
+// Tab icons · human line-art style · clock+person, person@laptop, clipboard+person
+function NowIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 100 100" className={className} fill="none" stroke="currentColor" strokeWidth={6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="38" cy="38" r="26" />
+      <path d="M38 38v-12" />
+      <path d="M38 38l-10-2" />
+      <circle cx="64" cy="68" r="10" />
+      <path d="M46 92c0-12 8-18 18-18s18 6 18 18" />
+    </svg>
+  );
+}
+function WorkIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 100 100" className={className} fill="none" stroke="currentColor" strokeWidth={6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="50" cy="38" r="14" />
+      <path d="M34 32c3-8 8-12 16-12s13 4 16 12" />
+      <rect x="32" y="34" width="6" height="10" rx="2" />
+      <rect x="62" y="34" width="6" height="10" rx="2" />
+      <path d="M28 78c2-14 10-20 22-20s20 6 22 20" />
+      <path d="M32 78l6-12h24l6 12" />
+      <path d="M26 82h48" />
+    </svg>
+  );
+}
+function PracticesIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 100 100" className={className} fill="none" stroke="currentColor" strokeWidth={6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="20" y="22" width="34" height="58" rx="3" />
+      <rect x="30" y="16" width="14" height="8" rx="1.5" />
+      <path d="M26 36l3 3 5-5" />
+      <path d="M26 50l3 3 5-5" />
+      <path d="M26 64l3 3 5-5" />
+      <circle cx="72" cy="46" r="10" />
+      <path d="M56 86c0-12 7-18 16-18s16 6 16 18" />
     </svg>
   );
 }
@@ -1093,10 +1132,10 @@ const PATTERNS = [
 
 function AboutTabs({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
   const [active, setActive] = useState<TabId>("now");
-  const tabs: { id: TabId; labelKey: string; descKey: string; icon: typeof Activity }[] = [
-    { id: "now", labelKey: "tabs.now", descKey: "tabs.nowDesc", icon: Sparkles },
-    { id: "how", labelKey: "tabs.how", descKey: "tabs.howDesc", icon: Compass },
-    { id: "off", labelKey: "tabs.off", descKey: "tabs.offDesc", icon: BadgeCheck },
+  const tabs: { id: TabId; labelKey: string; descKey: string; icon: React.ComponentType<{ className?: string }> }[] = [
+    { id: "now", labelKey: "tabs.now", descKey: "tabs.nowDesc", icon: NowIcon },
+    { id: "how", labelKey: "tabs.how", descKey: "tabs.howDesc", icon: WorkIcon },
+    { id: "off", labelKey: "tabs.off", descKey: "tabs.offDesc", icon: PracticesIcon },
   ];
 
   // Keyboard nav · ArrowLeft/Right
