@@ -1082,7 +1082,7 @@ section {
   position: relative;
   max-width: 1100px;
   margin: 0 auto;
-  height: 580px;
+  height: 500px;
 }
 .about-usecase-slide {
   position: absolute;
@@ -1231,10 +1231,30 @@ section {
 .light-mode .about-usecase-card .text-white\/75 { color: rgba(51, 65, 85, 0.85); }
 .light-mode .about-usecase-card .text-white\/45 { color: rgba(71, 85, 105, 0.7); }
 
-.light-mode .about-techqa-section .text-white { color: rgba(15, 23, 42, 0.95); }
-.light-mode .about-techqa-section .text-white\/75 { color: rgba(51, 65, 85, 0.85); }
-.light-mode .about-techqa-section .text-white\/80 { color: rgba(51, 65, 85, 0.9); }
-.light-mode .about-techqa-section .text-white\/45 { color: rgba(71, 85, 105, 0.7); }
+/* TechQA card · INVERTED background per global mode */
+/* Dark mode global · TechQA active card has WHITE background · text inverted to slate */
+.about-techqa-section .about-usecase-card {
+  background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%) !important;
+  border-color: rgba(15, 23, 42, 0.08) !important;
+  box-shadow: 0 8px 40px rgba(15, 23, 42, 0.08) !important;
+}
+.about-techqa-section .about-usecase-card .text-white { color: rgba(15, 23, 42, 0.95) !important; }
+.about-techqa-section .about-usecase-card .text-white\/75 { color: rgba(51, 65, 85, 0.85) !important; }
+.about-techqa-section .about-usecase-card .text-white\/80 { color: rgba(51, 65, 85, 0.9) !important; }
+.about-techqa-section .about-usecase-card .text-white\/45 { color: rgba(71, 85, 105, 0.7) !important; }
+.about-techqa-section .about-techqa-tldr { color: rgba(51, 65, 85, 0.88) !important; }
+
+/* Light mode global · TechQA active card has DARK background · text inverted to white */
+.light-mode .about-techqa-section .about-usecase-card {
+  background: linear-gradient(145deg, rgba(15, 12, 41, 0.92) 0%, rgba(30, 27, 75, 0.85) 100%) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4) !important;
+}
+.light-mode .about-techqa-section .about-usecase-card .text-white { color: rgba(255, 255, 255, 0.96) !important; }
+.light-mode .about-techqa-section .about-usecase-card .text-white\/75 { color: rgba(255, 255, 255, 0.75) !important; }
+.light-mode .about-techqa-section .about-usecase-card .text-white\/80 { color: rgba(255, 255, 255, 0.8) !important; }
+.light-mode .about-techqa-section .about-usecase-card .text-white\/45 { color: rgba(255, 255, 255, 0.5) !important; }
+.light-mode .about-techqa-section .about-techqa-tldr { color: rgba(229, 231, 235, 0.85) !important; }
 
 /* ── Force light section · About sempre branco · sobrescreve dark mode ── */
 .about-force-light {
