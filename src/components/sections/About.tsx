@@ -24,33 +24,46 @@ function HexIcon({ className }: { className?: string }) {
   );
 }
 
-// Tab icons · Alibaba Cloud style · minimalist flat monochrome
+// Tab icons · Alibaba Cloud style · flat minimalist Indigo
 function NowIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 48 48" className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="24" cy="16" r="8" />
-      <path d="M8 40c0-8 7-14 16-14s16 6 16 14" />
-      <path d="M34 12l4-4m0 0l-4-4m4 4h-8" strokeWidth="1.5" />
+    <svg viewBox="0 0 64 64" className={className} fill="none" aria-hidden="true">
+      {/* Person silhouette */}
+      <circle cx="32" cy="22" r="10" fill="currentColor" />
+      <path d="M12 54c0-10 9-18 20-18s20 8 20 18" fill="currentColor" />
+      {/* Clock symbol */}
+      <circle cx="50" cy="16" r="8" stroke="currentColor" strokeWidth="3" fill="none" />
+      <path d="M50 12v4l3 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 }
 function WorkIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 48 48" className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="10" y="8" width="28" height="32" rx="4" />
-      <path d="M16 18h16M16 24h16M16 30h10" />
-      <circle cx="36" cy="36" r="8" fill="currentColor" opacity="0.2" />
-      <path d="M33 36l2 2 4-4" strokeWidth="2.5" />
+    <svg viewBox="0 0 64 64" className={className} fill="none" aria-hidden="true">
+      {/* Monitor */}
+      <rect x="8" y="8" width="48" height="36" rx="4" stroke="currentColor" strokeWidth="3" fill="none" />
+      <path d="M24 52h16" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+      <path d="M32 44v8" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+      {/* Checklist */}
+      <path d="M18 20h28" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M18 28h28" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M18 36h18" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+      <circle cx="48" cy="48" r="8" fill="currentColor" opacity="0.2" />
+      <path d="M44 48l3 3 5-5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
 function PracticesIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 48 48" className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="8" y="8" width="32" height="32" rx="6" />
-      <path d="M16 18h16M16 24h16M16 30h12" />
-      <circle cx="24" cy="24" r="12" fill="currentColor" opacity="0.15" />
-      <path d="M20 24l3 3 5-5" strokeWidth="2.5" />
+    <svg viewBox="0 0 64 64" className={className} fill="none" aria-hidden="true">
+      {/* Document */}
+      <rect x="12" y="8" width="40" height="48" rx="4" stroke="currentColor" strokeWidth="3" fill="none" />
+      <path d="M22 22h20" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M22 30h20" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M22 38h14" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+      {/* Checkmark circle */}
+      <circle cx="46" cy="48" r="10" fill="currentColor" opacity="0.2" />
+      <path d="M42 48l3 3 6-6" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -1163,16 +1176,16 @@ function AboutTabs({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
               tabIndex={isActive ? 0 : -1}
               onClick={() => setActive(tab.id)}
               onKeyDown={(e) => onKeyDown(e, idx)}
-              className={`flex flex-col items-center justify-center gap-2 py-6 rounded-xl transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400 ${
+              className={`flex flex-col items-center justify-center gap-2 py-6 rounded-xl transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4F46E5] ${
                 isActive
                   ? "bg-[#E2E2E2] dark:bg-gray-700"
                   : "hover:bg-gray-50 dark:hover:bg-gray-800/50"
               }`}
             >
               <Icon
-                className={`h-8 w-8 transition-colors duration-150 ${
+                className={`h-10 w-10 transition-colors duration-150 ${
                   isActive
-                    ? "text-fuchsia-600 dark:text-fuchsia-400"
+                    ? "text-[#4F46E5] dark:text-[#4F46E5]"
                     : "text-gray-400 dark:text-gray-500"
                 }`}
               />
