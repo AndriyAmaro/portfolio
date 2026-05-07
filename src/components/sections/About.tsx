@@ -1181,14 +1181,14 @@ function AboutTabs({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
               <Icon
                 className={`h-10 w-10 transition-colors duration-150 ${
                   isActive
-                    ? "text-[#4F46E5] dark:text-[#4F46E5]"
+                    ? "text-indigo-600 dark:text-indigo-600"
                     : "text-gray-400 dark:text-gray-500"
                 }`}
               />
               <span
                 className={`text-sm font-semibold ${
                   isActive
-                    ? "text-[#4F46E5] dark:text-white"
+                    ? "text-indigo-600 dark:text-white"
                     : "text-gray-600 dark:text-gray-400"
                 }`}
               >
