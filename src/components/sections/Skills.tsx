@@ -13,8 +13,6 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { skillCategories as importedSkills } from "@/data/skills";
-import { SkillsBackground, SkillsBackgroundLight } from "../ui/SkillsBackground";
-import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
 import { CodeSnippetsCarousel } from "./About";
 
 // ---------------------------------------------------------------------------
@@ -410,22 +408,9 @@ function TitleBurst() {
 export function Skills() {
   const t = useTranslations("skills");
   const tAbout = useTranslations("about");
-  const [isLightMode, setIsLightMode] = useState(false);
-
-  useEffect(() => {
-    const checkTheme = () => {
-      setIsLightMode(document.documentElement.classList.contains("light-mode"));
-    };
-    checkTheme();
-    const observer = new MutationObserver(checkTheme);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-    return () => observer.disconnect();
-  }, []);
 
   return (
-    <section id="skills" className="relative py-24 md:py-32 overflow-hidden">
-      {isLightMode ? <AbstractBackgroundLight /> : <AbstractBackground />}
-
+    <section id="skills" className="relative py-24 md:py-32">
       <div className="container-custom relative z-10">
         {/* Header with radial burst */}
         <motion.div
