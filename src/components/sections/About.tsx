@@ -1293,7 +1293,7 @@ function AboutTabs({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
                         src={pattern.image}
                         alt={t(`patterns.${pattern.key}.title`)}
                         loading="lazy"
-                        className="about-practices-image w-full h-full object-contain"
+                        className="about-practices-image w-full h-full object-cover"
                         style={{ animationDelay: `${index * 1.5}s` }}
                       />
                     </div>
