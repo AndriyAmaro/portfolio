@@ -1144,54 +1144,50 @@ function AboutTabs({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
 
   return (
     <div className="mt-16">
-      {/* Sellorex-style tab cards · icon + label + description + border indicator */}
+      {/* Tabs · Alibaba Cloud style · no container */}
       <div
         role="tablist"
         aria-label={t("tabs.ariaLabel")}
-        className="about-tabs-cards rounded-2xl border p-2 mb-10 max-w-5xl mx-auto"
+        className="grid grid-cols-3 gap-4 mb-10 max-w-5xl mx-auto"
       >
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-          {tabs.map((tab, idx) => {
-            const Icon = tab.icon;
-            const isActive = active === tab.id;
-            return (
-              <button
-                key={tab.id}
-                id={`tab-${tab.id}`}
-                role="tab"
-                aria-selected={isActive}
-                aria-controls={`panel-${tab.id}`}
-                tabIndex={isActive ? 0 : -1}
-                onClick={() => setActive(tab.id)}
-                onKeyDown={(e) => onKeyDown(e, idx)}
-                className={`relative rounded-xl px-4 py-5 text-center transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400 ${
+        {tabs.map((tab, idx) => {
+          const Icon = tab.icon;
+          const isActive = active === tab.id;
+          return (
+            <button
+              key={tab.id}
+              id={`tab-${tab.id}`}
+              role="tab"
+              aria-selected={isActive}
+              aria-controls={`panel-${tab.id}`}
+              tabIndex={isActive ? 0 : -1}
+              onClick={() => setActive(tab.id)}
+              onKeyDown={(e) => onKeyDown(e, idx)}
+              className={`flex flex-col items-center justify-center gap-2 py-6 rounded-xl transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400 ${
+                isActive
+                  ? "bg-[#E2E2E2] dark:bg-gray-700"
+                  : "hover:bg-gray-50 dark:hover:bg-gray-800/50"
+              }`}
+            >
+              <Icon
+                className={`h-8 w-8 transition-colors duration-150 ${
                   isActive
-                    ? "bg-gradient-to-br from-fuchsia-50 to-purple-50 dark:from-fuchsia-950/30 dark:to-purple-950/30"
-                    : "hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                    ? "text-fuchsia-600 dark:text-fuchsia-400"
+                    : "text-gray-400 dark:text-gray-500"
+                }`}
+              />
+              <span
+                className={`text-sm font-semibold ${
+                  isActive
+                    ? "text-gray-900 dark:text-white"
+                    : "text-gray-600 dark:text-gray-400"
                 }`}
               >
-                <div className="flex flex-col items-center gap-3">
-                  <Icon
-                    className={`h-8 w-8 transition-colors duration-150 ${
-                      isActive
-                        ? "text-fuchsia-600 dark:text-fuchsia-400"
-                        : "text-gray-400 dark:text-gray-500"
-                    }`}
-                  />
-                  <span
-                    className={`text-sm font-semibold ${
-                      isActive
-                        ? "text-gray-900 dark:text-white"
-                        : "text-gray-600 dark:text-gray-400"
-                    }`}
-                  >
-                    {t(tab.labelKey)}
-                  </span>
-                </div>
-              </button>
-            );
-          })}
-        </div>
+                {t(tab.labelKey)}
+              </span>
+            </button>
+          );
+        })}
       </div>
 
       {/* Content panels · AnimatePresence fade + slide */}
