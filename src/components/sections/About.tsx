@@ -1176,7 +1176,7 @@ function AboutTabs({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
               tabIndex={isActive ? 0 : -1}
               onClick={() => setActive(tab.id)}
               onKeyDown={(e) => onKeyDown(e, idx)}
-              className={`flex flex-col items-center justify-center gap-2 py-6 rounded-xl transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4F46E5] hover:bg-gray-50 dark:hover:bg-gray-800/50`}
+              className={`flex flex-col items-center justify-center gap-2 py-6 rounded-xl transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4F46E5]`}
             >
               <Icon
                 className={`h-10 w-10 transition-colors duration-150 ${
@@ -1188,7 +1188,7 @@ function AboutTabs({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
               <span
                 className={`text-sm font-semibold ${
                   isActive
-                    ? "text-gray-900 dark:text-white"
+                    ? "text-[#4F46E5] dark:text-white"
                     : "text-gray-600 dark:text-gray-400"
                 }`}
               >
