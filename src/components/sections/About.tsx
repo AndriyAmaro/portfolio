@@ -24,41 +24,33 @@ function HexIcon({ className }: { className?: string }) {
   );
 }
 
-// Tab icons · human line-art style · clock+person, person@laptop, clipboard+person
+// Tab icons · Alibaba Cloud style · minimalist flat monochrome
 function NowIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 100 100" className={className} fill="none" stroke="currentColor" strokeWidth={6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="38" cy="38" r="26" />
-      <path d="M38 38v-12" />
-      <path d="M38 38l-10-2" />
-      <circle cx="64" cy="68" r="10" />
-      <path d="M46 92c0-12 8-18 18-18s18 6 18 18" />
+    <svg viewBox="0 0 48 48" className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="24" cy="16" r="8" />
+      <path d="M8 40c0-8 7-14 16-14s16 6 16 14" />
+      <path d="M34 12l4-4m0 0l-4-4m4 4h-8" strokeWidth="1.5" />
     </svg>
   );
 }
 function WorkIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 100 100" className={className} fill="none" stroke="currentColor" strokeWidth={6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="50" cy="38" r="14" />
-      <path d="M34 32c3-8 8-12 16-12s13 4 16 12" />
-      <rect x="32" y="34" width="6" height="10" rx="2" />
-      <rect x="62" y="34" width="6" height="10" rx="2" />
-      <path d="M28 78c2-14 10-20 22-20s20 6 22 20" />
-      <path d="M32 78l6-12h24l6 12" />
-      <path d="M26 82h48" />
+    <svg viewBox="0 0 48 48" className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="10" y="8" width="28" height="32" rx="4" />
+      <path d="M16 18h16M16 24h16M16 30h10" />
+      <circle cx="36" cy="36" r="8" fill="currentColor" opacity="0.2" />
+      <path d="M33 36l2 2 4-4" strokeWidth="2.5" />
     </svg>
   );
 }
 function PracticesIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 100 100" className={className} fill="none" stroke="currentColor" strokeWidth={6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="20" y="22" width="34" height="58" rx="3" />
-      <rect x="30" y="16" width="14" height="8" rx="1.5" />
-      <path d="M26 36l3 3 5-5" />
-      <path d="M26 50l3 3 5-5" />
-      <path d="M26 64l3 3 5-5" />
-      <circle cx="72" cy="46" r="10" />
-      <path d="M56 86c0-12 7-18 16-18s16 6 16 18" />
+    <svg viewBox="0 0 48 48" className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="8" y="8" width="32" height="32" rx="6" />
+      <path d="M16 18h16M16 24h16M16 30h12" />
+      <circle cx="24" cy="24" r="12" fill="currentColor" opacity="0.15" />
+      <path d="M20 24l3 3 5-5" strokeWidth="2.5" />
     </svg>
   );
 }
@@ -1185,13 +1177,13 @@ function AboutTabs({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
                 )}
                 <div className="relative flex items-center gap-3">
                   <div
-                    className={`flex h-11 w-11 items-center justify-center rounded-xl shrink-0 transition-colors duration-150 ${
+                    className={`flex h-12 w-12 items-center justify-center rounded-xl shrink-0 transition-colors duration-150 ${
                       isActive
                         ? "about-tab-icon-active text-white shadow-lg"
                         : "about-tab-icon-bg about-tab-icon-inactive"
                     }`}
                   >
-                    <Icon className="h-5 w-5" />
+                    <Icon className="h-7 w-7" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <div
