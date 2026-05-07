@@ -1176,11 +1176,7 @@ function AboutTabs({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
               tabIndex={isActive ? 0 : -1}
               onClick={() => setActive(tab.id)}
               onKeyDown={(e) => onKeyDown(e, idx)}
-              className={`flex flex-col items-center justify-center gap-2 py-6 rounded-xl transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4F46E5] ${
-                isActive
-                  ? "bg-[#E2E2E2] dark:bg-gray-700"
-                  : "hover:bg-gray-50 dark:hover:bg-gray-800/50"
-              }`}
+              className={`flex flex-col items-center justify-center gap-2 py-6 rounded-xl transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4F46E5] hover:bg-gray-50 dark:hover:bg-gray-800/50`}
             >
               <Icon
                 className={`h-10 w-10 transition-colors duration-150 ${
