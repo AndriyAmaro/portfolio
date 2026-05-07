@@ -11,7 +11,6 @@ import {
   Brain,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { skillCategories as importedSkills } from "@/data/skills";
 import { SkillsBackground, SkillsBackgroundLight } from "../ui/SkillsBackground";
@@ -426,64 +425,6 @@ export function Skills() {
   return (
     <section id="skills" className="relative py-24 md:py-32 overflow-hidden">
       {isLightMode ? <AbstractBackgroundLight /> : <AbstractBackground />}
-
-      {/* Frontend icon - desktop only */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.4, filter: "blur(24px)" }}
-        whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        className="hidden md:block absolute top-4 -left-52 lg:-left-40 z-10 pointer-events-none"
-      >
-        <motion.div
-          animate={{
-            y: [0, -35, 5, -45, 8, -20, -40, 0],
-            x: [0, 8, -5, 12, -8, 5, -3, 0],
-          }}
-          transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <div className="relative">
-            <div className="absolute inset-0 bg-indigo-500/5 rounded-full blur-3xl scale-75" />
-            <Image
-              src="/frontend-icon.png"
-              alt=""
-              width={750}
-              height={750}
-              className="opacity-[0.12] dark:opacity-[0.22] select-none hue-rotate-[40deg] saturate-[1.8] brightness-[0.9]"
-              draggable={false}
-            />
-          </div>
-        </motion.div>
-      </motion.div>
-
-      {/* Backend icon - desktop only */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.4, filter: "blur(24px)" }}
-        whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.4, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="hidden md:block absolute top-[22px] -right-44 lg:-right-32 z-10 pointer-events-none"
-      >
-        <motion.div
-          animate={{
-            y: [0, -30, 6, -42, 10, -18, -35, 0],
-            x: [0, -7, 4, -10, 8, -4, 3, 0],
-          }}
-          transition={{ duration: 32, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <div className="relative">
-            <div className="absolute inset-0 bg-indigo-500/5 rounded-full blur-3xl scale-75" />
-            <Image
-              src="/backend-icon.png"
-              alt=""
-              width={750}
-              height={750}
-              className="opacity-[0.12] dark:opacity-[0.22] select-none hue-rotate-[40deg] saturate-[1.8] brightness-[0.9]"
-              draggable={false}
-            />
-          </div>
-        </motion.div>
-      </motion.div>
 
       <div className="container-custom relative z-10">
         {/* Header with radial burst */}

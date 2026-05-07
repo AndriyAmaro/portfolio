@@ -236,10 +236,6 @@ export function AbstractBackground() {
       <div className="absolute top-1/3 left-0 w-[400px] h-[450px] bg-violet-500/12 rounded-full blur-[130px] animate-pulse-slow" />
       <div className="absolute top-1/3 right-0 w-[400px] h-[450px] bg-indigo-500/10 rounded-full blur-[130px] animate-pulse-slow animation-delay-2000" />
 
-      {/* Lateral glows - sides */}
-      <div className="absolute top-1/2 left-0 w-[300px] h-[500px] bg-cyan-500/8 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
-      <div className="absolute top-1/2 right-0 w-[300px] h-[500px] bg-cyan-500/8 rounded-full blur-[100px] animate-pulse-slow animation-delay-2000" />
-
       {/* Bottom orbs */}
       <div className="absolute bottom-0 left-1/4 w-[450px] h-[350px] bg-violet-500/10 rounded-full blur-[120px] animate-pulse-slow animation-delay-2000" />
       <div className="absolute bottom-0 right-1/4 w-[400px] h-[300px] bg-indigo-500/8 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
@@ -305,10 +301,6 @@ export function AbstractBackgroundLight() {
       {/* Gradient orbs - top */}
       <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-indigo-300/20 rounded-full blur-[120px] animate-pulse-slow" />
       <div className="absolute top-1/3 right-1/3 w-[350px] h-[350px] bg-violet-300/18 rounded-full blur-[100px] animate-pulse-slow animation-delay-2000" />
-
-      {/* Lateral glows - top */}
-      <div className="absolute top-1/3 left-0 w-[300px] h-[400px] bg-indigo-300/14 rounded-full blur-[100px] animate-pulse-slow" />
-      <div className="absolute top-1/4 right-0 w-[280px] h-[350px] bg-violet-300/12 rounded-full blur-[100px] animate-pulse-slow animation-delay-4000" />
 
       {/* Bottom orbs */}
       <div className="absolute bottom-0 left-1/4 w-[380px] h-[280px] bg-indigo-300/18 rounded-full blur-[100px] animate-pulse-slow animation-delay-2000" />
