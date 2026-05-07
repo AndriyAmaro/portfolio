@@ -21,7 +21,6 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
 
 // ---------------------------------------------------------------------------
 // Project Logo SVG Components
@@ -469,23 +468,10 @@ function useCountUp(target: number, duration = 2000) {
 // ---------------------------------------------------------------------------
 export function Projects() {
   const t = useTranslations("projects");
-  const [isLightMode, setIsLightMode] = useState(false);
   const totalTests = useCountUp(381, 2000);
 
-  useEffect(() => {
-    const checkTheme = () => {
-      setIsLightMode(document.documentElement.classList.contains("light-mode"));
-    };
-    checkTheme();
-    const observer = new MutationObserver(checkTheme);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <section id="projects" className="relative py-24 md:py-32 overflow-hidden">
-      {isLightMode ? <AbstractBackgroundLight /> : <AbstractBackground />}
-
+    <section id="projects" className="relative py-24 md:py-32">
       <div className="container-custom relative z-10">
         {/* Section header */}
         <motion.div

@@ -4,12 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { CheckCircle, Mail, MapPin, Send, Github, Linkedin, Clock, Sparkles } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "../ui/Button";
 import { Input, Textarea } from "../ui/Input";
-import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
 
 type ContactFormData = {
   name: string;
@@ -32,19 +31,6 @@ export function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isLightMode, setIsLightMode] = useState(false);
-
-  useEffect(() => {
-    const checkTheme = () => {
-      setIsLightMode(document.documentElement.classList.contains("light-mode"));
-    };
-    checkTheme();
-
-    const observer = new MutationObserver(checkTheme);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-
-    return () => observer.disconnect();
-  }, []);
 
   const {
     register,
@@ -87,10 +73,7 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="relative py-24 md:py-32 overflow-hidden">
-      {/* Animated Background */}
-      {isLightMode ? <AbstractBackgroundLight /> : <AbstractBackground />}
-
+    <section id="contact" className="relative py-24 md:py-32">
       <div className="container-custom relative z-10">
         {/* Section header */}
         <motion.div

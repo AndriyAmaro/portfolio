@@ -14,9 +14,7 @@ import {
   Layers,
   Zap,
 } from "lucide-react";
-import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { AbstractBackground, AbstractBackgroundLight } from "@/components/ui/AbstractBackground";
 
 // ---------------------------------------------------------------------------
 // Services Data
@@ -278,26 +276,9 @@ function ProcessStep({
 // ---------------------------------------------------------------------------
 export function Services() {
   const t = useTranslations("services");
-  const [isLightMode, setIsLightMode] = useState(false);
-
-  useEffect(() => {
-    const checkTheme = () => {
-      setIsLightMode(document.documentElement.classList.contains("light-mode"));
-    };
-    checkTheme();
-    const observer = new MutationObserver(checkTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-    return () => observer.disconnect();
-  }, []);
 
   return (
-    <section id="services" className="relative py-24 md:py-32 overflow-hidden">
-      {/* Background */}
-      {isLightMode ? <AbstractBackgroundLight /> : <AbstractBackground />}
-
+    <section id="services" className="relative py-24 md:py-32">
       <div className="container-custom relative z-10">
         {/* Section Header */}
         <motion.div

@@ -4,7 +4,6 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import { Terminal, FileCode2, GitCommit, Play, Copy, Check } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
 import { CodeRainCanvas } from "../ui/CodeInActionBackground";
 
 // ---------------------------------------------------------------------------
@@ -273,9 +272,8 @@ export function CodeInAction() {
   };
 
   return (
-    <section ref={sectionRef} id="code" className="relative py-24 md:py-32 overflow-hidden">
-      {/* Circuit lines + Code rain overlay */}
-      {isLightMode ? <AbstractBackgroundLight /> : <AbstractBackground />}
+    <section ref={sectionRef} id="code" className="relative py-24 md:py-32">
+      {/* Code rain overlay */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <CodeRainCanvas isDark={!isLightMode} />
       </div>

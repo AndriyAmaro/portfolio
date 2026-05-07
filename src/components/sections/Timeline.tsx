@@ -16,9 +16,7 @@ import {
   ArrowRight,
   GraduationCap,
 } from "lucide-react";
-import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
 
 // ---------------------------------------------------------------------------
 // Timeline Data
@@ -501,32 +499,14 @@ function TimelineCard({
 // ---------------------------------------------------------------------------
 export function Timeline() {
   const t = useTranslations("timeline");
-  const [isLightMode, setIsLightMode] = useState(false);
-
   const typeLabels: Record<string, { label: string; className: string }> = {
     learning: { label: t("types.learning"), className: "tl-type-learning" },
     project: { label: t("types.project"), className: "tl-type-project" },
     milestone: { label: t("types.milestone"), className: "tl-type-milestone" },
   };
 
-  useEffect(() => {
-    const checkTheme = () => {
-      setIsLightMode(document.documentElement.classList.contains("light-mode"));
-    };
-    checkTheme();
-    const observer = new MutationObserver(checkTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <section id="journey" className="relative py-24 md:py-32 overflow-hidden">
-      {/* Background */}
-      {isLightMode ? <AbstractBackgroundLight /> : <AbstractBackground />}
-
+    <section id="journey" className="relative py-24 md:py-32">
       <div className="container-custom relative z-10">
         {/* Header */}
         <motion.div
