@@ -15,7 +15,6 @@ import {
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { AbstractBackground, AbstractBackgroundLight } from "../ui/AbstractBackground";
 
 // ---------------------------------------------------------------------------
 // Count-up hook
@@ -397,26 +396,12 @@ function MapConnections() {
 // ---------------------------------------------------------------------------
 export function Ecosystem() {
   const t = useTranslations("ecosystem");
-  const [isLightMode, setIsLightMode] = useState(false);
   const totalTests = useCountUp(380, 2000);
   const totalComponents = useCountUp(100, 1800);
   const totalPages = useCountUp(56, 1600);
 
-  useEffect(() => {
-    const checkTheme = () => {
-      setIsLightMode(document.documentElement.classList.contains("light-mode"));
-    };
-    checkTheme();
-    const observer = new MutationObserver(checkTheme);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <section id="ecosystem" className="relative py-24 md:py-32 overflow-hidden">
-      {/* Background · vertical circuit lines on sides */}
-      {isLightMode ? <AbstractBackgroundLight /> : <AbstractBackground />}
-
+    <section id="ecosystem" className="relative py-24 md:py-32">
       {/* Ecosystem illustration - left, desktop only */}
       <motion.div
         initial={{ opacity: 0, scale: 0.4, filter: "blur(24px)" }}
