@@ -1164,39 +1164,29 @@ function AboutTabs({ t }: { t: ReturnType<typeof useTranslations<"about">> }) {
                 tabIndex={isActive ? 0 : -1}
                 onClick={() => setActive(tab.id)}
                 onKeyDown={(e) => onKeyDown(e, idx)}
-                className={`about-tab-card relative rounded-xl px-5 py-4 text-left transition-colors duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400 ${
-                  isActive ? "about-tab-card-active" : "hover:about-tab-card-hover"
+                className={`relative rounded-xl px-4 py-5 text-center transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400 ${
+                  isActive
+                    ? "bg-gradient-to-br from-fuchsia-50 to-purple-50 dark:from-fuchsia-950/30 dark:to-purple-950/30"
+                    : "hover:bg-gray-50 dark:hover:bg-gray-800/50"
                 }`}
               >
-                {isActive && (
-                  <motion.div
-                    layoutId="about-tab-card-indicator"
-                    className="about-tab-card-border absolute inset-0 rounded-xl border-2 pointer-events-none"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
-                <div className="relative flex items-center gap-3">
-                  <div
-                    className={`flex h-12 w-12 items-center justify-center rounded-xl shrink-0 transition-colors duration-150 ${
+                <div className="flex flex-col items-center gap-3">
+                  <Icon
+                    className={`h-8 w-8 transition-colors duration-150 ${
                       isActive
-                        ? "about-tab-icon-active text-white shadow-lg"
-                        : "about-tab-icon-bg about-tab-icon-inactive"
+                        ? "text-fuchsia-600 dark:text-fuchsia-400"
+                        : "text-gray-400 dark:text-gray-500"
+                    }`}
+                  />
+                  <span
+                    className={`text-sm font-semibold ${
+                      isActive
+                        ? "text-gray-900 dark:text-white"
+                        : "text-gray-600 dark:text-gray-400"
                     }`}
                   >
-                    <Icon className="h-7 w-7" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div
-                      className={`text-sm font-bold ${
-                        isActive ? "about-tab-label-active" : "about-tab-label-inactive"
-                      }`}
-                    >
-                      {t(tab.labelKey)}
-                    </div>
-                    <p className="mt-0.5 text-[11px] leading-snug line-clamp-1 about-tab-desc">
-                      {t(tab.descKey)}
-                    </p>
-                  </div>
+                    {t(tab.labelKey)}
+                  </span>
                 </div>
               </button>
             );
