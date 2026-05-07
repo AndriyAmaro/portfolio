@@ -351,6 +351,9 @@
       "aiTools": "AI Tools",
       "apps": "Apps Pulse Ecosystem"
     },
+    "whatsNewBadge": "PRODUCTION READY",
+    "whatsNewTitle": "What's New",
+    "whatsNewSubtitle": "Innovations in generative AI, cloud and architecture that make a difference in production.",
     "aiBadge": {
       "prefix": "Accelerating projects with:",
       "text": "AI for Development, Code Review and Automation"

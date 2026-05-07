@@ -1430,8 +1430,7 @@ section {
   box-shadow: 0 0 0 1px rgba(217, 70, 239, 0.18) inset;
 }
 .about-tab-icon-active {
-  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #d946ef 100%);
-  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.40), 0 1px 0 rgba(255, 255, 255, 0.18) inset;
+  /* No background - icon color only */
 }
 .about-tab-icon-bg {
   background: rgba(255, 255, 255, 0.06);

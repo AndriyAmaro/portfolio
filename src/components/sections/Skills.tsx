@@ -14,6 +14,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { skillCategories as importedSkills } from "@/data/skills";
 import { CodeSnippetsCarousel } from "./About";
+import { WhatNewCards } from "./WhatsNewCards";
 
 // ---------------------------------------------------------------------------
 // SVG Tech Icons
@@ -442,19 +443,8 @@ export function Skills() {
           </p>
         </motion.div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-16">
-          {stats.map((stat, index) => (
-            <StatCard
-              key={stat.labelKey}
-              icon={stat.icon}
-              value={stat.value}
-              suffix={stat.suffix}
-              label={t(stat.labelKey)}
-              delay={0.1 + index * 0.1}
-            />
-          ))}
-        </div>
+        {/* What's New Cards - Estilo Alibaba Cloud PAI */}
+        <WhatNewCards />
 
         {/* Category cards */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
