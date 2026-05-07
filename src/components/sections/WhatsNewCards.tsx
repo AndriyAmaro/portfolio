@@ -1,9 +1,9 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
-import { useRef } from "react";
-import { Brain, Database, Rocket, Shield, Layers, Zap, Globe, Cpu } from "lucide-react";
+import { useRef, useState, useEffect, useCallback } from "react";
+import { Brain, Database, Rocket, Shield, Layers, Zap, Globe, Cpu, ChevronLeft, ChevronRight, Play, Pause } from "lucide-react";
 
 // ---------------------------------------------------------------------------
 // Card Data · Estilo Alibaba Cloud PAI "What's New"
@@ -93,8 +93,11 @@ const whatNewCards: WhatNewCard[] = [
   },
 ];
 
+// Cards visíveis por vez
+const VISIBLE_CARDS = 3;
+
 // ---------------------------------------------------------------------------
-// WhatNewCard Component
+// WhatNewCard Component (individual)
 // ---------------------------------------------------------------------------
 function WhatNewCardComponent({
   card,
@@ -103,54 +106,54 @@ function WhatNewCardComponent({
   card: WhatNewCard;
   index: number;
 }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-50px" });
   const Icon = card.icon;
 
   return (
     <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 32 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="group relative rounded-2xl overflow-hidden h-full bg-gray-900/40 border border-white/10 hover:border-white/20 transition-all duration-300"
+      key={card.id}
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.4, delay: index * 0.08 }}
+      className="group relative rounded-2xl overflow-hidden h-full bg-gray-900/40 border border-white/10 hover:border-white/20 transition-all duration-300 flex-shrink-0"
+      style={{ minWidth: "calc(33.333% - 1rem)" }}
     >
       {/* Gradient background */}
       <div className={`absolute inset-0 bg-gradient-to-br ${card.gradient} opacity-60 group-hover:opacity-100 transition-opacity duration-300`} />
       
-      <div className="relative z-10 p-6 flex flex-col h-full">
+      <div className="relative z-10 p-5 md:p-6 flex flex-col h-full">
         {/* Category badge */}
-        <div className="inline-flex items-center gap-2 mb-4">
+        <div className="inline-flex items-center gap-2 mb-3">
           <span className="w-2 h-2 rounded-full bg-white/60" />
-          <span className="text-xs font-medium text-white/60 uppercase tracking-wider">
+          <span className="text-[10px] md:text-xs font-medium text-white/60 uppercase tracking-wider">
             {card.category}
           </span>
         </div>
 
         {/* Icon */}
-        <div className="mb-4">
-          <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center">
-            <Icon className="w-6 h-6 text-white" />
+        <div className="mb-3">
+          <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-white/10 flex items-center justify-center">
+            <Icon className="w-5 h-5 md:w-6 md:h-6 text-white" />
           </div>
         </div>
 
         {/* Title */}
-        <h3 className="text-lg font-bold text-white mb-2 uppercase tracking-tight group-hover:text-indigo-300 transition-colors duration-200">
+        <h3 className="text-base md:text-lg font-bold text-white mb-2 uppercase tracking-tight group-hover:text-indigo-300 transition-colors duration-200 line-clamp-2">
           {card.title}
         </h3>
 
         {/* Description */}
-        <p className="text-sm text-white/70 mb-4 flex-1 leading-relaxed">
+        <p className="text-xs md:text-sm text-white/70 mb-3 flex-1 leading-relaxed line-clamp-3">
           {card.description}
         </p>
 
         {/* Models */}
         {card.models && (
-          <div className="flex flex-wrap gap-2 mb-4">
-            {card.models.map((model) => (
+          <div className="flex flex-wrap gap-1.5 mb-3">
+            {card.models.slice(0, 3).map((model) => (
               <span
                 key={model}
-                className="px-2 py-1 rounded-md bg-white/5 border border-white/10 text-xs font-mono text-white/50"
+                className="px-1.5 py-0.5 rounded md:rounded-md bg-white/5 border border-white/10 text-[10px] md:text-xs font-mono text-white/50 truncate max-w-[120px]"
               >
                 {model}
               </span>
@@ -159,19 +162,9 @@ function WhatNewCardComponent({
         )}
 
         {/* Learn more */}
-        <div className="flex items-center gap-2 text-indigo-400 text-sm font-medium group-hover:text-indigo-300 transition-colors">
+        <div className="flex items-center gap-1.5 md:gap-2 text-indigo-400 text-xs md:text-sm font-medium group-hover:text-indigo-300 transition-colors">
           <span>Learn more</span>
-          <svg
-            className="w-4 h-4 group-hover:translate-x-1 transition-transform"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M5 12h14M12 5l7 7-7 7" />
-          </svg>
+          <ChevronRight className="w-3 h-3 md:w-4 md:h-4 group-hover:translate-x-1 transition-transform" />
         </div>
       </div>
     </motion.div>
@@ -179,13 +172,67 @@ function WhatNewCardComponent({
 }
 
 // ---------------------------------------------------------------------------
-// Main WhatNewCards Section
+// Main Carousel Component
 // ---------------------------------------------------------------------------
 export function WhatNewCards() {
   const t = useTranslations("skills");
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isInView, setIsInView] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const autoplayRef = useRef<NodeJS.Timeout | null>(null);
+
+  const maxIndex = Math.max(0, whatNewCards.length - VISIBLE_CARDS);
+
+  // Intersection Observer para autoplay só quando visível
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.3 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Autoplay
+  useEffect(() => {
+    if (isAutoPlaying && isInView) {
+      autoplayRef.current = setInterval(() => {
+        setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
+      }, 4000);
+    }
+
+    return () => {
+      if (autoplayRef.current) {
+        clearInterval(autoplayRef.current);
+      }
+    };
+  }, [isAutoPlaying, isInView, maxIndex]);
+
+  const goTo = useCallback((index: number) => {
+    setCurrentIndex(Math.max(0, Math.min(index, maxIndex)));
+    setIsAutoPlaying(false);
+    setTimeout(() => setIsAutoPlaying(true), 10000);
+  }, [maxIndex]);
+
+  const goNext = useCallback(() => {
+    goTo(currentIndex >= maxIndex ? 0 : currentIndex + 1);
+  }, [currentIndex, maxIndex, goTo]);
+
+  const goPrev = useCallback(() => {
+    goTo(currentIndex <= 0 ? maxIndex : currentIndex - 1);
+  }, [currentIndex, maxIndex, goTo]);
+
+  const visibleCards = whatNewCards.slice(currentIndex, currentIndex + VISIBLE_CARDS);
 
   return (
-    <section className="relative py-16 md:py-24">
+    <section ref={ref} className="relative py-16 md:py-24 overflow-hidden">
       <div className="container-custom relative z-10">
         {/* Header */}
         <motion.div
@@ -193,33 +240,103 @@ export function WhatNewCards() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-12"
+          className="text-center mb-10 md:mb-12"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 mb-6"
+            className="inline-flex items-center gap-2 px-3 py-1 md:px-4 md:py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 mb-4 md:mb-6"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
-            <span className="text-xs font-medium text-indigo-300">
+            <span className="text-[10px] md:text-xs font-medium text-indigo-300">
               {t("whatsNewBadge") || "PRODUCTION READY"}
             </span>
           </motion.div>
 
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-3 md:mb-4">
             <span className="gradient-text">{t("whatsNewTitle") || "What's New"}</span>
           </h2>
-          <p className="text-white/60 max-w-2xl mx-auto">
+          <p className="text-white/60 max-w-2xl mx-auto text-sm md:text-base px-4">
             {t("whatsNewSubtitle") || "Inovações em IA generativa, cloud e arquitetura que fazem a diferença em produção."}
           </p>
         </motion.div>
 
-        {/* Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-          {whatNewCards.map((card, index) => (
-            <WhatNewCardComponent key={card.id} card={card} index={index} />
-          ))}
+        {/* Carousel Controls */}
+        <div className="flex items-center justify-between mb-6 px-2">
+          {/* Prev Button */}
+          <button
+            onClick={goPrev}
+            className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 hover:border-white/20 transition-all duration-200 group"
+            aria-label="Previous"
+          >
+            <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 text-white/60 group-hover:text-white group-hover:-translate-x-0.5 transition-all" />
+          </button>
+
+          {/* Dots Indicator */}
+          <div className="flex items-center gap-2">
+            {Array.from({ length: maxIndex + 1 }, (_, i) => (
+              <button
+                key={i}
+                onClick={() => goTo(i)}
+                className={`transition-all duration-300 rounded-full ${
+                  i === currentIndex
+                    ? "w-8 h-2 bg-indigo-500"
+                    : "w-2 h-2 bg-white/20 hover:bg-white/40"
+                }`}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            ))}
+          </div>
+
+          {/* Autoplay Toggle + Next Button */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsAutoPlaying(!isAutoPlaying)}
+              className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 hover:border-white/20 transition-all duration-200 group"
+              aria-label={isAutoPlaying ? "Pause autoplay" : "Resume autoplay"}
+            >
+              {isAutoPlaying ? (
+                <Pause className="w-4 h-4 md:w-5 md:h-5 text-white/60 group-hover:text-white transition-colors" />
+              ) : (
+                <Play className="w-4 h-4 md:w-5 md:h-5 text-white/60 group-hover:text-white transition-colors" />
+              )}
+            </button>
+            <button
+              onClick={goNext}
+              className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 hover:border-white/20 transition-all duration-200 group"
+              aria-label="Next"
+            >
+              <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-white/60 group-hover:text-white group-hover:translate-x-0.5 transition-all" />
+            </button>
+          </div>
+        </div>
+
+        {/* Carousel Cards */}
+        <div className="relative overflow-hidden">
+          <motion.div
+            className="flex gap-4 md:gap-6"
+            animate={{ x: `-${currentIndex * (100 / VISIBLE_CARDS)}%` }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            style={{ width: `${(whatNewCards.length / VISIBLE_CARDS) * 100}%` }}
+          >
+            {whatNewCards.map((card, index) => (
+              <div
+                key={card.id}
+                className="flex-shrink-0"
+                style={{ width: `${100 / whatNewCards.length}%` }}
+              >
+                <WhatNewCardComponent card={card} index={index} />
+              </div>
+            ))}
+          </motion.div>
+        </div>
+
+        {/* Slide Counter */}
+        <div className="flex items-center justify-center gap-2 mt-6 text-xs md:text-sm text-white/40">
+          <span>{currentIndex + 1}</span>
+          <span>/</span>
+          <span>{maxIndex + 1}</span>
         </div>
       </div>
     </section>
