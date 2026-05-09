@@ -4129,7 +4129,7 @@ section#skills,
 .skills-carousel-track {
   position: relative;
   height: 100%;
-  max-width: 1380px;
+  max-width: 1480px;
   margin: 0 auto;
   display: flex;
   gap: 14px;
@@ -4142,7 +4142,7 @@ section#skills,
   overflow: hidden;
   flex: 1 1 0;
   min-width: 0;
-  background: rgba(232, 233, 235, 0.95);
+  background: rgba(226, 226, 226, 0.95);
   border: 1px solid rgba(0, 0, 0, 0.05);
   will-change: flex;
   transition:
@@ -4155,7 +4155,7 @@ section#skills,
   flex-grow: calc(1 + var(--p) * 3);
   background:
     linear-gradient(145deg, rgba(15,12,41, calc(0.95 * var(--p))) 0%, rgba(30,27,75, calc(0.85 * var(--p))) 100%),
-    rgba(232, 233, 235, calc(0.95 * (1 - var(--p))));
+    rgba(226, 226, 226, calc(0.95 * (1 - var(--p))));
   border-color: rgba(255, 255, 255, calc(0.10 * var(--p) + 0.05 * (1 - var(--p))));
   box-shadow: 0 calc(24px * var(--p)) calc(80px * var(--p)) rgba(0, 0, 0, calc(0.5 * var(--p)));
 }
@@ -4164,7 +4164,7 @@ section#skills,
   cursor: pointer;
   background:
     linear-gradient(rgba(255,255,255, calc(0.05 * var(--p))), rgba(255,255,255, calc(0.05 * var(--p)))),
-    rgba(232, 233, 235, calc(0.95 * (1 - var(--p))));
+    rgba(226, 226, 226, calc(0.95 * (1 - var(--p))));
   border-color: rgba(255, 255, 255, calc(0.08 * var(--p) + 0.05 * (1 - var(--p))));
   backdrop-filter: blur(calc(14px * var(--p))) saturate(calc(100% + 40% * var(--p)));
 }
@@ -4172,7 +4172,7 @@ section#skills,
   flex-grow: calc((1 - var(--p) * 0.5) + var(--p) * 0.4);
   background:
     linear-gradient(rgba(226,226,226, calc(0.92 * var(--p))), rgba(226,226,226, calc(0.92 * var(--p)))),
-    rgba(232, 233, 235, 0.95);
+    rgba(226, 226, 226, 0.95);
   border-color: rgba(255, 255, 255, calc(0.4 * var(--p)));
   transition: flex-grow 280ms ease, background 280ms ease, border-color 280ms ease;
 }
@@ -4430,7 +4430,7 @@ section#skills,
 .skill-carousel-card[data-color="devops"] .card-icon-wrap { background: linear-gradient(135deg, #10b981, #fbbf24); }
 
 .skills-carousel-controls {
-  max-width: 1380px;
+  max-width: 1480px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -4574,14 +4574,14 @@ section#skills,
 .light-mode .skill-carousel-card.is-active {
   background:
     linear-gradient(145deg, rgba(248, 250, 252, calc(0.96 * var(--p))) 0%, rgba(241, 245, 249, calc(0.92 * var(--p))) 100%),
-    rgba(232, 233, 235, calc(0.95 * (1 - var(--p))));
+    rgba(226, 226, 226, calc(0.95 * (1 - var(--p))));
   border-color: rgba(99, 102, 241, calc(0.18 * var(--p) + 0.05 * (1 - var(--p))));
   box-shadow: 0 calc(24px * var(--p)) calc(60px * var(--p)) rgba(99, 102, 241, calc(0.10 * var(--p)));
 }
 .light-mode .skill-carousel-card.is-peek {
   background:
     linear-gradient(rgba(255,255,255, calc(0.7 * var(--p))), rgba(255,255,255, calc(0.7 * var(--p)))),
-    rgba(232, 233, 235, calc(0.95 * (1 - var(--p))));
+    rgba(226, 226, 226, calc(0.95 * (1 - var(--p))));
   border-color: rgba(99, 102, 241, calc(0.18 * var(--p) + 0.05 * (1 - var(--p))));
 }
 .light-mode .skill-carousel-card.is-peek:hover {
