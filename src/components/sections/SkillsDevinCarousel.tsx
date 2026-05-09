@@ -195,18 +195,16 @@ export function SkillsDevinCarousel() {
                 key={key}
                 data-color={key}
                 data-idx={idx}
-                className={`skill-carousel-card ${fullyOpen ? (isActive ? "is-active" : "is-peek") : ""}`}
+                className={`skill-carousel-card ${isActive ? "is-active" : "is-peek"}`}
                 onClick={() => {
-                  if (fullyOpen && !isActive) goTo(idx);
+                  if (!isActive) goTo(idx);
                 }}
                 onMouseEnter={() => {
-                  if (!fullyOpen) return;
                   setPaused(true);
                   if (timerRef.current) clearInterval(timerRef.current);
                   if (progressTimerRef.current) clearInterval(progressTimerRef.current);
                 }}
                 onMouseLeave={() => {
-                  if (!fullyOpen) return;
                   setPaused(false);
                 }}
               >
