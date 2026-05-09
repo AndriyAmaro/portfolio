@@ -162,9 +162,10 @@ export function SkillsDevinCarousel() {
       const raw = Math.max(0, Math.min(1, scrolledInto / Math.max(1, totalScroll)));
       const easedP = raw * raw * (3 - 2 * raw);
       shell.style.setProperty("--p", easedP.toFixed(3));
-      if (easedP >= 0.85 && !fullyOpen) {
+      // Lower threshold · estágio 3 já interativo (hover/click) sem precisar scroll completo
+      if (easedP >= 0.55 && !fullyOpen) {
         setFullyOpen(true);
-      } else if (easedP < 0.5 && fullyOpen) {
+      } else if (easedP < 0.30 && fullyOpen) {
         setFullyOpen(false);
       }
     };
@@ -184,6 +185,7 @@ export function SkillsDevinCarousel() {
 
   return (
     <section ref={sectionRef} className="skills-carousel-section" aria-label="Skills overview">
+    <div className="skills-carousel-pin">
       <div ref={shellRef} className={`skills-carousel-shell ${fullyOpen ? "is-fully-open" : ""}`}>
         <div className="skills-carousel-track">
           {CARDS.map((key, idx) => {
@@ -272,6 +274,7 @@ export function SkillsDevinCarousel() {
           })}
         </div>
       </div>
+    </div>
 
       {/* Controls */}
       <div className={`skills-carousel-controls ${fullyOpen ? "is-visible" : ""}`}>

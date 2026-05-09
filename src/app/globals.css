@@ -4103,15 +4103,21 @@ section {
    ────────────────────────────────────────────────────────── */
 .skills-carousel-section {
   position: relative;
-  height: 200vh;
+  height: 240vh;
   margin-bottom: 60px;
 }
-.skills-carousel-shell {
+.skills-carousel-pin {
   position: sticky;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 500px;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 1;
+}
+.skills-carousel-shell {
+  width: 100%;
+  height: 500px;
   --p: 0;
 }
 .skills-carousel-track {
