@@ -15,6 +15,8 @@ import { useTranslations } from "next-intl";
 import { skillCategories as importedSkills } from "@/data/skills";
 import { CodeSnippetsCarousel } from "./About";
 import { WhatNewCards } from "./WhatsNewCards";
+import { MetricsCarousel } from "./MetricsCarousel";
+import { SkillsDevinCarousel } from "./SkillsDevinCarousel";
 
 // ---------------------------------------------------------------------------
 // SVG Tech Icons
@@ -446,67 +448,11 @@ export function Skills() {
         {/* What's New Cards - Estilo Alibaba Cloud PAI */}
         <WhatNewCards />
 
-        {/* Category cards */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {skillCategories.map((category, categoryIndex) => {
-            const accent = categoryAccents[category.title] ?? categoryAccents["Frontend Engineering"];
-            return (
-              <motion.div
-                key={category.title}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: categoryIndex * 0.15 }}
-                className="skill-category-card group relative rounded-2xl overflow-hidden h-full"
-              >
-                {/* Colored top gradient */}
-                <div className={`absolute top-0 left-0 right-0 h-32 bg-gradient-to-b ${accent.gradient} pointer-events-none`} />
+        {/* Devin-style scroll-driven carousel · Frontend / Backend / DevOps */}
+        <SkillsDevinCarousel />
 
-                {/* Top accent line */}
-                <div className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-current to-transparent opacity-50`}
-                  style={{ color: accent.barColor.includes("indigo") ? "#6366f1" : accent.barColor.includes("emerald") ? "#10b981" : "#06b6d4" }}
-                />
-
-                <div className="relative p-6 md:p-8">
-                  {/* Category header */}
-                  <div className="flex items-center gap-4 mb-8">
-                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${accent.iconBg} flex items-center justify-center shadow-lg`}
-                      style={{ boxShadow: `0 8px 24px ${accent.barColor.includes("indigo") ? "rgba(99,102,241,0.3)" : accent.barColor.includes("emerald") ? "rgba(16,185,129,0.3)" : "rgba(6,182,212,0.3)"}` }}
-                    >
-                      <category.icon className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="skill-category-title text-lg font-bold">
-                        {t(categoryTitleKeys[category.title] ?? "categories.frontend")}
-                      </h3>
-                      <p className="skill-category-description text-xs">
-                        {t(categoryDescKeys[category.title] ?? "categories.frontendDesc")}
-                      </p>
-                    </div>
-                    <span className="ml-auto text-xs font-bold opacity-40 tabular-nums">
-                      {category.skills.length}
-                    </span>
-                  </div>
-
-                  {/* Skills as progress rows */}
-                  <div className="space-y-4">
-                    {category.skills.map((skill, skillIndex) => (
-                      <SkillRow
-                        key={skill.name}
-                        name={skill.name}
-                        icon={skill.icon}
-                        level={skill.level}
-                        levelLabel={t(levelTranslationKeys[skill.level] ?? "levels.intermediate")}
-                        barColor={accent.barColor}
-                        delay={categoryIndex * 0.1 + skillIndex * 0.06}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
+        {/* Sellorex Platform Metrics Carousel */}
+        <MetricsCarousel />
 
         {/* Code Snippets Carousel · 7 production proofs */}
         <CodeSnippetsCarousel t={tAbout} />

@@ -357,6 +357,38 @@
     "aiBadge": {
       "prefix": "Acelerando proyectos con:",
       "text": "IA para Desarrollo, Code Review y Automatización"
+    },
+    "carousel": {
+      "frontend": {
+        "eyebrow": "01 · Frontend",
+        "title": "UI &\nExperiencia",
+        "desc": "Next.js 14 App Router · React 18 · 700+ componentes compartidos · Tailwind tokens · Framer Motion · TanStack Query · Zustand para client state.",
+        "metrics": [
+          { "num": "700+", "label": "Components" },
+          { "num": "27", "label": "Pages" },
+          { "num": "100%", "label": "Strict" }
+        ]
+      },
+      "backend": {
+        "eyebrow": "02 · Backend",
+        "title": "APIs &\nData Layer",
+        "desc": "32 módulos · 1.036 endpoints · 126 modelos Prisma con tenantId en toda query · pgvector + HNSW para semantic search · multi-provider AI gateway.",
+        "metrics": [
+          { "num": "126", "label": "Models" },
+          { "num": "1.036", "label": "Endpoints" },
+          { "num": "12", "label": "Agentes IA" }
+        ]
+      },
+      "devops": {
+        "eyebrow": "03 · DevOps & Quality",
+        "title": "Edge &\nObservability",
+        "desc": "Docker multi-stage 800MB → 75MB · Cloudflare Workers + R2 · Railway + Nixpacks · auto-migration vía ensureSchemaSync · Sentry + Vitest + Playwright TDD selectivo.",
+        "metrics": [
+          { "num": "10×", "label": "Smaller Build" },
+          { "num": "740+", "label": "Commits" },
+          { "num": "0", "label": "Regresiones 6m" }
+        ]
+      }
     }
   },
   "projects": {
