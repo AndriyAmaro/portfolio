@@ -4169,12 +4169,12 @@ section#skills,
   backdrop-filter: blur(calc(14px * var(--p))) saturate(calc(100% + 40% * var(--p)));
 }
 .skill-carousel-card.is-peek:hover {
-  flex-grow: calc((1 - var(--p) * 0.5) + var(--p) * 0.4);
+  /* sem expand · peek mantém tamanho · hover só dispara color change + switch automático */
   background:
     linear-gradient(rgba(226,226,226, calc(0.92 * var(--p))), rgba(226,226,226, calc(0.92 * var(--p)))),
     rgba(226, 226, 226, 0.95);
   border-color: rgba(255, 255, 255, calc(0.4 * var(--p)));
-  transition: flex-grow 280ms ease, background 280ms ease, border-color 280ms ease;
+  transition: background 200ms ease, border-color 200ms ease;
 }
 .skill-carousel-card .collapsed-icon {
   position: absolute;

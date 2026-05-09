@@ -106,7 +106,7 @@ export function SkillsDevinCarousel() {
   const progressTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const intentTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const AUTO_MS = 8000;
-  const HOVER_INTENT_MS = 450;
+  const HOVER_INTENT_MS = 150;
 
   const resetProgress = useCallback(() => {
     if (progressTimerRef.current) clearInterval(progressTimerRef.current);
