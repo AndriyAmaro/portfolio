@@ -4129,7 +4129,7 @@ section#skills,
 .skills-carousel-track {
   position: relative;
   height: 100%;
-  max-width: 1480px;
+  max-width: 1560px;
   margin: 0 auto;
   display: flex;
   gap: 14px;
@@ -4160,7 +4160,7 @@ section#skills,
   box-shadow: 0 calc(24px * var(--p)) calc(80px * var(--p)) rgba(0, 0, 0, calc(0.5 * var(--p)));
 }
 .skill-carousel-card.is-peek {
-  flex-grow: calc(1 - var(--p) * 0.5);
+  flex-grow: calc(1 - var(--p) * 0.4);
   cursor: pointer;
   background:
     linear-gradient(rgba(255,255,255, calc(0.05 * var(--p))), rgba(255,255,255, calc(0.05 * var(--p)))),
@@ -4430,7 +4430,7 @@ section#skills,
 .skill-carousel-card[data-color="devops"] .card-icon-wrap { background: linear-gradient(135deg, #10b981, #fbbf24); }
 
 .skills-carousel-controls {
-  max-width: 1480px;
+  max-width: 1560px;
   margin: 0 auto;
   display: flex;
   align-items: center;
