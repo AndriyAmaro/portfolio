@@ -4102,6 +4102,11 @@ section {
    SKILLS · Devin-style scroll-driven carousel
    3 cards (Frontend / Backend / DevOps) · sticky pin · expand on scroll
    ────────────────────────────────────────────────────────── */
+/* CRITICAL · override global section { overflow: hidden } pra position:sticky funcionar */
+section#skills,
+.skills-carousel-section {
+  overflow: visible !important;
+}
 .skills-carousel-section {
   position: relative;
   height: 240vh;
