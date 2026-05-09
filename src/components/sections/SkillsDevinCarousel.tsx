@@ -104,7 +104,9 @@ export function SkillsDevinCarousel() {
   const [progress, setProgress] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const progressTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const intentTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const AUTO_MS = 8000;
+  const HOVER_INTENT_MS = 450;
 
   const resetProgress = useCallback(() => {
     if (progressTimerRef.current) clearInterval(progressTimerRef.current);
@@ -197,14 +199,21 @@ export function SkillsDevinCarousel() {
                 data-idx={idx}
                 className={`skill-carousel-card ${isActive ? "is-active" : "is-peek"}`}
                 onClick={() => {
+                  if (intentTimerRef.current) clearTimeout(intentTimerRef.current);
                   if (!isActive) goTo(idx);
                 }}
                 onMouseEnter={() => {
                   setPaused(true);
                   if (timerRef.current) clearInterval(timerRef.current);
                   if (progressTimerRef.current) clearInterval(progressTimerRef.current);
+                  // Hover intent · só ativa quando slider 100% expandido
+                  if (fullyOpen && !isActive) {
+                    if (intentTimerRef.current) clearTimeout(intentTimerRef.current);
+                    intentTimerRef.current = setTimeout(() => goTo(idx), HOVER_INTENT_MS);
+                  }
                 }}
                 onMouseLeave={() => {
+                  if (intentTimerRef.current) clearTimeout(intentTimerRef.current);
                   setPaused(false);
                 }}
               >
