@@ -4110,7 +4110,7 @@ section {
   position: sticky;
   top: 50%;
   transform: translateY(-50%);
-  height: 560px;
+  height: 500px;
   z-index: 1;
   --p: 0;
 }
@@ -4554,11 +4554,115 @@ section {
   }
 }
 
-/* Light mode · adapt */
+/* Light mode · cards ficam brancos com texto escuro · matching About usecase pattern */
 .light-mode .skill-carousel-card {
   background: rgba(255, 255, 255, 0.95);
   border-color: rgba(15, 23, 42, 0.08);
 }
+.light-mode .skill-carousel-card.is-active {
+  background:
+    linear-gradient(145deg, rgba(248, 250, 252, calc(0.96 * var(--p))) 0%, rgba(241, 245, 249, calc(0.92 * var(--p))) 100%),
+    rgba(232, 233, 235, calc(0.95 * (1 - var(--p))));
+  border-color: rgba(99, 102, 241, calc(0.18 * var(--p) + 0.05 * (1 - var(--p))));
+  box-shadow: 0 calc(24px * var(--p)) calc(60px * var(--p)) rgba(99, 102, 241, calc(0.10 * var(--p)));
+}
+.light-mode .skill-carousel-card.is-peek {
+  background:
+    linear-gradient(rgba(255,255,255, calc(0.7 * var(--p))), rgba(255,255,255, calc(0.7 * var(--p)))),
+    rgba(232, 233, 235, calc(0.95 * (1 - var(--p))));
+  border-color: rgba(99, 102, 241, calc(0.18 * var(--p) + 0.05 * (1 - var(--p))));
+}
+.light-mode .skill-carousel-card.is-peek:hover {
+  background:
+    linear-gradient(rgba(99,102,241, calc(0.10 * var(--p))), rgba(99,102,241, calc(0.10 * var(--p)))),
+    rgba(255, 255, 255, 0.98);
+  border-color: rgba(99, 102, 241, calc(0.4 * var(--p)));
+}
 .light-mode .skill-carousel-card .collapsed-icon-inner {
   background: rgba(99, 102, 241, 0.10);
+}
+.light-mode .skill-carousel-card .collapsed-icon-inner svg {
+  color: #4f46e5;
+}
+/* Active card text · todos texto escuro em light mode */
+.light-mode .skill-carousel-card .card-eyebrow {
+  color: rgba(79, 70, 229, 0.85);
+}
+.light-mode .skill-carousel-card .card-title-h3 {
+  color: rgba(15, 23, 42, 0.95);
+}
+.light-mode .skill-carousel-card .card-desc {
+  color: rgba(51, 65, 85, 0.82);
+}
+.light-mode .skill-carousel-card .stack-tag {
+  background: rgba(15, 23, 42, 0.05);
+  border-color: rgba(15, 23, 42, 0.10);
+  color: rgba(15, 23, 42, 0.85);
+}
+.light-mode .skill-carousel-card .stack-tag.featured {
+  color: #fff;
+}
+.light-mode .skill-carousel-card .card-metrics {
+  border-top-color: rgba(15, 23, 42, 0.08);
+}
+.light-mode .skill-carousel-card .metric-label {
+  color: rgba(71, 85, 105, 0.65);
+}
+.light-mode .skill-carousel-card .card-right {
+  background: linear-gradient(180deg, rgba(99, 102, 241, 0.04), rgba(217, 70, 239, 0.02));
+  border-left-color: rgba(15, 23, 42, 0.06);
+}
+.light-mode .skill-carousel-card .visual-tile {
+  background: rgba(15, 23, 42, 0.04);
+  border-color: rgba(15, 23, 42, 0.10);
+}
+.light-mode .skill-carousel-card .visual-tile:hover {
+  background: rgba(15, 23, 42, 0.08);
+  border-color: rgba(15, 23, 42, 0.18);
+}
+.light-mode .skill-carousel-card .visual-tile svg {
+  color: rgba(15, 23, 42, 0.75);
+}
+.light-mode .skill-carousel-card .visual-tile-label {
+  color: rgba(15, 23, 42, 0.65);
+}
+/* Peek labels in light mode */
+.light-mode .skill-carousel-card .peek-num,
+.light-mode .skill-carousel-card .peek-title {
+  color: rgba(15, 23, 42, 0.55);
+}
+.light-mode .skill-carousel-card .peek-icon {
+  background: rgba(15, 23, 42, 0.06);
+  border-color: rgba(15, 23, 42, 0.10);
+}
+.light-mode .skill-carousel-card .peek-icon svg {
+  color: rgba(15, 23, 42, 0.75);
+}
+.light-mode .skill-carousel-card.is-peek:hover .peek-icon {
+  background: linear-gradient(135deg, var(--accent-1, #4f46e5), var(--accent-2, #d946ef));
+}
+.light-mode .skill-carousel-card.is-peek:hover .peek-icon svg {
+  color: #fff;
+}
+/* Controls in light mode */
+.light-mode .skills-carousel-controls .progress-track {
+  background: rgba(15, 23, 42, 0.08);
+}
+.light-mode .skills-carousel-controls .counter {
+  color: rgba(71, 85, 105, 0.65);
+}
+.light-mode .skills-carousel-controls .dot-btn {
+  background: rgba(15, 23, 42, 0.18);
+}
+.light-mode .skills-carousel-controls .dot-btn:hover {
+  background: rgba(15, 23, 42, 0.4);
+}
+.light-mode .skills-carousel-controls .nav-btn {
+  background: rgba(15, 23, 42, 0.04);
+  border-color: rgba(15, 23, 42, 0.10);
+  color: rgba(15, 23, 42, 0.7);
+}
+.light-mode .skills-carousel-controls .nav-btn:hover {
+  background: rgba(15, 23, 42, 0.08);
+  color: rgba(15, 23, 42, 0.95);
 }
