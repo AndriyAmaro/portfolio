@@ -166,7 +166,8 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
   line-height: 1.6;
-  overflow-x: hidden;
+  /* overflow-x: clip · preserva position:sticky em descendentes (hidden quebra sticky) */
+  overflow-x: clip;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
