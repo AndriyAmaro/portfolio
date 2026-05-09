@@ -13,9 +13,6 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { skillCategories as importedSkills } from "@/data/skills";
-import { CodeSnippetsCarousel } from "./About";
-import { WhatNewCards } from "./WhatsNewCards";
-import { MetricsCarousel } from "./MetricsCarousel";
 import { SkillsDevinCarousel } from "./SkillsDevinCarousel";
 
 // ---------------------------------------------------------------------------
@@ -410,7 +407,6 @@ function TitleBurst() {
 // ---------------------------------------------------------------------------
 export function Skills() {
   const t = useTranslations("skills");
-  const tAbout = useTranslations("about");
 
   return (
     <section id="skills" className="relative py-24 md:py-32">
@@ -445,17 +441,8 @@ export function Skills() {
           </p>
         </motion.div>
 
-        {/* What's New Cards - Estilo Alibaba Cloud PAI */}
-        <WhatNewCards />
-
         {/* Devin-style scroll-driven carousel · Frontend / Backend / DevOps */}
         <SkillsDevinCarousel />
-
-        {/* Sellorex Platform Metrics Carousel */}
-        <MetricsCarousel />
-
-        {/* Code Snippets Carousel · 7 production proofs */}
-        <CodeSnippetsCarousel t={tAbout} />
 
         {/* AI badge */}
         <motion.div
