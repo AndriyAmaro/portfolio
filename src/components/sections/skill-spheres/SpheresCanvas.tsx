@@ -1,8 +1,7 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Environment } from "@react-three/drei";
-import { EffectComposer, Bloom } from "@react-three/postprocessing";
+import { OrbitControls } from "@react-three/drei";
 import { useReducedMotion } from "framer-motion";
 import { Suspense } from "react";
 import { SpheresScene } from "./SpheresScene";
@@ -15,7 +14,7 @@ export function SpheresCanvas({ paused = false }: Props) {
   return (
     <Canvas
       className="spheres-canvas"
-      // alpha:true · NO background · the page bg (dark / off-white) shows through
+      // alpha:true · NO scene background · canvas transparente (fundo da page)
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       dpr={[1, 2]}
       camera={{ position: [0, 0, 25], fov: 50, near: 0.1, far: 200 }}
@@ -23,34 +22,33 @@ export function SpheresCanvas({ paused = false }: Props) {
       shadows
       aria-hidden
     >
-      {/* Environment map · reflections that make the spheres look glossy /
-         very 3D (like the reference). background={false} = canvas stays
-         transparent (page bg shows through). */}
-      <Suspense fallback={null}>
-        <Environment preset="city" background={false} environmentIntensity={1.0} />
-      </Suspense>
-
-      {/* No white scene.background (transparent) → compensate with strong
-         lighting so the white / light-indigo spheres read on the page bg */}
-      <ambientLight intensity={1.15} color="#ffffff" />
-      <hemisphereLight intensity={0.9} color="#ffffff" groundColor="#818cf8" />
-      <directionalLight position={[0, 8, 14]} intensity={1.4} color="#ffffff" />
+      {/* Recipe fiel ao soju22 original (MeshPhong + ambient cinza + 2
+         spotlights com shadow). Sem env map, sem bloom → 3D realista com
+         sombras suaves entre as esferas. O hemisphere substitui o bounce
+         do scene.background branco do original (mantemos transparente). */}
+      <ambientLight intensity={2.1} color="#808080" />
+      <hemisphereLight intensity={1.7} color="#ffffff" groundColor="#cbd5ff" />
       <spotLight
-        position={[0, 24, 40]}
-        intensity={420}
-        angle={Math.PI / 5}
-        penumbra={0.4}
+        position={[0, 20, 50]}
+        angle={Math.PI / 8}
+        penumbra={0.1}
+        intensity={650}
         color="#ffffff"
         castShadow
         shadow-mapSize-width={2048}
         shadow-mapSize-height={2048}
+        shadow-bias={-0.0005}
       />
       <spotLight
-        position={[-18, -20, 30]}
-        intensity={300}
-        angle={Math.PI / 5}
-        penumbra={0.5}
+        position={[0, -20, 50]}
+        angle={Math.PI / 8}
+        penumbra={0.1}
+        intensity={360}
         color="#a5b4fc"
+        castShadow
+        shadow-mapSize-width={2048}
+        shadow-mapSize-height={2048}
+        shadow-bias={-0.0005}
       />
 
       <Suspense fallback={null}>
@@ -63,18 +61,6 @@ export function SpheresCanvas({ paused = false }: Props) {
         enablePan={false}
         enableZoom={false}
       />
-
-      {/* Bloom · só o centro glowing + highlights glossy "estouram" →
-         pop premium realista (canvas segue transparente) */}
-      <EffectComposer>
-        <Bloom
-          intensity={0.85}
-          luminanceThreshold={0.85}
-          luminanceSmoothing={0.25}
-          mipmapBlur
-          radius={0.65}
-        />
-      </EffectComposer>
     </Canvas>
   );
 }

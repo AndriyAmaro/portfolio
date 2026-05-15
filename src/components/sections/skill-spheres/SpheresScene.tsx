@@ -7,7 +7,7 @@ import {
   Mesh,
   InstancedMesh,
   SphereGeometry,
-  MeshStandardMaterial,
+  MeshPhongMaterial,
   InstancedBufferAttribute,
   Color,
   Object3D,
@@ -44,13 +44,12 @@ export function SpheresScene({ reducedMotion }: Props) {
     // central sphere · KINEMATIC · the mouse moves THIS one; the small
     // spheres follow it (its position is their attraction target)
     const centerGeo = new SphereGeometry(5, 48, 48);
-    const centerMat = new MeshStandardMaterial({
+    // fiel ao soju22 · MeshPhong plástico (original era branco · aqui indigo
+    // claro p/ a marca · sem emissive = esfera realista, não lâmpada)
+    const centerMat = new MeshPhongMaterial({
       color: C_CENTER,
-      emissive: new Color("#818cf8"),
-      emissiveIntensity: 0.65,
-      roughness: 0.13,
-      metalness: 0.05,
-      envMapIntensity: 1.5,
+      specular: new Color("#ffffff"),
+      shininess: 55,
     });
     const center = new Mesh(centerGeo, centerMat);
     center.castShadow = true;
@@ -67,13 +66,13 @@ export function SpheresScene({ reducedMotion }: Props) {
     // 200 instanced spheres
     const COUNT = (typeof window !== "undefined" && window.innerWidth < 768) ? 110 : 200;
     const geo = new SphereGeometry(1, 32, 32);
-    // glossy lacquer · sharp reflections off the Environment → very crisp 3D
-    const mat = new MeshStandardMaterial({
+    // fiel ao soju22 · MeshPhong vertexColors (branco↔indigo) · highlight
+    // especular + sombras suaves entre esferas = o 3D realista do original
+    const mat = new MeshPhongMaterial({
       color: 0xffffff,
       vertexColors: true,
-      roughness: 0.11,
-      metalness: 0.05,
-      envMapIntensity: 1.55,
+      specular: new Color("#9aa0c8"),
+      shininess: 42,
     });
     const iMesh = new InstancedMesh(geo, mat, COUNT);
     iMesh.instanceMatrix.setUsage(DynamicDrawUsage);
