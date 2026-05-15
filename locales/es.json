@@ -326,9 +326,9 @@
   },
   "skills": {
     "badge": "stack production-ready",
-    "title": "Dominios de",
-    "titleHighlight": "Ingeniería",
-    "subtitle": "Cuatro áreas de actuación que se conectan en sistemas reales · del schema de la base a la orquestación de IA, del design system al deploy edge",
+    "title": "Dominios",
+    "titleHighlight": "de Ingeniería",
+    "subtitle": "Del modelado de datos al deploy edge · con IA y design system en el medio",
     "categories": {
       "frontend": "Frontend Engineering",
       "frontendDesc": "Design systems escalables · animaciones performantes · A11y WCAG AA",
@@ -358,7 +358,39 @@
       "prefix": "Acelerando proyectos con:",
       "text": "IA para Desarrollo, Code Review y Automatización"
     },
+    "constellation": {
+      "eyebrow": "TECHNICAL ARCHITECTURE",
+      "titleLine1": "Dominios de",
+      "titleLine2": "Ingeniería",
+      "subtitle": "Del modelado de datos al deploy edge · con IA y design systems en el camino.",
+      "status": "FULL_STACK_AVAILABLE",
+      "ready": "Ready for scale"
+    },
+    "devstation": {
+      "eyebrow": "SPATIAL DEV STATION · WEBGL 2.0",
+      "titleLine1": "ARCHITECTURE_VIEW",
+      "titleLine2": "TECH LEAD",
+      "subtitle": "Full Stack Engineering · AI Infrastructure · arquitecturas distribuidas, RAG systems y platforms escalables.",
+      "status": "SYSTEM_ONLINE",
+      "ready": "Ready for scale"
+    },
     "carousel": {
+      "frontendPremium": {
+        "eyebrow": "01 · FRONTEND · UI / DESIGN SYSTEMS",
+        "desc": "Server Components, design systems hechos a mano y UX que conecta. De Next.js App Router a microinteracciones en Framer Motion · 25 herramientas en 3 proyectos en producción."
+      },
+      "backendPremium": {
+        "eyebrow": "02 · BACKEND · APIs / SCALABILITY",
+        "desc": "32 módulos modulares · 1.036 endpoints REST · Express y Hono edge-ready · BullMQ para jobs · Socket.io multi-tenant en tiempo real · webhook engineering con HMAC + idempotency · 25 herramientas en 3 proyectos en producción."
+      },
+      "databasesPremium": {
+        "eyebrow": "03 · DATABASES · DATA / VECTOR SEARCH",
+        "desc": "126 modelos Prisma · PostgreSQL 16 + pgvector + HNSW para búsqueda semántica · Redis L1/L2 cache · BullMQ para jobs · tenantId aplicado en cada query · transacciones atómicas · soft delete · cursor pagination · 20 técnicas en 3 proyectos en producción."
+      },
+      "devopsPremium": {
+        "eyebrow": "04 · DEVOPS · EDGE / CI / TESTING",
+        "desc": "Docker multi-stage (800MB → 75MB · 10x más pequeño) · Cloudflare Workers edge-ready vía OpenNext · Railway · Vercel · AWS · Azure · Turborepo + pnpm monorepo · GitHub Actions + ADRs · 23 herramientas en CI/CD, hosting y testing."
+      },
       "frontend": {
         "eyebrow": "01 · Frontend",
         "title": "UI &\nExperiencia",
@@ -371,16 +403,26 @@
       },
       "backend": {
         "eyebrow": "02 · Backend",
-        "title": "APIs &\nData Layer",
-        "desc": "32 módulos · 1.036 endpoints · 126 modelos Prisma con tenantId en toda query · pgvector + HNSW para semantic search · multi-provider AI gateway.",
+        "title": "APIs &\nLogic Layer",
+        "desc": "32 módulos · 1.036 endpoints · Express y Hono · BullMQ para job queue · Socket.io real-time · webhook engineering con HMAC + idempotency · Zod runtime validation.",
+        "metrics": [
+          { "num": "1.036", "label": "Endpoints" },
+          { "num": "32", "label": "Módulos" },
+          { "num": "394", "label": "AI Tools" }
+        ]
+      },
+      "databases": {
+        "eyebrow": "03 · Databases",
+        "title": "Data &\nVector Search",
+        "desc": "PostgreSQL 18 + pgvector + HNSW para semantic search · 126 modelos Prisma · Redis L1/L2 · tenantId enforced vía Repository pattern · RAG production-grade.",
         "metrics": [
           { "num": "126", "label": "Models" },
-          { "num": "1.036", "label": "Endpoints" },
-          { "num": "12", "label": "Agentes IA" }
+          { "num": "16×", "label": "Speedup queries" },
+          { "num": "0", "label": "Tenant leaks" }
         ]
       },
       "devops": {
-        "eyebrow": "03 · DevOps & Quality",
+        "eyebrow": "04 · DevOps & Quality",
         "title": "Edge &\nObservability",
         "desc": "Docker multi-stage 800MB → 75MB · Cloudflare Workers + R2 · Railway + Nixpacks · auto-migration vía ensureSchemaSync · Sentry + Vitest + Playwright TDD selectivo.",
         "metrics": [

@@ -20,9 +20,9 @@ export function Contact() {
   const t = useTranslations("contact");
 
   const contactSchema = z.object({
-    name: z.string().min(2, t("validation.nameMin")),
-    email: z.string().email(t("validation.emailInvalid")),
-    message: z.string().min(10, t("validation.messageMin")),
+    name: z.string().min(2, { error: t("validation.nameMin") }),
+    email: z.email({ error: t("validation.emailInvalid") }),
+    message: z.string().min(10, { error: t("validation.messageMin") }),
   });
 
   const deliverables = t.raw("deliverables") as string[];

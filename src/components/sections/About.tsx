@@ -1360,38 +1360,7 @@ export function About() {
         {/* Tabs · Agora (bio + use case carousel) / Como trabalho (tech Q&A) / Práticas */}
         <AboutTabs t={t} />
 
-        {/* Code snippet card · real production code from Sellorex */}
-
-        {/* Tech stack marquee - full width on mobile */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="mt-24 md:mt-32"
-        >
-          <div className="about-marquee-container relative overflow-hidden rounded-none py-4 w-[100vw] left-1/2 -translate-x-1/2">
-            {/* Gradient accent top border */}
-            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent" />
-            {/* Gradient accent bottom border */}
-            <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />
-            <div className="about-marquee-fade overflow-hidden">
-              <div className="about-marquee-track flex items-center gap-6">
-                {[...techStack, ...techStack].map((tech, index) => (
-                  <span
-                    key={`${tech}-${index}`}
-                    className="contents"
-                  >
-                    {index > 0 && <span className="about-marquee-dot" />}
-                    <span className="about-marquee-item flex-shrink-0 text-sm font-medium whitespace-nowrap">
-                      {tech}
-                    </span>
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </motion.div>
+        {/* Tech stack marquee · MOVED to Skills section as LogoScroller (real brand logos, GSAP-driven) */}
       </div>
     </section>
   );

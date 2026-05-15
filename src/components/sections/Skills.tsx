@@ -14,6 +14,9 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { skillCategories as importedSkills } from "@/data/skills";
 import { SkillsDevinCarousel } from "./SkillsDevinCarousel";
+import { ConstellationStack } from "./constellation-stack/ConstellationStack";
+import { DevStation } from "./devstation/DevStation";
+import { LogoScroller } from "./LogoScroller";
 
 // ---------------------------------------------------------------------------
 // SVG Tech Icons
@@ -403,6 +406,28 @@ function TitleBurst() {
 }
 
 // ---------------------------------------------------------------------------
+// Wave letters · Chris Coyier "Show & Tell @ Develop Denver 2016" (CodePen RRxQeg)
+// Letters oscillate horizontally with staggered delay + text-shadow drop mid-cycle
+// ---------------------------------------------------------------------------
+function WaveLetters({ text, highlight = false }: { text: string; highlight?: boolean }) {
+  const letters = Array.from(text);
+  return (
+    <span aria-label={text} className={`wave-word${highlight ? " is-highlight" : ""}`}>
+      {letters.map((ch, i) => (
+        <span
+          key={i}
+          aria-hidden="true"
+          className="wave-letter"
+          style={{ animationDelay: `${i * 0.08}s` }}
+        >
+          {ch === " " ? " " : ch}
+        </span>
+      ))}
+    </span>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Main Skills component
 // ---------------------------------------------------------------------------
 export function Skills() {
@@ -432,14 +457,19 @@ export function Skills() {
           {/* Title with radial burst effect */}
           <div className="relative">
             <TitleBurst />
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 relative z-10">
-              {t("title")} <span className="gradient-text">{t("titleHighlight")}</span>
+            <h2 className="about-section-title text-5xl md:text-7xl lg:text-8xl font-extrabold mb-6 tracking-tight leading-none relative z-10 skills-wave-title">
+              <WaveLetters text={t("title")} />{" "}
+              <WaveLetters text={t("titleHighlight")} highlight />
             </h2>
           </div>
-          <p className="skills-subtitle max-w-2xl mx-auto">
+          <p className="skills-subtitle max-w-2xl mx-auto text-base md:text-lg">
             {t("subtitle")}
           </p>
         </motion.div>
+
+        {/* 3D hero em desenvolvimento · oculto até finalizar */}
+        {false && <ConstellationStack />}
+        {false && <DevStation />}
 
         {/* Devin-style scroll-driven carousel · Frontend / Backend / DevOps */}
         <SkillsDevinCarousel />
@@ -463,6 +493,17 @@ export function Skills() {
           </div>
         </motion.div>
       </div>
+
+      {/* Endless Flow logo scroller · real brand logos · GSAP-driven · adapted from CodePen pvoaXRv (MIT) */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.6 }}
+        className="mt-20"
+      >
+        <LogoScroller />
+      </motion.div>
     </section>
   );
 }

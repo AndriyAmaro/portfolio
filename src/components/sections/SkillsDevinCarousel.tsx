@@ -3,9 +3,20 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { FrontendCardPremium } from "./frontend-card/FrontendCardPremium";
+import { BackendCardPremium } from "./backend-card/BackendCardPremium";
+import { DatabasesCardPremium } from "./databases-card/DatabasesCardPremium";
+import { DevOpsCardPremium } from "./devops-card/DevOpsCardPremium";
 
-type CardKey = "frontend" | "backend" | "devops";
-const CARDS: CardKey[] = ["frontend", "backend", "devops"];
+type CardKey = "frontend" | "backend" | "databases" | "devops";
+const CARDS: CardKey[] = ["frontend", "backend", "databases", "devops"];
+
+const LABEL_DISPLAY: Record<CardKey, string> = {
+  frontend: "Frontend",
+  backend: "Backend",
+  databases: "Databases",
+  devops: "DevOps",
+};
 
 const STACK: Record<CardKey, { featured: string[]; rest: string[] }> = {
   frontend: {
@@ -14,7 +25,11 @@ const STACK: Record<CardKey, { featured: string[]; rest: string[] }> = {
   },
   backend: {
     featured: ["Node.js", "TypeScript"],
-    rest: ["Express", "Prisma", "PostgreSQL", "pgvector", "Redis", "BullMQ", "Zod"],
+    rest: ["Express", "Hono", "Prisma", "BullMQ", "Socket.io", "Zod", "JWT"],
+  },
+  databases: {
+    featured: ["PostgreSQL", "Redis"],
+    rest: ["pgvector", "HNSW", "Prisma ORM", "Multi-tenant", "RAG", "Migrations", "Soft delete"],
   },
   devops: {
     featured: ["Docker", "Cloudflare"],
@@ -24,27 +39,50 @@ const STACK: Record<CardKey, { featured: string[]; rest: string[] }> = {
 
 const VISUAL_TILES: Record<CardKey, string[]> = {
   frontend: ["Next.js", "React 18", "Tailwind", "Framer", "TypeScript", "TanStack", "Tiptap", "xyflow", "shadcn"],
-  backend: ["Postgres", "REST", "pgvector", "Prisma", "Redis", "Webhooks", "Socket.io", "BullMQ", "Zod"],
+  backend: ["Node.js", "Express", "Hono", "REST", "Webhooks", "Socket.io", "BullMQ", "Zod", "JWT"],
+  databases: ["Postgres", "pgvector", "HNSW", "Prisma", "Redis", "Cache L1", "Cache L2", "Pub/Sub", "RAG"],
   devops: ["Docker", "Cloudflare", "Railway", "GitHub CI", "Sentry", "Vitest", "Playwright", "Winston", "Turborepo"],
 };
 
 function CardIconSVG({ k }: { k: CardKey }) {
   if (k === "frontend") {
     return (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="3" width="20" height="14" rx="2" />
-        <line x1="8" y1="21" x2="16" y2="21" />
-        <line x1="12" y1="17" x2="12" y2="21" />
-      </svg>
+      <img
+        src="/icons/frontend.gif"
+        alt="Frontend 3D icon"
+        style={{ width: "100%", height: "100%", objectFit: "contain" }}
+        loading="lazy"
+      />
     );
   }
   if (k === "backend") {
     return (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-        <ellipse cx="12" cy="5" rx="9" ry="3" />
-        <path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" />
-        <path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3" />
-      </svg>
+      <img
+        src="/icons/backend.gif"
+        alt="Backend 3D icon"
+        style={{ width: "100%", height: "100%", objectFit: "contain" }}
+        loading="lazy"
+      />
+    );
+  }
+  if (k === "databases") {
+    return (
+      <img
+        src="/icons/databases.gif"
+        alt="Databases 3D icon"
+        style={{ width: "100%", height: "100%", objectFit: "contain" }}
+        loading="lazy"
+      />
+    );
+  }
+  if (k === "devops") {
+    return (
+      <img
+        src="/icons/devops.gif"
+        alt="DevOps 3D icon"
+        style={{ width: "100%", height: "100%", objectFit: "contain" }}
+        loading="lazy"
+      />
     );
   }
   return (
@@ -79,6 +117,17 @@ function VisualTileIcon({ idx, k }: { idx: number; k: CardKey }) {
       <svg key="7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M9 9h6v6H9z" /></svg>,
       <svg key="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round"><polyline points="4 17 10 11 4 5" /><line x1="12" y1="19" x2="20" y2="19" /></svg>,
     ],
+    databases: [
+      <svg key="0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3" /><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" /><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3" /></svg>,
+      <svg key="1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3" /><circle cx="12" cy="12" r="9" strokeDasharray="2 3" /></svg>,
+      <svg key="2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="5" /><circle cx="12" cy="12" r="1.5" /></svg>,
+      <svg key="3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 18.5 8.5 18.5 15.5 12 22 5.5 15.5 5.5 8.5" /><path d="M12 8v8M8 12h8" /></svg>,
+      <svg key="4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></svg>,
+      <svg key="5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round"><path d="M21 12V8a2 2 0 00-2-2h-3l-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2h6" /><circle cx="18" cy="18" r="3" /><path d="M18 15v3l2 2" /></svg>,
+      <svg key="6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round"><circle cx="6" cy="6" r="3" /><circle cx="18" cy="18" r="3" /><path d="M6 9v6M18 15V9" /><path d="M9 18h6" /></svg>,
+      <svg key="7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16v6H4z" /><path d="M4 14h16v6H4z" /><circle cx="7" cy="7" r="1" /><circle cx="7" cy="17" r="1" /></svg>,
+      <svg key="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L2 7l10 5 10-5z" /><path d="M2 12l10 5 10-5" /><path d="M2 17l10 5 10-5" /></svg>,
+    ],
     devops: [
       <svg key="0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="9" width="18" height="10" rx="1" /><rect x="6" y="6" width="12" height="3" /></svg>,
       <svg key="1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round"><path d="M8 17l-4-4 4-4" /><path d="M16 17l4-4-4-4" /><line x1="14" y1="6" x2="10" y2="20" /></svg>,
@@ -98,7 +147,7 @@ export function SkillsDevinCarousel() {
   const t = useTranslations("skills.carousel");
   const sectionRef = useRef<HTMLDivElement>(null);
   const shellRef = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState(1); // backend default
+  const [active, setActive] = useState(0); // frontend default · slider expande de 0→3
   const [fullyOpen, setFullyOpen] = useState(false);
   const [paused, setPaused] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -213,6 +262,7 @@ export function SkillsDevinCarousel() {
                   }
                 }}
                 onMouseLeave={() => {
+                  // No tilt mousemove anymore · everything is CSS :hover translateZ (no jitter)
                   if (intentTimerRef.current) clearTimeout(intentTimerRef.current);
                   setPaused(false);
                 }}
@@ -222,6 +272,7 @@ export function SkillsDevinCarousel() {
                   <div className="collapsed-icon-inner">
                     <CardIconSVG k={key} />
                   </div>
+                  <span className="collapsed-label-code">{LABEL_DISPLAY[key]}</span>
                 </div>
 
                 {/* Peek bar · vertical */}
@@ -235,46 +286,10 @@ export function SkillsDevinCarousel() {
 
                 {/* Active full content */}
                 <div className="card-content-active">
-                  <div className="card-left">
-                    <span className="card-eyebrow">{t(`${key}.eyebrow`)}</span>
-                    <div className="card-icon-wrap">
-                      <CardIconSVG k={key} />
-                    </div>
-                    <h3 className="card-title-h3" style={{ whiteSpace: "pre-line" }}>
-                      {t(`${key}.title`)}
-                    </h3>
-                    <p className="card-desc">{t(`${key}.desc`)}</p>
-                    <div className="card-stack">
-                      {STACK[key].featured.map((tag) => (
-                        <span key={tag} className="stack-tag featured">
-                          {tag}
-                        </span>
-                      ))}
-                      {STACK[key].rest.map((tag) => (
-                        <span key={tag} className="stack-tag">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="card-metrics">
-                      {(t.raw(`${key}.metrics`) as Array<{ num: string; label: string }>).map((m) => (
-                        <div key={m.label} className="metric">
-                          <span className="metric-num">{m.num}</span>
-                          <span className="metric-label">{m.label}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="card-right">
-                    <div className="visual-grid">
-                      {VISUAL_TILES[key].map((label, i) => (
-                        <div key={label} className="visual-tile">
-                          <VisualTileIcon idx={i} k={key} />
-                          <span className="visual-tile-label">{label}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  {key === "frontend" && <FrontendCardPremium />}
+                  {key === "backend" && <BackendCardPremium />}
+                  {key === "databases" && <DatabasesCardPremium />}
+                  {key === "devops" && <DevOpsCardPremium />}
                 </div>
               </div>
             );
