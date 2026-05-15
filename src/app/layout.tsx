@@ -1,4 +1,4 @@
-import { Inter } from "next/font/google";
+import { Inter, Archivo, Archivo_Black } from "next/font/google";
 import { GeistSans } from "geist/font/sans";
 import { ClientShell } from "@/components/ui/ClientShell";
 import "./globals.css";
@@ -7,6 +7,19 @@ const inter = Inter({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-inter",
+});
+
+// Fase 1 · loaded + exposed, not yet applied to any consumer (zero visual diff)
+const archivo = Archivo({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-archivo",
+});
+const archivoBlack = Archivo_Black({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+  variable: "--font-archivo-black",
 });
 
 export default function RootLayout({
@@ -26,7 +39,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} ${GeistSans.variable} font-sans antialiased`}
+        className={`${inter.variable} ${GeistSans.variable} ${archivo.variable} ${archivoBlack.variable} font-sans antialiased`}
       >
         <ClientShell>{children}</ClientShell>
       </body>

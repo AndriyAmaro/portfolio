@@ -38,6 +38,17 @@
   /* Glassmorphism */
   --glass-bg: rgba(22, 19, 45, 0.9);
   --glass-border: rgba(255, 255, 255, 0.1);
+
+  /* ===== SEMANTIC TOKENS · Fase 1 (alias dos valores atuais · zero diff) ===== */
+  --c-bg: var(--background);
+  --c-fg: var(--foreground);
+  --c-fg-soft: var(--text-muted);
+  --c-line: var(--border);
+  --c-accent: var(--primary);
+  --c-accent-2: var(--secondary);
+  /* fontes editoriais carregadas (Fase 1) · ainda não aplicadas a nenhum consumidor */
+  --ff-display: var(--font-archivo-black), system-ui, sans-serif;
+  --ff-body: var(--font-archivo), system-ui, sans-serif;
 }
 
 /* ===== LIGHT MODE ===== */
@@ -68,6 +79,27 @@ html.light-mode {
   /* Glassmorphism */
   --glass-bg: rgba(255, 255, 255, 0.9);
   --glass-border: rgba(0, 0, 0, 0.08);
+
+  /* ===== SEMANTIC TOKENS · Fase 1 (alias light atuais · zero diff) ===== */
+  --c-bg: var(--background);
+  --c-fg: var(--foreground);
+  --c-fg-soft: var(--text-muted);
+  --c-line: var(--border);
+  --c-accent: var(--primary);
+  --c-accent-2: var(--secondary);
+}
+
+/* ===== TYPE / SPACE SCALE · Fase 1 (não consumido ainda · ref agency) ===== */
+:root {
+  --text-display: clamp(3.5rem, 11vw, 9rem);
+  --text-h2: clamp(2rem, 6vw, 4.5rem);
+  --text-h3: clamp(1.5rem, 3vw, 2.5rem);
+  --text-body: clamp(1rem, 1.2vw, 1.125rem);
+  --text-label: 0.75rem;
+  --tracking-tight: -0.03em;
+  --tracking-label: 0.05em;
+  --bw: 1px;
+  --bw-thick: 0.125rem;
 }
 
 @theme inline {
