@@ -15,7 +15,6 @@ import { useTranslations } from "next-intl";
 import { skillCategories as importedSkills } from "@/data/skills";
 import { SkillsDevinCarousel } from "./SkillsDevinCarousel";
 import { ConstellationStack } from "./constellation-stack/ConstellationStack";
-import { DevStation } from "./devstation/DevStation";
 import { LogoScroller } from "./LogoScroller";
 
 // ---------------------------------------------------------------------------
@@ -469,10 +468,7 @@ export function Skills() {
 
         {false && <ConstellationStack />}
 
-        {/* 3D hero · laptop branco + cubos de vidro com logo (cannon-es physics) */}
-        <DevStation />
-
-        {/* Devin-style scroll-driven carousel · abaixo do hero */}
+        {/* 3D hero removido · nova animação a definir */}
         <SkillsDevinCarousel />
 
         {/* AI badge */}

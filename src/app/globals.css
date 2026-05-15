@@ -590,6 +590,11 @@ section {
 .hero-title {
   color: rgba(255, 255, 255, 0.95);
   text-shadow: 0 0 40px rgba(99, 102, 241, 0.15);
+  /* Fase 3 · Hero na mesma identidade editorial (Archivo Black uppercase).
+     Mantém o tamanho responsivo do Tailwind (nome = título mais proeminente). */
+  font-family: var(--font-archivo-black), var(--font-geist-sans), system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-tight);
 }
 
 .light-mode .hero-title {
