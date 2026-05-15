@@ -2,6 +2,7 @@
 
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Environment } from "@react-three/drei";
+import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import { useReducedMotion } from "framer-motion";
 import { Suspense } from "react";
 import { SpheresScene } from "./SpheresScene";
@@ -26,7 +27,7 @@ export function SpheresCanvas({ paused = false }: Props) {
          very 3D (like the reference). background={false} = canvas stays
          transparent (page bg shows through). */}
       <Suspense fallback={null}>
-        <Environment preset="studio" background={false} environmentIntensity={1.15} />
+        <Environment preset="city" background={false} environmentIntensity={1.0} />
       </Suspense>
 
       {/* No white scene.background (transparent) → compensate with strong
@@ -62,6 +63,18 @@ export function SpheresCanvas({ paused = false }: Props) {
         enablePan={false}
         enableZoom={false}
       />
+
+      {/* Bloom · só o centro glowing + highlights glossy "estouram" →
+         pop premium realista (canvas segue transparente) */}
+      <EffectComposer>
+        <Bloom
+          intensity={0.85}
+          luminanceThreshold={0.85}
+          luminanceSmoothing={0.25}
+          mipmapBlur
+          radius={0.65}
+        />
+      </EffectComposer>
     </Canvas>
   );
 }

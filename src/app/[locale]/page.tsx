@@ -11,8 +11,6 @@ import {
   Skills,
   Timeline,
 } from "@/components/sections";
-import { SectionDivider } from "@/components/ui/SectionDivider";
-
 type Props = {
   params: Promise<{ locale: string }>;
 };
@@ -27,21 +25,13 @@ export default async function Home({ params }: Props) {
       <main>
         <Hero />
         <About />
-        <SectionDivider />
         <Skills />
-        <SectionDivider />
         <Ecosystem />
-        <SectionDivider />
         <Projects />
-        <SectionDivider />
         <CodeInAction />
-        <SectionDivider />
         <Timeline />
-        <SectionDivider />
         <Services />
-        <SectionDivider />
         <Contact />
-        <SectionDivider />
       </main>
       <Footer />
     </>

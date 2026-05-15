@@ -27,14 +27,19 @@ const C_INDIGO = new Color("#a5b4fc"); // indigo-300 · "indigo claro"
 const C_CENTER = new Color("#c7d2fe"); // indigo-200 · reads on dark AND off-white
 
 export function SpheresScene({ reducedMotion }: Props) {
-  const { camera } = useThree();
+  const camera = useThree((s) => s.camera);
+  const viewport = useThree((s) => s.viewport);
   const rootRef = useRef<Group>(null);
+  const wallsRef = useRef<CANNON.Body[]>([]);
 
   const sim = useMemo(() => {
     const world = new CANNON.World();
     world.gravity.set(0, 0, 0);
     world.broadphase = new CANNON.NaiveBroadphase();
     (world.solver as CANNON.GSSolver).iterations = 20;
+    // spheres bounce off the walls + each other (point 6)
+    world.defaultContactMaterial.restitution = 0.7;
+    world.defaultContactMaterial.friction = 0.0;
 
     // central sphere · KINEMATIC · the mouse moves THIS one; the small
     // spheres follow it (its position is their attraction target)
@@ -50,10 +55,12 @@ export function SpheresScene({ reducedMotion }: Props) {
     const center = new Mesh(centerGeo, centerMat);
     center.castShadow = true;
     center.receiveShadow = true;
+    // resting position biased to the RIGHT (título fica livre à esquerda)
+    const HOME_X = 13;
     const centerBody = new CANNON.Body({
       type: CANNON.Body.KINEMATIC,
       shape: new CANNON.Sphere(5),
-      position: new CANNON.Vec3(0, 0, 0),
+      position: new CANNON.Vec3(HOME_X, 0, 0),
     });
     world.addBody(centerBody);
 
@@ -79,9 +86,9 @@ export function SpheresScene({ reducedMotion }: Props) {
     const bodies: CANNON.Body[] = [];
     const c = new Color();
     for (let i = 0; i < COUNT; i++) {
-      const px = (Math.random() - 0.5) * 40;
+      const px = (Math.random() - 0.5) * 40 + HOME_X;
       const py = (Math.random() - 0.5) * 40;
-      const pz = (Math.random() - 0.5) * 40;
+      const pz = (Math.random() - 0.5) * 24;
       const s = 0.25 + Math.random() * 0.75;
       scales[i] = s;
       dummy.position.set(px, py, pz);
@@ -104,8 +111,8 @@ export function SpheresScene({ reducedMotion }: Props) {
     iMesh.instanceMatrix.needsUpdate = true;
     geo.setAttribute("color", new InstancedBufferAttribute(colors, 3));
 
-    const target = new CANNON.Vec3(0, 0, 0);
-    return { world, center, centerBody, iMesh, bodies, scales, dummy, target,
+    const target = new CANNON.Vec3(HOME_X, 0, 0);
+    return { world, center, centerBody, iMesh, bodies, scales, dummy, target, HOME_X,
       disposables: [centerGeo, centerMat, geo, mat] };
   }, []);
 
@@ -144,6 +151,40 @@ export function SpheresScene({ reducedMotion }: Props) {
     };
   }, [sim, reducedMotion]);
 
+  // collision walls bounding the visible canvas → spheres bounce back
+  // inside instead of being clipped at the hero edges (point 6)
+  useEffect(() => {
+    const w = sim.world;
+    wallsRef.current.forEach((b) => w.removeBody(b));
+    wallsRef.current = [];
+    const hw = viewport.width / 2;
+    const hh = viewport.height / 2;
+    if (!hw || !hh) return;
+    const inset = 2, t = 2, dz = 8;
+    const X = Math.max(4, hw - inset);
+    const Y = Math.max(4, hh - inset);
+    const defs: [[number, number, number], [number, number, number]][] = [
+      [[t, Y, dz], [-(X + t), 0, 0]],
+      [[t, Y, dz], [X + t, 0, 0]],
+      [[X, t, dz], [0, Y + t, 0]],
+      [[X, t, dz], [0, -(Y + t), 0]],
+      [[X, Y, t], [0, 0, dz + t]],
+      [[X, Y, t], [0, 0, -(dz + t)]],
+    ];
+    const made: CANNON.Body[] = [];
+    for (const [he, pos] of defs) {
+      const b = new CANNON.Body({
+        mass: 0,
+        shape: new CANNON.Box(new CANNON.Vec3(he[0], he[1], he[2])),
+        position: new CANNON.Vec3(pos[0], pos[1], pos[2]),
+      });
+      w.addBody(b);
+      made.push(b);
+    }
+    wallsRef.current = made;
+    return () => { made.forEach((b) => w.removeBody(b)); };
+  }, [sim, viewport.width, viewport.height]);
+
   const raycaster = useMemo(() => new Raycaster(), []);
   const targetPlane = useMemo(() => new Plane(new Vector3(0, 0, 1), 0), []);
   const hitPt = useMemo(() => new Vector3(), []);
@@ -154,8 +195,16 @@ export function SpheresScene({ reducedMotion }: Props) {
     // 1 · mouse → raw 3D point on z=0 plane
     raycaster.setFromCamera(state.pointer, camera);
     if (raycaster.ray.intersectPlane(targetPlane, hitPt)) {
-      const mx = Math.max(-22, Math.min(22, hitPt.x));
-      const my = Math.max(-15, Math.min(15, hitPt.y));
+      // keep the BIG sphere (r=5) inside the walls
+      const lx = Math.max(0, viewport.width / 2 - 2 - 5);
+      const ly = Math.max(0, viewport.height / 2 - 2 - 5);
+      // idle (mouse não mexeu) → repousa à DIREITA; ao mover, segue o cursor
+      // por toda a tela (passa por cima/atrás do título à esquerda)
+      const moved = state.pointer.x !== 0 || state.pointer.y !== 0;
+      const tx = moved ? hitPt.x : Math.min(lx, sim.HOME_X);
+      const ty = moved ? hitPt.y : 0;
+      const mx = Math.max(-lx, Math.min(lx, tx));
+      const my = Math.max(-ly, Math.min(ly, ty));
       // 2 · the BIG sphere glides toward the cursor (kinematic · pushes the
       //     small ones via collision). velocity = lerp delta per step.
       const cb = sim.centerBody;

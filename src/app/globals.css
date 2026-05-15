@@ -5627,11 +5627,11 @@ section#skills,
  * DevStation · Notebook Holographic Spatial UI
  * Apple Vision Pro / Blade Runner 2049 standard
  * ───────────────────────────────────────────────────────────── */
-/* ===== SKILL SPHERES HERO · cluster ATRÁS do título (ref soju22) ===== */
+/* ===== SKILL SPHERES HERO · split: título estático esq · animação dir ===== */
 .skills-hero {
   position: relative;
   display: grid;
-  place-items: center;
+  place-items: center start; /* título centrado vertical, à esquerda */
   min-height: 100svh; /* full view */
   /* full-bleed · quebra o .container-custom até a borda da página */
   width: 100vw;
@@ -5640,13 +5640,7 @@ section#skills,
   margin-bottom: 56px;
   isolation: isolate;
 }
-@media (width <= 640px) {
-  .skills-hero {
-    min-height: 92svh;
-    margin-bottom: 36px;
-  }
-}
-/* spheres = backdrop absoluto · sem background (usa o fundo da page) */
+/* spheres = backdrop full-bleed · horizontal · sem bg (fundo da page) */
 .spheres-stack {
   position: absolute;
   inset: 0;
@@ -5659,15 +5653,29 @@ section#skills,
   height: 100% !important;
   display: block;
 }
-/* título/badge/subtitle por cima · pointer-events-none → mouse chega nas
-   esferas (efeito "mover e as outras seguem" funciona atrás do texto) */
+/* título estático à esquerda, por cima · pointer-events-none → o mouse
+   chega nas esferas (que passam por trás/atravessam a área do título) */
 .skills-hero__content {
   position: relative;
   z-index: 10;
-  pointer-events: none;
   grid-area: 1 / 1;
-  width: 100%;
-  padding-inline: 1rem;
+  pointer-events: none;
+  text-align: start;
+  padding-inline: clamp(1.5rem, 6vw, 7rem);
+  max-width: min(680px, 92vw);
+}
+/* título estático · mantém a extrusão 3D, remove o wave */
+.skills-wave-title .wave-letter { animation: none; }
+@media (width <= 900px) {
+  .skills-hero {
+    place-items: center;
+    min-height: 92svh;
+    margin-bottom: 36px;
+  }
+  .skills-hero__content {
+    text-align: center;
+    max-width: none;
+  }
 }
 
 .devstation-stack {
