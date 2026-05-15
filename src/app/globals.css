@@ -46,9 +46,9 @@
   --c-line: var(--border);
   --c-accent: var(--primary);
   --c-accent-2: var(--secondary);
-  /* fontes editoriais carregadas (Fase 1) · ainda não aplicadas a nenhum consumidor */
-  --ff-display: var(--font-archivo-black), system-ui, sans-serif;
-  --ff-body: var(--font-archivo), system-ui, sans-serif;
+  /* Fontes editoriais: o next/font define --font-archivo* no <body>, não no
+     :root, então tokens --ff-* aqui resolvem vazio. Consumidores referenciam
+     var(--font-archivo-black) direto (ou --font-display do @theme, que funciona). */
 }
 
 /* ===== LIGHT MODE ===== */
@@ -109,7 +109,8 @@ html.light-mode {
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
   --font-sans: var(--font-inter);
-  --font-display: var(--font-geist-sans), var(--font-inter);
+  /* Fase 3 · Archivo Black como display (editorial agency) · Geist fallback */
+  --font-display: var(--font-archivo-black), var(--font-geist-sans), var(--font-inter), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
 }
 
@@ -1002,6 +1003,20 @@ section {
 .about-section-title {
   font-family: var(--font-geist-sans, 'Inter'), system-ui, sans-serif;
   letter-spacing: -0.04em;
+}
+
+/* Fase 3 · ROLLOUT · título editorial agency (Archivo Black + escala).
+   .about-section-title:not(.skills-wave-title) → About (Skills wave fica fora,
+   tratado na Fase 3c). .section-title → 6 seções plain (Ecosystem/Projects/
+   CodeInAction/Timeline/Services/Contact). font-family direto (--ff-* :root
+   quebra: next/font põe a var no <body>). */
+.about-section-title:not(.skills-wave-title),
+.section-title {
+  font-family: var(--font-archivo-black), var(--font-geist-sans), system-ui, sans-serif;
+  font-size: var(--text-h2);
+  line-height: 0.92;
+  letter-spacing: var(--tracking-tight);
+  text-transform: uppercase;
 }
 
 /* ── About manifesto quote · subtle pull-quote ── */

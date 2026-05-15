@@ -99,7 +99,7 @@ export function Contact() {
             </span>
           </motion.div>
 
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+          <h2 className="section-title text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
             {t("title")} <span className="gradient-text">{t("titleHighlight")}</span>
           </h2>
           <p className="contact-subtitle max-w-2xl mx-auto">
