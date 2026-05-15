@@ -23,14 +23,13 @@ type Props = { reducedMotion: boolean };
 // soju22 "Spheres" (CodePen MWyorNd) ported to R3F + cannon-es.
 // Transparent canvas (page bg shows). Colors → white ↔ light indigo.
 const C_WHITE = new Color("#ffffff");
-const C_INDIGO = new Color("#a5b4fc"); // indigo-300 · "indigo claro"
-const C_CENTER = new Color("#c7d2fe"); // indigo-200 · reads on dark AND off-white
+const C_INDIGO = new Color("#818cf8"); // indigo-400 · indigo de verdade (não lilás)
+const C_CENTER = new Color("#a5b4fc"); // indigo-300 · core indigo claro
 
 export function SpheresScene({ reducedMotion }: Props) {
   const camera = useThree((s) => s.camera);
   const viewport = useThree((s) => s.viewport);
   const rootRef = useRef<Group>(null);
-  const wallsRef = useRef<CANNON.Body[]>([]);
 
   const sim = useMemo(() => {
     const world = new CANNON.World();
@@ -44,7 +43,8 @@ export function SpheresScene({ reducedMotion }: Props) {
 
     // central sphere · KINEMATIC · the mouse moves THIS one; the small
     // spheres follow it (its position is their attraction target)
-    const centerGeo = new SphereGeometry(5, 48, 48);
+    const R_CENTER = 3.2; // menor (era 5 · estava gigante)
+    const centerGeo = new SphereGeometry(R_CENTER, 48, 48);
     // glossy realista · reflete o Environment (canvas transparente, sem bloom)
     const centerMat = new MeshStandardMaterial({
       color: C_CENTER,
@@ -59,7 +59,7 @@ export function SpheresScene({ reducedMotion }: Props) {
     const HOME_X = 13;
     const centerBody = new CANNON.Body({
       type: CANNON.Body.KINEMATIC,
-      shape: new CANNON.Sphere(5),
+      shape: new CANNON.Sphere(R_CENTER),
       position: new CANNON.Vec3(HOME_X, 0, 0),
     });
     world.addBody(centerBody);
@@ -88,22 +88,25 @@ export function SpheresScene({ reducedMotion }: Props) {
     for (let i = 0; i < COUNT; i++) {
       const px = (Math.random() - 0.5) * 40 + HOME_X;
       const py = (Math.random() - 0.5) * 40;
-      const pz = (Math.random() - 0.5) * 24;
+      // Z fino · todas começam perto do plano da bola central (mesma camada)
+      const pz = (Math.random() - 0.5) * 6;
       const s = 0.25 + Math.random() * 0.75;
       scales[i] = s;
       dummy.position.set(px, py, pz);
       dummy.scale.setScalar(s);
       dummy.updateMatrix();
       iMesh.setMatrixAt(i, dummy.matrix);
-      // white ↔ light indigo · biased toward white, some indigo
-      c.copy(C_WHITE).lerp(C_INDIGO, Math.pow(Math.random(), 1.4));
+      // white ↔ indigo · viés menor pro branco → mais indigo no mix
+      c.copy(C_WHITE).lerp(C_INDIGO, Math.pow(Math.random(), 0.95));
       colors[i * 3] = c.r; colors[i * 3 + 1] = c.g; colors[i * 3 + 2] = c.b;
       const body = new CANNON.Body({
         mass: s * 0.1,
         shape: new CANNON.Sphere(s),
         position: new CANNON.Vec3(px, py, pz),
-        linearDamping: 0.1,
-        angularDamping: 0.1,
+        // damping alto → assentam e DESCANSAM na superfície da bola grande
+        // (sem overshoot/órbita), formando uma casca densa que viaja junto
+        linearDamping: 0.55,
+        angularDamping: 0.55,
       });
       world.addBody(body);
       bodies.push(body);
@@ -112,7 +115,7 @@ export function SpheresScene({ reducedMotion }: Props) {
     geo.setAttribute("color", new InstancedBufferAttribute(colors, 3));
 
     const target = new CANNON.Vec3(HOME_X, 0, 0);
-    return { world, center, centerBody, iMesh, bodies, scales, dummy, target, HOME_X,
+    return { world, center, centerBody, iMesh, bodies, scales, dummy, target, HOME_X, R_CENTER,
       disposables: [centerGeo, centerMat, geo, mat] };
   }, []);
 
@@ -151,53 +154,35 @@ export function SpheresScene({ reducedMotion }: Props) {
     };
   }, [sim, reducedMotion]);
 
-  // collision walls bounding the visible canvas → spheres bounce back
-  // inside instead of being clipped at the hero edges (point 6)
-  useEffect(() => {
-    const w = sim.world;
-    wallsRef.current.forEach((b) => w.removeBody(b));
-    wallsRef.current = [];
-    const hw = viewport.width / 2;
-    const hh = viewport.height / 2;
-    if (!hw || !hh) return;
-    const inset = 2, t = 2, dz = 8;
-    const X = Math.max(4, hw - inset);
-    const Y = Math.max(4, hh - inset);
-    const defs: [[number, number, number], [number, number, number]][] = [
-      [[t, Y, dz], [-(X + t), 0, 0]],
-      [[t, Y, dz], [X + t, 0, 0]],
-      [[X, t, dz], [0, Y + t, 0]],
-      [[X, t, dz], [0, -(Y + t), 0]],
-      [[X, Y, t], [0, 0, dz + t]],
-      [[X, Y, t], [0, 0, -(dz + t)]],
-    ];
-    const made: CANNON.Body[] = [];
-    for (const [he, pos] of defs) {
-      const b = new CANNON.Body({
-        mass: 0,
-        shape: new CANNON.Box(new CANNON.Vec3(he[0], he[1], he[2])),
-        position: new CANNON.Vec3(pos[0], pos[1], pos[2]),
-      });
-      w.addBody(b);
-      made.push(b);
-    }
-    wallsRef.current = made;
-    return () => { made.forEach((b) => w.removeBody(b)); };
-  }, [sim, viewport.width, viewport.height]);
+  // (sem paredes · soju22 original não tem · TODA bolinha sempre busca a
+  // central → nenhuma fica presa/parada. A central é clampada na tela, então
+  // o cluster fica sempre visível sem precisar de bordas de colisão.)
 
   const raycaster = useMemo(() => new Raycaster(), []);
   const targetPlane = useMemo(() => new Plane(new Vector3(0, 0, 1), 0), []);
   const hitPt = useMemo(() => new Vector3(), []);
+  const prevP = useRef({ x: 0, y: 0 });
+  const lastMove = useRef(-999); // começa idle → gira ao juntar no load
 
   useFrame((state) => {
     if (reducedMotion) return;
+
+    // idle = mouse parado há >0.7s (já se juntaram) → cluster gira sozinho;
+    // qualquer movimento do mouse zera e ele volta a seguir o cursor
+    const t = state.clock.elapsedTime;
+    const px = state.pointer.x, py = state.pointer.y;
+    if (Math.abs(px - prevP.current.x) > 1e-4 || Math.abs(py - prevP.current.y) > 1e-4) {
+      lastMove.current = t;
+    }
+    prevP.current.x = px; prevP.current.y = py;
+    const idle = t - lastMove.current > 0.7;
 
     // 1 · mouse → raw 3D point on z=0 plane
     raycaster.setFromCamera(state.pointer, camera);
     if (raycaster.ray.intersectPlane(targetPlane, hitPt)) {
       // keep the BIG sphere (r=5) inside the walls
-      const lx = Math.max(0, viewport.width / 2 - 2 - 5);
-      const ly = Math.max(0, viewport.height / 2 - 2 - 5);
+      const lx = Math.max(0, viewport.width / 2 - 2 - sim.R_CENTER);
+      const ly = Math.max(0, viewport.height / 2 - 2 - sim.R_CENTER);
       // idle (mouse não mexeu) → repousa à DIREITA; ao mover, segue o cursor
       // por toda a tela (passa por cima/atrás do título à esquerda)
       const moved = state.pointer.x !== 0 || state.pointer.y !== 0;
@@ -209,7 +194,9 @@ export function SpheresScene({ reducedMotion }: Props) {
       //     small ones via collision). velocity = lerp delta per step.
       const cb = sim.centerBody;
       const dx = mx - cb.position.x, dy = my - cb.position.y, dz = 0 - cb.position.z;
-      cb.velocity.set(dx * 0.12 * 60, dy * 0.12 * 60, dz * 0.12 * 60);
+      // glide mais suave (0.085) → a grande não foge do enxame; as pequenas
+      // alcançam e DESCANSAM nela, viajando juntas como uma bola só
+      cb.velocity.set(dx * 0.085 * 60, dy * 0.085 * 60, dz * 0.085 * 60);
       // small spheres are attracted to the BIG sphere → they follow it
       sim.target.set(cb.position.x, cb.position.y, cb.position.z);
     }
@@ -219,8 +206,22 @@ export function SpheresScene({ reducedMotion }: Props) {
       const b = sim.bodies[i];
       const dx = tg.x - b.position.x, dy = tg.y - b.position.y, dz = tg.z - b.position.z;
       const len = Math.hypot(dx, dy, dz) || 1;
-      // normalized attraction toward the big sphere (soju22 · 0.62)
-      b.force.set((dx / len) * 0.62, (dy / len) * 0.62, (dz / len) * 0.62);
+      // força proporcional à distância (mola): forte longe → arranca as
+      // presas em parede; suave perto → descansam na superfície da grande
+      // sem tremer. clamp evita explosão. TODAS acabam empacotadas nela.
+      const f = Math.min(3.2, Math.max(0.7, len * 0.22));
+      let fx = (dx / len) * f, fy = (dy / len) * f;
+      const fz = (dz / len) * f;
+      if (idle) {
+        // spin MÍNIMO · tangencial bem menor que a atração radial → as
+        // bolinhas ficam GRUDADAS na central e o conjunto só roda devagar
+        // (não vira anel solto)
+        const xy = Math.hypot(dx, dy) || 1;
+        const spin = 0.12;
+        fx += (-dy / xy) * spin;
+        fy += (dx / xy) * spin;
+      }
+      b.force.set(fx, fy, fz);
     }
     sim.world.step(1 / 60);
 
