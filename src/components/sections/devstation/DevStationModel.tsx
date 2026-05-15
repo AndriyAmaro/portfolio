@@ -17,6 +17,7 @@ import {
   CanvasTexture,
   SRGBColorSpace,
   AdditiveBlending,
+  NormalBlending,
   BackSide,
   Plane,
   Vector3,
@@ -36,6 +37,8 @@ export type ScenePalette = {
   glassColor: number;
   glassOpacity: number;
   haloOpacity: number;
+  lineOpacity: number;
+  additive: boolean;
   keyDark: number;
 };
 
@@ -191,13 +194,14 @@ export function DevStationModel({ reducedMotion, palette }: Props) {
       [[0, 0.5, 0], [-Math.PI / 2, 0, 0]], [[0, -0.5, 0], [Math.PI / 2, 0, 0]],
     ];
     const cache: Record<string, { line: LineBasicMaterial; face: MeshBasicMaterial; halo: MeshBasicMaterial; tex: CanvasTexture }> = {};
+    const blend = palette.additive ? AdditiveBlending : NormalBlending;
     const assets = (te: (typeof TECHS)[number]) => {
       if (cache[te.l]) return cache[te.l];
       const tex = makeLogoTexture(te.p, te.c);
       cache[te.l] = {
-        line: new LineBasicMaterial({ color: te.c, transparent: true, opacity: 0.6, blending: AdditiveBlending, depthWrite: false }),
+        line: new LineBasicMaterial({ color: te.c, transparent: true, opacity: palette.lineOpacity, blending: blend, depthWrite: false }),
         face: new MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false, toneMapped: false }),
-        halo: new MeshBasicMaterial({ color: te.c, transparent: true, opacity: palette.haloOpacity, blending: AdditiveBlending, depthWrite: false }),
+        halo: new MeshBasicMaterial({ color: te.c, transparent: true, opacity: palette.haloOpacity, blending: blend, depthWrite: false }),
         tex,
       };
       return cache[te.l];
@@ -248,7 +252,7 @@ export function DevStationModel({ reducedMotion, palette }: Props) {
       ...Object.values(cache).flatMap((c) => [c.line, c.face, c.halo, c.tex])];
 
     return { world, cubes, target, disposables };
-  }, [palette.glassColor, palette.glassOpacity, palette.haloOpacity]);
+  }, [palette.glassColor, palette.glassOpacity, palette.haloOpacity, palette.lineOpacity, palette.additive]);
 
   // ---- macbook GLB (white) ----
   const macParts = useMemo(() => {
@@ -316,6 +320,22 @@ export function DevStationModel({ reducedMotion, palette }: Props) {
       macParts.macGroup.scale.setScalar(0.36);
       macParts.lidGroup.rotation.x = -0.2 * Math.PI;
       macParts.scrMat.opacity = 0.98;
+      // pre-settle physics into a composed static cluster, then freeze
+      const tg = sim.target;
+      for (let s = 0; s < 160; s++) {
+        for (const { body } of sim.cubes) {
+          const dx = tg.x - body.position.x;
+          const dy = tg.y - body.position.y;
+          const dz = tg.z - body.position.z;
+          const len = Math.hypot(dx, dy, dz) || 1;
+          body.force.set((dx / len) * 0.5, (dy / len) * 0.5, (dz / len) * 0.5);
+        }
+        sim.world.step(1 / 60);
+      }
+      for (const { g, body } of sim.cubes) {
+        g.position.set(body.position.x, body.position.y, body.position.z);
+        g.quaternion.set(body.quaternion.x, body.quaternion.y, body.quaternion.z, body.quaternion.w);
+      }
     } else {
       macParts.macGroup.scale.setScalar(0.0001);
       tweens = [

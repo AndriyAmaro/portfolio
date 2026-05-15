@@ -5572,9 +5572,8 @@ section#skills,
 .devstation-stack {
   position: relative;
   width: 100%;
-  height: 78vh;
-  min-height: 600px;
-  max-height: 820px;
+  /* svh: stable across mobile toolbar show/hide (no layout jump) */
+  height: clamp(520px, 78svh, 820px);
   overflow: hidden;
   background: radial-gradient(ellipse at center, #060a18 0%, #030610 60%, #010308 100%);
   border-radius: 28px;
@@ -5582,6 +5581,13 @@ section#skills,
 }
 .light-mode .devstation-stack {
   background: radial-gradient(ellipse at center, #f3f6fb 0%, #e8eef6 60%, #dde5ee 100%);
+}
+@media (width <= 640px) {
+  .devstation-stack {
+    height: clamp(440px, 64svh, 600px);
+    border-radius: 20px;
+    margin-bottom: 36px;
+  }
 }
 
 .devstation-bg-grid {

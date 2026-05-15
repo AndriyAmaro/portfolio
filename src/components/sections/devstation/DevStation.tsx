@@ -41,24 +41,12 @@ export function DevStation() {
       </div>
 
       <div className="devstation-ui">
+        {/* Title/subtitle live in the Skills section header (WaveLetters H2) ·
+            keep only the eyebrow chrome here to avoid a duplicate heading */}
         <header className="devstation-header">
           <div className="devstation-eyebrow-row">
             <span className="devstation-eyebrow-bar" aria-hidden />
             <span className="devstation-eyebrow">{t("eyebrow")}</span>
-          </div>
-          <h2 className="devstation-title">
-            <span className="devstation-title-line">{t("titleLine1")}</span>
-            <span className="devstation-title-gradient">{t("titleLine2")}</span>
-          </h2>
-          <p className="devstation-subtitle">{t("subtitle")}</p>
-          <div className="devstation-status">
-            <span className="devstation-dot" aria-hidden />
-            <span className="devstation-status-text">{t("status")}</span>
-            <span className="devstation-divider" aria-hidden>|</span>
-            <span className="devstation-code">
-              console.log(&apos;{t("ready")}&apos;)
-              <span className="devstation-cursor" aria-hidden />
-            </span>
           </div>
         </header>
 

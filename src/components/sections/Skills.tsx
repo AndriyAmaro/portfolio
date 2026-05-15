@@ -467,11 +467,12 @@ export function Skills() {
           </p>
         </motion.div>
 
-        {/* 3D hero em desenvolvimento · oculto até finalizar */}
         {false && <ConstellationStack />}
-        {false && <DevStation />}
 
-        {/* Devin-style scroll-driven carousel · Frontend / Backend / DevOps */}
+        {/* 3D hero · laptop branco + cubos de vidro com logo (cannon-es physics) */}
+        <DevStation />
+
+        {/* Devin-style scroll-driven carousel · abaixo do hero */}
         <SkillsDevinCarousel />
 
         {/* AI badge */}
