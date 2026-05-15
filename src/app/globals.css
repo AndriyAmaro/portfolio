@@ -5627,6 +5627,28 @@ section#skills,
  * DevStation · Notebook Holographic Spatial UI
  * Apple Vision Pro / Blade Runner 2049 standard
  * ───────────────────────────────────────────────────────────── */
+/* ===== SKILL SPHERES (soju22 physics · transparent · page bg) ===== */
+.spheres-stack {
+  position: relative;
+  width: 100%;
+  /* sem background · usa o fundo da page (dark #16132d / off-white) */
+  height: clamp(520px, 78svh, 820px);
+  overflow: hidden;
+  margin-bottom: 56px;
+}
+@media (width <= 640px) {
+  .spheres-stack {
+    height: clamp(440px, 62svh, 600px);
+    margin-bottom: 36px;
+  }
+}
+.spheres-stack canvas,
+.spheres-canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
 .devstation-stack {
   position: relative;
   width: 100%;

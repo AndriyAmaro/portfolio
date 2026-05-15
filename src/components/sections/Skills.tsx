@@ -15,6 +15,7 @@ import { useTranslations } from "next-intl";
 import { skillCategories as importedSkills } from "@/data/skills";
 import { SkillsDevinCarousel } from "./SkillsDevinCarousel";
 import { ConstellationStack } from "./constellation-stack/ConstellationStack";
+import { SkillSpheres } from "./skill-spheres/SkillSpheres";
 import { LogoScroller } from "./LogoScroller";
 
 // ---------------------------------------------------------------------------
@@ -468,7 +469,10 @@ export function Skills() {
 
         {false && <ConstellationStack />}
 
-        {/* 3D hero removido · nova animação a definir */}
+        {/* 3D hero · soju22 spheres physics · transparent (page bg) */}
+        <SkillSpheres />
+
+        {/* Devin-style scroll-driven carousel · abaixo do hero */}
         <SkillsDevinCarousel />
 
         {/* AI badge */}
