@@ -5627,26 +5627,43 @@ section#skills,
  * DevStation · Notebook Holographic Spatial UI
  * Apple Vision Pro / Blade Runner 2049 standard
  * ───────────────────────────────────────────────────────────── */
-/* ===== SKILL SPHERES (soju22 physics · transparent · page bg) ===== */
-.spheres-stack {
+/* ===== SKILL SPHERES HERO · cluster ATRÁS do título (ref soju22) ===== */
+.skills-hero {
   position: relative;
-  width: 100%;
-  /* sem background · usa o fundo da page (dark #16132d / off-white) */
-  height: clamp(520px, 78svh, 820px);
-  overflow: hidden;
+  display: grid;
+  place-items: center;
+  min-height: clamp(560px, 82svh, 880px);
   margin-bottom: 56px;
+  isolation: isolate;
 }
 @media (width <= 640px) {
-  .spheres-stack {
-    height: clamp(440px, 62svh, 600px);
+  .skills-hero {
+    min-height: clamp(460px, 70svh, 640px);
     margin-bottom: 36px;
   }
+}
+/* spheres = backdrop absoluto · sem background (usa o fundo da page) */
+.spheres-stack {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
 }
 .spheres-stack canvas,
 .spheres-canvas {
   width: 100% !important;
   height: 100% !important;
   display: block;
+}
+/* título/badge/subtitle por cima · pointer-events-none → mouse chega nas
+   esferas (efeito "mover e as outras seguem" funciona atrás do texto) */
+.skills-hero__content {
+  position: relative;
+  z-index: 10;
+  pointer-events: none;
+  grid-area: 1 / 1;
+  width: 100%;
+  padding-inline: 1rem;
 }
 
 .devstation-stack {

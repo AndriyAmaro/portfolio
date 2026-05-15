@@ -38,7 +38,13 @@ export function SpheresScene({ reducedMotion }: Props) {
 
     // central sphere · static collider (radius 5), light indigo
     const centerGeo = new SphereGeometry(5, 32, 32);
-    const centerMat = new MeshPhongMaterial({ color: C_CENTER, shininess: 30 });
+    // glowing core (echoes the reference's luminous center sphere)
+    const centerMat = new MeshPhongMaterial({
+      color: C_CENTER,
+      emissive: new Color("#818cf8"),
+      emissiveIntensity: 0.55,
+      shininess: 30,
+    });
     const center = new Mesh(centerGeo, centerMat);
     center.receiveShadow = true;
     world.addBody(

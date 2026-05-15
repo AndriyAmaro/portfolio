@@ -436,41 +436,41 @@ export function Skills() {
   return (
     <section id="skills" className="relative py-24 md:py-32">
       <div className="container-custom relative z-10">
-        {/* Header with radial burst */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
+        {/* Skills hero · título SOBRE o cluster de esferas (ref soju22) */}
+        <div className="skills-hero">
+          <SkillSpheres />
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 mb-6"
+            transition={{ duration: 0.5 }}
+            className="skills-hero__content text-center"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
-            <span className="text-xs font-medium text-indigo-300">{t("badge")}</span>
-          </motion.div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 mb-6"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
+              <span className="text-xs font-medium text-indigo-300">{t("badge")}</span>
+            </motion.div>
 
-          {/* Title with radial burst effect */}
-          <div className="relative">
-            <TitleBurst />
-            <h2 className="about-section-title text-5xl md:text-7xl lg:text-8xl font-extrabold mb-6 tracking-tight leading-none relative z-10 skills-wave-title">
-              <WaveLetters text={t("title")} />{" "}
-              <WaveLetters text={t("titleHighlight")} highlight />
-            </h2>
-          </div>
-          <p className="skills-subtitle max-w-2xl mx-auto text-base md:text-lg">
-            {t("subtitle")}
-          </p>
-        </motion.div>
+            {/* Title with radial burst effect */}
+            <div className="relative">
+              <TitleBurst />
+              <h2 className="about-section-title text-5xl md:text-7xl lg:text-8xl font-extrabold mb-6 tracking-tight leading-none relative z-10 skills-wave-title">
+                <WaveLetters text={t("title")} />{" "}
+                <WaveLetters text={t("titleHighlight")} highlight />
+              </h2>
+            </div>
+            <p className="skills-subtitle max-w-2xl mx-auto text-base md:text-lg">
+              {t("subtitle")}
+            </p>
+          </motion.div>
+        </div>
 
         {false && <ConstellationStack />}
-
-        {/* 3D hero · soju22 spheres physics · transparent (page bg) */}
-        <SkillSpheres />
 
         {/* Devin-style scroll-driven carousel · abaixo do hero */}
         <SkillsDevinCarousel />
