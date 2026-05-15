@@ -7,7 +7,7 @@ import {
   Mesh,
   InstancedMesh,
   SphereGeometry,
-  MeshPhongMaterial,
+  MeshStandardMaterial,
   InstancedBufferAttribute,
   Color,
   Object3D,
@@ -37,13 +37,15 @@ export function SpheresScene({ reducedMotion }: Props) {
     (world.solver as CANNON.GSSolver).iterations = 20;
 
     // central sphere · static collider (radius 5), light indigo
-    const centerGeo = new SphereGeometry(5, 32, 32);
-    // glowing core (echoes the reference's luminous center sphere)
-    const centerMat = new MeshPhongMaterial({
+    const centerGeo = new SphereGeometry(5, 48, 48);
+    // glowing glossy core (echoes the reference's luminous center sphere)
+    const centerMat = new MeshStandardMaterial({
       color: C_CENTER,
       emissive: new Color("#818cf8"),
-      emissiveIntensity: 0.55,
-      shininess: 30,
+      emissiveIntensity: 0.6,
+      roughness: 0.22,
+      metalness: 0.0,
+      envMapIntensity: 1.0,
     });
     const center = new Mesh(centerGeo, centerMat);
     center.receiveShadow = true;
@@ -53,8 +55,15 @@ export function SpheresScene({ reducedMotion }: Props) {
 
     // 200 instanced spheres
     const COUNT = (typeof window !== "undefined" && window.innerWidth < 768) ? 110 : 200;
-    const geo = new SphereGeometry(1, 16, 16);
-    const mat = new MeshPhongMaterial({ color: 0xffffff, vertexColors: true, shininess: 40 });
+    const geo = new SphereGeometry(1, 24, 24);
+    // glossy plastic · reflects the Environment map → crisp, very 3D
+    const mat = new MeshStandardMaterial({
+      color: 0xffffff,
+      vertexColors: true,
+      roughness: 0.16,
+      metalness: 0.0,
+      envMapIntensity: 1.2,
+    });
     const iMesh = new InstancedMesh(geo, mat, COUNT);
     iMesh.instanceMatrix.setUsage(DynamicDrawUsage);
     iMesh.castShadow = true;
@@ -148,8 +157,9 @@ export function SpheresScene({ reducedMotion }: Props) {
       const b = sim.bodies[i];
       const dx = tg.x - b.position.x, dy = tg.y - b.position.y, dz = tg.z - b.position.z;
       const len = Math.hypot(dx, dy, dz) || 1;
-      // soju22: dir.normalize() * 0.5, clamped [-0.5, 0.5]
-      b.force.set((dx / len) * 0.5, (dy / len) * 0.5, (dz / len) * 0.5);
+      // soju22 normalized attraction · bumped to 0.62 so the swarm chases
+      // the cursor more eagerly (mouse clearly moves the spheres)
+      b.force.set((dx / len) * 0.62, (dy / len) * 0.62, (dz / len) * 0.62);
     }
     sim.world.step(1 / 60);
 

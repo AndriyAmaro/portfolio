@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, Environment } from "@react-three/drei";
 import { useReducedMotion } from "framer-motion";
 import { Suspense } from "react";
 import { SpheresScene } from "./SpheresScene";
@@ -22,6 +22,13 @@ export function SpheresCanvas({ paused = false }: Props) {
       shadows
       aria-hidden
     >
+      {/* Environment map · reflections that make the spheres look glossy /
+         very 3D (like the reference). background={false} = canvas stays
+         transparent (page bg shows through). */}
+      <Suspense fallback={null}>
+        <Environment preset="studio" background={false} environmentIntensity={0.9} />
+      </Suspense>
+
       {/* No white scene.background (transparent) → compensate with strong
          lighting so the white / light-indigo spheres read on the page bg */}
       <ambientLight intensity={1.15} color="#ffffff" />

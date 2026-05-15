@@ -5632,13 +5632,17 @@ section#skills,
   position: relative;
   display: grid;
   place-items: center;
-  min-height: clamp(560px, 82svh, 880px);
+  min-height: 100svh; /* full view */
+  /* full-bleed · quebra o .container-custom até a borda da página */
+  width: 100vw;
+  max-width: 100vw;
+  margin-inline: calc(50% - 50vw);
   margin-bottom: 56px;
   isolation: isolate;
 }
 @media (width <= 640px) {
   .skills-hero {
-    min-height: clamp(460px, 70svh, 640px);
+    min-height: 92svh;
     margin-bottom: 36px;
   }
 }
