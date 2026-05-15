@@ -26,7 +26,7 @@ export function SpheresCanvas({ paused = false }: Props) {
          very 3D (like the reference). background={false} = canvas stays
          transparent (page bg shows through). */}
       <Suspense fallback={null}>
-        <Environment preset="studio" background={false} environmentIntensity={0.9} />
+        <Environment preset="studio" background={false} environmentIntensity={1.15} />
       </Suspense>
 
       {/* No white scene.background (transparent) → compensate with strong

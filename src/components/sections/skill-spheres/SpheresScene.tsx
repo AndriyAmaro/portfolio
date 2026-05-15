@@ -36,33 +36,37 @@ export function SpheresScene({ reducedMotion }: Props) {
     world.broadphase = new CANNON.NaiveBroadphase();
     (world.solver as CANNON.GSSolver).iterations = 20;
 
-    // central sphere · static collider (radius 5), light indigo
+    // central sphere · KINEMATIC · the mouse moves THIS one; the small
+    // spheres follow it (its position is their attraction target)
     const centerGeo = new SphereGeometry(5, 48, 48);
-    // glowing glossy core (echoes the reference's luminous center sphere)
     const centerMat = new MeshStandardMaterial({
       color: C_CENTER,
       emissive: new Color("#818cf8"),
-      emissiveIntensity: 0.6,
-      roughness: 0.22,
-      metalness: 0.0,
-      envMapIntensity: 1.0,
+      emissiveIntensity: 0.65,
+      roughness: 0.13,
+      metalness: 0.05,
+      envMapIntensity: 1.5,
     });
     const center = new Mesh(centerGeo, centerMat);
+    center.castShadow = true;
     center.receiveShadow = true;
-    world.addBody(
-      new CANNON.Body({ mass: 0, shape: new CANNON.Sphere(5), position: new CANNON.Vec3(0, 0, 0) })
-    );
+    const centerBody = new CANNON.Body({
+      type: CANNON.Body.KINEMATIC,
+      shape: new CANNON.Sphere(5),
+      position: new CANNON.Vec3(0, 0, 0),
+    });
+    world.addBody(centerBody);
 
     // 200 instanced spheres
     const COUNT = (typeof window !== "undefined" && window.innerWidth < 768) ? 110 : 200;
-    const geo = new SphereGeometry(1, 24, 24);
-    // glossy plastic · reflects the Environment map → crisp, very 3D
+    const geo = new SphereGeometry(1, 32, 32);
+    // glossy lacquer · sharp reflections off the Environment → very crisp 3D
     const mat = new MeshStandardMaterial({
       color: 0xffffff,
       vertexColors: true,
-      roughness: 0.16,
-      metalness: 0.0,
-      envMapIntensity: 1.2,
+      roughness: 0.11,
+      metalness: 0.05,
+      envMapIntensity: 1.55,
     });
     const iMesh = new InstancedMesh(geo, mat, COUNT);
     iMesh.instanceMatrix.setUsage(DynamicDrawUsage);
@@ -101,7 +105,7 @@ export function SpheresScene({ reducedMotion }: Props) {
     geo.setAttribute("color", new InstancedBufferAttribute(colors, 3));
 
     const target = new CANNON.Vec3(0, 0, 0);
-    return { world, center, iMesh, bodies, scales, dummy, target,
+    return { world, center, centerBody, iMesh, bodies, scales, dummy, target,
       disposables: [centerGeo, centerMat, geo, mat] };
   }, []);
 
@@ -147,9 +151,18 @@ export function SpheresScene({ reducedMotion }: Props) {
   useFrame((state) => {
     if (reducedMotion) return;
 
+    // 1 · mouse → raw 3D point on z=0 plane
     raycaster.setFromCamera(state.pointer, camera);
     if (raycaster.ray.intersectPlane(targetPlane, hitPt)) {
-      sim.target.set(hitPt.x, hitPt.y, 0);
+      const mx = Math.max(-22, Math.min(22, hitPt.x));
+      const my = Math.max(-15, Math.min(15, hitPt.y));
+      // 2 · the BIG sphere glides toward the cursor (kinematic · pushes the
+      //     small ones via collision). velocity = lerp delta per step.
+      const cb = sim.centerBody;
+      const dx = mx - cb.position.x, dy = my - cb.position.y, dz = 0 - cb.position.z;
+      cb.velocity.set(dx * 0.12 * 60, dy * 0.12 * 60, dz * 0.12 * 60);
+      // small spheres are attracted to the BIG sphere → they follow it
+      sim.target.set(cb.position.x, cb.position.y, cb.position.z);
     }
 
     const tg = sim.target;
@@ -157,11 +170,15 @@ export function SpheresScene({ reducedMotion }: Props) {
       const b = sim.bodies[i];
       const dx = tg.x - b.position.x, dy = tg.y - b.position.y, dz = tg.z - b.position.z;
       const len = Math.hypot(dx, dy, dz) || 1;
-      // soju22 normalized attraction · bumped to 0.62 so the swarm chases
-      // the cursor more eagerly (mouse clearly moves the spheres)
+      // normalized attraction toward the big sphere (soju22 · 0.62)
       b.force.set((dx / len) * 0.62, (dy / len) * 0.62, (dz / len) * 0.62);
     }
     sim.world.step(1 / 60);
+
+    // big sphere mesh follows its body
+    sim.center.position.set(
+      sim.centerBody.position.x, sim.centerBody.position.y, sim.centerBody.position.z
+    );
 
     for (let i = 0; i < sim.bodies.length; i++) {
       const b = sim.bodies[i];
