@@ -54,7 +54,8 @@
 /* ===== LIGHT MODE ===== */
 .light-mode,
 html.light-mode {
-  --background: #ffffff;
+  /* Fase 2 · off-white quente do agency Ref 1 (era #ffffff) */
+  --background: oklch(96% 0.005 90);
   --foreground: #0a0a0a;
 
   /* Primary colors */
