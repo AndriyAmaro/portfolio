@@ -7,7 +7,7 @@ import {
   Mesh,
   InstancedMesh,
   SphereGeometry,
-  MeshPhongMaterial,
+  MeshStandardMaterial,
   InstancedBufferAttribute,
   Color,
   Object3D,
@@ -37,19 +37,20 @@ export function SpheresScene({ reducedMotion }: Props) {
     world.gravity.set(0, 0, 0);
     world.broadphase = new CANNON.NaiveBroadphase();
     (world.solver as CANNON.GSSolver).iterations = 20;
-    // spheres bounce off the walls + each other (point 6)
-    world.defaultContactMaterial.restitution = 0.7;
+    // soju22 original · SEM ricochete → aglomerado coeso que segue a bola
+    // grande (as paredes só contêm; a atração puxa tudo de volta)
+    world.defaultContactMaterial.restitution = 0.0;
     world.defaultContactMaterial.friction = 0.0;
 
     // central sphere · KINEMATIC · the mouse moves THIS one; the small
     // spheres follow it (its position is their attraction target)
     const centerGeo = new SphereGeometry(5, 48, 48);
-    // fiel ao soju22 · MeshPhong plástico (original era branco · aqui indigo
-    // claro p/ a marca · sem emissive = esfera realista, não lâmpada)
-    const centerMat = new MeshPhongMaterial({
+    // glossy realista · reflete o Environment (canvas transparente, sem bloom)
+    const centerMat = new MeshStandardMaterial({
       color: C_CENTER,
-      specular: new Color("#ffffff"),
-      shininess: 55,
+      roughness: 0.18,
+      metalness: 0.0,
+      envMapIntensity: 1.1,
     });
     const center = new Mesh(centerGeo, centerMat);
     center.castShadow = true;
@@ -66,13 +67,13 @@ export function SpheresScene({ reducedMotion }: Props) {
     // 200 instanced spheres
     const COUNT = (typeof window !== "undefined" && window.innerWidth < 768) ? 110 : 200;
     const geo = new SphereGeometry(1, 32, 32);
-    // fiel ao soju22 · MeshPhong vertexColors (branco↔indigo) · highlight
-    // especular + sombras suaves entre esferas = o 3D realista do original
-    const mat = new MeshPhongMaterial({
+    // glossy realista · vertexColors (branco↔indigo) reflete o Environment
+    const mat = new MeshStandardMaterial({
       color: 0xffffff,
       vertexColors: true,
-      specular: new Color("#9aa0c8"),
-      shininess: 42,
+      roughness: 0.16,
+      metalness: 0.0,
+      envMapIntensity: 1.2,
     });
     const iMesh = new InstancedMesh(geo, mat, COUNT);
     iMesh.instanceMatrix.setUsage(DynamicDrawUsage);

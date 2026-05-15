@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, Environment } from "@react-three/drei";
 import { useReducedMotion } from "framer-motion";
 import { Suspense } from "react";
 import { SpheresScene } from "./SpheresScene";
@@ -22,34 +22,27 @@ export function SpheresCanvas({ paused = false }: Props) {
       shadows
       aria-hidden
     >
-      {/* Recipe fiel ao soju22 original (MeshPhong + ambient cinza + 2
-         spotlights com shadow). Sem env map, sem bloom → 3D realista com
-         sombras suaves entre as esferas. O hemisphere substitui o bounce
-         do scene.background branco do original (mantemos transparente). */}
-      <ambientLight intensity={2.1} color="#808080" />
-      <hemisphereLight intensity={1.7} color="#ffffff" groundColor="#cbd5ff" />
+      {/* Environment (background:false → canvas SEGUE transparente) dá os
+         reflexos realistas; sem bloom/composer = transparência limpa.
+         Luz ambiente baixa (não lavar) + 1 key com sombra suave entre
+         esferas (3D do original) + rim indigo sutil. */}
+      <Suspense fallback={null}>
+        <Environment preset="city" background={false} environmentIntensity={1.0} />
+      </Suspense>
+
+      <ambientLight intensity={0.35} color="#ffffff" />
       <spotLight
-        position={[0, 20, 50]}
-        angle={Math.PI / 8}
-        penumbra={0.1}
-        intensity={650}
+        position={[6, 18, 30]}
+        angle={Math.PI / 6}
+        penumbra={0.35}
+        intensity={520}
         color="#ffffff"
         castShadow
         shadow-mapSize-width={2048}
         shadow-mapSize-height={2048}
         shadow-bias={-0.0005}
       />
-      <spotLight
-        position={[0, -20, 50]}
-        angle={Math.PI / 8}
-        penumbra={0.1}
-        intensity={360}
-        color="#a5b4fc"
-        castShadow
-        shadow-mapSize-width={2048}
-        shadow-mapSize-height={2048}
-        shadow-bias={-0.0005}
-      />
+      <pointLight position={[-14, -8, 18]} intensity={120} color="#a5b4fc" />
 
       <Suspense fallback={null}>
         <SpheresScene reducedMotion={!!prefersReduced} />
