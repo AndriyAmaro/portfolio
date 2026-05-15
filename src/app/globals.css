@@ -4286,6 +4286,11 @@ section#skills,
 .skills-wave-title {
   /* Allow letters to overflow horizontally without clipping the heading box */
   overflow: visible;
+  /* Fase 3c · mesma fonte editorial das outras (Archivo Black) mantendo a
+     extrusão 3D + wave + highlight indigo dos .wave-letter abaixo */
+  font-family: var(--font-archivo-black), var(--font-geist-sans), system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-tight);
 }
 .skills-wave-title .wave-word {
   display: inline-block;
