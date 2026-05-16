@@ -9,6 +9,8 @@ import {
   SphereGeometry,
   MeshStandardMaterial,
   InstancedBufferAttribute,
+  CanvasTexture,
+  SRGBColorSpace,
   Color,
   Object3D,
   Plane,
@@ -18,7 +20,43 @@ import {
 } from "three";
 import * as CANNON from "cannon-es";
 
+import {
+  ReactLogo,
+  TypeScriptLogo,
+  TailwindLogo,
+  TanStackLogo,
+  ZodLogo,
+} from "../frontend-card/BrandLogos";
+import {
+  NodejsLogo,
+  HonoLogo,
+  PrismaLogo,
+  PostgresLogo,
+  RedisLogo,
+  StripeLogo,
+} from "../backend-card/BackendBrandLogos";
+import {
+  DockerLogo,
+  CloudflareR2Logo,
+  RailwayLogo,
+  PnpmLogo,
+  VitestLogo,
+} from "../devops-card/DevOpsBrandLogos";
+
 type Props = { reducedMotion: boolean };
+
+// Logos das stacks · desenhados num atlas e aplicados como decal 3D só nas
+// esferas grandes+médias (não quebra cor/efeito · vertexColors continua).
+// 16 marcas com fill de cor explícito (legíveis sobre branco/indigo).
+const LOGOS: React.FC<{ size?: number }>[] = [
+  ReactLogo, TypeScriptLogo, TailwindLogo, TanStackLogo,
+  ZodLogo, NodejsLogo, HonoLogo, PrismaLogo,
+  PostgresLogo, RedisLogo, StripeLogo, DockerLogo,
+  CloudflareR2Logo, RailwayLogo, PnpmLogo, VitestLogo,
+];
+const ATLAS_COLS = 4;
+const ATLAS_ROWS = 4;
+const ATLAS_CELL = 256; // px por célula → atlas 1024²
 
 // soju22 "Spheres" (CodePen MWyorNd) ported to R3F + cannon-es.
 // Transparent canvas (page bg shows). Colors → white ↔ light indigo.
@@ -75,6 +113,50 @@ export function SpheresScene({ reducedMotion }: Props) {
       metalness: 0.0,
       envMapIntensity: 1.2,
     });
+
+    // atlas de logos (preenchido async num useEffect) · decal só na "frente"
+    // (hemisfério +Z local) das esferas com aLogo >= 0 · NÃO altera a cor da
+    // esfera fora do logo (mantém vertexColors branco↔indigo + o efeito)
+    const atlasCanvas = document.createElement("canvas");
+    atlasCanvas.width = ATLAS_COLS * ATLAS_CELL;
+    atlasCanvas.height = ATLAS_ROWS * ATLAS_CELL;
+    const atlasTex = new CanvasTexture(atlasCanvas);
+    atlasTex.colorSpace = SRGBColorSpace;
+    mat.onBeforeCompile = (shader) => {
+      shader.uniforms.uLogoAtlas = { value: atlasTex };
+      shader.uniforms.uAtlasCols = { value: ATLAS_COLS };
+      shader.uniforms.uAtlasRows = { value: ATLAS_ROWS };
+      shader.vertexShader = shader.vertexShader
+        .replace(
+          "#include <common>",
+          "#include <common>\nattribute float aLogo;\nvarying float vLogo;\nvarying vec3 vObjNorm;"
+        )
+        .replace(
+          "#include <begin_vertex>",
+          "#include <begin_vertex>\nvLogo = aLogo;\nvObjNorm = normalize(normal);"
+        );
+      shader.fragmentShader = shader.fragmentShader
+        .replace(
+          "#include <common>",
+          "#include <common>\nuniform sampler2D uLogoAtlas;\nuniform float uAtlasCols;\nuniform float uAtlasRows;\nvarying float vLogo;\nvarying vec3 vObjNorm;"
+        )
+        .replace(
+          "#include <map_fragment>",
+          `#include <map_fragment>
+          if (vLogo > -0.5 && vObjNorm.z > 0.02) {
+            vec2 luv = vObjNorm.xy * 0.66 + 0.5;
+            if (luv.x > 0.001 && luv.x < 0.999 && luv.y > 0.001 && luv.y < 0.999) {
+              float lc = mod(vLogo, uAtlasCols);
+              float lr = floor(vLogo / uAtlasCols);
+              vec2 cell = (vec2(lc, lr) + vec2(luv.x, 1.0 - luv.y)) / vec2(uAtlasCols, uAtlasRows);
+              vec4 lg = texture2D(uLogoAtlas, cell);
+              float edge = smoothstep(0.02, 0.32, vObjNorm.z);
+              diffuseColor.rgb = mix(diffuseColor.rgb, lg.rgb, lg.a * edge);
+            }
+          }`
+        );
+    };
+
     const iMesh = new InstancedMesh(geo, mat, COUNT);
     iMesh.instanceMatrix.setUsage(DynamicDrawUsage);
     iMesh.castShadow = true;
@@ -83,8 +165,10 @@ export function SpheresScene({ reducedMotion }: Props) {
     const dummy = new Object3D();
     const scales = new Float32Array(COUNT);
     const colors = new Float32Array(COUNT * 3);
+    const logoIdx = new Float32Array(COUNT);
     const bodies: CANNON.Body[] = [];
     const c = new Color();
+    let logoCursor = 0;
     for (let i = 0; i < COUNT; i++) {
       const px = (Math.random() - 0.5) * 40 + HOME_X;
       const py = (Math.random() - 0.5) * 40;
@@ -92,6 +176,8 @@ export function SpheresScene({ reducedMotion }: Props) {
       const pz = (Math.random() - 0.5) * 6;
       const s = 0.25 + Math.random() * 0.75;
       scales[i] = s;
+      // logo só nas grandes+médias (s >= 0.5) · pequenas = -1 (sem logo)
+      logoIdx[i] = s >= 0.5 ? (logoCursor++ % LOGOS.length) : -1;
       dummy.position.set(px, py, pz);
       dummy.scale.setScalar(s);
       dummy.updateMatrix();
@@ -113,11 +199,67 @@ export function SpheresScene({ reducedMotion }: Props) {
     }
     iMesh.instanceMatrix.needsUpdate = true;
     geo.setAttribute("color", new InstancedBufferAttribute(colors, 3));
+    geo.setAttribute("aLogo", new InstancedBufferAttribute(logoIdx, 1));
 
     const target = new CANNON.Vec3(HOME_X, 0, 0);
     return { world, center, centerBody, iMesh, bodies, scales, dummy, target, HOME_X, R_CENTER,
-      disposables: [centerGeo, centerMat, geo, mat] };
+      atlasTex, atlasCanvas,
+      disposables: [centerGeo, centerMat, geo, mat, atlasTex] };
   }, []);
+
+  // desenha cada logo SVG (cor original da marca) na sua célula do atlas.
+  // fundo transparente → no shader só o pixel do logo cobre a esfera, o
+  // resto continua branco↔indigo. async · não bloqueia o primeiro frame.
+  useEffect(() => {
+    const cv = sim.atlasCanvas;
+    if (!cv) return;
+    const ctx = cv.getContext("2d");
+    if (!ctx) return;
+    let cancelled = false;
+    (async () => {
+      const { renderToStaticMarkup } = await import("react-dom/server");
+      LOGOS.forEach((Logo, i) => {
+        let markup: string;
+        try {
+          markup = renderToStaticMarkup(<Logo size={ATLAS_CELL} />);
+        } catch {
+          return;
+        }
+        // os SVG inline não declaram xmlns (ok no DOM React, mas como
+        // documento standalone via <img> exige xmlns p/ decodificar)
+        if (!markup.includes("xmlns")) {
+          markup = markup.replace(
+            "<svg",
+            '<svg xmlns="http://www.w3.org/2000/svg"'
+          );
+        }
+        const url =
+          "data:image/svg+xml;charset=utf-8," + encodeURIComponent(markup);
+        const img = new Image();
+        img.onload = () => {
+          if (cancelled) return;
+          const col = i % ATLAS_COLS;
+          const row = Math.floor(i / ATLAS_COLS);
+          const x = col * ATLAS_CELL;
+          const y = row * ATLAS_CELL;
+          const pad = ATLAS_CELL * 0.04;
+          ctx.clearRect(x, y, ATLAS_CELL, ATLAS_CELL);
+          ctx.drawImage(
+            img,
+            x + pad,
+            y + pad,
+            ATLAS_CELL - 2 * pad,
+            ATLAS_CELL - 2 * pad
+          );
+          sim.atlasTex.needsUpdate = true;
+        };
+        img.src = url;
+      });
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [sim]);
 
   useEffect(() => {
     const root = rootRef.current;
