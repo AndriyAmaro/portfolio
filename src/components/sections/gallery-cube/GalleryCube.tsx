@@ -14,145 +14,80 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import {
-  NextJSLogo,
-  ReactLogo,
-  TypeScriptLogo,
-  JavaScriptLogo,
-  HTML5Logo,
-  ViteLogo,
-  TailwindLogo,
-  FramerMotionLogo,
-  TanStackLogo,
-  ZodLogo,
-  SocketIOLogo,
-} from "../frontend-card/BrandLogos";
-import {
-  NodejsLogo,
-  ExpressLogo,
-  HonoLogo,
-  PrismaLogo,
-  StripeLogo,
-  JwtLogo,
-  BullMQLogo,
-  SentryLogo,
-} from "../backend-card/BackendBrandLogos";
-import {
-  PostgresLogo,
-  RedisLogo,
-  PgvectorLogo,
-} from "../backend-card/BackendBrandLogos";
-import {
-  DockerLogo,
-  DockerComposeLogo,
-  NginxLogo,
-  CloudflareWorkersLogo,
-  CloudflareR2Logo,
-  RailwayLogo,
-  VercelLogo,
-  TurborepoLogo,
-  PnpmLogo,
-  GithubActionsLogo,
-  VitestLogo,
-  PlaywrightLogo,
-  AwsLogo,
-  AzureLogo,
-} from "../devops-card/DevOpsBrandLogos";
+// fonte única: os MESMOS SKILL_GROUPS dos cards do slider antigo
+// (set COMPLETO de logos, zero drift · o card é a fonte da verdade)
+import { SKILL_GROUPS as FRONTEND_GROUPS } from "../frontend-card/FrontendCardPremium";
+import { SKILL_GROUPS as BACKEND_GROUPS } from "../backend-card/BackendCardPremium";
+import { SKILL_GROUPS as DB_GROUPS } from "../databases-card/DatabasesCardPremium";
+import { SKILL_GROUPS as DEVOPS_GROUPS } from "../devops-card/DevOpsCardPremium";
 
 type LogoFC = React.ComponentType<{ size?: number; className?: string }>;
 type FaceKey = "frontend" | "backend" | "databases" | "devops";
+type Skill = { name: string; version?: string; Logo: LogoFC };
+type SkillGroup = { label: string; skills: Skill[] };
+
+// achata todos os skills (nome + logo) de todos os grupos da categoria
+// (igual ao card · set COMPLETO, fonte única)
+const flatSkills = (groups: SkillGroup[]): Skill[] =>
+  groups.flatMap((g) => g.skills);
 
 const FACES: {
   key: FaceKey;
   name: string;
   icon: string;
-  logos: LogoFC[];
+  skills: Skill[];
 }[] = [
   {
     key: "frontend",
     name: "Frontend",
     icon: "/icons/frontend.gif",
-    logos: [
-      NextJSLogo,
-      ReactLogo,
-      TypeScriptLogo,
-      JavaScriptLogo,
-      HTML5Logo,
-      ViteLogo,
-      TailwindLogo,
-      FramerMotionLogo,
-      TanStackLogo,
-      ZodLogo,
-      SocketIOLogo,
-    ],
+    skills: flatSkills(FRONTEND_GROUPS),
   },
   {
     key: "backend",
     name: "Backend",
     icon: "/icons/backend.gif",
-    logos: [
-      NodejsLogo,
-      ExpressLogo,
-      HonoLogo,
-      PrismaLogo,
-      StripeLogo,
-      ZodLogo,
-      JwtLogo,
-      BullMQLogo,
-      SentryLogo,
-    ],
+    skills: flatSkills(BACKEND_GROUPS),
   },
   {
     key: "databases",
     name: "Databases",
     icon: "/icons/databases.gif",
-    logos: [PostgresLogo, RedisLogo, PrismaLogo, PgvectorLogo, BullMQLogo, CloudflareR2Logo],
+    skills: flatSkills(DB_GROUPS),
   },
   {
     key: "devops",
     name: "DevOps",
     icon: "/icons/devops.gif",
-    logos: [
-      DockerLogo,
-      DockerComposeLogo,
-      NginxLogo,
-      CloudflareWorkersLogo,
-      CloudflareR2Logo,
-      RailwayLogo,
-      VercelLogo,
-      TurborepoLogo,
-      PnpmLogo,
-      GithubActionsLogo,
-      VitestLogo,
-      PlaywrightLogo,
-      AwsLogo,
-      AzureLogo,
-    ],
+    skills: flatSkills(DEVOPS_GROUPS),
   },
 ];
 
 const N = FACES.length; // 4 categorias
 
-// cat: -2 = ÍCONES (overview · primeira cara/topo) · 0..3 = logos da
-// categoria · -1 = parede vazia (saída por baixo)
+// GEOMETRIA EXATA do reference (six-faces-walking-the-cow):
+// top=rotateX(-90) front=tz right=rotateY(90) back=rotateY(180)
+// left=rotateY(-90) bottom=rotateX(90) · cat -2 = ícones (intro/topo)
+// cat -1 = lateral REMOVIDA (left · fora do percurso) · 0..3 = categorias
 const CUBE_FACES: { tf: string; cat: number }[] = [
-  { tf: "translateZ(var(--gc-half))", cat: 0 }, // front · frontend
-  { tf: "rotateY(90deg) translateZ(var(--gc-half))", cat: 1 }, // right · backend
-  { tf: "rotateY(180deg) translateZ(var(--gc-half))", cat: 2 }, // back · databases
-  { tf: "rotateX(90deg) translateZ(var(--gc-half))", cat: -2 }, // TOPO · ícones (início)
-  { tf: "rotateX(-90deg) translateZ(var(--gc-half))", cat: 3 }, // bottom · devops (vira p/ cima)
-  { tf: "rotateY(-90deg) translateZ(var(--gc-half))", cat: -1 }, // left · vazio (fora do percurso)
+  { tf: "rotateX(-90deg) translateZ(var(--gc-half))", cat: -2 }, // TOP · ícones (intro)
+  { tf: "translateZ(var(--gc-half))", cat: 0 }, // FRONT · frontend
+  { tf: "rotateY(90deg) translateZ(var(--gc-half))", cat: 1 }, // RIGHT · backend
+  { tf: "rotateY(180deg) translateZ(var(--gc-half))", cat: 2 }, // BACK · databases
+  { tf: "rotateX(90deg) translateZ(var(--gc-half))", cat: 3 }, // BOTTOM · devops (outro)
+  { tf: "rotateY(-90deg) translateZ(var(--gc-half))", cat: -1 }, // LEFT · lateral removida
 ];
 
-// STOPS · percurso enxuto (sem o penúltimo giro de lado):
-// TOPO(ícones) desce → frontend → backend → databases → devops vira p/ CIMA.
-// rx -90 mostra o topo de frente (intro), rx +90 traz a base (devops) p/ cima.
+// STOPS = valores EXATOS do reference (buildStops), com a lateral LEFT
+// removida: TOP(intro) → FRONT → RIGHT → BACK → BOTTOM(outro). O último
+// pass faz BACK→BOTTOM girando ry -180→-360 (volta a 0 · bottom limpo,
+// SEM hack rotateZ) enquanto rx 0→-90. Geometria idêntica ao reference.
 const STOPS = [
-  { rx: -90, ry: 0 }, // intro · TOPO (ícones) de frente, desce
-  { rx: 0, ry: 0 }, // frontend (front)
-  { rx: 0, ry: -90 }, // backend (right)
-  { rx: 0, ry: -180 }, // databases (back)
-  { rx: 90, ry: -180 }, // devops (bottom) · ÚLTIMO vira PARA CIMA
+  { rx: 90, ry: 0 }, // TOP · intro (ícones) desce · reference exato
+  { rx: 0, ry: 0 }, // FRONT · frontend
+  { rx: 0, ry: -90 }, // RIGHT · backend
+  { rx: 0, ry: -180 }, // BACK · databases
+  { rx: -90, ry: -360 }, // BOTTOM · devops · outro · reference exato
 ];
 const SEG = STOPS.length - 1; // 4
 
@@ -287,9 +222,12 @@ export function GalleryCube() {
                 {cf.cat >= 0 && (
                   <div className="gcube-frame">
                     <div className="gcube-logos">
-                      {FACES[cf.cat].logos.map((Logo, li) => (
-                        <span key={li} className="gcube-logo">
-                          <Logo size={56} />
+                      {FACES[cf.cat].skills.map((sk, li) => (
+                        <span key={li} className="gcube-logo-item">
+                          <span className="gcube-logo">
+                            <sk.Logo size={30} />
+                          </span>
+                          <span className="gcube-logo-name">{sk.name}</span>
                         </span>
                       ))}
                     </div>

@@ -5643,7 +5643,9 @@ section#skills,
   width: 100vw;
   max-width: 100vw;
   margin-inline: calc(50% - 50vw);
-  height: 400vh; /* trilho · ~100vh por face · termina e passa as 4 */
+  /* trilho longo · ~130vh de scroll por face → passada gradual e
+     deliberada entre as faces (feel do reference, não giro rápido) */
+  height: 620vh;
 }
 .gcube-pin {
   position: sticky;
@@ -5657,9 +5659,8 @@ section#skills,
   inset: 0;
   display: grid;
   place-items: center;
-  /* perspectiva curta = forte foreshortening → SALA 3D (parede da frente
-     grande + laterais recuando), não uma face chapada */
-  perspective: 820px;
+  /* perspectiva EXATA do reference (six-faces): 1100px */
+  perspective: 1100px;
   perspective-origin: 50% 45%;
   pointer-events: none;
   z-index: 0;
@@ -5673,7 +5674,7 @@ section#skills,
   height: var(--gc-s);
   position: relative;
   transform-style: preserve-3d;
-  transform: rotateX(-7deg) rotateY(0deg);
+  transform: rotateX(90deg) rotateY(0deg); /* base = STOP0 reference */
   will-change: transform;
 }
 /* paleta soft-UI NEUTRA (cinza-claro · sem tom lilás/azulado) */
@@ -5691,44 +5692,70 @@ section#skills,
   backface-visibility: hidden;
   display: grid;
   place-items: center;
-  background: var(--gc-soft);
+  /* SEM parede sólida · só o painel central aparece, o fundo da página
+     fica visível nas laterais (esp. direita, "depois do cubo") */
+  background: transparent;
 }
-/* painel das logos · NEUMÓRFICO (soft-UI): cantos suaves, relevo 3D
-   (sombra escura embaixo-direita + luz em cima-esquerda) · sem borda */
+/* CARD GRANDE 3D · ocupa boa parte da cara, conteúdo dentro · relevo
+   (highlight no topo + drop CONTIDO · spread negativo = sem halo p/ os
+   lados, fundo da página continua visível na lateral) */
 .gcube-frame {
   position: relative;
-  width: min(80%, 44rem);
+  width: min(90%, 52rem);
   aspect-ratio: 1;
-  border: none;
-  border-radius: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 40px;
   background: var(--gc-soft);
-  box-shadow: 20px 20px 44px var(--gc-shadow),
-    -18px -18px 40px var(--gc-light);
+  box-shadow: 0 1px 0 var(--gc-light) inset,
+    0 2px 8px -2px rgba(28, 28, 31, 0.16),
+    0 34px 64px -34px var(--gc-shadow);
   display: grid;
   place-items: center;
   overflow: hidden;
-  padding: clamp(1.4rem, 5vmin, 3rem);
+  padding: clamp(1.8rem, 6vmin, 3.6rem);
   color: #2a2d36;
 }
-/* grade de logos da categoria (cada scroll) */
+/* grade de skills da categoria (logo em BOLINHA + nome · igual ao hero) */
 .gcube-logos {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(clamp(56px, 10vmin, 104px), 1fr));
-  gap: clamp(0.7rem, 2vmin, 1.5rem);
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(clamp(58px, 7vmin, 84px), 1fr)
+  );
+  gap: clamp(0.5rem, 1.4vmin, 1rem) clamp(0.4rem, 1.2vmin, 0.9rem);
   place-content: center;
+  align-items: start;
   width: 100%;
 }
+.gcube-logo-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  text-align: center;
+}
+/* tile REDONDO (bolinha) · menor · soft-UI pra combinar com o hero */
 .gcube-logo {
+  width: clamp(40px, 5vmin, 56px);
   aspect-ratio: 1;
   display: grid;
   place-items: center;
-  border-radius: 18px;
+  border-radius: 50%;
   background: var(--gc-soft-2);
-  box-shadow: 6px 6px 14px var(--gc-shadow), -5px -5px 12px var(--gc-light);
+  box-shadow: 5px 5px 12px var(--gc-shadow), -4px -4px 10px var(--gc-light);
 }
 .gcube-logo :is(svg, img) {
-  width: clamp(30px, 5.4vmin, 60px);
+  width: clamp(20px, 3vmin, 30px);
   height: auto;
+}
+.gcube-logo-name {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: clamp(0.52rem, 1vmin, 0.7rem);
+  line-height: 1.15;
+  letter-spacing: 0.04em;
+  color: #6b6f7d;
+  max-width: 9ch;
+  overflow-wrap: anywhere;
 }
 /* primeira cara · ÍCONES 3D (overview das categorias) */
 .gcube-iconwall {
@@ -6040,7 +6067,7 @@ section#skills,
 /* mobile · cubo menor, card embaixo, strip oculto */
 @media (width <= 56.25em) {
   .gcube-section {
-    height: 340vh;
+    height: 480vh;
   }
   .gcube-cube {
     --gc-s: min(124vw, 84vh);
