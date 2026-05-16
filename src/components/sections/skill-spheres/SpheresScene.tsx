@@ -1,13 +1,15 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { Suspense, useEffect, useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
+import { InfinityCore } from "./InfinityCore";
 import {
   Group,
   Mesh,
   InstancedMesh,
   SphereGeometry,
   MeshStandardMaterial,
+  MeshPhysicalMaterial,
   InstancedBufferAttribute,
   CanvasTexture,
   SRGBColorSpace,
@@ -21,52 +23,91 @@ import {
 import * as CANNON from "cannon-es";
 
 import {
+  NextJSLogo,
   ReactLogo,
   TypeScriptLogo,
   TailwindLogo,
+  FramerMotionLogo,
   TanStackLogo,
   ZodLogo,
+  SocketIOLogo,
+  HTML5Logo,
+  CSS3Logo,
+  JavaScriptLogo,
+  ViteLogo,
+  RechartsLogo,
+  TiptapLogo,
+  XyflowLogo,
+  KonvaLogo,
 } from "../frontend-card/BrandLogos";
 import {
   NodejsLogo,
+  ExpressLogo,
   HonoLogo,
   PrismaLogo,
   PostgresLogo,
   RedisLogo,
   StripeLogo,
+  PgvectorLogo,
+  BullMQLogo,
+  JwtLogo,
+  SentryLogo,
+  ResendLogo,
+  SharpLogo,
+  PuppeteerLogo,
+  SwaggerLogo,
 } from "../backend-card/BackendBrandLogos";
 import {
   DockerLogo,
+  DockerComposeLogo,
+  NginxLogo,
+  CloudflareWorkersLogo,
   CloudflareR2Logo,
   RailwayLogo,
+  VercelLogo,
+  NixpacksLogo,
+  OpenNextLogo,
+  WranglerLogo,
+  TurborepoLogo,
   PnpmLogo,
+  GithubActionsLogo,
   VitestLogo,
+  PlaywrightLogo,
+  AwsLogo,
+  AzureLogo,
 } from "../devops-card/DevOpsBrandLogos";
 
 type Props = { reducedMotion: boolean };
 
-// Logos das stacks · desenhados num atlas e aplicados como decal 3D só nas
-// esferas grandes+médias (não quebra cor/efeito · vertexColors continua).
-// 16 marcas com fill de cor explícito (legíveis sobre branco/indigo).
+// Logos das stacks · 48 marcas (front+back+devops do projeto) → bem mais
+// variedade, repetição ~2x em vez de 3x · decal 3D na FRENTE e ATRÁS das
+// grandes+médias (não quebra cor/efeito · vertexColors continua) ·
+// currentColor recebe cor no atlas.
 const LOGOS: React.FC<{ size?: number }>[] = [
-  ReactLogo, TypeScriptLogo, TailwindLogo, TanStackLogo,
-  ZodLogo, NodejsLogo, HonoLogo, PrismaLogo,
-  PostgresLogo, RedisLogo, StripeLogo, DockerLogo,
-  CloudflareR2Logo, RailwayLogo, PnpmLogo, VitestLogo,
+  NextJSLogo, ReactLogo, TypeScriptLogo, TailwindLogo,
+  FramerMotionLogo, TanStackLogo, ZodLogo, SocketIOLogo,
+  HTML5Logo, CSS3Logo, JavaScriptLogo, ViteLogo,
+  RechartsLogo, TiptapLogo, XyflowLogo, KonvaLogo,
+  NodejsLogo, ExpressLogo, HonoLogo, PrismaLogo,
+  PostgresLogo, RedisLogo, StripeLogo, PgvectorLogo,
+  BullMQLogo, JwtLogo, SentryLogo, ResendLogo,
+  SharpLogo, PuppeteerLogo, SwaggerLogo, DockerLogo,
+  DockerComposeLogo, NginxLogo, CloudflareWorkersLogo, CloudflareR2Logo,
+  RailwayLogo, VercelLogo, NixpacksLogo, OpenNextLogo,
+  WranglerLogo, TurborepoLogo, PnpmLogo, GithubActionsLogo,
+  VitestLogo, PlaywrightLogo, AwsLogo, AzureLogo,
 ];
-const ATLAS_COLS = 4;
-const ATLAS_ROWS = 4;
-const ATLAS_CELL = 256; // px por célula → atlas 1024²
+const ATLAS_COLS = 8;
+const ATLAS_ROWS = 6; // 48 células · 48 logos
+const ATLAS_CELL = 256; // px por célula → atlas 2048×1536
 
 // soju22 "Spheres" (CodePen MWyorNd) ported to R3F + cannon-es.
 // Transparent canvas (page bg shows). Colors → white ↔ light indigo.
 const C_WHITE = new Color("#ffffff");
 const C_INDIGO = new Color("#818cf8"); // indigo-400 · indigo de verdade (não lilás)
-const C_CENTER = new Color("#a5b4fc"); // indigo-300 · core indigo claro
 
 export function SpheresScene({ reducedMotion }: Props) {
   const camera = useThree((s) => s.camera);
-  const viewport = useThree((s) => s.viewport);
   const rootRef = useRef<Group>(null);
 
   const sim = useMemo(() => {
@@ -79,20 +120,41 @@ export function SpheresScene({ reducedMotion }: Props) {
     world.defaultContactMaterial.restitution = 0.0;
     world.defaultContactMaterial.friction = 0.0;
 
-    // central sphere · KINEMATIC · the mouse moves THIS one; the small
-    // spheres follow it (its position is their attraction target)
-    const R_CENTER = 3.2; // menor (era 5 · estava gigante)
+    // núcleo soju22 ORIGINAL · esfera central grande que o mouse move e
+    // as pequenas GRUDAM nela (efeito que o Andri amava). Agora a esfera
+    // é um VIDRO translúcido indigo com o ícone ∞ DevOps brilhando DENTRO.
+    const R_CENTER = 2.8; // menor ainda (Andri) · ∞ maior preenche
     const centerGeo = new SphereGeometry(R_CENTER, 48, 48);
-    // glossy realista · reflete o Environment (canvas transparente, sem bloom)
-    const centerMat = new MeshStandardMaterial({
-      color: C_CENTER,
-      roughness: 0.18,
+    // bolha de vidro · transparente o bastante p/ ver o ∞ dentro · sem
+    // transmission (mantém o canvas alpha · lição aprendida)
+    // VIDRO hyper-realista · MeshPhysical · clearcoat + roughness ~0 +
+    // ior + reflexo forte do Environment = cristal polido. Sem
+    // transmission (mantém canvas alpha · lição) e translúcido o
+    // bastante p/ o ∞ aparecer dentro.
+    // mais CORPO (opacity 0.5) + roughness leve → sombreamento esférico
+    // real como as pequenas (não fica chapado/SVG) · clearcoat dá o
+    // verniz de vidro · ∞ ainda aparece glowing dentro
+    const centerMat = new MeshPhysicalMaterial({
+      color: new Color("#e9ecfb"), // quase branco · vidro claro
+      transparent: true,
+      opacity: 0.5,
+      roughness: 0.07,
       metalness: 0.0,
-      envMapIntensity: 1.1,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.06,
+      ior: 1.47,
+      specularIntensity: 1.0,
+      envMapIntensity: 2.2, // reflexo do Environment = volume 3D real
+      // iridescência sutil → brilho de vidro/bolha real (premium)
+      iridescence: 0.35,
+      iridescenceIOR: 1.3,
+      iridescenceThicknessRange: [120, 420],
+      depthWrite: false,
     });
     const center = new Mesh(centerGeo, centerMat);
-    center.castShadow = true;
-    center.receiveShadow = true;
+    center.renderOrder = 5; // desenha DEPOIS do ∞ (ele aparece dentro)
+    center.castShadow = false;
+    center.receiveShadow = false;
     // resting position biased to the RIGHT (título fica livre à esquerda)
     const HOME_X = 13;
     const centerBody = new CANNON.Body({
@@ -143,14 +205,18 @@ export function SpheresScene({ reducedMotion }: Props) {
         .replace(
           "#include <map_fragment>",
           `#include <map_fragment>
-          if (vLogo > -0.5 && vObjNorm.z > 0.02) {
-            vec2 luv = vObjNorm.xy * 0.66 + 0.5;
+          if (vLogo > -0.5 && abs(vObjNorm.z) > 0.02) {
+            // FRENTE (z+) e ATRÁS (z-) · atrás espelha x p/ ler certo
+            vec2 nn = (vObjNorm.z > 0.0)
+              ? vObjNorm.xy
+              : vec2(-vObjNorm.x, vObjNorm.y);
+            vec2 luv = nn * 0.66 + 0.5;
             if (luv.x > 0.001 && luv.x < 0.999 && luv.y > 0.001 && luv.y < 0.999) {
               float lc = mod(vLogo, uAtlasCols);
               float lr = floor(vLogo / uAtlasCols);
-              vec2 cell = (vec2(lc, lr) + vec2(luv.x, 1.0 - luv.y)) / vec2(uAtlasCols, uAtlasRows);
+              vec2 cell = (vec2(lc, lr) + vec2(luv.x, luv.y)) / vec2(uAtlasCols, uAtlasRows);
               vec4 lg = texture2D(uLogoAtlas, cell);
-              float edge = smoothstep(0.02, 0.32, vObjNorm.z);
+              float edge = smoothstep(0.02, 0.32, abs(vObjNorm.z));
               diffuseColor.rgb = mix(diffuseColor.rgb, lg.rgb, lg.a * edge);
             }
           }`
@@ -176,8 +242,9 @@ export function SpheresScene({ reducedMotion }: Props) {
       const pz = (Math.random() - 0.5) * 6;
       const s = 0.25 + Math.random() * 0.75;
       scales[i] = s;
-      // logo só nas grandes+médias (s >= 0.5) · pequenas = -1 (sem logo)
-      logoIdx[i] = s >= 0.5 ? (logoCursor++ % LOGOS.length) : -1;
+      // logo só nas grandes+médias (s >= 0.6 · menos esferas → menos
+      // repetição visível) · pequenas = -1 (sem logo)
+      logoIdx[i] = s >= 0.6 ? (logoCursor++ % LOGOS.length) : -1;
       dummy.position.set(px, py, pz);
       dummy.scale.setScalar(s);
       dummy.updateMatrix();
@@ -201,11 +268,38 @@ export function SpheresScene({ reducedMotion }: Props) {
     geo.setAttribute("color", new InstancedBufferAttribute(colors, 3));
     geo.setAttribute("aLogo", new InstancedBufferAttribute(logoIdx, 1));
 
+    // re-sorteia a paleta (branco ↔ cor aleatória · estilo soju22) ·
+    // NÃO mexe nos logos (o decal é composto POR CIMA no shader, então a
+    // cor base muda mas a logo continua intacta/legível)
+    const recolor = () => {
+      const rc = new Color().setHSL(
+        Math.random(),
+        0.58 + Math.random() * 0.22,
+        0.58
+      );
+      const cc = new Color();
+      for (let i = 0; i < COUNT; i++) {
+        cc.copy(C_WHITE).lerp(rc, Math.pow(Math.random(), 0.95));
+        colors[i * 3] = cc.r;
+        colors[i * 3 + 1] = cc.g;
+        colors[i * 3 + 2] = cc.b;
+      }
+      const attr = geo.getAttribute("color") as InstancedBufferAttribute;
+      attr.needsUpdate = true;
+    };
+
     const target = new CANNON.Vec3(HOME_X, 0, 0);
     return { world, center, centerBody, iMesh, bodies, scales, dummy, target, HOME_X, R_CENTER,
-      atlasTex, atlasCanvas,
+      atlasTex, atlasCanvas, recolor,
       disposables: [centerGeo, centerMat, geo, mat, atlasTex] };
   }, []);
+
+  // botão "random color" (DOM, fora do canvas) dispara este evento
+  useEffect(() => {
+    const h = () => sim.recolor();
+    window.addEventListener("spheres:recolor", h);
+    return () => window.removeEventListener("spheres:recolor", h);
+  }, [sim]);
 
   // desenha cada logo SVG (cor original da marca) na sua célula do atlas.
   // fundo transparente → no shader só o pixel do logo cobre a esfera, o
@@ -226,11 +320,13 @@ export function SpheresScene({ reducedMotion }: Props) {
           return;
         }
         // os SVG inline não declaram xmlns (ok no DOM React, mas como
-        // documento standalone via <img> exige xmlns p/ decodificar)
+        // documento standalone via <img> exige xmlns p/ decodificar) ·
+        // e `color` resolve os fill="currentColor" (Next/Vercel/Socket/
+        // Express) p/ indigo em vez de preto invisível
         if (!markup.includes("xmlns")) {
           markup = markup.replace(
             "<svg",
-            '<svg xmlns="http://www.w3.org/2000/svg"'
+            '<svg xmlns="http://www.w3.org/2000/svg" style="color:#4f46e5"'
           );
         }
         const url =
@@ -322,16 +418,12 @@ export function SpheresScene({ reducedMotion }: Props) {
     // 1 · mouse → raw 3D point on z=0 plane
     raycaster.setFromCamera(state.pointer, camera);
     if (raycaster.ray.intersectPlane(targetPlane, hitPt)) {
-      // keep the BIG sphere (r=5) inside the walls
-      const lx = Math.max(0, viewport.width / 2 - 2 - sim.R_CENTER);
-      const ly = Math.max(0, viewport.height / 2 - 2 - sim.R_CENTER);
-      // idle (mouse não mexeu) → repousa à DIREITA; ao mover, segue o cursor
-      // por toda a tela (passa por cima/atrás do título à esquerda)
+      // mantém o laptop inteiro dentro da tela (meia-largura = effR)
+      // soju22 · a grande SEGUE o cursor LIVRE por todo o hero (sem clamp ·
+      // sem limitação) · idle (mouse não mexeu) repousa à DIREITA
       const moved = state.pointer.x !== 0 || state.pointer.y !== 0;
-      const tx = moved ? hitPt.x : Math.min(lx, sim.HOME_X);
-      const ty = moved ? hitPt.y : 0;
-      const mx = Math.max(-lx, Math.min(lx, tx));
-      const my = Math.max(-ly, Math.min(ly, ty));
+      const mx = moved ? hitPt.x : sim.HOME_X;
+      const my = moved ? hitPt.y : 0;
       // 2 · the BIG sphere glides toward the cursor (kinematic · pushes the
       //     small ones via collision). velocity = lerp delta per step.
       const cb = sim.centerBody;
@@ -339,7 +431,8 @@ export function SpheresScene({ reducedMotion }: Props) {
       // glide mais suave (0.085) → a grande não foge do enxame; as pequenas
       // alcançam e DESCANSAM nela, viajando juntas como uma bola só
       cb.velocity.set(dx * 0.085 * 60, dy * 0.085 * 60, dz * 0.085 * 60);
-      // small spheres are attracted to the BIG sphere → they follow it
+      // soju22 original · as pequenas são atraídas pra esfera central e
+      // GRUDAM nela (segue o mouse)
       sim.target.set(cb.position.x, cb.position.y, cb.position.z);
     }
 
@@ -375,7 +468,10 @@ export function SpheresScene({ reducedMotion }: Props) {
     for (let i = 0; i < sim.bodies.length; i++) {
       const b = sim.bodies[i];
       sim.dummy.position.set(b.position.x, b.position.y, b.position.z);
-      sim.dummy.quaternion.set(b.quaternion.x, b.quaternion.y, b.quaternion.z, b.quaternion.w);
+      // SEM rotação do corpo · a esfera é lisa (só vertexColor) então o
+      // giro era invisível, mas fazia o logo (face +Z local) ficar "de
+      // ponta"/de lado. Mantendo identity → todo logo encara a câmera.
+      sim.dummy.quaternion.set(0, 0, 0, 1);
       sim.dummy.scale.setScalar(sim.scales[i]);
       sim.dummy.updateMatrix();
       sim.iMesh.setMatrixAt(i, sim.dummy.matrix);
@@ -383,5 +479,19 @@ export function SpheresScene({ reducedMotion }: Props) {
     sim.iMesh.instanceMatrix.needsUpdate = true;
   });
 
-  return <group ref={rootRef} />;
+  return (
+    <group ref={rootRef}>
+      {/* ∞ DevOps = núcleo DENTRO da esfera de vidro · Suspense próprio →
+         só a textura suspende, a física das esferas NÃO remonta */}
+      {!reducedMotion && (
+        <Suspense fallback={null}>
+          <InfinityCore
+            center={sim.center}
+            rCenter={sim.R_CENTER}
+            reducedMotion={reducedMotion}
+          />
+        </Suspense>
+      )}
+    </group>
+  );
 }

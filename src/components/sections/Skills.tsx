@@ -9,6 +9,7 @@ import {
   Layers,
   AppWindow,
   Brain,
+  Shuffle,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
@@ -382,6 +383,18 @@ export function Skills() {
         {/* Skills hero · título SOBRE o cluster de esferas (ref soju22) */}
         <div className="skills-hero">
           <SkillSpheres />
+          {/* random color · re-sorteia a paleta das esferas (logos intactas) */}
+          <button
+            type="button"
+            aria-label="Trocar cores"
+            onClick={() =>
+              window.dispatchEvent(new CustomEvent("spheres:recolor"))
+            }
+            title="Trocar cores"
+            className="spheres-recolor-btn absolute bottom-6 right-6 z-20 hidden sm:inline-flex items-center justify-center w-10 h-10 rounded-full backdrop-blur-sm transition-colors duration-200"
+          >
+            <Shuffle className="w-4 h-4" />
+          </button>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -393,10 +406,10 @@ export function Skills() {
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 mb-6"
+              className="skills-hero-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
-              <span className="text-xs font-medium text-indigo-300">{t("badge")}</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-indigo-300 animate-pulse" />
+              <span className="text-xs font-semibold tracking-wide">{t("badge")}</span>
             </motion.div>
 
             {/* Título estático 3D (sem o burst) */}
