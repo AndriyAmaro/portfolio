@@ -2,6 +2,7 @@ export { Hero } from "./Hero";
 export { About } from "./About";
 export { Skills } from "./Skills";
 export { Ecosystem } from "./Ecosystem";
+export { ClaudeSection } from "./ClaudeSection";
 export { Projects } from "./Projects";
 export { CodeInAction } from "./CodeInAction";
 export { Services } from "./Services";

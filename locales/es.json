@@ -375,6 +375,11 @@
       "ready": "Ready for scale"
     },
     "carousel": {
+      "stack": {
+        "eyebrow": "STACK · PRODUCCIÓN",
+        "title": "Mi stack",
+        "desc": "Frontend, Backend, Databases y DevOps · lo que mueve SaaS en producción. Desplázate para ver cada capa."
+      },
       "frontendPremium": {
         "eyebrow": "01 · FRONTEND · UI / DESIGN SYSTEMS",
         "desc": "Server Components, design systems hechos a mano y UX que conecta. De Next.js App Router a microinteracciones en Framer Motion · 25 herramientas en 3 proyectos en producción."
@@ -615,6 +620,12 @@
       }
     },
     "nextTeaser": "Próximo: 3 apps más en el ecosistema"
+  },
+  "claude": {
+    "badge": "Claude · IA aplicada",
+    "title": "Acelerando proyectos con:",
+    "titleHighlight": "IA para Desarrollo, Code Review y Automatización",
+    "subtitle": "Del prompt al deploy · Claude en el flujo de ingeniería"
   },
   "ecosystem": {
     "badge": "Ecosistema Interconectado",

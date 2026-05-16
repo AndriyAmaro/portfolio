@@ -65,7 +65,7 @@ function useTypingLoop(word: string, typingSpeed = 95, deletingSpeed = 55, pause
   return text;
 }
 
-const SKILL_GROUPS: SkillGroup[] = [
+export const SKILL_GROUPS: SkillGroup[] = [
   {
     label: "CORE",
     skills: [

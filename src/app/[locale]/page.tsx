@@ -2,9 +2,9 @@ import { setRequestLocale } from "next-intl/server";
 import { Footer, Header } from "@/components/layout";
 import {
   About,
+  ClaudeSection,
   CodeInAction,
   Contact,
-  Ecosystem,
   Hero,
   Projects,
   Services,
@@ -26,7 +26,7 @@ export default async function Home({ params }: Props) {
         <Hero />
         <About />
         <Skills />
-        <Ecosystem />
+        <ClaudeSection />
         <Projects />
         <CodeInAction />
         <Timeline />

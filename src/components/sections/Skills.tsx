@@ -14,10 +14,9 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { skillCategories as importedSkills } from "@/data/skills";
-import { SkillsDevinCarousel } from "./SkillsDevinCarousel";
 import { ConstellationStack } from "./constellation-stack/ConstellationStack";
 import { SkillSpheres } from "./skill-spheres/SkillSpheres";
-import { LogoScroller } from "./LogoScroller";
+import { GalleryCube } from "./gallery-cube/GalleryCube";
 
 // ---------------------------------------------------------------------------
 // SVG Tech Icons
@@ -426,40 +425,11 @@ export function Skills() {
         </div>
 
         {false && <ConstellationStack />}
-
-        {/* Devin-style scroll-driven carousel · abaixo do hero */}
-        <SkillsDevinCarousel />
-
-        {/* AI badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="mt-12 text-center"
-        >
-          <div className="learning-badge inline-flex flex-col sm:flex-row items-center gap-3 sm:gap-4 px-6 sm:px-8 py-4 sm:py-4 rounded-2xl sm:rounded-full max-w-sm sm:max-w-none mx-auto">
-            <span className="w-2.5 h-2.5 rounded-full bg-indigo-400 animate-pulse hidden sm:block" />
-            <span className="learning-text text-sm sm:text-base font-medium text-center sm:text-left">
-              <span className="block sm:inline mb-1 sm:mb-0">{t("aiBadge.prefix")}</span>{" "}
-              <span className="gradient-text text-base sm:text-lg font-semibold">
-                {t("aiBadge.text")}
-              </span>
-            </span>
-          </div>
-        </motion.div>
       </div>
 
-      {/* Endless Flow logo scroller · real brand logos · GSAP-driven · adapted from CodePen pvoaXRv (MIT) */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.6 }}
-        className="mt-20"
-      >
-        <LogoScroller />
-      </motion.div>
+      {/* Stack gallery · scroll-driven 3D cube · full-bleed fora do container
+         (pin trava no scroll da página · substitui carousel + logo scroller) */}
+      <GalleryCube />
     </section>
   );
 }
