@@ -1,4 +1,4 @@
-import { Inter, Archivo, Archivo_Black } from "next/font/google";
+import { Inter, Archivo, Archivo_Black, JetBrains_Mono } from "next/font/google";
 import { GeistSans } from "geist/font/sans";
 import { ClientShell } from "@/components/ui/ClientShell";
 import "./globals.css";
@@ -21,6 +21,12 @@ const archivoBlack = Archivo_Black({
   display: "swap",
   variable: "--font-archivo-black",
 });
+// Fase 4 · mono editorial p/ textos pequenos/informativos (não títulos)
+const jetbrains = JetBrains_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-jetbrains",
+});
 
 export default function RootLayout({
   children,
@@ -39,7 +45,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} ${GeistSans.variable} ${archivo.variable} ${archivoBlack.variable} font-sans antialiased`}
+        className={`${inter.variable} ${GeistSans.variable} ${archivo.variable} ${archivoBlack.variable} ${jetbrains.variable} font-sans antialiased`}
       >
         <ClientShell>{children}</ClientShell>
       </body>
